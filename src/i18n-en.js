@@ -1358,4 +1358,6 @@ export const DICT = {
  "เราถอนคนไปช่วยแกงค์ ศัตรูกินเลนนี้ฟรี เงิน +2": "We pulled someone out to help gank, so the enemy farms this lane free · +2 gold",
  "ศัตรูถอนคนไปช่วยแกงค์ เรากินเลนนี้ฟรี เงิน +2": "They pulled someone out to help gank, so we farm this lane free · +2 gold",
  "ดูตัวละครทั้งหมดแยกตามเลน พร้อมสกิลเต็ม": "Every champion by lane, with their full ability list",
+ "เราสั่งเซฟไว้ ไม่รับไฟต์ — ยื้อให้พ้นเวลาแล้วฝั่งที่มาแกงค์เสียยกฟรี": "We called Safe and refuse the fight — hold out to the clock and the ganking side wastes its whole round",
+ "ศัตรูสั่งเซฟไว้ ไม่รับไฟต์ — ถ้าเก็บไม่ได้ในเวลา เราเสียยกฟรี": "They called Safe and refuse the fight — fail to finish them in time and our round is wasted",
 };

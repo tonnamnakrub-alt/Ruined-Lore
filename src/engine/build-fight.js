@@ -173,7 +173,8 @@ export function buildFight(blueDefs, redDefs, seed, event) {
   const ev = event || EVENTS.SKIRMISH;
   // เวลาไฟต์ยืดตามจำนวนคนที่ลงสนาม — 1v1 ได้ 30 วิ ทุกคนที่เพิ่มมาได้อีก 5 วิ
   // ไฟต์ใหญ่ต้องใช้เวลามากกว่า ส่วนไฟต์เลนสองคนไม่ควรยืดเยื้อ
-  const duration = Math.max(20, 30 + 5 * (bodyCount - 2));
+  // fixedDuration ใช้ตอนที่กติกาข้างนอกอยากกำหนดเอง เช่น เลนที่ยืนรับแกงค์แบบเซฟ
+  const duration = ev.fixedDuration || Math.max(20, 30 + 5 * (bodyCount - 2));
   return {
     t: 0,
     event: ev,

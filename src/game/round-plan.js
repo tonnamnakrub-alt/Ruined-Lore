@@ -98,9 +98,21 @@ export function buildRoundPlan(opts) {
     // ฝั่งไหนไม่มีคนเหลือเลยก็ไม่ต้องไฟต์
     if (!blue.length || !red.length) fight = false;
 
+    // ยืนรับแกงค์แบบเซฟ — เลนที่สั่งเซฟไว้แล้วโดนอีกฝั่งยกพวกมาแกงค์
+    // ไฟต์จะสั้น และถ้าฝั่งที่ยืนรับยังเหลือคนรอด ฝ่ายที่มาแกงค์เสียยกฟรี
+    // ไม่นับกรณีป่าลงทั้งสองฝั่ง เพราะนั่นคือต่างคนต่างเลือกจะสู้
+    let safeStand = null;
+    if (!bothGank && fight) {
+      if (foeGank && mine === "SAFE") safeStand = "me";
+      else if (myGank && theirs === "SAFE") safeStand = "foe";
+    }
+    if (safeStand) notes.push(safeStand === "me"
+      ? "เราสั่งเซฟไว้ ไม่รับไฟต์ — ยื้อให้พ้นเวลาแล้วฝั่งที่มาแกงค์เสียยกฟรี"
+      : "ศัตรูสั่งเซฟไว้ ไม่รับไฟต์ — ถ้าเก็บไม่ได้ในเวลา เราเสียยกฟรี");
+
     lanes[L] = {
       lane: L, mine, theirs, out, fight, stanceFight, myGank, foeGank, bothGank,
-      blue, red, hurt, notes, aggroDuel: out.aggroDuel,
+      blue, red, hurt, notes, aggroDuel: out.aggroDuel, safeStand,
     };
     Object.assign(hurtAll, hurt);
 

@@ -19,7 +19,7 @@ import { LANE_INFO } from "./data/lanes.js";
 import { shopFor } from "./game/shop-ai.js";
 import { nextStreak, streakMods } from "./game/streak.js";
 import { botSpread, draftFoe } from "./game/bot-draft.js";
-import { STANCE_LANES, LANE_MEMBERS, KILL, ASSIST_SOLO, ASSIST_GROUP, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
+import { STANCE_LANES, LANE_MEMBERS, KILL, ASSIST_SOLO, ASSIST_GROUP, SAFE_STAND_SECONDS, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
 import { DIFFS, diffOf } from "./data/difficulty.js";
 import { buildRoundPlan, foeIncome } from "./game/round-plan.js";
 import { botJungle, botStances } from "./game/stance-ai.js";
@@ -636,7 +636,8 @@ export function App() {
     if (!plan) return;
     const l = plan.lanes[L];
     if (!l || !l.fight || laneDone[L]) return;
-    const ev = DEFAULT_FIGHT;
+    // เลนที่ยืนรับแกงค์แบบเซฟได้นาฬิกาสั้น — ยื้อให้พ้นเวลาก็พอ ไม่ต้องชนะ
+    const ev = l.safeStand ? { ...DEFAULT_FIGHT, fixedDuration: SAFE_STAND_SECONDS } : DEFAULT_FIGHT;
     const side = (roster, keys, tag) => keys
       .map((k) => roster.find((x) => x.lane === k))
       .filter(Boolean)
@@ -732,6 +733,23 @@ export function App() {
     for (const k of Object.keys(plan.income)) income[k] = { ...plan.income[k] };
     const fi = foeIncome(plan);
     for (const k of Object.keys(fi)) foeInc[k] = { ...fi[k] };
+
+    // ---- ยืนรับแกงค์แบบเซฟ: ยื้อจนหมดเวลาแล้วยังมีคนรอด = ฝ่ายที่มาแกงค์เสียยกฟรี
+    // ตัดรายได้ของป่าฝั่งนั้นและของคนที่ถูกดึงมาช่วย เพื่อให้การไล่แกงค์ซ้ำมีราคา
+    const myLane = net.on && net.side === "red" ? "red" : "blue";
+    for (const L of STANCE_LANES) {
+      const l = plan.lanes[L];
+      const r = done[L];
+      if (!l || !l.safeStand || !r) continue;
+      const defSide = l.safeStand === "me" ? myLane : (myLane === "blue" ? "red" : "blue");
+      const held = r.units.some((u) => u.team === defSide && LANE_MEMBERS[L].includes(u.lane) && u.alive);
+      if (!held) continue;
+      const atkIsMe = l.safeStand === "foe";
+      const bag = atkIsMe ? income : foeInc;
+      const crew = atkIsMe ? (jungle.crew || []) : (plan.foeJungleCrew || []);
+      bag.JUNGLE = { gold: 0, xp: 0 };
+      for (const c of crew) for (const m of LANE_MEMBERS[c] || []) bag[m] = { gold: 0, xp: 0 };
+    }
 
     let laneWins = 0, laneLoss = 0;
     for (const L of STANCE_LANES) {
