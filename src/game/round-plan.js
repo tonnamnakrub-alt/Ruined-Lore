@@ -81,8 +81,11 @@ export function buildRoundPlan(opts) {
     }
 
     // ใครลงสนามบ้างในเลนนี้
-    const blue = myJoin ? LANE_MEMBERS[L].slice() : [];
-    const red = foeJoin ? LANE_MEMBERS[L].slice() : [];
+    // คนที่ถูกป่าดึงไปแกงค์เลนอื่น ต้องหายไปจากเลนตัวเองด้วย
+    // เดิมถูก push เข้าเลนที่ไปแกงค์ แต่ยังค้างอยู่ในรายชื่อเลนบ้านของตัวเอง
+    // ผลคือคนเดียวสู้สองเลนในยกเดียวกัน และเลนที่ควรว่างกลับยังไฟต์อยู่
+    const blue = myJoin && !myAway.has(L) ? LANE_MEMBERS[L].slice() : [];
+    const red = foeJoin && !foeAway.has(L) ? LANE_MEMBERS[L].slice() : [];
     if (myGank) {
       blue.push("JUNGLE");
       for (const c of (jungle.crew || [])) for (const m of LANE_MEMBERS[c] || []) blue.push(m);
