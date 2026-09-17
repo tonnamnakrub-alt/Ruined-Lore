@@ -1,0 +1,302 @@
+import { tr } from "../i18n.js";
+import { gainIsolde } from "./on-hit.js";
+import { addBuff, buffSum, bump, curState, dist, hasBuff, pushLog } from "./state-util.js";
+import { cdrFromItemHaste } from "./stats.js";
+import { lifeBondLeech, lifeBondSplit, onHealOrShield } from "./support.js";
+import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
+import { onLorlaDamage, onLorlaTakedown } from "./lorla.js";
+import {
+  denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
+} from "./assassin.js";
+
+
+export function applyDamage(state, source, target, amount, magic, trueDmg, isAuto) {
+  if (hasBuff(target, "invuln") || hasBuff(target, "evade")) {
+    if (target.absorb) target.absorb.dmg += amount;   // Theon's ult banks what it eats
+    return;
+  }
+  const pen = (source && source.pen) || 0;
+  // เจาะต้านเวทแบบ % คิดก่อน แล้วค่อยหักแบบ flat
+  const mrPct = magic ? 1 - Math.min(0.8, (source && source.mrPenPct) || 0) : 1;
+  const arPct = magic ? 1 : 1 - Math.min(0.8, (source && source.armorPenPct) || 0);
+  const res = Math.max(0, (magic ? target.mr * mrPct : target.armor * arPct) - pen);
+  const mit = trueDmg ? 1 : 100 / (100 + res);
+  const vulnerable = 1 + buffSum(target, "vulnerable");
+  const autoCut = isAuto && target.dmgReduceAuto ? 1 - target.dmgReduceAuto : 1;
+  // Apollo's Sunlit Quiver: เลือดตัวเอง >= 80% ตีแรงขึ้นทุกชนิด
+  const hpAmp = source && source.dmgAmpHighHp && source.hp / source.maxHp >= 0.8
+    ? 1 + source.dmgAmpHighHp : 1;
+  // Jack's Giantbane Harp: ดาเมจเวทแรงขึ้นตามส่วนต่าง Max HP ของเป้ากับเรา
+  const giant = magic ? giantSlayerAmp(source, target) : 1;
+  let dmg = amount * mit * vulnerable * autoCut * hpAmp * giant
+    * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
+  // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
+  if (!state.oodSplitting && dmg > 0) {
+    const guard = lifeBondSplit(state, target);
+    if (guard) {
+      const share = dmg * 0.10;
+      dmg -= share;
+      state.oodSplitting = true;
+      const ps = state.dmgSrc;
+      state.dmgSrc = tr("ไอเทม Oath of the Dioscuri");
+      try { applyDamage(state, source, guard, share, false, true); }
+      finally { state.oodSplitting = false; state.dmgSrc = ps; }
+    }
+  }
+  // Fang of the Midgard Serpent: ดาเมจกินหลอดโล่แรงขึ้น
+  if (source && source.shieldBreak) markShieldCut(state, source, target);
+  if (target.shield > 0) {
+    const eaten = dmg * shieldBreakMul(source);
+    const absorbed = Math.min(target.shield, eaten);
+    target.shield -= absorbed;
+    dmg -= absorbed;
+    target.shieldAbsorbed = (target.shieldAbsorbed || 0) + absorbed;
+  }
+  if (dmg <= 0) return;
+  // Cuirass of the Bleeding Centaur: 30% of incoming physical damage is deferred
+  // into a 3s bleed instead of landing instantly
+  if (!magic && !trueDmg && target.hasItem && target.hasItem("cbc")) {
+    const deferred = dmg * 0.3;
+    dmg -= deferred;
+    state.dots.push({ targetId: target.id, ownerId: (source && source.id) || target.id, dps: deferred / 3, until: state.t + 3, magic: false, cbc: true, src: tr("ไอเทม Cuirass of the Bleeding Centaur") });
+  }
+  // Pauldrons of the Nian Beast: both dealing AND taking damage builds stacks, up to 15
+  if (source && source.hasItem && source.hasItem("pnb")) {
+    source.pnbStacks = Math.min(15, (source.pnbStacks || 0) + 1);
+    source.pnbUntil = state.t + 5;
+  }
+  if (target.hasItem && target.hasItem("pnb")) {
+    target.pnbStacks = Math.min(15, (target.pnbStacks || 0) + 1);
+    target.pnbUntil = state.t + 5;
+  }
+  // Mjölnir's Grounding Cloak: stacks on every magic hit taken, up to +30 MR at 10 stacks
+  if (magic && target.hasItem("mgc")) {
+    target.mjolnirStacks = Math.min(10, (target.mjolnirStacks || 0) + 1);
+    target.mjolnirUntil = state.t + 4;
+  }
+  if (source && source.pendingSkillHit) {
+    source.skillHitThisCast = true;
+    if (source.champ.isolde) gainIsolde(state, source, source.champ.isolde.onSkill);
+  }
+  state.fx.push({ x: target.x, y: target.y, t: state.t, kind: magic ? "magic" : trueDmg ? "true" : "hit", size: Math.min(140, 40 + dmg / 6) });
+  state.fx.push({ x: target.x, y: target.y - 40, t: state.t, kind: "num", text: String(Math.round(dmg)),
+    color: trueDmg ? "#FFFFFF" : magic ? "#B08CFF" : "#FFD08A" });
+  target.hp -= dmg;
+  target.lastHitAt = state.t;
+
+  // Swan Maiden's Feathered Cloak: เลือดหลุด 30% แล้วกางโล่ 4 วิ (ทุก 60 วิ)
+  if (target.hasItem && target.hasItem("swf") && target.hp > 0
+      && target.hp / target.maxHp < 0.3 && state.t >= (target.swfReadyAt || 0)) {
+    target.swfReadyAt = state.t + 60;
+    const amt = 250 + 1.0 * (target.bonusAd || 0);
+    target.swfAmt = amt;
+    target.swfUntil = state.t + 4;
+    target.shield = (target.shield || 0) + amt;
+    pushLog(state, tr("{0} {1} กางโล่สุดท้าย", target.team === "blue" ? "🔵" : "🔴", tr(target.champ.th)));
+  }
+
+  // Smee's Watch: any damage from the marked target's owner — auto or skill —
+  // detonates the mark for a cut of what just landed
+  if (target.mark && source && target.mark.ownerId === source.id && state.t < target.mark.until && !target.markDetonating) {
+    const sk = target.mark.sk;
+    const bonusPct = sk.bonusPct[Math.max(0, sk.rank - 1)];
+    const bonus = dmg * bonusPct + (sk.badRatio || 0) * source.bonusAd;
+    target.mark = null;
+    target.markDetonating = true;
+    state.dmgSrc = tr("จุดระเบิดมาร์ก ") + (sk.th || "");
+    applyDamage(state, source, target, bonus, false, sk.upTrue && source.upgrades.includes("W"));
+    target.markDetonating = false;
+  }
+
+  // Nemean Lion's Mane: reflects some of what it just took back at the attacker,
+  // as whichever damage type the wearer itself deals more of
+  if (target.hasItem("nlm") && source && source.alive && source.id !== target.id) {
+    const cdr = cdrFromItemHaste(target.itemHaste || 0);
+    const ready = target.nlmReadyAt == null || state.t >= target.nlmReadyAt;
+    if (ready) {
+      target.nlmReadyAt = state.t + 1 * (1 - cdr);
+      const adaptiveMagic = target.ap > target.ad;
+      const baseArmor = target.champ.armor + target.champ.armorG * (target.level - 1);
+      const bonusArmor = Math.max(0, target.armor - baseArmor);
+      state.dmgSrc = tr("ไอเทม สะท้อนดาเมจ");
+      applyDamage(state, target, source, 15 + 0.25 * bonusArmor, adaptiveMagic, false);
+    }
+  }
+  // Apple of Idunn: getting hit regens 3% max HP + up to 9% more based on how much
+  // is missing, spread over 4s, once every 20s
+  if (target.hasItem("aoi")) {
+    const cdr = cdrFromItemHaste(target.itemHaste || 0);
+    const ready = target.aoiReadyAt == null || state.t >= target.aoiReadyAt;
+    if (ready) {
+      target.aoiReadyAt = state.t + 20 * (1 - cdr);
+      const missingFrac = 1 - target.hp / target.maxHp;
+      const pct = 0.03 + 0.09 * missingFrac;
+      state.hots.push({ targetId: target.id, ownerId: target.id, hps: (target.maxHp * pct) / 4, until: state.t + 4 });
+    }
+  }
+  // ---- ให้เครดิตว่าดาเมจก้อนนี้มาจากอะไร (ใช้ในหน้ากราฟ)
+  {
+    const lbl = state.dmgSrc || (isAuto ? tr("ออโต้") : tr("อื่นๆ"));
+    if (source) bump(source.dealtBy, lbl, dmg);
+    bump(target.takenBy, (source ? source.champ.id : "?") + "|" + lbl, dmg);
+  }
+  if (source) {
+    source.damageDealt += dmg;
+    // ของตัดฮีล (Grievous Wounds) — ติดให้เป้าหมายทุกครั้งที่ดาเมจเข้า
+    if (source.antihealOnDmg && target.alive) {
+      const ah = source.antihealOnDmg;
+      target.buffs = target.buffs.filter((b) => !(b.type === "antiheal" && b.sourceId === source.id));
+      addBuff(target, { type: "antiheal", v: ah.v, sourceId: source.id, until: state.t + ah.dur }, state.t);
+    }
+    if (magic) onMageDamageHook(state, source, target, dmg);
+    onAssassinHit(state, source, target);
+    onLorlaDamage(state, source, target, isAuto);
+    if (!state.oodSplitting) lifeBondLeech(state, source, dmg);
+    source.lastCombatAt = state.t;
+    target.lastCombatAt = state.t;
+    target.recentDamagers[source.id] = state.t;
+    let ov = source.champ.omnivamp || 0;
+    if (source.champ.vamp) {
+      const v = source.champ.vamp;
+      ov = v.base + v.perLevel * source.level + v.perBonusHp * source.bonusHp;
+    }
+    ov += source.omnivampFlat || 0;
+    ov += buffSum(source, "fjdvamp");
+    if (ov && source.alive) healUnit(state, source, dmg * ov);
+  }
+  if (target.hp <= 0) {
+    // Freyja's Shroud of Defiance: ดาเมจที่จะฆ่าถูกกันไว้ เลือดล็อกที่ 1 แล้วอมตะสั้นๆ
+    if (denyDeath(state, target)) return;
+    // Shroud of Osiris: once per fight, dying instead freezes you invulnerable
+    // for 3s before reviving at 50% of your base HP
+    if (target.hasItem && target.hasItem("soo") && !target.sooUsed && !target.sooRevive) {
+      target.sooUsed = true;
+      target.hp = 1;
+      target.sooRevive = { until: state.t + 3 };
+      addBuff(target, { type: "invuln", v: 1, until: state.t + 3 }, state.t);
+      addBuff(target, { type: "untargetable", v: 1, until: state.t + 3 }, state.t);
+      addBuff(target, { type: "root", v: 1, until: state.t + 3 }, state.t);
+      pushLog(state, tr(
+        "{0} {1} ถูกห่อคลุมด้วยผ้าห่อศพโอซิริส",
+        target.team === "blue" ? "🔵" : "🔴",
+        tr(target.champ.th)
+      ));
+      return;
+    }
+    target.hp = 0;
+    target.alive = false;
+    if (source) {
+      for (const [aid, at] of Object.entries(target.recentDamagers)) {
+        if (aid === source.id || state.t - at > 10) continue;
+        const helper = state.units.find((x) => x.id === aid);
+        if (helper && helper.team === source.team) {
+          helper.assists += 1;
+          onMageTakedown(state, helper);
+          onAssassinKill(state, helper, false);
+          onLorlaTakedown(state, helper);
+          if (helper.hasItem && helper.hasItem("cbc")) {
+            state.dots = state.dots.filter((d) => !(d.targetId === helper.id && d.cbc));
+            healUnit(state, helper, helper.maxHp * 0.08);
+          }
+        }
+      }
+      source.kills += 1;
+      onMageTakedown(state, source);
+      onAssassinKill(state, source, true);
+      onLorlaTakedown(state, source);
+      if (source.hasItem && source.hasItem("cbc")) {
+        state.dots = state.dots.filter((d) => !(d.targetId === source.id && d.cbc));
+        healUnit(state, source, source.maxHp * 0.08);
+      }
+      const vt = state.units.find((x) => x.id === target.targetId);
+      if (source.lane === "JUNGLE" && vt && vt.team === source.team && vt.id !== source.id) {
+        source.gankKills += 1;
+        pushLog(state, tr("🌿 JUNGLE แกงค์สำเร็จ — ช่วย {0} ไว้ได้", vt.lane));
+      }
+    }
+    pushLog(state, tr("{0} {1} ตาย", target.team === "blue" ? "🔵" : "🔴", tr(target.champ.th)));
+  }
+}
+
+
+// while Vampiric Form is up, anything landing beyond the normal radius bleeds instead
+export function edgeDamage(state, u, e, power, baseR, magic) {
+  const boost = u.skillRangeBoost || 0;
+  if (boost > 0 && dist(u, e) > baseR) {
+    const sk = u.vampSkill;
+    const total = power * (sk ? sk.edgeMult : 1.25);
+    const dur = sk ? sk.bleedDur : 5;
+    const old = state.dots.find((d) => d.targetId === e.id && d.ownerId === u.id);
+    if (old) { old.until = state.t + dur; old.dps = Math.max(old.dps, total / dur); }
+    else state.dots.push({ targetId: e.id, ownerId: u.id, dps: total / dur, until: state.t + dur, magic: !!magic, src: state.dmgSrc || (sk ? sk.th : tr("เลือดไหล")) });
+    state.fx.push({ x: e.x, y: e.y, t: state.t, kind: "num", text: "bleed", color: "#E5484D" });
+    return;
+  }
+  applyDamage(state, u, e, power, magic);
+}
+
+
+export function skillPower(u, sk, target) {
+  const r = Math.max(0, sk.rank - 1);
+  let v = sk.dmg ? sk.dmg[r] : 0;
+  v += (sk.adRatio || 0) * u.ad;
+  v += (sk.badRatio || 0) * u.bonusAd;
+  v += (sk.apRatio || 0) * u.ap;
+  if (sk.selfMaxHp) v += u.maxHp * sk.selfMaxHp;
+  if (sk.pctMaxHp && target) {
+    const pct = sk.pctMaxHp[r] + (sk.pctPerBad || 0) * (u.bonusAd / 100);
+    v += target.maxHp * pct;
+  }
+  v *= 1 + buffSum(u, "spelldmg");
+  return v;
+}
+
+
+// Holy Grail of Avalon and anything else with healAmp should also swell shields,
+// not just direct heals — healUnit already covers heals/vamp, this covers the rest.
+export function grantShield(u, amount) {
+  const st = curState();
+  const giver = (st && st.srcUnit) || u;
+  // พลังฮีล/โล่ของ "คนจ่าย" (hors) คูณก่อน แล้วค่อยคูณ healAmp ของคนรับ
+  // โดน Fang of the Midgard Serpent มาก่อน โล่ที่รับใหม่จะน้อยลงชั่วคราว
+  const out = amount * (1 + (giver !== u ? giver.hors || 0 : 0)) * incomingShieldMul(u);
+  giver.shieldGiven = (giver.shieldGiven || 0) + out;
+  u.shieldTaken = (u.shieldTaken || 0) + out;
+  const total = out * (1 + (u.healAmp || 0));
+  u.shield = Math.max(u.shield, total);
+  if (st) onHealOrShield(st, giver, u, total, true);
+  return u.shield;
+}
+
+
+export function healUnit(state, u, amount) {
+  const cut = hasBuff(u, "antiheal") ? 1 - buffSum(u, "antiheal") : 1;
+  const amp = 1 + (u.healAmp || 0);
+  const src = state.srcUnit || u;
+  const out = amount * (1 + (src !== u ? src.hors || 0 : 0)) * cut * amp;
+  const before = u.hp;
+  u.hp = Math.min(u.maxHp, u.hp + out);
+  const got = u.hp - before;
+  onHealOrShield(state, src, u, out, false);
+  if (got > 0) {
+    const lbl = state.dmgSrc || tr("ฟื้นเลือด");
+    const healer = state.srcUnit || u;
+    healer.healGiven = (healer.healGiven || 0) + got;
+    u.healTaken = (u.healTaken || 0) + got;
+    bump(u.healedBy, (healer === u ? tr("ตัวเอง") : healer.champ.id) + "|" + lbl, got);
+  }
+  if (got > 0.5) {
+    u.healAcc = (u.healAcc || 0) + got;
+    if (u.healAcc >= 12) {
+      state.fx.push({ t: state.t, kind: "num", x: u.x, y: u.y - 66, text: "+" + Math.round(u.healAcc), color: "#3FBF7F" });
+      state.fx.push({ t: state.t, kind: "ring", x: u.x, y: u.y, r: u.radius + 20, color: "63,191,127", grow: 0.5 });
+      u.healAcc = 0;
+    }
+  }
+}
+
+
+export function skillHeal(u, sk) {
+  const arr = sk.shield || sk.heal;
+  return arr[Math.max(0, sk.rank - 1)] + (sk.apRatio || 0) * u.ap;
+}

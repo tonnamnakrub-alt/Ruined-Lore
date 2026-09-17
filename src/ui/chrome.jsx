@@ -1,0 +1,85 @@
+import { tr } from "../i18n.js";
+import { streakTag } from "../game/streak.js";
+import React from "react";
+import { C, MONO, SANS } from "./theme.js";
+
+
+export function Shell({ children, round, score, mode, streak, onBack, title, maxWidth = 620 }) {
+  const total = mode ? mode.rounds : 30;
+  const decider = mode ? mode.maxRounds : 31;
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: SANS, padding: "14px 12px 40px" }}>
+      <div style={{ maxWidth, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
+            {onBack && (
+              <button onClick={onBack}
+                style={{
+                  background: C.panel2, border: `1px solid ${C.line}`, color: C.ink, borderRadius: 6,
+                  width: 30, height: 28, cursor: "pointer", fontSize: 15, lineHeight: 1, padding: 0, flexShrink: 0,
+                }}>‹</button>
+            )}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11, letterSpacing: 3, color: C.gold, fontWeight: 800 }}>SIDELINE</div>
+              <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {title || "PROTOTYPE v0.1"}
+              </div>
+            </div>
+          </div>
+          {!round ? (
+            <div style={{ textAlign: "right", fontSize: 9, color: mode && mode.id === "RUSH" ? C.gold : C.dim, letterSpacing: 1 }}>
+              {mode ? (mode.id === "RUSH" ? "RUSH " + mode.rounds : "LONG " + mode.rounds) : ""}
+            </div>
+          ) : (
+          <div style={{ textAlign: "right", fontFamily: MONO }}>
+            <div style={{ fontSize: 18 }}>
+              <span style={{ color: C.blue }}>{score.me}</span>
+              <span style={{ color: C.dim }}> – </span>
+              <span style={{ color: C.red }}>{score.foe}</span>
+            </div>
+            <div style={{ fontSize: 10, color: round === decider ? C.gold : C.dim }}>
+              {!round ? "SETUP" : round === decider ? tr("ยกตัดสิน") : tr("ยก {0}/{1}", round, total)}
+            </div>
+            {mode && <div style={{ fontSize: 9, color: mode.id === "RUSH" ? C.gold : C.dim, letterSpacing: 1 }}>{mode.id === "RUSH" ? "RUSH" : "LONG"}</div>}
+            {streak && streakTag(streak.me) && (
+              <div style={{ fontSize: 9, marginTop: 2, color: streak.me > 0 ? C.gold : C.blue, letterSpacing: 1 }}>
+                {streakTag(streak.me)}
+              </div>
+            )}
+          </div>
+          )}
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+
+export function card() {
+  return { background: C.panel, border: `1px solid ${C.line}`, borderRadius: 8, padding: 12 };
+}
+
+export function btn(bg) {
+  return {
+    background: bg, border: `1px solid ${C.line}`, color: C.ink, borderRadius: 6,
+    padding: "10px 12px", width: "100%", cursor: "pointer", fontFamily: SANS, fontSize: 13,
+  };
+}
+
+export function mini() {
+  return {
+    background: C.panel2, border: `1px solid ${C.line}`, color: C.ink, borderRadius: 4,
+    width: 26, height: 24, cursor: "pointer", fontSize: 14, lineHeight: 1, padding: 0,
+  };
+}
+
+export function slot(filled) {
+  return {
+    flex: "1 1 30%", minWidth: 72, height: 26, borderRadius: 4,
+    border: `1px solid ${filled ? C.line : "#1E2942"}`,
+    background: filled ? C.panel2 : "#0E1626",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontSize: 9.5, color: filled ? C.ink : "#33415F",
+  };
+}

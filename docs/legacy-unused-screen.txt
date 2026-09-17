@@ -1,0 +1,67 @@
+  if (false) {
+    return (
+      <Shell round={0} score={score}>
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: C.ink }}>ดราฟต์ตัวละคร</div>
+          <div style={{ fontSize: 13, color: C.dim, marginTop: 4, lineHeight: 1.6 }}>
+            เลือกตัวไหนลงเลนไหนก็ได้ ห้ามซ้ำในทีมเดียวกัน — Passive ของเลนติดที่เลน ไม่ใช่ที่ตัวละคร
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: 10 }}>
+          {team.map((c, idx) => {
+            const taken = team.filter((x) => x.lane !== c.lane).map((x) => x.champId);
+            const options = Object.values(CHAMPIONS).filter((ch) => !taken.includes(ch.id));
+            return (
+              <div key={c.lane} style={card()}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+                  <span style={{ color: C.dim, fontSize: 11, letterSpacing: 1 }}>{c.lane}</span>
+                  <span style={{ color: C.ink, fontWeight: 700, fontSize: 13 }}>{c.athleteName}</span>
+                  <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 10, color: C.dim }}>
+                    {STAT_KEYS.map((k) => STAT_SHORT[k][0] + c.athlete[k]).join(" ")}
+                  </span>
+                </div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {options.map((ch) => (
+                    <button key={ch.id} onClick={() => pickChamp(c.lane, ch.id)}
+                      style={{
+                        ...btn(c.champId === ch.id ? C.gold : C.panel2),
+                        color: c.champId === ch.id ? "#0B1220" : C.ink,
+                        flex: "1 1 45%", fontSize: 12, textAlign: "left", padding: "9px 10px",
+                      }}>
+                      <div style={{ fontWeight: 700 }}>{ch.id}</div>
+                      <div style={{ fontSize: 10, opacity: 0.75 }}>
+                        {ch.role} · {ch.melee ? "ประชิด" : "ระยะ " + ch.range}
+                        {ch.lane !== c.lane ? " · เลนถนัด " + ch.lane : ""}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={() => {
+            setFoe((f) =>
+              (() => {
+                const pool = Object.values(CHAMPIONS).map((ch) => ch.id);
+                for (let i = pool.length - 1; i > 0; i--) {
+                  const j = Math.floor(rand() * (i + 1));
+                  [pool[i], pool[j]] = [pool[j], pool[i]];
+                }
+                return f.map((c, i) => ({ ...c, champId: pool[i], ranks: emptyRanks() }));
+              })()
+            );
+            setPhase("SHOP");
+          }}
+          style={{ ...btn(C.gold), color: "#0B1220", fontWeight: 800, marginTop: 14 }}>
+          เริ่มแมตช์ — 30 ยก ใครถึง 16 ก่อนชนะ
+        </button>
+        <button onClick={() => setPhase("SETUP")} style={{ ...btn(C.panel2), marginTop: 6, fontSize: 12 }}>
+          กลับไปแก้ค่านักแข่ง
+        </button>
+      </Shell>
+    );
+  }

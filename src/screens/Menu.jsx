@@ -1,0 +1,97 @@
+import { LANGS, tr } from "../i18n.js";
+import React from "react";
+import { Shell } from "../ui/chrome.jsx";
+import { MenuButton } from "../ui/kit.jsx";
+import { C, MONO, SANS } from "../ui/theme.js";
+
+// ---------------- เมนูหลัก ----------------
+export function MenuScreen(ctx) {
+  const { score, mode, setPhase, lang, changeLang } = ctx;
+
+  return (
+    <Shell round={0} score={score} mode={mode} title="MAIN MENU">
+      <div style={{ margin: "6px 0 18px" }}>
+        <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: -0.5, color: C.ink, lineHeight: 1.1 }}>
+          SIDELINE
+        </div>
+        <div style={{ fontSize: 12, color: C.dim, marginTop: 6, lineHeight: 1.6, maxWidth: 420 }}>{tr(
+          "คุณเป็นโค้ชทีมอีสปอร์ต ไม่ใช่คนเล่น — ทุกอย่างที่ตัดสินแพ้ชนะ ตัดสินใจก่อนไฟต์เริ่มทั้งหมด"
+        )}</div>
+      </div>
+
+      <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
+        {LANGS.map((l) => (
+          <button key={l.id} onClick={() => changeLang(l.id)}
+            style={{
+              background: lang === l.id ? C.gold : C.panel2, color: lang === l.id ? "#0B1220" : C.dim,
+              border: `1px solid ${C.line}`, borderRadius: 5, padding: "5px 12px",
+              fontFamily: MONO, fontSize: 11, cursor: "pointer", fontWeight: lang === l.id ? 800 : 400,
+            }}>
+            {l.label}
+          </button>
+        ))}
+      </div>
+
+      <MenuButton title="PLAY" tone={C.gold} sub={tr("เลือกโหมดแล้วลงแข่ง")} onClick={() => setPhase("PLAY_MENU")} />
+      <MenuButton title="CHARACTER STORE" sub={tr("ดูตัวละครทั้งหมดแยกตามเลน พร้อมราคา")} onClick={() => setPhase("STORE")} />
+      <MenuButton title="ITEM" sub={tr("คลังไอเทมทุกชิ้น สูตรคราฟต์ และค่าสถานะ")} onClick={() => setPhase("ITEMBOOK")} />
+      <MenuButton title="SETTING" sub={tr("ความเร็วไฟต์ เส้นระยะโจมตี และรีเซ็ตแมตช์")} onClick={() => setPhase("SETTING")} />
+
+      <div style={{ marginTop: 14, fontSize: 10.5, color: C.dim, fontFamily: MONO, lineHeight: 1.7 }}>
+        <div>{tr("PROTOTYPE v0.2 · {0} {1} ยก", tr(mode.th), mode.rounds)}</div>
+        <div style={{ fontFamily: SANS }}>{tr("เปิดไฟล์เดียวเล่นได้ ไม่ต้องต่อเน็ต")}</div>
+      </div>
+    </Shell>
+  );
+}
+
+// ---------------- เมนูเลือกโหมด ----------------
+export function PlayMenuScreen(ctx) {
+  const { score, mode, modeId, setModeId, setPhase } = ctx;
+  const MODE_LIST = [
+    { id: "LONG", th: tr("ยาว"), rounds: 50 },
+    { id: "RUSH", th: "Rush", rounds: 20 },
+  ];
+
+  return (
+    <Shell round={0} score={score} mode={mode} title={tr("เลือกโหมด")} onBack={() => setPhase("MENU")}>
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 20, fontWeight: 800, color: C.ink }}>{tr("ลงแข่ง")}</div>
+        <div style={{ fontSize: 12, color: C.dim, marginTop: 4 }}>{tr("เลือกรูปแบบการแข่ง")}</div>
+      </div>
+
+      <div style={{ background: C.panel, border: `1px solid ${C.gold}`, borderRadius: 10, padding: 12, marginBottom: 10 }}>
+        <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: 1, color: C.gold }}>CLASSIC</div>
+        <div style={{ fontSize: 11, color: C.dim, margin: "4px 0 10px", lineHeight: 1.5 }}>{tr("แข่งกับทีมคอมพิวเตอร์หนึ่งแมตช์ — เลือกความยาวได้")}</div>
+
+        <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+          {MODE_LIST.map((m) => (
+            <button key={m.id} onClick={() => setModeId(m.id)}
+              style={{
+                flex: 1, background: modeId === m.id ? C.gold : C.panel2,
+                color: modeId === m.id ? "#0B1220" : C.ink, border: `1px solid ${C.line}`,
+                borderRadius: 6, padding: "9px 6px", cursor: "pointer", fontFamily: SANS,
+                fontSize: 13, fontWeight: modeId === m.id ? 800 : 400,
+              }}>{tr("{0} · {1} ยก", tr(m.th), m.rounds)}</button>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: C.dim, marginBottom: 10, lineHeight: 1.5 }}>{tr(mode.desc)}</div>
+
+        <button onClick={() => setPhase("SETUP")}
+          style={{
+            width: "100%", background: C.gold, color: "#0B1220", border: "none", borderRadius: 7,
+            padding: "12px 10px", cursor: "pointer", fontFamily: SANS, fontSize: 14, fontWeight: 800,
+          }}>{tr("เริ่ม — สร้างทีมนักแข่ง")}</button>
+      </div>
+
+      <MenuButton title="RANK" disabled sub={tr("ระบบแต้ม/ตีระดับ — เร็วๆ นี้")} />
+      <MenuButton title="TOURNAMENT" disabled sub={tr("สายแข่งหลายแมตช์ แพ้ตกรอบ — เร็วๆ นี้")} />
+
+      <button onClick={() => setPhase("PRACTICE")}
+        style={{
+          width: "100%", background: C.panel2, color: C.gold, border: `1px solid ${C.line}`,
+          borderRadius: 7, padding: "10px", cursor: "pointer", fontFamily: SANS, fontSize: 12, marginTop: 6,
+        }}>{tr("เข้าห้องซ้อม — ลองตัวละครกับดัมมี่")}</button>
+    </Shell>
+  );
+}

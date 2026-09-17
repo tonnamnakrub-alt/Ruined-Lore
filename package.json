@@ -1,0 +1,25 @@
+{
+  "name": "sideline",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@babel/generator": "^8.0.5",
+    "@babel/parser": "^8.0.5",
+    "@babel/traverse": "^8.0.5",
+    "@babel/types": "^8.0.5",
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.25.0",
+    "eslint": "^10.10.0",
+    "recast": "^0.24.0"
+  }
+}
