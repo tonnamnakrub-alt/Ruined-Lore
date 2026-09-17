@@ -3,13 +3,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { CHAMPIONS } from "../data/champions.js";
 import { ARENA_H, ARENA_W, RENDER_SCALE } from "../data/constants.js";
 import { applyBuy, slotsUsedBy } from "../data/items.js";
-import { EVENTS } from "../data/tuning.js";
+import { DEFAULT_FIGHT } from "../data/tuning.js";
 import { buildFight } from "../engine/build-fight.js";
 import { autoRanks, emptyRanks } from "../engine/skill-ranks.js";
 import { step } from "../engine/step.js";
 import { ShopScreen } from "./ShopScreen.jsx";
 import { btn, card, mini } from "./chrome.jsx";
-import { drawFx, drawFxText } from "./draw-fx.js";
+import { drawFx, drawFxText, drawGround } from "./draw-fx.js";
 import { C, MONO, SANS } from "./theme.js";
 import { Label } from "./widgets.jsx";
 
@@ -28,7 +28,12 @@ export function Practice({ onExit, openSkill }) {
   const [items, setItems] = useState([]);
   const [dummyIdx, setDummyIdx] = useState(1);
   const [shopOpen, setShopOpen] = useState(false);
-  const [shopCat, setShopCat] = useState("PART");
+  // ต้องเป็น id ที่มีอยู่จริงใน CATEGORIES ไม่งั้นร้านจะโชว์ 0 ชิ้นทุกหมวดตั้งแต่เปิด
+  const [shopCat, setShopCat] = useState("START");
+  // ShopScreen ต้องการ state พวกนี้ครบ ไม่งั้นกดค้นหา/กดของ/กดดาว แล้วพัง
+  const [shopItem, setShopItem] = useState(null);
+  const [shopQuery, setShopQuery] = useState("");
+  const [favs, setFavs] = useState([]);
   const [openRecipe, setOpenRecipe] = useState(null);
   const [auto, setAuto] = useState(true);
   const [aiming, _setAiming] = useState(null);
@@ -60,7 +65,7 @@ export function Practice({ onExit, openSkill }) {
       athlete: { mechanics: 0, gameSense: 0, knowledge: 0, decision: 0, teamwork: 0 },
       style: "HOLD", level: 1, items: [], ranks: emptyRanks(),
     };
-    const st = buildFight([me], [dm], 7, EVENTS.SIEGE);
+    const st = buildFight([me], [dm], 7, DEFAULT_FIGHT);
     st.timeLimit = 1e9;
     st.rampStart = 1e9;
     const p = st.units[0], d = st.units[1];
@@ -178,28 +183,7 @@ export function Practice({ onExit, openSkill }) {
       ctx.fillRect(-6, -w.halfW / S, 12, (w.halfW * 2) / S);
       ctx.restore();
     }
-    for (const z of st.zones) {
-      ctx.strokeStyle = "rgba(232,163,61,.8)";
-      ctx.beginPath(); ctx.arc(z.x / S, z.y / S, z.r / S, 0, Math.PI * 2); ctx.stroke();
-    }
-    for (const cg of st.cages || []) {
-      const pending = st.t < cg.at;
-      ctx.strokeStyle = pending ? "rgba(232,163,61,.45)" : "rgba(228,235,247,.85)";
-      ctx.lineWidth = pending ? 1.5 : Math.max(2, cg.thick / S);
-      ctx.setLineDash(pending ? [5, 5] : []);
-      ctx.beginPath(); ctx.arc(cg.x / S, cg.y / S, cg.r / S, 0, Math.PI * 2); ctx.stroke();
-      ctx.setLineDash([]);
-      if (!pending) {
-        ctx.fillStyle = "rgba(228,235,247,.9)";
-        ctx.font = "bold 10px " + MONO;
-        ctx.textAlign = "center";
-        ctx.fillText(String(cg.hp), cg.x / S, (cg.y - cg.r) / S - 12);
-      }
-    }
-    for (const tr of st.traps) {
-      ctx.strokeStyle = "rgba(232,163,61,.7)";
-      ctx.beginPath(); ctx.arc(tr.x / S, tr.y / S, tr.r / S, 0, Math.PI * 2); ctx.stroke();
-    }
+    drawGround(ctx, st, S);
     drawFx(ctx, st, S);
     for (const p of st.projectiles) {
       ctx.strokeStyle = p.team === "blue" ? "rgba(140,190,255,1)" : "rgba(255,150,155,1)";
@@ -441,7 +425,7 @@ export function Practice({ onExit, openSkill }) {
               <span style={{ color: C.ink }}>{tr("ห่างดัมมี่ {0} หน่วย", dist2)}</span> ·
               {tr(" ดัมมี่ เกราะ {0} ต้านเวท {1} ·", DUMMY_PRESETS[dummyIdx].armor, DUMMY_PRESETS[dummyIdx].mr)}
               <span style={{ color: C.gold }}>{tr("ดาเมจสะสม {0}", Math.round(dealtRef.current))}</span>
-              {me.champ.fragments ? ` · ${me.shadow ? "SHADOW" : "LIGHT " + me.light + "/5"}` : ""}
+              {me.champ.fragments ? ` · ${me.shadow ? "SHADOW 100" : "LIGHT " + Math.floor(me.frag || 0) + "/100"}` : ""}
               {me.form ? tr(" · ร่าง {0}", me.form) : ""}
             </div>
           )}
@@ -456,6 +440,11 @@ export function Practice({ onExit, openSkill }) {
             onSell={(it) => setItems((old) => old.filter((x) => x.id !== it.id))}
             sellValue={(it) => it.cost}
             openRecipe={openRecipe} setOpenRecipe={setOpenRecipe}
+            wide={typeof window !== "undefined" && window.innerWidth >= 820}
+            shopItem={shopItem} setShopItem={setShopItem}
+            shopQuery={shopQuery} setShopQuery={setShopQuery}
+            favs={favs}
+            toggleFav={(id) => setFavs((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]))}
             onClose={() => setShopOpen(false)}
           />
         )}

@@ -108,7 +108,8 @@ export function onAssassinKill(state, u, isKill) {
   if (!u || !u.hasItem) return;
 
   // Thanatos' Reaping Scythe — รีเซ็ตคูลดาวน์สกิลพื้นฐานทั้งหมด
-  if (u.resetOnKill) {
+  if (u.resetOnKill && !(u.resetOnce && u.trsUsed)) {
+    u.trsUsed = true;
     let any = false;
     for (const sk of u.skills || []) {
       if (sk.key === "R" || !(sk.cdLeft > 0)) continue;
@@ -118,7 +119,13 @@ export function onAssassinKill(state, u, isKill) {
     if (any) vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 34, color: "232,163,61", grow: 0.9 });
   }
 
-  // Wendigo's Voracious Claw — เก็บแต้มไว้ให้ App เอาไปสะสมข้ามยก (เฉพาะสังหาร ไม่นับช่วยฆ่า)
+  // Seven-League Shadowstriders — สังหารแล้วคูลดาวน์พุ่งพร้อมใช้ทันที
+  if (u.dashSpeed && u.dashSpeed.resetOnKill) u.slsReadyAt = null;
+  // Wendigo's Voracious Claw — สังหารหรือช่วยสังหารได้ทองพิเศษ
+  if (u.wendigo) {
+    u.wvcGold = (u.wvcGold || 0) + (u.wendigoUsed ? 0 : u.wendigo.gold);
+    vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 22, color: "232,163,61", grow: 0.8 });
+  }
   if (u.adPerKill && isKill) {
     const cfg = u.adPerKill;
     const held = u.wvcStacks || 0;
@@ -158,8 +165,8 @@ export function tickAssassin(state, u, dt) {
 
   // Sekhmet's Massacre Claws — ช่วงต้นไฟต์เจาะเกราะเพิ่ม
   if (u.ragePen) {
-    if (u.penBase == null) u.penBase = u.pen;
-    u.pen = u.penBase + (t < u.ragePen.dur ? u.ragePen.pen : 0);
+    if (u.penBase == null) u.penBase = u.arPen || 0;
+    u.arPen = u.penBase + (t < u.ragePen.dur ? u.ragePen.arPen : 0);
   }
 
   // Carnwennan's Shadowblade — จบการพุ่งเมื่อไหร่ ชาร์จหมัดถัดไป

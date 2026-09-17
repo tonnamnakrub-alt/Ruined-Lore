@@ -1,6 +1,6 @@
 import { tr } from "../i18n.js";
 import React from "react";
-import { CHAMPIONS } from "../data/champions.js";
+import { CHAMPIONS, lanesOf } from "../data/champions.js";
 import { emptyRanks } from "../engine/skill-ranks.js";
 import { Shell, btn } from "../ui/chrome.jsx";
 import { Empty, InfoRow, Panel, Portrait, Tile, TileGrid, TwoPane } from "../ui/kit.jsx";
@@ -61,7 +61,7 @@ export function PickScreen(ctx) {
             <Tile
               key={c.id}
               title={c.id}
-              sub={`${c.lane} · ${c.melee ? tr("ประชิด") : tr("ระยะ")}`}
+              sub={`${lanesOf(c).join("/")} · ${c.melee ? tr("ประชิด") : tr("ระยะ")}`}
               badge={idx >= 0 ? idx + 1 : null}
               selected={c.id === ch.id}
               onClick={() => setInspectId(c.id)}
@@ -87,7 +87,7 @@ export function PickScreen(ctx) {
               ch.role,
               ch.melee ? tr("ประชิด") : tr("ระยะ"),
               ch.range,
-              ch.lane
+              lanesOf(ch).join(" / ")
             )}</div>
         </div>
       </div>

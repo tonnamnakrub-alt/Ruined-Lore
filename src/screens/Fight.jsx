@@ -12,11 +12,11 @@ import { Bar, Label } from "../ui/widgets.jsx";
 const rankMap = (u) => Object.fromEntries((u.skills || []).map((s) => [s.key, s.rank]));
 
 export function FightScreen(ctx) {
-  const { arenaDrawRef, eventId, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak } = ctx;
+  const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide } = ctx;
 
     const st = fightRef.current;
     return (
-      <Shell round={round} score={score} mode={mode} streak={streak}>
+      <Shell round={round} score={score} mode={mode} streak={streak} maxWidth={wide ? 960 : 620}>
         <Arena stateRef={fightRef} tick={tick} focusId={focusId} showRanges={showRanges} drawRef={arenaDrawRef} />
         <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
           {[0.5, 1, 2, 4].map((s) => (
@@ -43,12 +43,12 @@ export function FightScreen(ctx) {
         </div>
 
         {scoutOpen && (
-          <ScoutPanel foe={foe} team={team} fightState={st} onClose={() => setScoutOpen(false)} onSkill={openSkill} />
+          <ScoutPanel foe={foe} team={team} fightState={st} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
         )}
 
         {statsOpen && (
           <StatsPanel
-            reports={[liveReport(st, round, eventId, teamStyle), ...history]}
+            reports={[liveReport(st, round, activeLane, teamStyle), ...history]}
             onClose={() => setStatsOpen(false)}
           />
         )}
@@ -57,7 +57,7 @@ export function FightScreen(ctx) {
           {["blue", "red"].map((side) => (
             <div key={side} style={card()}>
               <Label style={{ color: side === "blue" ? C.blue : C.red, marginBottom: 6 }}>
-                {side === "blue" ? tr("ทีมคุณ") : tr("คู่แข่ง")}
+                {side === mySide ? tr("ทีมคุณ") : tr("คู่แข่ง")}
               </Label>
               {st && st.units.filter((u) => u.team === side).map((u) => (
                 <button key={u.id} onClick={() => setFocusId(focusId === u.id ? null : u.id)}

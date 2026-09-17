@@ -1,10 +1,10 @@
-// สร้าง sideline.html ไฟล์เดียว จาก src/ ทั้งหมด
+// สร้าง ruined-lore.html ไฟล์เดียว จาก src/ ทั้งหมด
 // รัน:  npm run build      (หรือ  npm run watch  ให้ build ใหม่อัตโนมัติเวลาแก้ไฟล์)
 import * as esbuild from "esbuild";
 import fs from "fs";
 
 const TEMPLATE = "index.template.html";
-const OUT = "sideline.html";
+const OUT = "ruined-lore.html";
 
 const opts = {
   entryPoints: ["src/main.jsx"],

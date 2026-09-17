@@ -83,7 +83,10 @@ export function tickNewSystems(state) {
     const o = state.units.find((x) => x.id === d.ownerId);
     if (!t || !t.alive || state.t > d.until) return false;
     state.dmgSrc = srcOf(d, o);
-    applyDamage(state, o, t, d.dps * DT, d.magic);
+    const tick = d.dps * DT;
+    applyDamage(state, o, t, tick, d.magic, d.trueDmg);
+    // เลือดไหลของเกราะเซนทอร์นับยอดที่เหลือไว้ เพื่อเอาไปฮีลคืนตอนเก็บศพได้
+    if (d.left != null) d.left = Math.max(0, d.left - tick);
     return true;
   });
 
@@ -134,7 +137,7 @@ export function tickNewSystems(state) {
       if (w.knockup > 0) addBuff(e, { type: "stun", v: 1, until: state.t + w.knockup }, state.t);
     }
     if (w.left > 0) return true;
-    // คลื่นบางท่าไม่ทิ้งพื้นค้างไว้ (เช่น Q ของ Lorla) — จบก็คือจบ
+    // คลื่นบางท่าไม่ทิ้งพื้นค้างไว้ (เช่น Q ของ Laura) — จบก็คือจบ
     const f = w.skill.field;
     if (!f) return false;
     state.fields.push({
@@ -287,9 +290,14 @@ export function tickZonesAndSnipes(state) {
   state.zones = state.zones.filter((z) => {
     if (state.t < z.at) return true;
     const owner = state.units.find((x) => x.id === z.ownerId);
+    // ระเบิดจริงตรงนี้ — ใส่คลื่นกระแทกกับแสงวาบให้เห็นชัดว่าลงตรงไหน
+    vfx(state, { kind: "shock", x: z.x, y: z.y, r: z.r, color: z.magic ? "176,140,255" : "232,163,61", dur: 0.65 });
+    vfx(state, { kind: "flash", x: z.x, y: z.y, r: z.r * 0.7, color: z.magic ? "214,190,255" : "255,236,190", dur: 0.3 });
+    let zoneHit = 0;
     for (const e of state.units) {
       if (!e.alive || e.team === z.team) continue;
       if (Math.hypot(e.x - z.x, e.y - z.y) <= z.r + e.radius) {
+        zoneHit++;
         let dmg = z.dmg;
         if (z.skill && z.skill.soloMult) {
           const n = state.units.filter((x) => x.alive && x.team !== z.team && Math.hypot(x.x - z.x, x.y - z.y) <= z.r + x.radius).length;
@@ -298,9 +306,16 @@ export function tickZonesAndSnipes(state) {
         state.dmgSrc = srcOf(z, owner);
         applyDamage(state, owner, e, dmg, z.magic);
         if (z.knockup) addBuff(e, { type: "stun", v: 1, until: state.t + z.knockup }, state.t);
-        if (z.skill && z.skill.slowFlat) addBuff(e, { type: "slow", v: z.skill.slowFlat, until: state.t + z.skill.slowDur }, state.t);
+        const zs = z.skill && (z.skill.slowFlat || (z.skill.slowByRank ? z.skill.slowByRank[Math.max(0, (z.skill.rank || 1) - 1)] : 0));
+        if (zs) addBuff(e, { type: "slow", v: zs, until: state.t + z.skill.slowDur }, state.t);
         if (z.skill && z.skill.blindFlat) addBuff(e, { type: "blind", v: 1, until: state.t + z.skill.blindFlat }, state.t);
       }
+    }
+    // Broadside อัพเกรด — ยิงโดนใครก็ตาม คนยิงได้ความเร็วเดินที่ค่อยๆ จางใน 2 วิ
+    if (zoneHit && z.msGain && owner && owner.alive) {
+      addBuff(owner, { type: "ms", v: z.msGain, decayFrom: state.t,
+        until: state.t + (z.msDur || 2) }, state.t);
+      vfx(state, { kind: "ring", x: owner.x, y: owner.y, r: owner.radius + 24, color: "232,163,61", grow: 0.8 });
     }
     return false;
   });

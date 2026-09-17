@@ -1,6 +1,6 @@
 import { setLang, tr } from "./src/i18n.js";
 import { ITEM_BY_ID } from "./src/data/items.js";
-import { itemDesc } from "./src/ui/recipe.jsx";
+import { itemDesc } from "./src/ui/item-desc.js";
 setLang("en");
 let leaks = 0;
 for (const id of ["hys","asf","lbn","wtb","asc","swf","slh","wtc","ulf","ivd","boe","sst","hth","asq","pcp","isw","ccr","ngv","ats","acb","sfv","yrh","esb","abw","hmb","pib","gwc","ood","sil","ftf","iwf","abc","dwh","slf","bbt","lgf","fcl","mwh","iwb","afw","dvc","exn","wbp","cbc","nvs"]) {

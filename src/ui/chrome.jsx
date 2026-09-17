@@ -1,5 +1,7 @@
-import { tr } from "../i18n.js";
+import { itemName, tr } from "../i18n.js";
 import { streakTag } from "../game/streak.js";
+import { itemDesc, itemStatChips } from "./item-desc.js";
+import { LATEST_PATCH } from "../data/patches.js";
 import React from "react";
 import { C, MONO, SANS } from "./theme.js";
 
@@ -20,9 +22,9 @@ export function Shell({ children, round, score, mode, streak, onBack, title, max
                 }}>‹</button>
             )}
             <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 11, letterSpacing: 3, color: C.gold, fontWeight: 800 }}>SIDELINE</div>
+              <div style={{ fontSize: 11, letterSpacing: 3, color: C.gold, fontWeight: 800 }}>RUINED LORE</div>
               <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {title || "PROTOTYPE v0.1"}
+                {title || "PROTOTYPE v" + LATEST_PATCH.id}
               </div>
             </div>
           </div>
@@ -82,4 +84,43 @@ export function slot(filled) {
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: 9.5, color: filled ? C.ink : "#33415F",
   };
+}
+
+
+// ---------------------------------------------------------------
+// ช่องเก็บของหนึ่งช่อง — ชื่อไอเทมบรรทัดบน ค่าสถานะย่อบรรทัดล่าง
+// เดิมช่องโชว์แค่ชื่อ ต้องเอาเมาส์ไปจิ้มถึงจะรู้ว่าให้อะไร (บนมือถือคือไม่รู้เลย)
+// ใช้ร่วมกันทั้งหน้าเตรียมยก ร้านค้า และหน้าส่องทีมคู่แข่ง จะได้หน้าตาเหมือนกันหมด
+// ---------------------------------------------------------------
+export function ItemSlot({ item, empty, onClick, dashed }) {
+  const chips = itemStatChips(item);
+  const filled = !!item;
+  return (
+    <div
+      onClick={item && onClick ? () => onClick(item) : undefined}
+      title={item ? itemName(item) + " · " + item.cost + "g\n" + itemDesc(item) : ""}
+      style={{
+        flex: "1 1 30%", minWidth: 86, minHeight: 38, borderRadius: 5, padding: "4px 6px",
+        border: `1px solid ${filled ? C.line : "#1E2942"}`,
+        borderStyle: dashed ? "dashed" : "solid",
+        background: filled ? C.panel2 : "#0E1626",
+        display: "flex", flexDirection: "column", justifyContent: "center", gap: 2,
+        cursor: item && onClick ? "pointer" : "default", overflow: "hidden",
+      }}
+    >
+      <div style={{
+        fontSize: 9.5, fontWeight: filled ? 700 : 400, color: filled ? C.ink : "#33415F",
+        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2,
+      }}>
+        {filled ? itemName(item) : (empty || "")}
+      </div>
+      {filled && chips.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "2px 5px", lineHeight: 1.15 }}>
+          {chips.slice(0, 4).map((s, i) => (
+            <span key={i} style={{ fontSize: 8.5, fontFamily: MONO, color: s.color }}>{s.text}</span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

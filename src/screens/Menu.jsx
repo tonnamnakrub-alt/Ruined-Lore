@@ -2,6 +2,7 @@ import { LANGS, tr } from "../i18n.js";
 import React from "react";
 import { Shell } from "../ui/chrome.jsx";
 import { MenuButton } from "../ui/kit.jsx";
+import { LATEST_PATCH, patchLabel } from "../data/patches.js";
 import { C, MONO, SANS } from "../ui/theme.js";
 
 // ---------------- เมนูหลัก ----------------
@@ -12,7 +13,7 @@ export function MenuScreen(ctx) {
     <Shell round={0} score={score} mode={mode} title="MAIN MENU">
       <div style={{ margin: "6px 0 18px" }}>
         <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: -0.5, color: C.ink, lineHeight: 1.1 }}>
-          SIDELINE
+          RUINED LORE
         </div>
         <div style={{ fontSize: 12, color: C.dim, marginTop: 6, lineHeight: 1.6, maxWidth: 420 }}>{tr(
           "คุณเป็นโค้ชทีมอีสปอร์ต ไม่ใช่คนเล่น — ทุกอย่างที่ตัดสินแพ้ชนะ ตัดสินใจก่อนไฟต์เริ่มทั้งหมด"
@@ -33,12 +34,13 @@ export function MenuScreen(ctx) {
       </div>
 
       <MenuButton title="PLAY" tone={C.gold} sub={tr("เลือกโหมดแล้วลงแข่ง")} onClick={() => setPhase("PLAY_MENU")} />
-      <MenuButton title="CHARACTER STORE" sub={tr("ดูตัวละครทั้งหมดแยกตามเลน พร้อมราคา")} onClick={() => setPhase("STORE")} />
+      <MenuButton title="CHARACTER INFO" sub={tr("ดูตัวละครทั้งหมดแยกตามเลน พร้อมสกิลเต็ม")} onClick={() => setPhase("STORE")} />
       <MenuButton title="ITEM" sub={tr("คลังไอเทมทุกชิ้น สูตรคราฟต์ และค่าสถานะ")} onClick={() => setPhase("ITEMBOOK")} />
+      <MenuButton title="PATCH NOTES" sub={tr("อะไรเปลี่ยนบ้างในแพตช์ล่าสุด · ย้อนดูแพตช์เก่าได้")} onClick={() => setPhase("PATCH")} />
       <MenuButton title="SETTING" sub={tr("ความเร็วไฟต์ เส้นระยะโจมตี และรีเซ็ตแมตช์")} onClick={() => setPhase("SETTING")} />
 
       <div style={{ marginTop: 14, fontSize: 10.5, color: C.dim, fontFamily: MONO, lineHeight: 1.7 }}>
-        <div>{tr("PROTOTYPE v0.2 · {0} {1} ยก", tr(mode.th), mode.rounds)}</div>
+        <div>{tr("PATCH {0} · {1} {2} ยก", patchLabel(LATEST_PATCH), tr(mode.th), mode.rounds)}</div>
         <div style={{ fontFamily: SANS }}>{tr("เปิดไฟล์เดียวเล่นได้ ไม่ต้องต่อเน็ต")}</div>
       </div>
     </Shell>
@@ -49,8 +51,8 @@ export function MenuScreen(ctx) {
 export function PlayMenuScreen(ctx) {
   const { score, mode, modeId, setModeId, setPhase } = ctx;
   const MODE_LIST = [
-    { id: "LONG", th: tr("ยาว"), rounds: 50 },
-    { id: "RUSH", th: "Rush", rounds: 20 },
+    { id: "LONG", th: "Normal", rounds: 50 },
+    { id: "RUSH", th: "Quick Play", rounds: 20 },
   ];
 
   return (
@@ -84,6 +86,8 @@ export function PlayMenuScreen(ctx) {
           }}>{tr("เริ่ม — สร้างทีมนักแข่ง")}</button>
       </div>
 
+      <MenuButton title="VERSUS" tone={C.blue} onClick={() => setPhase("ONLINE")}
+        sub={tr("เล่นกับเพื่อนแบบต่อตรง — แลกโค้ดกันครั้งเดียว ไม่ต้องมีเซิร์ฟเวอร์")} />
       <MenuButton title="RANK" disabled sub={tr("ระบบแต้ม/ตีระดับ — เร็วๆ นี้")} />
       <MenuButton title="TOURNAMENT" disabled sub={tr("สายแข่งหลายแมตช์ แพ้ตกรอบ — เร็วๆ นี้")} />
 

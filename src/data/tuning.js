@@ -8,21 +8,28 @@ export const RETREAT_TIME = 2.5;   // a retreat lasts this long, then re-engage
 
 export const RETREAT_COOLDOWN = 6; // and can't retrigger for this long
 
+// ตัวคูณดาเมจโจมตีปกติทั้งเกม — ปุ่มเดียวที่คุมว่าไฟต์จะจบเร็วแค่ไหน
+// ออโต้เป็นดาเมจก้อนที่ไม่มีคูลดาวน์ ไต่ตามของที่ซื้อ และทุกตัวมีเหมือนกันหมด
+export const AUTO_DMG = 0.75;
+
+// ตัวคูณดาเมจ "ทุกชนิด" ทั้งเกม — ใช้ยืดความยาวไฟต์โดยไม่ต้องไล่แก้ทีละสกิล
+export const DMG_MUL = 0.80;
+
 export const RAMP_FRAC = 0.4;      // damage starts ramping at this fraction of the event's clock
 
 export const RAMP_SCALE = 0.45;    // ...and doubles over this fraction of the clock
 
 
-// Events decide how long a fight runs. Add new ones here.
+// ---------------------------------------------------------------
+// เลิกใช้ระบบอีเวนต์แล้ว — ทุกไฟต์ใช้ค่าชุดเดียวกันหมด
+// ความหลากหลายของยกมาจากนิสัยที่สั่งประจำเลนแทน
+// เก็บ EVENTS ไว้เป็นชุดเดียวเพื่อไม่ให้เอนจินกับหน้าซ้อมต้องแก้ตาม
+// ---------------------------------------------------------------
 export const EVENTS = {
-  SKIRMISH: { id: "SKIRMISH", th: "ปะทะกลางสนาม", duration: 40 },
-  OBJECTIVE: { id: "OBJECTIVE", th: "แย่งออบเจกทีฟ", duration: 60 },
-  SIEGE: { id: "SIEGE", th: "ตีป้อม", duration: 90 },
-  BLITZ: { id: "BLITZ", th: "ปะทะสายฟ้าแลบ", duration: 20 },
-  // ยกฟาร์ม — ข้ามการปะทะไปเลย ทั้งสองฝั่งได้เงินกับ XP บางส่วน ไม่มีใครชนะหรือแพ้
-  // เลือกติดกันสองยกไม่ได้ และใช้ในยกตัดสินไม่ได้ (กันการถ่วงเกม)
-  FARM: { id: "FARM", th: "ยกฟาร์ม (ไม่มีการปะทะ)", duration: 0, farm: { goldPct: 0.75, xpPct: 0.75 } },
+  SKIRMISH: { id: "SKIRMISH", th: "ปะทะในเลน", duration: 60 },
 };
+
+export const DEFAULT_FIGHT = EVENTS.SKIRMISH;
 
 export const DEFAULT_WINDUP = 0.26;  // fraction of the attack cycle spent standing still
 

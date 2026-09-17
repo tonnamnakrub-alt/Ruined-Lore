@@ -1,6 +1,6 @@
 import { tr } from "../i18n.js";
-import { applyDamage, healUnit, skillPower } from "./damage.js";
-import { addBuff, dist, skillLabel, vfx } from "./state-util.js";
+import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
+import { addBuff, addBuffUnique, dist, skillLabel, vfx, addFrag, withSrc } from "./state-util.js";
 import { supportOnHitBonus } from "./support.js";
 import { mageOnHit } from "./mage.js";
 import { assassinOnHit } from "./assassin.js";
@@ -9,6 +9,7 @@ import { activeSkills } from "./targeting.js";
 
 // fragments, Monochrome's magic rider, and Double Cross's empowered hit
 export function onAutoLanded(state, u, target) {
+  vfx(state, { kind: "flash", x: target.x, y: target.y, r: 34, color: u.team === "blue" ? "140,190,255" : "255,150,155", dur: 0.18 });
   // Achilles' Talaria: every basic attack also deals a slice of the target's max HP,
   // as whichever damage type the attacker itself leans toward
   if (u.onHitAdaptive) {
@@ -64,10 +65,7 @@ export function onAutoLanded(state, u, target) {
     }
     target.dagger = null;
   }
-  if (u.champ.fragments && u.shadow <= 0) {
-    u.light += 1;
-    if (u.light >= u.champ.fragments.max) { u.light = 0; u.shadow = 1; }
-  }
+  if (u.champ.fragments && u.shadow <= 0) addFrag(u, u.champ.fragments.onAuto);
   if (u.champ.fragments) applyFragmentDamage(state, u, target);
   if (u.champ.doubleTrouble) {
     state.dmgSrc = tr("พาสซีฟ Double Trouble");
@@ -88,7 +86,7 @@ export function onAutoLanded(state, u, target) {
   mageOnHit(state, u, target);
   assassinOnHit(state, u, target);
   marksmanOnHit(state, u, target);
-  kindnessTick(state, u);
+  // (พาสซีฟพิน็อกคิโอย้ายไปเต้นทุก 1 วิใน step.js แล้ว)
 }
 
 
@@ -167,6 +165,23 @@ export function applyFragmentDamage(state, u, target) {
 }
 
 
+// โดนตีก็สะสมได้ — ออโต้นับทุกครั้ง ส่วนสกิลนับครั้งเดียวต่อการร่ายหนึ่งครั้ง
+// (สกิลที่ทำดาเมจต่อเนื่องยิงป้ายเดิมซ้ำๆ เลยกันด้วยหน้าต่างเวลา 2 วิต่อป้าย)
+const ABILITY_WINDOW = 2.0;
+
+export function gainIsoldeOnTaken(state, u, source, label, isAuto) {
+  const cfg = u.champ && u.champ.isolde;
+  if (!cfg || !cfg.onTaken || !source || source.team === u.team) return;
+  if (!isAuto) {
+    const key = source.id + "|" + String(label || "?");
+    u.isoSeen = u.isoSeen || {};
+    if (state.t - (u.isoSeen[key] || -99) < ABILITY_WINDOW) return;
+    u.isoSeen[key] = state.t;
+  }
+  gainIsolde(state, u, cfg.onTaken);
+}
+
+
 export function gainIsolde(state, u, amount) {
   const cfg = u.champ.isolde;
   if (!cfg) return;
@@ -174,9 +189,20 @@ export function gainIsolde(state, u, amount) {
   u.isolde += amount;
   if (u.isolde >= cfg.need) {
     u.isolde -= cfg.need;
-    const pct = cfg.base + cfg.perLevel * u.level;
-    healUnit(state, u, (u.maxHp - u.hp) * pct);
-    vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 50, color: "63,191,127", grow: 1, dur: 0.6 });
+    // ฮีลสเกลทั้งเลเวลและพลังโจมตี — ยิ่งออกของตียิ่งได้ฮีลคืนเยอะ
+    const pct = cfg.base + cfg.perLevel * u.level + (cfg.perAd || 0) * (u.ad || 0);
+    const amt = (u.maxHp - u.hp) * pct;
+    if (cfg.shield) {
+      // จ่ายเป็นโล่ที่ค่อยๆ สลายแทนการฮีล — กันได้ทันทีแต่ไม่ค้างถ้าไม่ได้ใช้
+      const dur = cfg.shieldDur || 5;
+      grantShield(u, amt);
+      u.isoShield = { amt, granted: amt, start: state.t, until: state.t + dur, dur };
+      addBuffUnique(u, "isoshield", { type: "shield", v: 1, until: state.t + dur }, state.t);
+      vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 50, color: "228,235,247", grow: 1, dur: 0.6 });
+    } else {
+      healUnit(state, u, amt);
+      vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 50, color: "63,191,127", grow: 1, dur: 0.6 });
+    }
   }
 }
 
@@ -189,19 +215,22 @@ export function onSkillLanded(state, u, sk) {
     u.buffs.push({ type: "asstack", v: 1, until: state.t + sKids.dur });
   }
   if (sk.cdCutAll) for (const x of activeSkills(u)) if (x.cdLeft > 0) x.cdLeft = Math.max(0, x.cdLeft - sk.cdCutAll);
-  if (sk.bountyOnHit) u.bountyGold += sk.bountyOnHit;
+
 }
 
 
-export function kindnessTick(state, actor) {
-  for (const p of state.units) {
-    if (!p.alive || p.team !== actor.team || !p.champ.kindness) continue;
-    if (p.id === actor.id) continue;
-    const k = p.champ.kindness;
-    if (dist(p, actor) > k.radius) continue;
-    const pct = k.base + k.perLevel * p.level + k.perAp * p.ap;
-    const missing = actor.maxHp - actor.hp;
-    if (missing > 0) healUnit(state, actor, missing * pct);
+// Cricket's Whisper — เรียกทุก 1 วิจาก step.js (ไม่ผูกกับการตี/ร่ายอีกแล้ว)
+//   ฐานคิดจาก Max HP · เพื่อนเลือดต่ำกว่า 40% ได้สองเท่า · คนที่เพิ่งโดน Q ได้สองเท่าอีกชั้น
+export function kindnessTick(state, healer, target) {
+  const k = healer.champ.kindness;
+  if (!k || !healer.alive || !target.alive || target.id === healer.id) return;
+  if (target.team !== healer.team || dist(healer, target) > k.radius) return;
+  let pct = k.base + k.perLevel * healer.level + k.perAp * healer.ap;
+  if (k.lowHpAt && target.hp / target.maxHp < k.lowHpAt) pct *= k.lowHpMul || 2;
+  if (healer.kindnessBoostUntil && state.t < healer.kindnessBoostUntil) pct *= k.qMul || 2;
+  const pool = k.maxHp ? target.maxHp : Math.max(0, target.maxHp - target.hp);
+  if (pool > 0 && target.hp < target.maxHp) {
+    withSrc(state, tr("พาสซีฟ Cricket's Whisper"), healer, () => healUnit(state, target, pool * pct));
   }
 }
 

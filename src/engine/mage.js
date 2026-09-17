@@ -121,6 +121,13 @@ export function onMageCast(state, u, sk) {
     u.csbCharge = u.spellblade.baseAdRatio * baseAd + u.spellblade.apRatio * u.ap;
   }
 
+  // Norns' Thread of Weaving — ร่ายอันติจบแล้วได้ความเร็วเดินและพลังเวทพุ่งสั้นๆ
+  if (u.ultSurge && sk && sk.ult) {
+    addBuffUnique(u, "ntw", { type: "ms", v: u.ultSurge.ms, until: t + u.ultSurge.dur }, t);
+    addBuffUnique(u, "ntwap", { type: "apPct", v: u.ultSurge.apPct, until: t + u.ultSurge.dur }, t);
+    vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 30, color: "214,120,232", grow: 0.7 });
+  }
+
   // Raijin's Thunder Drum — ติดอาวุธให้สกิลเวทลูกถัดไป
   if (u.chainBolt && !u.rsdArmed && (u.rsdReadyAt == null || t >= u.rsdReadyAt)) u.rsdArmed = true;
 
@@ -169,6 +176,11 @@ export function mageOnHit(state, u, target) {
 // ---------------------------------------------------------------
 export function onMageTakedown(state, u) {
   if (!u || !u.hasItem || !u.takedownHeal) return;
+  // สเปคใหม่: ทำงานเฉพาะสังหาร/ช่วยสังหารครั้งแรกของไฟต์เท่านั้น
+  if (u.takedownHeal.once) {
+    if (u.amritaUsed) return;
+    u.amritaUsed = true;
+  }
   const amt = u.takedownHeal.flat + u.takedownHeal.apRatio * u.ap;
   echo(() => {
     for (const a of state.units) {
@@ -243,18 +255,6 @@ export function tickMageItems(state, u, dt) {
     }
   }
 
-  // Norns' Thread of Weaving — เข้าปะทะครั้งแรกแล้วตัดคูลดาวน์ Q W E ที่ค้างอยู่ครึ่งหนึ่ง
-  if (u.cdReset && (u.ntwReadyAt == null || t >= u.ntwReadyAt)) {
-    const inCombat = state.units.some((e) => e.alive && e.team !== u.team && dist(u, e) <= u.range + 120);
-    if (inCombat) {
-      u.ntwReadyAt = t + u.cdReset.cd * (1 - cdr);
-      for (const sk of u.skills || []) {
-        if (sk.key === "R" || !(sk.cdLeft > 0)) continue;
-        sk.cdLeft *= 1 - u.cdReset.pct;
-      }
-      vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 30, color: "214,120,232", grow: 0.7 });
-    }
-  }
 }
 
 

@@ -1,9 +1,9 @@
 // ตรวจว่าหลังเล่นไปหลายยก บอทซื้อของสาย AP ให้ตัว AD หรือเปล่า
 import { chromium } from "playwright";
-const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 900, height: 950 } });
 const errs=[]; p.on("pageerror",e=>errs.push(e.message));
-await p.goto("file:///home/claude/sideline/sideline.html");
+await p.goto(new URL("ruined-lore.html", import.meta.url).href);
 const btns=async()=>p.evaluate(()=>[...document.querySelectorAll("button")].map(b=>b.innerText.replace(/\s+/g," ").trim()));
 const ci=async(i,w=120)=>{await p.evaluate(i=>{const b=document.querySelectorAll("button")[i];if(b)b.click();},i);await p.waitForTimeout(w);};
 const ct=async(re,w=260)=>{const l=await btns();const i=l.findIndex(t=>re.test(t));if(i<0){console.log("miss",String(re),"|",l.slice(0,10).join(" / "));return false;}await ci(i,w);return true;};

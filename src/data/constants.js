@@ -6,11 +6,17 @@
 
 // Everything below is in League units: 1 unit here = 1 unit there.
 // Move speed 325, melee attack range 175, ranged 550, model radius 65.
-export const ARENA_W = 3300;
+// สนามขยายจาก 3300×1850 เป็น 1.5 เท่า — เดินไกลขึ้น เปิดช่องให้เล่นตำแหน่งมากขึ้น
+export const ARENA_W = 4950;
 
-export const ARENA_H = 1850;
+export const ARENA_H = 2775;
 
-export const RENDER_SCALE = 3.7; // canvas pixels = units / RENDER_SCALE
+// พิกเซลบนแคนวาส = หน่วยในเกม / RENDER_SCALE
+// ย่อลงจาก 5.55 เป็น 6.6 เพื่อให้แถบข้อมูลใต้สนามอยู่ในจอเดียวกันได้หมด
+export const RENDER_SCALE = 6.6;
+
+// โซนวางตัวก่อนไฟต์ — ฝั่งเรายืนได้ในกรอบนี้เท่านั้น
+export const DEPLOY = { xMin: 220, xMax: 1500, yMin: 220, yMax: 2555 };
 
 export const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"];
 

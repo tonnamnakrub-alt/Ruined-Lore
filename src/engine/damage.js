@@ -1,40 +1,69 @@
 import { tr } from "../i18n.js";
-import { gainIsolde } from "./on-hit.js";
-import { addBuff, buffSum, bump, curState, dist, hasBuff, pushLog } from "./state-util.js";
+import { DMG_MUL } from "../data/tuning.js";
+import { gainIsolde, gainIsoldeOnTaken } from "./on-hit.js";
+import { addBuff, addBuffUnique, buffSum, bump, curState, dist, hasBuff, pushLog, vfx } from "./state-util.js";
 import { cdrFromItemHaste } from "./stats.js";
 import { lifeBondLeech, lifeBondSplit, onHealOrShield } from "./support.js";
 import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
-import { onLorlaDamage, onLorlaTakedown } from "./lorla.js";
+import { onLauraDamage, onLauraTakedown } from "./laura.js";
+import { onWeaveDamage } from "./klaeder.js";
+import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
 } from "./assassin.js";
 
+
+// กันดาเมจพ่วงของ Faustus วนเรียกตัวเอง
+let faustEcho = false;
+
+// เกราะเลือดเซนทอร์ — เก็บศพหรือช่วยเก็บ จะล้างเลือดไหลของตัวเอง
+// แล้วฮีลคืน 150% ของดาเมจที่ยังไม่ทันไหลออก
+function cbcCleanse(state, u) {
+  let left = 0;
+  state.dots = state.dots.filter((d) => {
+    if (d.targetId === u.id && d.cbc) { left += d.left || 0; return false; }
+    return true;
+  });
+  const back = (u.centaurBleed && u.centaurBleed.healBack) || 1.5;
+  if (left > 0) healUnit(state, u, left * back);
+}
 
 export function applyDamage(state, source, target, amount, magic, trueDmg, isAuto) {
   if (hasBuff(target, "invuln") || hasBuff(target, "evade")) {
     if (target.absorb) target.absorb.dmg += amount;   // Theon's ult banks what it eats
     return;
   }
-  const pen = (source && source.pen) || 0;
+  // เจาะเกราะกับเจาะต้านเวทแยกกันแล้ว ของสายกายภาพจะไม่ไปเจาะต้านเวทให้ฟรีอีก
+  const arFlat = (source && (source.arPen || 0)) + (source && source.pen ? source.pen : 0);
+  const mrFlat = (source && (source.mrPen || 0)) + (source && source.pen ? source.pen : 0);
+  const pen = magic ? mrFlat : arFlat;
   // เจาะต้านเวทแบบ % คิดก่อน แล้วค่อยหักแบบ flat
   const mrPct = magic ? 1 - Math.min(0.8, (source && source.mrPenPct) || 0) : 1;
   const arPct = magic ? 1 : 1 - Math.min(0.8, (source && source.armorPenPct) || 0);
   const res = Math.max(0, (magic ? target.mr * mrPct : target.armor * arPct) - pen);
   const mit = trueDmg ? 1 : 100 / (100 + res);
   const vulnerable = 1 + buffSum(target, "vulnerable");
-  const autoCut = isAuto && target.dmgReduceAuto ? 1 - target.dmgReduceAuto : 1;
+  // ตราประทับของ Alice — ส่วนที่เพิ่มจ่ายเป็นดาเมจเวทแยกก้อน กินต้านเวทของเป้า ไม่ใช่เกราะ
+  const curious = buffSum(target, "curiousAmp");
+  const mitMagic = trueDmg ? 1 : 100 / (100 + Math.max(0, target.mr * mrPct - mrFlat));
+  const riders = curious > 0 ? amount * curious * mitMagic : 0;
+  const autoCut = (isAuto && target.dmgReduceAuto ? 1 - target.dmgReduceAuto : 1)
+    * (target.drAll ? 1 - Math.min(0.8, target.drAll) : 1);
   // Apollo's Sunlit Quiver: เลือดตัวเอง >= 80% ตีแรงขึ้นทุกชนิด
   const hpAmp = source && source.dmgAmpHighHp && source.hp / source.maxHp >= 0.8
     ? 1 + source.dmgAmpHighHp : 1;
   // Jack's Giantbane Harp: ดาเมจเวทแรงขึ้นตามส่วนต่าง Max HP ของเป้ากับเรา
   const giant = magic ? giantSlayerAmp(source, target) : 1;
-  let dmg = amount * mit * vulnerable * autoCut * hpAmp * giant
+  // Jack's Giantbane Harp: ตีแรงขึ้นใส่ศัตรูที่เลือดยังมากกว่าครึ่ง
+  const healthy = source && source.healthyAmp && target.maxHp > 0
+    && target.hp / target.maxHp > source.healthyAmp.hpAbove ? 1 + source.healthyAmp.amp : 1;
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
     const guard = lifeBondSplit(state, target);
     if (guard) {
-      const share = dmg * 0.10;
+      const share = dmg * (guard.lifeBondShare || 0.10);
       dmg -= share;
       state.oodSplitting = true;
       const ps = state.dmgSrc;
@@ -122,17 +151,38 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       applyDamage(state, target, source, 15 + 0.25 * bonusArmor, adaptiveMagic, false);
     }
   }
-  // Apple of Idunn: getting hit regens 3% max HP + up to 9% more based on how much
-  // is missing, spread over 4s, once every 20s
-  if (target.hasItem("aoi")) {
+  // Apple of Idunn: เลือดต่ำกว่าครึ่งแล้วโดนตี จะฟื้น 10% ของเลือดที่หายไป ใน 3 วิ ทุก 10 วิ
+  if (target.idunn) {
+    const cfg = target.idunn;
     const cdr = cdrFromItemHaste(target.itemHaste || 0);
     const ready = target.aoiReadyAt == null || state.t >= target.aoiReadyAt;
-    if (ready) {
-      target.aoiReadyAt = state.t + 20 * (1 - cdr);
-      const missingFrac = 1 - target.hp / target.maxHp;
-      const pct = 0.03 + 0.09 * missingFrac;
-      state.hots.push({ targetId: target.id, ownerId: target.id, hps: (target.maxHp * pct) / 4, until: state.t + 4 });
+    if (ready && target.hp / target.maxHp < cfg.hpBelow) {
+      target.aoiReadyAt = state.t + cfg.cd * (1 - cdr);
+      const missing = Math.max(0, target.maxHp - target.hp);
+      state.hots.push({ targetId: target.id, ownerId: target.id, hps: (missing * cfg.missingPct) / cfg.over, until: state.t + cfg.over });
     }
+  }
+
+  // Wendigo's Voracious Claw: ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% โดนประหารทันที
+  if (source && source.wendigo && !source.wendigoUsed && target.alive
+      && target.maxHp > 0 && target.hp / target.maxHp <= source.wendigo.execPct) {
+    source.wendigoUsed = true;
+    state.dmgSrc = tr("ไอเทม Wendigo's Voracious Claw");
+    applyDamage(state, source, target, target.hp + 1, false, true);
+    state.dmgSrc = null;
+  }
+
+  // Cuirass of the Bleeding Centaur: สะสมสแตกทั้งตอนทำดาเมจและตอนโดน
+  if (target.centaurStack) target.cbcStacks = Math.min(target.centaurStack.max, (target.cbcStacks || 0) + 1);
+  if (source && source.centaurStack) source.cbcStacks = Math.min(source.centaurStack.max, (source.cbcStacks || 0) + 1);
+  // 30% ของดาเมจที่โดน กลายเป็นเลือดไหลแบบ True Damage 3 วินาที
+  if (target.centaurBleed && !trueDmg && dmg > 0) {
+    const cfg = target.centaurBleed;
+    state.dots = state.dots.filter((d) => !(d.targetId === target.id && d.cbc));
+    state.dots.push({
+      targetId: target.id, ownerId: target.id, cbc: true, trueDmg: true,
+      dps: (dmg * cfg.pct) / cfg.dur, until: state.t + cfg.dur, left: dmg * cfg.pct,
+    });
   }
   // ---- ให้เครดิตว่าดาเมจก้อนนี้มาจากอะไร (ใช้ในหน้ากราฟ)
   {
@@ -148,9 +198,23 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       target.buffs = target.buffs.filter((b) => !(b.type === "antiheal" && b.sourceId === source.id));
       addBuff(target, { type: "antiheal", v: ah.v, sourceId: source.id, until: state.t + ah.dur }, state.t);
     }
+    // Imperial Weave ของ Klaeder — โดนดาเมจชนิดไหนก็ทอกันชนิดนั้น
+    if (target.champ.weave) onWeaveDamage(state, target, source, magic);
+    // Isolde ของ Tristan — ฝั่งที่ "โดน" ก็ได้แต้ม
+    if (target.champ.isolde) gainIsoldeOnTaken(state, target, source, state.dmgSrc, isAuto);
     if (magic) onMageDamageHook(state, source, target, dmg);
     onAssassinHit(state, source, target);
-    onLorlaDamage(state, source, target, isAuto);
+    onLauraDamage(state, source, target, isAuto);
+    if (source.champ.curious) onAliceDamage(state, source, target, isAuto);
+    // Faustian Bargain — ทุกสกิลพ่วงดาเมจจริงอีกก้อน คิดเป็น % ของดาเมจต้นก่อนหักเกราะ
+    if (!faustEcho && !trueDmg && !isAuto && target.alive
+        && source.champ && source.champ.faustian && /^[QWER] /.test(String(state.dmgSrc || ""))) {
+      const fb = source.champ.faustian;
+      const share = Math.min(fb.cap || 0.5, fb.base + fb.perAp * (source.ap || 0));
+      faustEcho = true;
+      try { applyDamage(state, source, target, amount * share, false, true); }
+      finally { faustEcho = false; }
+    }
     if (!state.oodSplitting) lifeBondLeech(state, source, dmg);
     source.lastCombatAt = state.t;
     target.lastCombatAt = state.t;
@@ -161,8 +225,21 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       ov = v.base + v.perLevel * source.level + v.perBonusHp * source.bonusHp;
     }
     ov += source.omnivampFlat || 0;
+    ov += source.apolloVamp || 0;
+    // Lilith's Sanguine Grimoire: เลือดต่ำกว่าครึ่งได้ดูดเลือดเพิ่มอีกก้อน
+    if (source.lowHpVamp && source.hp / source.maxHp <= source.lowHpVamp.hpBelow) ov += source.lowHpVamp.add;
     ov += buffSum(source, "fjdvamp");
-    if (ov && source.alive) healUnit(state, source, dmg * ov);
+    if (ov && source.alive) {
+      const want = dmg * ov;
+      const room = Math.max(0, source.maxHp - source.hp);
+      healUnit(state, source, want);
+      // Bloodline of Dracul: ฮีลส่วนที่ล้นหลอดกลายเป็นโล่ที่ค่อยๆ สลาย
+      const ovsh = source.champ.vamp && source.champ.vamp.overShield;
+      if (ovsh && want > room) {
+        grantShield(source, want - room);
+        addBuffUnique(source, "vampshield", { type: "shield", v: 1, until: state.t + ovsh }, state.t);
+      }
+    }
   }
   if (target.hp <= 0) {
     // Freyja's Shroud of Defiance: ดาเมจที่จะฆ่าถูกกันไว้ เลือดล็อกที่ 1 แล้วอมตะสั้นๆ
@@ -185,25 +262,32 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     }
     target.hp = 0;
     target.alive = false;
+    if (source && source.centaurBleed) cbcCleanse(state, source);
     if (source) {
+      // นับคนช่วยของศพนี้ก่อน เพราะเงินช่วยสังหารขึ้นกับว่ามีคนช่วยกี่คน
+      const helpers = [];
       for (const [aid, at] of Object.entries(target.recentDamagers)) {
         if (aid === source.id || state.t - at > 10) continue;
-        const helper = state.units.find((x) => x.id === aid);
-        if (helper && helper.team === source.team) {
+        const h = state.units.find((x) => x.id === aid);
+        if (h && h.team === source.team) helpers.push(h);
+      }
+      for (const helper of helpers) {
+        {
+          // ช่วยคนเดียวได้เต็ม หลายคนได้น้อยลง — เก็บไว้เป็นรายครั้งเพื่อคิดเงินตอนจบยก
           helper.assists += 1;
+          if (helpers.length <= 1) helper.soloAssists = (helper.soloAssists || 0) + 1;
           onMageTakedown(state, helper);
           onAssassinKill(state, helper, false);
-          onLorlaTakedown(state, helper);
-          if (helper.hasItem && helper.hasItem("cbc")) {
-            state.dots = state.dots.filter((d) => !(d.targetId === helper.id && d.cbc));
-            healUnit(state, helper, helper.maxHp * 0.08);
-          }
+          onLauraTakedown(state, helper);
+          if (helper.centaurBleed) cbcCleanse(state, helper);
         }
       }
+      vfx(state, { kind: "flash", x: target.x, y: target.y, r: 150, color: "255,236,190", dur: 0.5 });
+      vfx(state, { kind: "shock", x: target.x, y: target.y, r: 170, color: "255,208,138", dur: 0.6 });
       source.kills += 1;
       onMageTakedown(state, source);
       onAssassinKill(state, source, true);
-      onLorlaTakedown(state, source);
+      onLauraTakedown(state, source);
       if (source.hasItem && source.hasItem("cbc")) {
         state.dots = state.dots.filter((d) => !(d.targetId === source.id && d.cbc));
         healUnit(state, source, source.maxHp * 0.08);
@@ -242,7 +326,11 @@ export function skillPower(u, sk, target) {
   v += (sk.adRatio || 0) * u.ad;
   v += (sk.badRatio || 0) * u.bonusAd;
   v += (sk.apRatio || 0) * u.ap;
-  if (sk.selfMaxHp) v += u.maxHp * sk.selfMaxHp;
+  // สเกลกับ Bonus HP (เลือดที่ได้จากไอเทม + พาสซีฟ) ไม่ใช่ Max HP ทั้งก้อน
+  if (sk.selfBonusHp) v += (u.bonusHp || 0) * sk.selfBonusHp;
+  if (sk.selfStacks) v += (u.sangStacks || 0) * sk.selfStacks;
+  // สเกลกับความเร็วเดินส่วนที่เกินค่าฐานของตัวเอง — ของ Ariel ที่กระแสน้ำแรงตามความเร็ว
+  if (sk.msRatio) v += Math.max(0, (u.moveSpeed || 0) - ((u.champ && u.champ.ms) || 0)) * sk.msRatio;
   if (sk.pctMaxHp && target) {
     const pct = sk.pctMaxHp[r] + (sk.pctPerBad || 0) * (u.bonusAd / 100);
     v += target.maxHp * pct;

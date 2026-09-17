@@ -52,7 +52,7 @@ export function onHealOrShield(state, giver, receiver, amount, isShield) {
   if (giver.hasItem("acb")) {
     for (const p of [giver, receiver]) {
       addBuffUnique(p, "acb:as:" + giver.id, { type: "as", v: 0.15 + 0.005 * lvl, until: state.t + 4 }, state.t);
-      addBuffUnique(p, "acb:oh:" + giver.id, { type: "onHitMagic", v: 10 + 3 * lvl + 0.1 * giver.ap, until: state.t + 4 }, state.t);
+      addBuffUnique(p, "acb:oh:" + giver.id, { type: "onHitMagic", v: 5 + 1.5 * lvl + 0.05 * giver.ap, until: state.t + 4 }, state.t);
     }
   }
 
@@ -98,24 +98,35 @@ export function tickSupportItems(state, u, dt) {
     }
   }
 
-  // --- Aeolus' Bound Winds: เร่งความเร็วทั้งทีมตอนไฟต์เริ่ม แล้วทุก 45 วิ
+  // --- Aeolus' Bound Winds: กดเองได้ตามจังหวะ — เข้าปะทะ ถูกไล่ หรือเพื่อนโดนสโลว์/เลือดต่ำ
+  //     แรงของลมขึ้นกับเลเวลคนถือ 20% ที่เลเวล 1 ไล่ถึง 45% ที่เลเวลเต็ม
   if (u.hasItem("abw") && state.t >= (u.abwReadyAt || 0)) {
+    const allies = alliesIn(state, u, ALLY_RADIUS);
     const enemyNear = state.units.some((e) => e.alive && e.team !== u.team && dist(u, e) <= 1100);
-    if (enemyNear) {
+    // จังหวะที่ควรกด: มีศัตรูเข้ามาแล้ว หรือมีเพื่อนติดสโลว์ หรือเพื่อนเลือดต่ำกว่าครึ่ง
+    const needed = allies.some((a) => hasBuff(a, "slow") || a.hp / a.maxHp < 0.5);
+    if (enemyNear || needed) {
+      const cfg = u.abwSurge || { base: 0.20, max: 0.45 };
+      const g = Math.max(0, Math.min(1, (u.level - 1) / 15));
+      const v = cfg.base + (cfg.max - cfg.base) * g;
       u.abwReadyAt = state.t + 20 * (1 - cdr);
-      for (const a of alliesIn(state, u, ALLY_RADIUS)) {
-        addBuffUnique(a, "abw:" + u.id, { type: "ms", v: 0.3, decayFrom: state.t, until: state.t + 3 }, state.t);
+      for (const a of allies) {
+        addBuffUnique(a, "abw:" + u.id, { type: "ms", v, decayFrom: state.t, until: state.t + 3 }, state.t);
       }
       vfx(state, { kind: "ring", x: u.x, y: u.y, r: ALLY_RADIUS, color: "126,199,255", grow: 0.4, dur: 0.5 });
     }
   }
 
-  // --- Hermes' Moly Blossom: ล้าง CC ให้เพื่อนหรือตัวเอง + กัน CC 1 วิ + ฮีล
+  // --- Hermes' Moly Blossom: ล้างสถานะติดตัว "ทุกชนิด" ให้เพื่อนหรือตัวเอง + กัน CC 1 วิ + ฮีล
   if (u.hasItem("hmb") && state.t >= (u.hmbReadyAt || 0)) {
-    const victim = alliesIn(state, u, ALLY_RADIUS).find((a) => LOCKING_CC.some((tp) => hasBuff(a, tp)));
+    const CLEAN = u.cleanseAll
+      ? HARD_CC.concat(["slow", "silence", "disarm", "blind", "antiheal", "shred", "vulnerable", "curiousAmp"])
+      : HARD_CC;
+    const watch = u.cleanseAll ? LOCKING_CC.concat(["slow", "silence", "disarm", "blind"]) : LOCKING_CC;
+    const victim = alliesIn(state, u, ALLY_RADIUS).find((a) => watch.some((tp) => hasBuff(a, tp)));
     if (victim) {
       u.hmbReadyAt = state.t + 60 * (1 - cdr);
-      victim.buffs = victim.buffs.filter((b) => !HARD_CC.includes(b.type));
+      victim.buffs = victim.buffs.filter((b) => !CLEAN.includes(b.type));
       addBuff(victim, { type: "unstoppable", v: 1, until: state.t + 1 }, state.t);
       withSrc(state, tr("ไอเทม Hermes' Moly Blossom"), u, () => {
         healUnit(state, victim, 50 + 6 * u.level + 0.25 * u.ap);

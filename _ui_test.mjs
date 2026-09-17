@@ -1,11 +1,11 @@
 import { chromium } from "playwright";
-const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+const b = await chromium.launch();
 const errs = [];
 async function shots(w, h, tag) {
   const p = await b.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1.5 });
   p.on("pageerror", e => errs.push(tag + ": " + e.message));
   p.on("console", m => { if (m.type()==="error") errs.push(tag+" C:"+m.text()); });
-  await p.goto("file:///home/claude/sideline/sideline.html");
+  await p.goto(new URL("ruined-lore.html", import.meta.url).href);
   const btns = async () => p.evaluate(() => [...document.querySelectorAll("button")].map(b => b.innerText.replace(/\s+/g," ").trim()));
   const ct = async (re,wt=300) => { const l=await btns(); const i=l.findIndex(t=>re.test(t)); if(i<0){console.log("NOTFOUND",tag,String(re),"|",l.slice(0,8).join(" / "));return false;} await p.evaluate(i=>document.querySelectorAll("button")[i].click(), i); await p.waitForTimeout(wt); return true; };
   await p.waitForTimeout(400);

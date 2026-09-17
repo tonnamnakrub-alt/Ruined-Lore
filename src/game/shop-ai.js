@@ -32,6 +32,27 @@ const ROLE_TASTE = {
   tank: ["TANK", "SUPPORT", "BOOTS"],
 };
 
+// สัดส่วนงบที่ควรลงกับ "ของอึด" (เลือด/เกราะ/ต้านเวท) ของแต่ละสาย
+// เดิมบอทไล่ซื้อของแพงสุดในหมวดที่ชอบอย่างเดียว มาร์คแมนเลยจบเกมด้วย Bonus HP = 0
+// และ Skirmisher กลับขึ้นของแทงค์ล้วนจนเหลือ AD แค่ 169
+const DEFENSE_TARGET = {
+  marksman: 0.28, assassin: 0.22, "burst mage": 0.28, mage: 0.32,
+  "battle mage": 0.36, enchanter: 0.42, skirmisher: 0.40, diver: 0.35,
+  "bruiser ad": 0.45, bruiser: 0.45, juggernaut: 0.50, vanguard: 0.60,
+  warden: 0.60, tank: 0.60,
+};
+
+// มูลค่าเชิง "อึด" กับ "ตี" ของไอเทมหนึ่งชิ้น คิดเป็นทองคร่าวๆ
+function itemSplit(it) {
+  const def = (it.hp || 0) * 0.025 + (it.armor || 0) * 0.14 + (it.mr || 0) * 0.14
+    + (it.hp5 || 0) * 0.3 + (it.hors || 0) * 30;
+  const off = (it.ad || 0) * 0.18 + (it.ap || 0) * 0.12 + (it.asPct || 0) * 45
+    + (it.crit || 0) * 45 + ((it.pen || 0) + (it.arPen || 0) + (it.mrPen || 0)) * 0.5 + (it.ah || 0) * 0.35
+    + (it.adPct || 0) * 60 + (it.apPct || 0) * 60;
+  return { def, off, tot: def + off || 1 };
+}
+
+
 const LANE_TASTE = {
   TOP: ["FIGHTER", "TANK", "BOOTS"],
   JUNGLE: ["ASSASSIN", "FIGHTER", "TANK", "BOOTS"],
@@ -132,7 +153,7 @@ function forbidden(it, pf, cur) {
     if (pf.apChamp && (it.ad || it.adPct || it.crit || it.critDmg || it.armorPenPct)) return true;
   }
   // แทงค์ไม่ถือกริชเจาะเกราะที่ไม่มีค่าอึดติดมาเลย
-  if (pf.tanky && (it.pen || 0) >= 12 && !it.hp && !it.armor && !it.mr) return true;
+  if (pf.tanky && ((it.pen || 0) + (it.arPen || 0) + (it.mrPen || 0)) >= 12 && !it.hp && !it.armor && !it.mr) return true;
   // ของคริตมีประโยชน์เฉพาะตัวที่ยิงรัว — ตัวประชิดสายอึดข้ามไป
   if ((it.crit || it.critDmg) && pf.melee && !/skirmisher|marksman/.test(pf.role)) return true;
   return false;
@@ -151,7 +172,7 @@ function tasteFor(c, pf) {
 // ---------------------------------------------------------------
 // ซื้อของให้บอทหนึ่งตัว จนกว่าจะเต็มช่องหรือเงินหมด
 // ---------------------------------------------------------------
-export function shopFor(c, enemies, rand) {
+export function shopFor(c, enemies, rand, noise = 10) {
   let cur = { ...c, items: [...c.items] };
   const pf = champProfile(cur.champId);
   const threat = readThreat(enemies);
@@ -194,10 +215,26 @@ export function shopFor(c, enemies, rand) {
       (cur.lane === "ADC" || coreCount >= 1);
 
     // อันดับความอยากได้ = ความชอบตามสาย + คะแนนแก้ทางทีมตรงข้าม
+    // สัดส่วนของอึดที่ถืออยู่ตอนนี้ เทียบกับที่สายนี้ควรจะมี
+    const held = cur.items.reduce((a, x) => {
+      const sp = itemSplit(x); a.def += sp.def; a.off += sp.off; return a;
+    }, { def: 0, off: 0 });
+    const heldTot = held.def + held.off || 1;
+    const defNow = held.def / heldTot;
+    const defWant = DEFENSE_TARGET[pf.role] != null ? DEFENSE_TARGET[pf.role] : 0.35;
+    const needDef = defWant - defNow;   // บวก = ขาดของอึด · ลบ = อึดเกินไปแล้ว
+
     const want = (i) => {
       const rank = taste.findIndex((k) => i.cat === k || (i.also && i.also.includes(k)));
       const boots = i.kind === "boots" ? (wantBoots ? 100 : -100) : 0;
-      return (taste.length - rank) * 10 + i.cost * 0.08 + counterScore(i, threat, pf, cur) + boots;
+      const sp = itemSplit(i);
+      // ชิ้นที่ดึงสัดส่วนเข้าหาเป้าหมายได้คะแนนบวก ชิ้นที่ยิ่งถ่างออกได้คะแนนลบ
+      const fit = needDef * ((sp.def - sp.off) / sp.tot) * 46;
+      // ยึดเป้าหมายเดิมไว้ — ถ้าเก็บชิ้นส่วนของอันนี้ไว้แล้ว ต้องทำให้จบ
+      // ไม่งั้นพอเงินเข้าช้าๆ มันจะเปลี่ยนใจทุกยกจนช่องเต็มไปด้วยชิ้นส่วนคนละสาย
+      const commit = ownedParts(cur.items, i).reduce((a, p) => a + p.cost, 0) * 5;
+      return (taste.length - rank) * 10 + i.cost * 0.08
+        + counterScore(i, threat, pf, cur) + boots + fit + commit + rand() * noise;
     };
     goals.sort((a, b) => want(b) - want(a));
     const goal = goals[0];
@@ -216,4 +253,33 @@ export function shopFor(c, enemies, rand) {
     break;
   }
   return cur;
+}
+
+
+// ---------------------------------------------------------------
+// ของที่แนะนำสำหรับตัวละครหนึ่ง — ใช้เกณฑ์เดียวกับที่บอทใช้คิด
+// ไม่มีศัตรูให้อ่าน จึงเป็นชุด "มาตรฐาน" ของสายนั้น ไม่ได้แก้ทางใคร
+// ---------------------------------------------------------------
+export function recommendedFor(champId, lane, n = 6) {
+  const pf = champProfile(champId);
+  const base = { champId, lane: lane || pf.lane, items: [], level: 11, gold: 0 };
+  const taste = tasteFor(base, pf);
+  const pool = ITEMS
+    .filter((i) => i.tier === 3 || i.kind === "boots")
+    .filter((i) => taste.some((k) => i.cat === k || (i.also && i.also.includes(k))))
+    .filter((i) => !forbidden(i, pf, base));
+  const score = (i) => {
+    const rank = taste.findIndex((k) => i.cat === k || (i.also && i.also.includes(k)));
+    const sp = itemSplit(i);
+    const defWant = DEFENSE_TARGET[pf.role] != null ? DEFENSE_TARGET[pf.role] : 0.35;
+    // ชิ้นที่สัดส่วนรุก/รับใกล้เป้าหมายของสายนี้ที่สุดได้คะแนนสูงสุด
+    const mix = 1 - Math.abs(sp.def / sp.tot - defWant);
+    return (taste.length - rank) * 10 + mix * 30 + i.cost * 0.05;
+  };
+  const boots = pool.filter((i) => i.kind === "boots").sort((a, b) => score(b) - score(a))[0];
+  const cores = pool.filter((i) => i.kind !== "boots").sort((a, b) => score(b) - score(a));
+  const out = cores.slice(0, Math.max(1, n - (boots ? 1 : 0)));
+  // รองเท้าแทรกเป็นชิ้นที่สองเสมอ — ของใหญ่ชิ้นแรกก่อน แล้วค่อยรองเท้า
+  if (boots) out.splice(1, 0, boots);
+  return { role: pf.role, items: out.slice(0, n) };
 }

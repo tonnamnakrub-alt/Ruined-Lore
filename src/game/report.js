@@ -1,6 +1,5 @@
 // สรุปผลไฟต์หนึ่งยก ให้หน้ากราฟใช้ — เก็บเฉพาะตัวเลข ไม่เก็บ state ทั้งก้อน
 import { CHAMPIONS } from "../data/champions.js";
-import { EVENTS } from "../data/tuning.js";
 
 const cleanBag = (bag) =>
   Object.entries(bag || {})
@@ -8,7 +7,7 @@ const cleanBag = (bag) =>
     .sort((a, b) => b[1] - a[1])
     .map(([k, v]) => ({ k, v: Math.round(v) }));
 
-export function summarizeFight(st, round, eventId, teamStyle, foeSeen) {
+export function summarizeFight(st, round, laneId, teamStyle, foeSeen) {
   const row = (u) => ({
     id: u.id,
     team: u.team,
@@ -38,8 +37,8 @@ export function summarizeFight(st, round, eventId, teamStyle, foeSeen) {
 
   return {
     round,
-    eventTh: (EVENTS[eventId] || {}).th || eventId,
-    eventId,
+    eventTh: laneId || "",
+    eventId: laneId || "",
     teamStyle,
     time: +st.t.toFixed(1),
     timeLimit: st.timeLimit,
@@ -52,7 +51,7 @@ export function summarizeFight(st, round, eventId, teamStyle, foeSeen) {
 }
 
 // ใช้ตอนกำลังสู้อยู่ — สร้าง report สดจาก state ปัจจุบัน
-export function liveReport(st, round, eventId, teamStyle) {
+export function liveReport(st, round, laneId, teamStyle) {
   if (!st) return null;
-  return { ...summarizeFight(st, round, eventId, teamStyle, null), live: true };
+  return { ...summarizeFight(st, round, laneId, teamStyle, null), live: true };
 }

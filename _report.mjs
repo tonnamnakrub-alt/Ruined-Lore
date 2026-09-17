@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import { writeFileSync } from "fs";
 import { ITEMS, ITEM_BY_ID, UNIQ_GROUPS } from "./src/data/items.js";
 import { setLang } from "./src/i18n.js";
-import { itemDesc } from "./src/ui/recipe.jsx";
+import { itemDesc } from "./src/ui/item-desc.js";
 setLang("th");
 
 // แยกข้อความของ itemDesc เป็น "ค่าสถานะ" กับ "ความสามารถ"

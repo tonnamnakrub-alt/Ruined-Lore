@@ -4,10 +4,11 @@ import { Shell, btn } from "../ui/chrome.jsx";
 import { Panel } from "../ui/kit.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
+import { DIFFS, DIFF_LIST } from "../data/difficulty.js";
 
 // ---------------- SETTING ----------------
 export function SettingScreen(ctx) {
-  const { score, mode, setPhase, lang, changeLang, speed, setSpeed, showRanges, setShowRanges, restartMatch, round, history } = ctx;
+  const { score, mode, setPhase, lang, changeLang, speed, setSpeed, showRanges, setShowRanges, restartMatch, round, history, diffId, setDiffId } = ctx;
 
   const row = (title, sub, control) => (
     <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: `1px solid ${C.line}` }}>
@@ -39,6 +40,29 @@ export function SettingScreen(ctx) {
             ))}
           </div>
         )}
+      </Panel>
+
+      <Panel style={{ marginBottom: 10 }}>
+        <Label style={{ marginBottom: 4 }}>{tr("ระดับความยากของบอท")}</Label>
+        {row(
+          tr("ฝีมือคู่แข่ง"),
+          tr("มีผลกับการดราฟต์ แต้มนักแข่ง การออกของ และการสั่งนิสัยเลน — เปลี่ยนแล้วมีผลแมตช์หน้า"),
+          <div style={{ display: "flex", gap: 4 }}>
+            {DIFF_LIST.map((id) => (
+              <button key={id} onClick={() => setDiffId(id)}
+                style={{
+                  background: diffId === id ? C.gold : C.panel2, color: diffId === id ? "#0B1220" : C.ink,
+                  border: `1px solid ${C.line}`, borderRadius: 5, padding: "6px 12px",
+                  fontFamily: SANS, fontSize: 11.5, cursor: "pointer", fontWeight: diffId === id ? 800 : 400,
+                }}>
+                {tr(DIFFS[id].th)}
+              </button>
+            ))}
+          </div>
+        )}
+        <div style={{ fontSize: 10.5, color: C.dim, marginTop: 6, lineHeight: 1.6 }}>
+          {tr(DIFFS[diffId || "NORMAL"].desc)}
+        </div>
       </Panel>
 
       <Panel>

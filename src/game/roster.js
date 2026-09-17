@@ -53,13 +53,18 @@ export function randomSpread(rand) {
 }
 
 
-export function makeRoster(rand) {
-  return LANES.map((lane, i) => ({
+// draft = รายการ { lane, champId } จาก bot-draft (ไม่ใส่ = ใช้ตัวประจำเลนเหมือนเดิม)
+// spread = ฟังก์ชันแจกแต้มนักแข่ง (ไม่ใส่ = สุ่มล้วนแบบเดิม)
+export function makeRoster(rand, draft, spread) {
+  return LANES.map((lane, i) => {
+    const pick = draft && draft.find((d) => d.lane === lane);
+    const champId = (pick && pick.champId) || LANE_CHAMPION[lane];
+    return {
     lane,
     char: CHARS[i],
     athleteName: "P" + (i + 1),
-    champId: LANE_CHAMPION[lane],
-    athlete: randomSpread(rand),
+    champId,
+    athlete: spread ? spread(rand, champId) : randomSpread(rand),
     level: 1,
     xp: 0,
     gold: 10,
@@ -69,7 +74,9 @@ export function makeRoster(rand) {
     autoLevel: true,
     bountyGold: 0,
     upgrades: [],
-  }));
+    spot: null,
+    };
+  });
 }
 
 
@@ -86,6 +93,7 @@ export function toDef(c) {
     sangHp: c.sangHp || 0,
     upgrades: c.upgrades || [], char: c.char, athleteName: c.athleteName, athlete: c.athlete,
     style: c.style, level: c.level, items: c.items,
+    spot: c.spot || null,   // จุดยืนที่ผู้เล่นวางไว้เอง (null = ใช้ตำแหน่งเริ่มต้นของเลน)
     bounty: c.items.reduce((s, i) => s + i.cost, 0),
   };
 }

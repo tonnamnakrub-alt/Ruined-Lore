@@ -8,6 +8,7 @@
     "watch": "node build.mjs --watch"
   },
   "dependencies": {
+    "peerjs": "^1.5.5",
     "playwright": "^1.63.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -20,6 +21,8 @@
     "@eslint/js": "^10.0.1",
     "esbuild": "^0.25.0",
     "eslint": "^10.10.0",
+    "express": "^5.2.1",
+    "peer": "^1.0.2",
     "recast": "^0.24.0"
   }
 }

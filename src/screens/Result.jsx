@@ -1,4 +1,5 @@
 import { tr } from "../i18n.js";
+import { LANE_TH, STANCES } from "../data/behaviour.js";
 import React from "react";
 import { Shell, btn, card } from "../ui/chrome.jsx";
 import { StatsPanel } from "../ui/Stats.jsx";
@@ -16,14 +17,37 @@ export function ResultScreen(ctx) {
   const over = phase === "MATCH_OVER";
   const farm = !!(result && result.farm);
   const won = over ? score.me > score.foe : result && result.iWon;
+  // ยกที่ไม่มีใครปะทะ หรือแบ่งเลนกันคนละครึ่ง = เสมอ ไม่นับแต้มให้ใคร
+  const drawn = !over && !!(result && result.drawn);
+  const tone = drawn ? C.gold : won ? C.green : C.red;
   return (
     <Shell round={round} score={score} mode={mode} streak={streak}>
-      <div style={{ ...card(), borderColor: farm && !over ? C.gold : won ? C.green : C.red, marginBottom: 12 }}>
-        <div style={{ fontSize: 22, fontWeight: 800, color: farm && !over ? C.gold : won ? C.green : C.red }}>
+      <div style={{ ...card(), borderColor: farm && !over ? C.gold : tone, marginBottom: 12 }}>
+        <div style={{ fontSize: 22, fontWeight: 800, color: farm && !over ? C.gold : tone }}>
           {over
             ? (won ? tr("ชนะแมตช์") : tr("แพ้แมตช์"))
-            : farm ? tr("ยกฟาร์ม — ไม่มีการปะทะ") : won ? tr("ชนะยกนี้") : tr("แพ้ยกนี้")}
+            : farm ? tr("ยกฟาร์ม — ไม่มีการปะทะ")
+              : drawn ? tr("ยกนี้เสมอ") : won ? tr("ชนะยกนี้") : tr("แพ้ยกนี้")}
         </div>
+        {result && result.byLane ? (
+          <div style={{ fontFamily: MONO, fontSize: 11, color: C.dim, marginTop: 7, lineHeight: 1.7 }}>
+            {result.byLane.map((r) => (
+              <div key={r.lane} style={{ marginBottom: 4 }}>
+                <div>
+                  {tr(LANE_TH[r.lane])} · {tr(STANCES[r.mine].th)} vs {tr(STANCES[r.theirs].th)}
+                  <span style={{ color: r.fought ? (r.iWon ? C.green : C.red) : C.line, marginLeft: 6 }}>
+                    {r.fought ? (r.iWon ? tr("ชนะเลน") : tr("แพ้เลน")) : tr("ไม่มีไฟต์")}
+                  </span>
+                </div>
+                {(r.notes || []).filter(Boolean).map((n, i) => (
+                  <div key={i} style={{ color: C.dim, fontSize: 10.5, paddingLeft: 10 }}>
+                    {Array.isArray(n) ? tr(n[0], tr(n[1])) : tr(n)}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : null}
         {farm && !over && (
           <div style={{ fontSize: 11.5, color: C.dim, marginTop: 6, lineHeight: 1.5 }}>
             {tr("ทั้งสองฝั่งเก็บเงินและ XP แล้วข้ามยกไป แต้มไม่ขยับ สถิติชนะรวด/แพ้รวดคงเดิม")}

@@ -2,8 +2,11 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W, BASE } from "../data/constants.js";
 import { applyDamage, edgeDamage, grantShield, healUnit, skillHeal, skillPower } from "./damage.js";
 import { startGrab } from "./motion.js";
-import { applyCharm, startBloodStorm } from "./lorla.js";
+import { applyCharm, startBloodStorm } from "./laura.js";
+import { castDismissal, castGuardBurst } from "./klaeder.js";
+import { castAllyBlink, castTeaGarden, castWonderland } from "./alice.js";
 import { addBuff, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
+import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 
@@ -61,20 +64,35 @@ function fireSkillEffect(state, u, sk, target, prec) {
         width: sk.width, pierce: !!sk.pierce, falloff: sk.falloff, root: sk.root, daggerBleed: sk.daggerBleed,
         slow: sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow, dur: sk.dur,
         charm: sk.charm ? sk.charm[Math.max(0, sk.rank - 1)] : 0, charmSlow: sk.charmSlow,
+        polymorph: sk.polymorph ? sk.polymorph[Math.max(0, sk.rank - 1)] : 0, polySlow: sk.polySlow,
         life: sk.range / (sk.projSpeed || BASE.projSpeed * 1.15), hitIds: [],
       });
       break;
     }
     case "aoeSelf": {
       const rEff = sk.radius + (u.skillRangeBoost || 0);
-      vfx(state, { kind: "ring", x: u.x, y: u.y, r: rEff, color: sk.magic ? "176,140,255" : "255,208,138", grow: 1, dur: 0.5 });
+      const aCol = sk.magic ? "176,140,255" : "255,208,138";
+      // halfCircle = กวาดแค่ครึ่งวงด้านหน้า (หันไปทางเป้า) แลกกับรัศมีที่กว้างขึ้น
+      const face = sk.halfCircle ? Math.atan2((target ? target.y : u.y + 1) - u.y, (target ? target.x : u.x) - u.x) : 0;
+      vfx(state, sk.halfCircle
+        ? { kind: "cone", x: u.x, y: u.y, r: rEff, ang: face, half: Math.PI / 2, color: aCol, dur: 0.6 }
+        : { kind: "shock", x: u.x, y: u.y, r: rEff, color: aCol, dur: 0.6 });
+      vfx(state, { kind: "flash", x: u.x, y: u.y, r: rEff * 0.6, color: aCol, dur: 0.28 });
+      const rr = Math.max(0, sk.rank - 1);
       for (const e of enemiesOf(state, u)) {
-        if (dist(u, e) <= rEff + e.radius) {
-          edgeDamage(state, u, e, power, sk.radius + e.radius, !!sk.magic);
-          if (sk.slow) addBuff(e, { type: "slow", v: sk.slow, until: state.t + sk.dur }, state.t);
-          if (sk.blind) addBuff(e, { type: "blind", v: 1, until: state.t + sk.blind[Math.max(0, sk.rank - 1)] }, state.t);
-          if (u.champ.doubleTrouble) applyDamage(state, u, e, 20 + 0.3 * u.bonusAd, false);
+        if (dist(u, e) > rEff + e.radius) continue;
+        if (sk.halfCircle) {
+          let d = Math.atan2(e.y - u.y, e.x - u.x) - face;
+          while (d > Math.PI) d -= Math.PI * 2;
+          while (d < -Math.PI) d += Math.PI * 2;
+          if (Math.abs(d) > Math.PI / 2) continue;
         }
+        edgeDamage(state, u, e, power, sk.radius + e.radius, !!sk.magic);
+        if (sk.slow) addBuff(e, { type: "slow", v: sk.slow, until: state.t + sk.dur }, state.t);
+        if (sk.slowByRank) addBuff(e, { type: "slow", v: sk.slowByRank[rr], until: state.t + (sk.slowDur || 2) }, state.t);
+        if (sk.blind) addBuff(e, { type: "blind", v: 1, until: state.t + sk.blind[rr] }, state.t);
+        if (sk.stunByRank) addBuff(e, { type: "stun", v: 1, until: state.t + sk.stunByRank[rr] }, state.t);
+        if (u.champ.doubleTrouble) applyDamage(state, u, e, 20 + 0.3 * u.bonusAd, false);
       }
       break;
     }
@@ -90,7 +108,7 @@ function fireSkillEffect(state, u, sk, target, prec) {
         grantShield(u, skillHeal(u, sk) + (sk.badRatio || 0) * u.bonusAd + (sk.bonusHpRatio || 0) * u.bonusHp);
         u.buffs.push({ type: "shield", v: 1, until: state.t + (sk.durByRank ? sk.durByRank[r] : sk.dur) });
       }
-      if (sk.slowImmune) { u.slowImmuneUntil = state.t + sk.dur; }
+      if (sk.slowImmune) { u.slowImmuneUntil = state.t + (sk.slowImmuneDur || sk.dur); }
       if (sk.flying) addBuff(u, { type: "flying", v: 1, until: state.t + (sk.durByRank ? sk.durByRank[r] : sk.dur) }, state.t);
       if (sk.asBuff) u.buffs.push({ type: "as", v: sk.asBuff[r], until: state.t + sk.dur });
       if (sk.msBuff) u.buffs.push({ type: "ms", v: sk.msBuff[r], until: state.t + sk.dur });
@@ -101,8 +119,13 @@ function fireSkillEffect(state, u, sk, target, prec) {
       vfx(state, { kind: "beam", x: u.x, y: u.y, x2: target.x, y2: target.y, w: 10, color: "229,72,77" });
       let dmgOut = power;
       if (sk.upPctMaxHp && u.upgrades.includes("Q")) dmgOut += target.maxHp * sk.upPctMaxHp;
+      // Flintlock Shot ติดคริและออนฮิตได้เหมือนออโต้ · คริคืนทองโจรสลัดเป็นสองเท่า
+      const qCrit = !!sk.canCrit && (u.crit || 0) > 0 && u.rng() < u.crit;
+      if (qCrit) dmgOut *= 1.75 + (u.critDmg || 0);
       applyDamage(state, u, target, dmgOut, !!sk.magic);
-      if (sk.bountyOnHit) u.bountyGold += sk.bountyOnHit;
+      if (sk.canOnHit) { onAutoLanded(state, u, target); marksmanOnHit(state, u, target); }
+      // สเปคใหม่: Q ไม่ให้เงินจากการโดนแล้ว ให้เฉพาะตอนคริเท่านั้น
+      if (qCrit && sk.bountyOnCrit) u.bountyGold += sk.bountyOnCrit;
       if (sk.shredByRank) addBuff(target, { type: "shred", v: sk.shredByRank[Math.max(0, sk.rank - 1)], until: state.t + sk.shredDur }, state.t);
       if (sk.knockback) {
         const kd = dist(u, target) || 1;
@@ -439,24 +462,19 @@ function fireSkillEffect(state, u, sk, target, prec) {
       const cx = u.x + nx * Math.min(dd, sk.range);
       const cy = u.y + ny * Math.min(dd, sk.range);
       const impactDelay = 0.75;
-      if (!u.upgrades.includes("E")) {
-        // one cannonball, straight down on the target
-        state.zones.push({ x: cx, y: cy, r: sk.radius, at: state.t + impactDelay,
-          ownerId: u.id, team: u.team, dmg: power, magic: false, skill: sk });
-        vfx(state, { kind: "ring", x: cx, y: cy, r: sk.radius, color: "232,163,61", dur: impactDelay });
-      } else {
-        // three shots in a triangle — one corner always guards the approach behind C.HOOK
-        const perp = { x: -ny, y: nx };
-        const spots = [
-          { x: cx, y: cy },
-          { x: cx + perp.x * 180, y: cy + perp.y * 180 },
-          { x: u.x - nx * 220, y: u.y - ny * 220 },
-        ];
-        for (const s of spots) {
-          state.zones.push({ x: s.x, y: s.y, r: sk.upRadius, at: state.t + impactDelay,
-            ownerId: u.id, team: u.team, dmg: power, magic: false, skill: sk });
-          vfx(state, { kind: "ring", x: s.x, y: s.y, r: sk.upRadius, color: "232,163,61", dur: impactDelay });
-        }
+      // อัพเกรดแล้วยังเป็นลูกเดียว แต่วงกว้างขึ้น และโดนใครก็ได้ความเร็วเดินที่ค่อยๆ จาง
+      const up = u.upgrades.includes("E");
+      const rad = up ? sk.upRadius : sk.radius;
+      state.zones.push({ x: cx, y: cy, r: rad, at: state.t + impactDelay,
+        ownerId: u.id, team: u.team, dmg: power, magic: false, skill: sk,
+        msGain: up ? sk.upMs : 0, msDur: sk.upMsDur });
+      vfx(state, { kind: "ring", x: cx, y: cy, r: rad, color: "232,163,61", dur: impactDelay });
+      // ยิงปืนใหญ่ลงที่ไหนก็ได้ — ตัวคนยิงได้โล่กับความเร็วเดินทันทีเสมอ
+      if (sk.selfShield) {
+        grantShield(u, sk.selfShield * (u.bonusAd || 0));
+        u.buffs.push({ type: "shield", v: 1, until: state.t + (sk.selfDur || 3) });
+        addBuff(u, { type: "ms", v: sk.selfMs || 0, until: state.t + (sk.selfDur || 3) }, state.t);
+        vfx(state, { kind: "aura", id: u.id, r: u.radius + 26, color: "232,163,61", dur: sk.selfDur || 3 });
       }
       break;
     }
@@ -479,6 +497,61 @@ function fireSkillEffect(state, u, sk, target, prec) {
       u.lastStandKills = u.kills;
       vfx(state, { kind: "aura", id: u.id, r: u.radius + 44, color: "229,72,77", dur: 8 });
       pushLog(state, tr("{0} {1} ไม่ยอมล้ม", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+      break;
+    }
+    case "teaGarden": {
+      castTeaGarden(state, u, sk, missX, missY);
+      break;
+    }
+    case "allyBlink": {
+      castAllyBlink(state, u, sk);
+      break;
+    }
+    case "wonderland": {
+      castWonderland(state, u, sk, missX, missY);
+      break;
+    }
+    case "guardBurst": {
+      castGuardBurst(state, u, sk);
+      break;
+    }
+    case "dismissal": {
+      castDismissal(state, u, sk, target);
+      break;
+    }
+    case "rangeCharge": {
+      // ชาร์จเพื่อเพิ่ม "ระยะ" ไม่ใช่ดาเมจ — ระหว่างชาร์จเดินช้าลง แต่ยังเดินได้
+      u.charging = { skill: sk, start: state.t, target: target.id, rangeCharge: true, prec };
+      break;
+    }
+    case "coneKnock": {
+      const baseAng = Math.atan2(target.y - u.y, target.x - u.x);
+      const half = ((sk.angle || 60) * Math.PI) / 180 / 2;
+      vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.range, ang: baseAng, half, color: "176,140,255" });
+      for (const e of enemiesOf(state, u)) {
+        const dd = dist(u, e);
+        if (dd > sk.range + e.radius) continue;
+        const ea = Math.atan2(e.y - u.y, e.x - u.x);
+        const diff = Math.abs(((ea - baseAng + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+        if (diff > half) continue;
+        applyDamage(state, u, e, power, !!sk.magic);
+        // ผลักถอยหลัง + สตันสั้นๆ และตัดจังหวะพุ่งที่กำลังวิ่งอยู่
+        const kd = dd || 1;
+        e.x = clamp(e.x + ((e.x - u.x) / kd) * sk.knockback, e.radius, ARENA_W - e.radius);
+        e.y = clamp(e.y + ((e.y - u.y) / kd) * sk.knockback, e.radius, ARENA_H - e.radius);
+        if (sk.interrupt) { e.dashing = null; e.charging = null; e.grabbing = null; }
+        addBuff(e, { type: "stun", v: 1, until: state.t + (sk.stun || 0.35) }, state.t);
+        // เส้นลากบอกว่าถูกผลักจากไหนไปไหน
+        vfx(state, { kind: "trail", x: e.x - ((e.x - u.x) / kd) * sk.knockback, y: e.y - ((e.y - u.y) / kd) * sk.knockback,
+          x2: e.x, y2: e.y, color: "176,140,255", dur: 0.45 });
+      }
+      break;
+    }
+    case "meteorStorm": {
+      // ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ตำแหน่งศัตรูทุกคนเป็นระลอก
+      const r = Math.max(0, sk.rank - 1);
+      u.channeling = { skill: sk, left: sk.waves[r], next: state.t, range: sk.rangeByRank[r] };
+      pushLog(state, tr("{0} {1} เปิดประตูมิติ", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
       break;
     }
     case "chargedBeam": {

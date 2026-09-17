@@ -25,6 +25,9 @@ export function deriveStats(unitDef) {
   let adMul = 1;
   let crit = 0;
   let critDmg = 0;        // โบนัสดาเมจคริ บวกจากฐาน +75%
+  let arPen = 0;         // เจาะเกราะแบบ flat
+  let mrPen = 0;         // เจาะต้านเวทแบบ flat (แยกจากเจาะเกราะแล้ว)
+  let slowResist = 0;    // ต้านสโลว์ (ลดผลของสโลว์ที่โดน)
   let armorPenPct = 0;    // เจาะเกราะเป็น %
   let dmgAmpHighHp = 0;   // เลือดเยอะแล้วตีแรงขึ้นทุกชนิด
   let apMul = 1;
@@ -34,7 +37,20 @@ export function deriveStats(unitDef) {
   let itemHaste = 0;    // Item Haste — separate, rare stat for item actives/passives only
   let pen = 0;          // Adaptive Penetration (flat, pre-mitigation reduction of the defender's resist)
   let mrPenPct = 0;     // เจาะต้านเวทเป็น % (คิดก่อน pen แบบ flat)
+  let hearth = null;
+  let idunn = null;
+  let gleipnir = null;
+  let centaurBleed = null;
+  let centaurStack = null;
+  let wendigo = null;
+  let lowHpVamp = null;
+  let healthyAmp = null;
+  let apolloSplit = null;
+  let cijNoTenacity = null;
+  let healAmpUniq = null;
+  let motFlatBase = 0;
   let ultCdr = 0;       // ลดคูลดาวน์ท่าไม้ตายเฉพาะ
+  let ultAh = 0;        // Ability Haste ที่ใช้ได้กับท่าไม้ตายอย่างเดียว
   let regenPct = 0;     // extra out-of-combat regen, % max HP per second
   // ฟิลด์กลไกสายเวท — เก็บออบเจกต์ตรงๆ เอาชิ้นแรกที่เจอ (ถือได้ชิ้นเดียวอยู่แล้ว)
   let apOnHit = null, spellblade = null, burnPctHp = null, spellSlow = null;
@@ -43,7 +59,9 @@ export function deriveStats(unitDef) {
   // ฟิลด์กลไกสายแอสซาซิน
   let dashStrike = null, ragePen = null, dashSpeed = null, tripleHit = null;
   let shieldBreak = null, executeHit = null, deathMark = null, denyDeath = null;
-  let adPerKill = null, resetOnKill = false;
+  let adPerKill = null, resetOnKill = false, resetOnce = false;
+  let ultSurge = null, abwSurge = null, sabCharge = null, sabDr = null;
+  let lifeBondShare = 0.10, reviveHp = 0.50, cleanseCd = 75, cleanseAll = false, goldPerTakedown = 0;
   let antihealOnDmg = null;  // { v, dur } — ตัดฮีลเป้าหมายเมื่อทำดาเมจใส่ (เอาอันที่แรงสุด)
   let healAmp = 0;      // % more effective healing, shielding, and vamp this unit RECEIVES
   let hors = 0;         // Heal & Shield Power — พลังฮีล/โล่ที่ยูนิตนี้ "จ่ายออก" ให้คนอื่น
@@ -77,9 +95,24 @@ export function deriveStats(unitDef) {
     if (it.msPct) msMul += it.msPct;
     if (it.ah) ah += it.ah;
     if (it.itemHaste) itemHaste += it.itemHaste;
-    if (it.pen) pen += it.pen;
+    if (it.slowResist) slowResist = Math.max(slowResist, it.slowResist);
+    if (it.arPen) arPen += it.arPen;
+    if (it.mrPen) mrPen += it.mrPen;
     if (it.mrPenPct) mrPenPct += it.mrPenPct;
+    if (it.hearth) hearth = it.hearth;
+    if (it.idunn) idunn = it.idunn;
+    if (it.gleipnir) gleipnir = it.gleipnir;
+    if (it.centaurBleed) centaurBleed = it.centaurBleed;
+    if (it.centaurStack) centaurStack = it.centaurStack;
+    if (it.wendigo) wendigo = it.wendigo;
+    if (it.lowHpVamp) lowHpVamp = it.lowHpVamp;
+    if (it.healthyAmp) healthyAmp = it.healthyAmp;
+    if (it.apolloSplit) apolloSplit = it.apolloSplit;
+    if (it.cijNoTenacity) cijNoTenacity = it.cijNoTenacity;
+    if (it.healAmpUniq) healAmpUniq = it.healAmpUniq;
+    if (it.motFlat) motFlatBase = it.motFlat;
     if (it.ultCdr) ultCdr += it.ultCdr;
+    if (it.ultAh) ultAh += it.ultAh;
     if (it.regenPct) regenPct += it.regenPct;
     if (it.healAmp) healAmp += it.healAmp;
     if (it.apOnHit && !apOnHit) apOnHit = it.apOnHit;
@@ -104,6 +137,16 @@ export function deriveStats(unitDef) {
     if (it.denyDeath && !denyDeath) denyDeath = it.denyDeath;
     if (it.adPerKill && !adPerKill) adPerKill = it.adPerKill;
     if (it.resetOnKill) resetOnKill = true;
+    if (it.resetOnce) resetOnce = true;
+    if (it.ultSurge && !ultSurge) ultSurge = it.ultSurge;
+    if (it.abwSurge && !abwSurge) abwSurge = it.abwSurge;
+    if (it.sabCharge) sabCharge = it.sabCharge;
+    if (it.sabDr && !sabDr) sabDr = it.sabDr;
+    if (it.lifeBondShare) lifeBondShare = it.lifeBondShare;
+    if (it.reviveHp) reviveHp = it.reviveHp;
+    if (it.cleanseCd) cleanseCd = it.cleanseCd;
+    if (it.cleanseAll) cleanseAll = true;
+    if (it.goldPerTakedown) goldPerTakedown += it.goldPerTakedown;
     if (it.antihealOnDmg && (!antihealOnDmg || it.antihealOnDmg.v > antihealOnDmg.v)) antihealOnDmg = it.antihealOnDmg;
     if (it.hors) hors += it.hors;
     if (it.tier3ScalingHors) hors += it.tier3ScalingHors * tier3Count;
@@ -128,8 +171,13 @@ export function deriveStats(unitDef) {
   ap *= apMul;
   moveSpeed *= msMul;
 
-  // MID adaptive force: boost the higher of AD/AP. No AP yet, so AD.
-  if (unitDef.lane === "MID") ad *= 1.1;
+  // พาสซีฟมิด — Adaptive Force เพิ่มตามเลเวล 3/5/8/12% ที่เลเวล 1/6/11/16
+  // เพิ่มให้ค่าที่สูงกว่าระหว่าง AD กับ AP เท่านั้น ไม่ได้เพิ่มทั้งคู่
+  if (unitDef.lane === "MID") {
+    const lv = unitDef.level || 1;
+    const adaptive = lv >= 16 ? 0.12 : lv >= 11 ? 0.08 : lv >= 6 ? 0.05 : 0.03;
+    if (ap > ad) ap *= 1 + adaptive; else ad *= 1 + adaptive;
+  }
 
   const st = STYLES[unitDef.style] || STYLES.POKE;
   if (styleDmg[st.key]) ad *= 1 + styleDmg[st.key];
@@ -140,8 +188,12 @@ export function deriveStats(unitDef) {
   // Wendigo's Voracious Claw: แต้มที่สะสมข้ามยกมาแล้ว กลายเป็น AD ติดตัว
   const wvcStacks = Math.min(adPerKill ? adPerKill.max : 0, unitDef.wvcStacks || 0);
   if (adPerKill && wvcStacks > 0) ad += adPerKill.per * wvcStacks;
-  // Lorla — Max HP ถาวรจากพาสซีฟ สะสมข้ามยกมาแล้ว
-  const sangHp = Math.min((ch.sanguine && ch.sanguine.max) || 0, unitDef.sangHp || 0);
+  // Laura — Max HP ถาวรจากพาสซีฟ สะสมข้ามยกมาแล้ว
+  // สแตกถาวรของ Laura — เก็บเป็นจำนวนสแตก แล้วคูณเป็นเลือดตอนคิดค่าสถานะ
+  const cap = (ch.sanguine && ch.sanguine.max) || 0;
+  const rawStacks = unitDef.sangHp || 0;
+  const sangStacks = cap > 0 ? Math.min(cap, rawStacks) : rawStacks;
+  const sangHp = sangStacks * ((ch.sanguine && ch.sanguine.hpPerStack) || 5);
   if (sangHp > 0) maxHp += sangHp;
 
   return {
@@ -163,13 +215,29 @@ export function deriveStats(unitDef) {
     auraAdPct,
     crit,
     critDmg,
+    arPen,
+    mrPen,
+    slowResist,
     armorPenPct,
     dmgAmpHighHp,
     ah,
     itemHaste,
     pen,
     mrPenPct,
+    hearth,
+    idunn,
+    gleipnir,
+    centaurBleed,
+    centaurStack,
+    wendigo,
+    lowHpVamp,
+    healthyAmp,
+    apolloSplit,
+    cijNoTenacity,
+    healAmpUniq,
+    motFlatBase,
     ultCdr,
+    ultAh,
     regenPct,
     healAmp,
     antihealOnDmg,
@@ -177,8 +245,11 @@ export function deriveStats(unitDef) {
     storedBurst, chainBolt, ultZone, meteor, cdReset, takedownHeal, giantSlayer,
     wvcStacks,
     sangHp,
+    sangStacks,
     dashStrike, ragePen, dashSpeed, tripleHit, shieldBreak, executeHit,
-    deathMark, denyDeath, adPerKill, resetOnKill,
+    deathMark, denyDeath, adPerKill, resetOnKill, resetOnce,
+    ultSurge, abwSurge, sabCharge, sabDr,
+    lifeBondShare, reviveHp, cleanseCd, cleanseAll, goldPerTakedown,
     hors,
     auraTags,
     omnivampFlat,
@@ -204,8 +275,10 @@ export function cdrFromItemHaste(ih) {
 
 export function fullCd(u, sk) {
   const base = sk.cdByRank ? sk.cdByRank[Math.max(0, sk.rank - 1)] : sk.cd;
+  // Ability Haste ของท่าไม้ตายบวกทับ AH ปกติ แล้วค่อยแปลงเป็นเปอร์เซ็นต์ลดคูลดาวน์
+  const ah = (u.ah || 0) + (sk && sk.ult ? (u.ultAh || 0) : 0);
   const ult = sk && sk.ult ? 1 - (u.ultCdr || 0) : 1;
-  return base * (1 - cdrFromAh(u.ah || 0)) * ult;
+  return base * (1 - cdrFromAh(ah)) * ult;
 }
 
 

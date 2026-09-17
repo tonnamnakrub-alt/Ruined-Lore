@@ -1,8 +1,7 @@
 import { tr } from "../i18n.js";
 import { DEFAULT_CAST } from "../data/tuning.js";
 import { grantShield } from "./damage.js";
-import { kindnessTick } from "./on-hit.js";
-import { dist, hasBuff, pushLog } from "./state-util.js";
+import { dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
 import { cdrFromAh, fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
 
@@ -34,7 +33,7 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
       continue;
     }
     state.castQueue.push({ u, sk: use, target, prec });
-    if (use.fragCost) { if (u.shadow > 0) u.shadow -= 1; else u.light -= 1; }
+    if (use.fragCost) spendFrag(u, u.shadow > 0);
     if (u.champ.id === "KAZEM") {
       const ready = u.kazemPassiveReadyAt == null || state.t >= u.kazemPassiveReadyAt;
       if (ready) {
@@ -58,7 +57,6 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
     if (use.castByMs) ct = Math.max(use.castByMs.min, use.castByMs.base - (u.apMs || 0) / use.castByMs.per);
     u.castLock = ct;
     u.casts += 1;
-    kindnessTick(state, u);
     pushLog(state, tr(
       "{0} {1} ใช้ {2} {3}{4}",
       u.team === "blue" ? "🔵" : "🔴",
@@ -80,9 +78,11 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   // Fragments are the one resource that does NOT tick away while you hold it, so
   // saving Light to reach Shadow is a real payoff — this is Discipline's best channel.
   if (sk.fragCost && !sk.isShadow) {
+    const fg = u.champ.fragments;
     const hpOk = u.hp / u.maxHp > 0.45;
     const willBank = u.rng() < 0.15 + 0.85 * (disc / 10);
-    if (hpOk && willBank && u.light < (u.champ.fragments.max - 1)) return false;
+    // เหลืออีกก้อนเดียวก็เต็มแล้ว — คนที่มีวินัยจะอั้นไว้เข้าร่างเงาแทนที่จะผลาญทิ้ง
+    if (hpOk && willBank && u.frag >= fg.shadowCost - fg.lightCost) return false;
   }
   const spotsIt = u.rng() < 0.15 + 0.85 * (aw / 10);
   const lethal = spotsIt && (sk.dmg || sk.slamPctMaxHp || sk.pctMaxHp) && estimate(u, sk, target) >= target.hp;
@@ -105,6 +105,9 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     if (sk.type === "globalStrike") return true;
     if (sk.type === "chargedBeam") return d < 2200;
     if (sk.type === "vampForm") return nearby >= 1 || d <= u.range * 1.5;
+    if (sk.type === "wonderland") return nearby >= 1 || d <= sk.range;
+    if (sk.type === "dismissal") return d <= sk.grabRange + 120;
+    if (sk.type === "meteorStorm") return nearby >= 1 || d <= sk.rangeByRank[Math.max(0, sk.rank - 1)];
     if (sk.type === "bloodStorm") return enemiesOf(state, u).some((e) => dist(u, e) <= sk.radius) || hpFrac < 0.5;
     if (sk.type === "absorbReflect") return nearby >= 2 || hpFrac < 0.55;
     if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
@@ -134,7 +137,15 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
     return d <= (sk.range || 900);
   }
-  // W ของ Lorla — ปกติใช้ตอนต้องขยับ ตอนเปิดอัลติใช้กระโดดเกาะเป้า
+  if (sk.type === "teaGarden") return d <= sk.range;
+  if (sk.type === "allyBlink") return hpFrac < 0.85 || alliesOf(state, u).some((a) => a.hp / a.maxHp < 0.8);
+  if (sk.type === "wonderland") return d <= sk.range;
+  if (sk.type === "guardBurst") return d <= u.range * 2.2 || hpFrac < 0.8;
+  if (sk.type === "dismissal") return d <= sk.grabRange + 120;
+  if (sk.type === "rangeCharge") return d <= sk.rangeMax;
+  if (sk.type === "coneKnock") return d <= sk.range + 60;
+  if (sk.type === "meteorStorm") return true;
+  // W ของ Laura — ปกติใช้ตอนต้องขยับ ตอนเปิดอัลติใช้กระโดดเกาะเป้า
   if (sk.type === "mistform") {
     if (u.bloodStorm) return d > u.range * 0.6 && d <= sk.blinkRange * 1.6;
     return d > u.range * 1.15 || hpFrac < 0.5;

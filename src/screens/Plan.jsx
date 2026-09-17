@@ -4,6 +4,8 @@ import { CHAMPIONS } from "../data/champions.js";
 import { CATEGORIES, ITEMS, ITEM_BY_ID, itemsInCat } from "../data/items.js";
 import { Shell, btn, card, mini } from "../ui/chrome.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
+import { recommendedFor } from "../game/shop-ai.js";
+import { itemDesc } from "../ui/recipe.jsx";
 
 export function PlanScreen(ctx) {
   const { startMatch, planCatState, planIdx, round, score, setPhase, setPlanCatState, setPlanIdx, setTeam, team, mode } = ctx;
@@ -23,6 +25,10 @@ export function PlanScreen(ctx) {
         if (cur.some((p) => p === item.id)) return x;
         return { ...x, buildPlan: [...cur, item.id] };
       }));
+    }
+    function fillFromRecommended() {
+      const rec = recommendedFor(c.champId, c.lane, cap);
+      setTeam((t) => t.map((x, i) => (i === planIdx ? { ...x, buildPlan: rec.items.map((it) => it.id) } : x)));
     }
     function removeFromPlan(itemId) {
       setTeam((t) => t.map((x, i) => (i === planIdx ? { ...x, buildPlan: (x.buildPlan || []).filter((p) => p !== itemId) } : x)));
@@ -74,6 +80,47 @@ export function PlanScreen(ctx) {
             </div>
           )}
         </div>
+
+        {/* ของที่แนะนำ — ใช้เกณฑ์เดียวกับที่บอทใช้คิด ให้เห็นภาพรวมของสายตัวนี้ */}
+        {c.champId ? (() => {
+          const rec = recommendedFor(c.champId, c.lane, cap);
+          return (
+            <div style={{ ...card(), marginBottom: 10, borderColor: C.blue }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 7 }}>
+                <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, color: C.blue, letterSpacing: 1 }}>
+                  {tr("ของที่แนะนำ")}
+                </span>
+                <span style={{ fontSize: 10.5, color: C.dim }}>{rec.role}</span>
+                <button onClick={fillFromRecommended}
+                  style={{ marginLeft: "auto", ...mini(), width: "auto", padding: "0 10px", fontSize: 10.5, color: C.blue }}>
+                  {tr("ใช้ชุดนี้ทั้งชุด")}
+                </button>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                {rec.items.map((it, i) => {
+                  const inPlan = plan.includes(it.id);
+                  return (
+                    <button key={it.id} onClick={() => (inPlan ? removeFromPlan(it.id) : addToPlan(it))}
+                      title={itemName(it) + " · " + it.cost + "g\n" + itemDesc(it)}
+                      style={{
+                        background: inPlan ? "#132235" : C.panel2, color: inPlan ? C.blue : C.ink,
+                        border: `1px solid ${inPlan ? C.blue : C.line}`, borderRadius: 5,
+                        padding: "6px 9px", fontSize: 11, cursor: "pointer", fontFamily: SANS,
+                        textAlign: "left", lineHeight: 1.45,
+                      }}>
+                      <span style={{ fontFamily: MONO, fontSize: 9.5, color: C.dim, marginRight: 5 }}>{i + 1}</span>
+                      {itemName(it)}
+                      <span style={{ fontFamily: MONO, fontSize: 9.5, color: C.gold, marginLeft: 6 }}>{it.cost}g</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div style={{ fontSize: 10, color: C.dim, marginTop: 7, lineHeight: 1.55 }}>
+                {tr("ชุดมาตรฐานของสายนี้ ไม่ได้คิดเรื่องแก้ทางทีมตรงข้าม — เอาเมาส์ชี้เพื่อดูค่าสถานะ")}
+              </div>
+            </div>
+          );
+        })() : null}
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 8 }}>
           {CATEGORIES.map((k) => (

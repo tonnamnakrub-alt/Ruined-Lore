@@ -1,10 +1,10 @@
 import { chromium } from "playwright";
-const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+const b = await chromium.launch();
 const errs = [];
 const p = await b.newPage({ viewport: { width: 1280, height: 950 } });
 p.on("pageerror", (e) => errs.push("ERR: " + e.message));
 p.on("console", (m) => { if (m.type() === "error") errs.push("C: " + m.text()); });
-await p.goto("file:///home/claude/sideline/sideline.html");
+await p.goto(new URL("ruined-lore.html", import.meta.url).href);
 await p.waitForTimeout(400);
 const btns = () => p.evaluate(() => [...document.querySelectorAll("button")].map((b) => b.innerText.replace(/\s+/g, " ").trim()));
 const ct = async (re, wt = 300) => {

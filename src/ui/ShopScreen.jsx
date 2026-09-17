@@ -1,7 +1,7 @@
 import { itemName, tr } from "../i18n.js";
 import React from "react";
 import { CATEGORIES, ITEMS, ITEM_BY_ID, buyBlockedReason, effectiveCost, itemsInCat } from "../data/items.js";
-import { btn, mini, slot } from "./chrome.jsx";
+import { ItemSlot, btn, mini, slot } from "./chrome.jsx";
 import { ItemDetail, ItemGrid, ItemSearch, itemMatches } from "./ItemPanel.jsx";
 import { TwoPane } from "./kit.jsx";
 import { RecipeNode, buildRecipeTree } from "./recipe.jsx";
@@ -40,7 +40,11 @@ export function ShopScreen({
 
   let detail = <div style={{ fontSize: 11.5, color: C.dim, padding: 14 }}>{tr("ไม่เจอไอเทมที่ตรงกับคำค้น")}</div>;
   if (it) {
-    const owned = c.items.some((x) => x.id === it.id);
+    // ถือซ้ำไม่ได้เฉพาะของใหญ่ Tier 3 · ของเริ่มเกม · รองเท้า
+    // ชิ้นส่วน Tier 1/2 ถือกี่ชิ้นก็ได้ ปุ่มหลักจึงต้องเป็น "ซื้อ" เสมอ แล้วแยกปุ่มขายคืนไว้ต่างหาก
+    const copies = c.items.filter((x) => x.id === it.id).length;
+    const exclusive = it.tier === 3 || it.cat === "START" || it.kind === "boots";
+    const owned = exclusive && copies > 0;
     const reason = owned ? null : buyBlockedReason(c, it);
     const eff = effectiveCost(c.items, it);
     const can = !owned && !reason;
@@ -72,6 +76,15 @@ export function ShopScreen({
           <div style={{ fontSize: 10.5, color: C.gold, marginTop: 4, textAlign: "center" }}>
             {tr("ใช้ชิ้นส่วนที่มีอยู่ ลดไป {0}g", it.cost - eff)}
           </div>
+        ) : null}
+        {!exclusive && copies > 0 ? (
+          <button
+            onClick={() => onSell(it)}
+            style={{
+              ...btn("transparent"), border: `1px solid ${C.line}`, color: C.green,
+              fontFamily: MONO, fontSize: 11.5, marginTop: 5, cursor: "pointer",
+            }}
+          >{tr("ถืออยู่ {0} ชิ้น · ขายคืน +{1}g", copies, sellValue(it))}</button>
         ) : null}
       </div>
     );
@@ -123,7 +136,7 @@ export function ShopScreen({
   return (
     <div
       style={{
-        position: "fixed", inset: 0, background: "rgba(6,10,20,.97)", zIndex: 50,
+        position: "fixed", inset: 0, background: "#070C16", zIndex: 50,
         display: "flex", flexDirection: "column", fontFamily: SANS,
       }}
     >
@@ -142,22 +155,23 @@ export function ShopScreen({
               const owned = c.items.filter((x) => !(freeBoot && x.kind === "boots"));
               const x = owned[i];
               return (
-                <div
+                <ItemSlot
                   key={i}
-                  onClick={() => {
-                    if (!x) return;
+                  item={x}
+                  onClick={(item) => {
                     setShopQuery("");
-                    setCat(x.cat);
-                    setShopItem(x.id);
+                    setCat(item.cat);
+                    setShopItem(item.id);
                   }}
-                  style={{ ...slot(!!x), cursor: x ? "pointer" : "default" }}
-                >{x ? itemName(x) : ""}</div>
+                />
               );
             })}
             {freeBoot && (
-              <div style={{ ...slot(hasBoots), borderStyle: "dashed" }}>
-                {hasBoots ? itemName(c.items.find((x) => x.kind === "boots")) : tr("ช่องรองเท้าฟรี")}
-              </div>
+              <ItemSlot
+                dashed
+                item={c.items.find((x) => x.kind === "boots")}
+                empty={tr("ช่องรองเท้าฟรี")}
+              />
             )}
           </div>
           <div style={{ fontSize: 10, color: C.dim, marginTop: 6 }}>{tr(
@@ -203,7 +217,11 @@ export function ShopScreen({
                 headline={headline}
                 selectedId={it ? it.id : null}
                 onPick={pick}
-                badgeOf={(x) => (c.items.some((y) => y.id === x.id) ? "✓" : (favs || []).includes(x.id) ? "★" : null)}
+                badgeOf={(x) => {
+                  if ((favs || []).includes(x.id)) return "★";
+                  const n = c.items.filter((y) => y.id === x.id).length;
+                  return n > 1 ? "\u00d7" + n : n ? "\u2713" : null;
+                }}
               />
             }
             right={detail}

@@ -286,6 +286,14 @@ function actionClause(sk) {
     case "lastStand": return tr("เข้าสู่โหมดยืนหยัด ตายยากขึ้นชั่วคราว");
     case "vampForm": return tr("แปลงเป็นร่างแวมไพร์");
     case "mistform": return tr("สลายร่างเป็นไอหมอก เร่งฝีเท้าและเดินทะลุยูนิตได้ · ระหว่างเปิดอัลติเปลี่ยนเป็นวาป {0} หน่วย", sk.blinkRange || 0);
+    case "teaGarden": return tr("วางโต๊ะน้ำชาลงพื้นในระยะ {0} วงกว้าง {1} หน่วย ฮีลเพื่อนและตอดศัตรูเป็นจังหวะ", r || 0, rad || 0);
+    case "allyBlink": return tr("มุดไปโผล่ข้างเพื่อนในระยะ {0} แล้วแจกโล่รอบจุดที่โผล่ {1} หน่วย", r || 0, rad || 0);
+    case "wonderland": return tr("กางอาณาเขตกระจกลงพื้นในระยะ {0} วงกว้าง {1} หน่วย", r || 0, rad || 0);
+    case "guardBurst": return tr("กางโล่ให้ตัวเอง แล้วถ้าโล่ยังไม่แตกจะสะบัดคลื่นรอบตัวรัศมี {0} หน่วย", sk.radius || 0);
+    case "dismissal": return tr("จับศัตรูในระยะ {0} แล้วเหวี่ยงทุ่มไปไกลสุด {1} หน่วย ระเบิดที่จุดตกรัศมี {2}", sk.grabRange || 0, sk.throwRange || 0, sk.radius || 0);
+    case "rangeCharge": return tr("ชาร์จค้างแล้วยิงลำแสงทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย", sk.rangeMin || 0, sk.rangeMax || 0);
+    case "coneKnock": return tr("กระแทกคลื่นเป็นกรวยด้านหน้าไกล {0} หน่วย", r || 0);
+    case "meteorStorm": return tr("ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ศัตรูทุกคนบนสนามทีละระลอก");
     case "bloodStorm": return tr("แผ่พายุโลหิตรอบตัวรัศมี {0} หน่วย กัดทุกคนในวงทุก {1} วิ", rad || 0, sk.every || 0.5);
     case "absorbReflect": return tr("กางเกราะดูดซับดาเมจ แล้วสะท้อนกลับ");
     case "pulse": return tr("ปล่อยคลื่นเป็นจังหวะรอบตัวรัศมี {0} หน่วย", rad || 0);
@@ -304,6 +312,8 @@ function timingClause(sk) {
   if (sk.delay) out.push(tr("หน่วง {0} วิก่อนลง", sk.delay));
   if (sk.airborne || sk.airTime) out.push(tr("ลอยอยู่กลางอากาศ {0} วิ", sk.airborne || sk.airTime));
   if (sk.maxCharge) out.push(tr("ชาร์จได้ถึง {0} วิ", sk.maxCharge));
+  if (sk.waves) out.push(tr("ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ", sk.waves[Math.max(0, (sk.rank || 1) - 1)], sk.every));
+  if (sk.telegraph) out.push(tr("มีวงเตือนบนพื้นก่อนตก {0} วิ", sk.telegraph));
   return out;
 }
 
@@ -313,6 +323,7 @@ function ccClause(sk) {
   const ku = sk.knockup || (Array.isArray(sk.knockupByRank) ? sk.knockupByRank[0] : 0);
   if (ku) out.push(tr("ลอยศัตรู (Knock Up) {0} วิ", ku));
   if (sk.knockback) out.push(tr("ผลักศัตรูออกไป {0} หน่วย", sk.knockback));
+  if (sk.interrupt) out.push(tr("ตัดจังหวะการพุ่งของศัตรู"));
   if (sk.stun || sk.stunMin) out.push(tr("สตัน {0} วิ", sk.stun || sk.stunMin));
   if (sk.landStun) out.push(tr("ตอนลงพื้นสตันอีก {0} วิ", sk.landStun));
   if (sk.root) out.push(tr("ตรึงเท้าติดพื้น {0} วิ", sk.root));
@@ -322,6 +333,11 @@ function ccClause(sk) {
   const slowV = Array.isArray(slow) ? slow[0] : slow;
   if (slowV) out.push(tr("สโลว์ {0}%{1}", Math.round(slowV * 100), sk.slowDur ? tr(" นาน {0} วิ", sk.slowDur) : ""));
   if (sk.silence) out.push(tr("ปิดสกิล {0} วิ", sk.silence));
+  if (sk.stunByRank) out.push(tr("สตัน {0} วิ", sk.stunByRank[Math.max(0, (sk.rank || 1) - 1)]));
+  const poly = Array.isArray(sk.polymorph) ? sk.polymorph[Math.max(0, (sk.rank || 1) - 1)] : sk.polymorph;
+  if (poly) out.push(tr("สาปเป็นกระต่าย {0} วิ — ใช้สกิลไม่ได้ ตีไม่ได้ และเดินช้าลง {1}%", poly, Math.round((sk.polySlow || 0) * 100)));
+  if (sk.silenceByRank) out.push(tr("ใบ้ {0} วิ", sk.silenceByRank[Math.max(0, (sk.rank || 1) - 1)]));
+  if (sk.suppress) out.push(tr("ระงับการกระทำ {0} วิ ระหว่างยกตัวขึ้น", sk.suppress));
   const cm = Array.isArray(sk.charm) ? sk.charm[0] : sk.charm;
   if (cm) {
     out.push(tr("สะกดจิต (Charm) {0} วิ — ทำอะไรไม่ได้ แล้วเดินเข้าหาเราช้าลง {1}%",
@@ -356,7 +372,15 @@ function extraClause(sk) {
   if (sk.flying) out.push(tr("ข้ามสิ่งกีดขวางได้"));
   if (sk.charges > 1) out.push(tr("เก็บชาร์จได้ {0} ครั้ง", sk.charges));
   if (sk.cdRefundOnHit) out.push(tr("โดนแล้วคืนคูลดาวน์ {0}%", Math.round(sk.cdRefundOnHit * 100)));
-  if (sk.selfMaxHp) out.push(tr("ดาเมจบวกเพิ่มตาม Max HP ของเราเอง {0}%", +(sk.selfMaxHp * 100).toFixed(1)));
+  if (sk.healAp != null) out.push(tr("ฮีลเพื่อนที่ยืนในวงทุก {0} วิ ตลอด {1} วิ", sk.every, sk.dur));
+  if (sk.shieldAp != null) out.push(tr("แจกโล่ให้ตัวเองและเพื่อนรอบจุดที่โผล่ นาน {0} วิ", sk.shieldDur));
+  if (sk.burstAt) out.push(tr("สะบัดออกหลังกางโล่ {0} วิ ถ้าโล่ยังเหลืออยู่", sk.burstAt));
+  if (sk.aoeDmg) out.push(tr("ศัตรูตัวอื่นที่จุดตกก็โดนด้วย"));
+  if (sk.selfRoot) out.push(tr("ตรึงตัวเองระหว่างร่าย โดน Hard CC แล้วยกเลิกทันที"));
+  if (sk.selfSlow) out.push(tr("ระหว่างชาร์จตัวเองช้าลง {0}%", Math.round(sk.selfSlow * 100)));
+  if (sk.selfBonusHp) out.push(tr("ดาเมจบวกเพิ่มตาม Bonus HP ของเราเอง {0}%", +(sk.selfBonusHp * 100).toFixed(1)));
+  if (sk.selfStacks) out.push(tr("ดาเมจบวกเพิ่ม {0} ต่อสแตกพาสซีฟที่สะสมไว้", sk.selfStacks));
+  if (sk.msRatio) out.push(tr("ดาเมจบวกเพิ่ม {0} ต่อความเร็วเดิน 1 หน่วยที่เกินค่าฐานของตัวเอง", sk.msRatio));
   if (sk.regen) out.push(tr("มีศัตรูอยู่ในวง เวลาไม่เดิน แถมคืนเวลาให้ {0} วิต่อจังหวะ (ไม่เกิน {1} วิ)", sk.regen, sk.dur));
   return out;
 }

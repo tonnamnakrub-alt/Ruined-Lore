@@ -1,6 +1,6 @@
 import { tr } from "../i18n.js";
 import React from "react";
-import { CHAMPIONS } from "../data/champions.js";
+import { CHAMPIONS, playsLane } from "../data/champions.js";
 import { LANES } from "../data/constants.js";
 import { hashStr } from "../engine/util.js";
 import { Shell, btn } from "../ui/chrome.jsx";
@@ -8,20 +8,14 @@ import { Empty, InfoRow, Panel, Portrait, Tabs, Tile, TileGrid, TwoPane } from "
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 
-// ราคาสมมติ คงที่ต่อหนึ่งตัวละคร (ยังไม่มีระบบเงินจริง)
-export function priceOf(id) {
-  return 900000 + (hashStr("price:" + id) % 900000);
-}
-
-const money = (n) => n.toLocaleString("en-US");
-
-// ---------------- CHARACTER STORE ----------------
+// ---------------- CHARACTER INFO ----------------
 export function StoreScreen(ctx) {
   const { score, mode, wide, setPhase, storeLane, setStoreLane, inspectId, setInspectId, openSkill } = ctx;
 
   const lane = storeLane || "TOP";
-  const list = Object.values(CHAMPIONS).filter((c) => c.lane === lane);
-  const ch = CHAMPIONS[inspectId] && CHAMPIONS[inspectId].lane === lane
+  // ตัวที่มีเลนรอง (เช่น KAZEM/LUCH ลงป่าได้) ต้องโผล่ในแท็บนั้นด้วย
+  const list = Object.values(CHAMPIONS).filter((c) => playsLane(c, lane));
+  const ch = CHAMPIONS[inspectId] && playsLane(CHAMPIONS[inspectId], lane)
     ? CHAMPIONS[inspectId]
     : list[0];
 
@@ -39,7 +33,7 @@ export function StoreScreen(ctx) {
           />
         ))}
       </TileGrid>
-      <div style={{ fontSize: 10, color: C.dim, marginTop: 8, lineHeight: 1.5 }}>{tr("ตอนนี้ทุกตัวปลดล็อกให้เล่นฟรีหมด ราคาที่โชว์เป็นตัวอย่างหน้าร้านไว้ก่อน")}</div>
+      <div style={{ fontSize: 10, color: C.dim, marginTop: 8, lineHeight: 1.5 }}>{tr("หน้านี้ไว้ดูตัวละครและรายละเอียดสกิลเท่านั้น ไม่ได้มีไว้ซื้อ — ทุกตัวเล่นได้อยู่แล้ว")}</div>
     </Panel>
   );
 
@@ -87,29 +81,18 @@ export function StoreScreen(ctx) {
         </div>
       )}
 
-      <div style={{
-        display: "flex", alignItems: "center", gap: 8, background: "#1B1508",
-        border: `1px solid ${C.gold}`, borderRadius: 7, padding: "9px 10px", marginBottom: 8,
-      }}>
-        <span style={{ fontSize: 10, letterSpacing: 1.5, color: C.gold, fontWeight: 800 }}>PRICE</span>
-        <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 15, color: C.ink }}>
-          {money(priceOf(ch.id))} <span style={{ color: C.gold }}>$</span>
-        </span>
-      </div>
-
-      <button disabled style={{ ...btn("#121A2A"), color: C.dim, fontSize: 12, cursor: "default" }}>{tr("ยังไม่เปิดระบบเงิน — เล่นได้ทุกตัวอยู่แล้ว")}</button>
     </Panel>
   );
 
   return (
-    <Shell round={0} score={score} mode={mode} title="CHARACTER STORE" maxWidth={wide ? 1040 : 620} onBack={() => setPhase("MENU")}>
+    <Shell round={0} score={score} mode={mode} title="CHARACTER INFO" maxWidth={wide ? 1040 : 620} onBack={() => setPhase("MENU")}>
       <Tabs
         items={LANES.map((l) => ({ id: l, th: l }))}
         value={lane}
         onChange={(id) => { setStoreLane(id); setInspectId(null); }}
       />
       <TwoPane wide={wide} left={grid} right={info} />
-      <div style={{ fontSize: 10.5, color: C.dim, marginTop: 10, textAlign: "center", fontFamily: SANS }}>{tr("เลนที่โชว์คือ “เลนถนัด” ของตัวละคร — ในเกมจริงเอาไปลงเลนไหนก็ได้")}</div>
+      <div style={{ fontSize: 10.5, color: C.dim, marginTop: 10, textAlign: "center", fontFamily: SANS }}>{tr("ตัวที่ลงได้หลายเลนจะโผล่ในทุกแท็บที่ลงได้ — และในเกมจริงเอาไปลงเลนไหนก็ได้")}</div>
     </Shell>
   );
 }

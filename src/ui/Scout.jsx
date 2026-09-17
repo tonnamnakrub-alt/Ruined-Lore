@@ -1,7 +1,7 @@
 import { itemName, tr } from "../i18n.js";
 import React from "react";
 import { CHAMPIONS } from "../data/champions.js";
-import { mini, slot } from "./chrome.jsx";
+import { ItemSlot, mini } from "./chrome.jsx";
 import { C, MONO, SANS } from "./theme.js";
 import { Bar, Label } from "./widgets.jsx";
 
@@ -21,7 +21,7 @@ function visibleItems(c) {
 }
 
 // แถวเดียว = นักแข่งฝ่ายตรงข้ามหนึ่งคน
-function ScoutRow({ c, unit, onSkill }) {
+function ScoutRow({ c, unit, onSkill, onStats }) {
   const ch = CHAMPIONS[c.champId];
   const items = visibleItems(c);
   const val = itemValue(c);
@@ -34,6 +34,13 @@ function ScoutRow({ c, unit, onSkill }) {
         <span style={{ fontSize: 11, color: C.ink }}>{ch ? tr(ch.th) : ""}</span>
         <span style={{ fontFamily: MONO, fontSize: 11, color: C.ink }}>Lv{c.level}</span>
         <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 12, color: C.gold }}>{tr("ของ {0}g", val)}</span>
+        {onStats && c.champId ? (
+          <button onClick={() => onStats(c)} title={tr("ดูค่าสถานะทั้งหมด")}
+            style={{
+              background: C.panel2, border: `1px solid ${C.line}`, color: C.blue, borderRadius: 5,
+              padding: "3px 8px", fontSize: 10.5, cursor: "pointer", fontFamily: SANS,
+            }}>{tr("ค่าสถานะ")}</button>
+        ) : null}
       </div>
 
       <div style={{ fontSize: 10, color: C.dim, marginTop: 3 }}>
@@ -80,12 +87,14 @@ function ScoutRow({ c, unit, onSkill }) {
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} style={slot(!!items[i])}>{shortItem(items[i])}</div>
+          <ItemSlot key={i} item={items[i]} />
         ))}
         {c.lane === "ADC" && (
-          <div style={{ ...slot((c.items || []).some((x) => x.kind === "boots")), borderStyle: "dashed" }}>
-            {shortItem((c.items || []).find((x) => x.kind === "boots")) || tr("ช่องฟรี")}
-          </div>
+          <ItemSlot
+            dashed
+            item={(c.items || []).find((x) => x.kind === "boots")}
+            empty={tr("ช่องฟรี")}
+          />
         )}
       </div>
     </div>
@@ -93,7 +102,7 @@ function ScoutRow({ c, unit, onSkill }) {
 }
 
 // หน้าส่องทีมคู่แข่ง — เปิดได้ทั้งตอนเตรียมยกและระหว่างไฟต์
-export function ScoutPanel({ foe, team, fightState, onClose, onSkill }) {
+export function ScoutPanel({ foe, team, fightState, onClose, onSkill, onStats }) {
   const foeVal = (foe || []).reduce((s, c) => s + itemValue(c), 0);
   const myVal = (team || []).reduce((s, c) => s + itemValue(c), 0);
   const avg = (list) => (list && list.length ? (list.reduce((s, c) => s + c.level, 0) / list.length).toFixed(1) : "0");
@@ -138,6 +147,7 @@ export function ScoutPanel({ foe, team, fightState, onClose, onSkill }) {
               c={c}
               unit={fightState ? fightState.units.find((u) => u.team === "red" && u.lane === c.lane) : null}
               onSkill={onSkill}
+              onStats={onStats}
             />
           ))}
         </div>

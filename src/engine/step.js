@@ -1,17 +1,19 @@
 import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
-import { DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREAT_COOLDOWN, RETREAT_TIME, STYLES } from "../data/tuning.js";
+import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREAT_COOLDOWN, RETREAT_TIME, STYLES } from "../data/tuning.js";
 import { castSkills } from "./ai.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
 import { fireSnipe, resolveDash, startGrab, tickDashes, tickGrabs } from "./motion.js";
-import { consumeOnHit, gainIsolde, onAutoLanded, onSkillLanded } from "./on-hit.js";
-import { HARD_CC, addBuff, addBuffUnique, aliveOf, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx } from "./state-util.js";
+import { consumeOnHit, gainIsolde, kindnessTick, onAutoLanded, onSkillLanded } from "./on-hit.js";
+import { HARD_CC, addBuff, addBuffUnique, aliveOf, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx, addFrag, spendFrag, syncFrag, skillLabel } from "./state-util.js";
 import { cdrFromItemHaste, effStat, fullCd } from "./stats.js";
 import { tickSupportItems } from "./support.js";
 import { onMageCast, tickMageItems, tickMageZones } from "./mage.js";
 import { tickAssassin } from "./assassin.js";
-import { applyCharm, tickLorla } from "./lorla.js";
+import { applyCharm, tickLaura } from "./laura.js";
+import { tickHurls, tickKlaeder } from "./klaeder.js";
+import { applyPolymorph, tickGardens, tickMirrors } from "./alice.js";
 import { tickNewSystems, tickZonesAndSnipes } from "./systems.js";
 import { activeSkills, focusedOnMe, incomingThreat, pickTarget } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -65,6 +67,15 @@ export function step(state) {
     }
     u.buffs = u.buffs.filter((b) => b.until > state.t);
     if (!hasBuff(u, "shield")) u.shield = 0;
+    // โล่จากพาสซีฟ Isolde ไม่ได้หายทีเดียวตอนหมดเวลา แต่บางลงเรื่อยๆ ตลอด 5 วิ
+    if (u.isoShield) {
+      const iso = u.isoShield;
+      iso.amt = Math.min(iso.amt, u.shield);      // โดนตีกินไปแล้วเท่าไรก็ไม่ต้องหักซ้ำ
+      const left = state.t >= iso.until ? 0 : iso.granted * ((iso.until - state.t) / iso.dur);
+      const shave = Math.max(0, iso.amt - left);
+      if (shave > 0) { u.shield = Math.max(0, u.shield - shave); iso.amt -= shave; }
+      if (state.t >= iso.until || iso.amt <= 0) u.isoShield = null;
+    }
     for (const sk of u.skills) {
       if (sk.cdLeft > 0) sk.cdLeft -= dt;
       if (sk.ammoMax && sk.ammo < sk.ammoMax && sk.rechargeAt != null && state.t >= sk.rechargeAt) {
@@ -78,7 +89,7 @@ export function step(state) {
     // เพดานล่างกันความเร็วโจมตีติดลบ — 1/asEff ที่ติดลบจะทำให้ตีได้ทุกเฟรม
     u.asEff = Math.max(0.15, u.atkSpeed * (1 + buffSum(u, "as")));
     // AP/AH ที่บัฟเพิ่มได้ชั่วคราว (Saraswati's Flowing Veena) — คิดจากค่าฐานทุกเฟรม
-    u.ap = (u.baseAp || 0) + buffSum(u, "apFlat");
+    u.ap = ((u.baseAp || 0) + buffSum(u, "apFlat")) * (1 + buffSum(u, "apPct"));
     u.ah = (u.baseAh || 0) + buffSum(u, "ahFlat");
     let apMs = 0;
     if (u.champ.msPerAp) {
@@ -87,18 +98,44 @@ export function step(state) {
       if (own) apMs *= own.selfBoost;
     }
     u.apMs = apMs;
-    const slowResist = (u.hasItem("toh") ? 0.5 : 0) || (u.pnbSlowResistUntil != null && state.t < u.pnbSlowResistUntil ? 0.25 : 0);
+    const slowResist = Math.max(u.slowResist || 0, (u.pnbSlowResistUntil != null && state.t < u.pnbSlowResistUntil ? 0.25 : 0), (u.cbcSlowResist || 0));
     // Vow of Lyonesse: slow immune only lasts as long as the shield it came with does
     const shieldedImmune = u.slowImmuneUntil != null && state.t < u.slowImmuneUntil && u.shield > 0;
     const slowMul = (hasBuff(u, "slowimmune") || shieldedImmune) ? 1 : Math.max(0.2, 1 - buffSum(u, "slow") * (1 - slowResist));
     u.msEff = (u.moveSpeed + apMs + buffSum(u, "msFlat")) * (1 + buffSum(u, "ms", state.t)) * slowMul;
-    // Charm (Lorla E) — ทำอะไรไม่ได้เหมือนโดนสตัน แต่ยัง "เดิน" ได้ ต่างจาก root
+    // Charm (Laura E) — ทำอะไรไม่ได้เหมือนโดนสตัน แต่ยัง "เดิน" ได้ ต่างจาก root
     u.charmed = u.buffs.find((b) => b.type === "charm" && b.until > state.t) || null;
     const locked = hasBuff(u, "stun") || hasBuff(u, "fear");
     u.stunned = locked || !!u.charmed;
+    u.silenced = hasBuff(u, "silence");
+    u.disarmed = hasBuff(u, "disarm");
     u.rooted = locked || hasBuff(u, "root") || hasBuff(u, "invuln");
-    if (u.champ.fragments && state.t - u.lastCombatAt > u.champ.fragments.oocSeconds && !u.shadow) {
-      u.shadow = 1; u.light = 0;
+    u.drAll = 0;
+    if (u.champ.fragments) {
+      const fg = u.champ.fragments;
+      // ออกจากคอมแบตนานพอ = เติมเต็มหลอด · ไม่งั้นค่อยๆ คืนตามเร่งสกิล (AH)
+      if (state.t - u.lastCombatAt > fg.oocSeconds) addFrag(u, fg.max);
+      else if (u.ah > 0) addFrag(u, (u.ah / fg.perAh) * (fg.perAhRate || 1) * dt);
+      else syncFrag(u);
+      // Morning Star — ถือพลังร่างแสงอยู่ ทุก 10 หน่วยกันดาเมจได้ 5%
+      // ส่วนร่างเงาได้ความเร็วเดินตอนวิ่งเข้าหาศัตรู
+      if (u.shadow <= 0 && fg.lightDrPer10) {
+        u.drAll = Math.floor((u.frag || 0) / 10) * fg.lightDrPer10;
+      } else if (u.shadow > 0 && fg.darkChaseMs) {
+        const tg = state.units.find((x) => x.id === u.targetId);
+        if (tg && tg.alive && tg.team !== u.team && dist(u, tg) > u.range) {
+          addBuffUnique(u, "darkchase", { type: "ms", v: fg.darkChaseMs, until: state.t + 0.25 }, state.t);
+        }
+      }
+    }
+    // Cricket's Whisper — เต้นทุก 1 วิ ไม่ผูกกับการตีหรือร่ายอีกแล้ว
+    if (u.champ.kindness) {
+      const every = u.champ.kindness.every || 1;
+      if (u.kindNext == null) u.kindNext = state.t + every;
+      if (state.t >= u.kindNext) {
+        u.kindNext = state.t + every;
+        for (const a of state.units) if (a.alive && a.team === u.team) kindnessTick(state, u, a);
+      }
     }
     if (u.form && state.t > u.formUntil) { u.form = null; u.formSkills = null; }
     if (u.lastStand) {
@@ -127,7 +164,7 @@ export function step(state) {
     u.untargetable = hasBuff(u, "untargetable") || hasBuff(u, "invuln");
     if (u.sooRevive && state.t >= u.sooRevive.until) {
       const baseHp = u.champ.hp + u.champ.hpG * (u.level - 1);
-      u.hp = baseHp * 0.5;
+      u.hp = baseHp * (u.reviveHp != null ? u.reviveHp : 0.5);
       u.sooRevive = null;
       pushLog(state, tr("{0} {1} ฟื้นคืนชีพ", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
     }
@@ -162,8 +199,22 @@ export function step(state) {
       if (u.ironJohnStart == null) u.ironJohnStart = state.t;
       const stacks = Math.min(5, Math.floor((state.t - u.ironJohnStart) / 3));
       ironJohnBonus = stacks * 6;
-      ironJohnTen = stacks * 0.04;
+      // สเปคใหม่ตัด Tenacity ออกจากพาสซีฟชิ้นนี้ เหลือแค่เกราะ/ต้านเวทที่ไต่ขึ้น
+      ironJohnTen = 0;
       if (stacks >= 5) ironJohnMult = 1.1;
+    }
+
+    // Cuirass of the Bleeding Centaur: สะสมสแตกจากการทำหรือรับดาเมจ สูงสุด 20
+    // ครบ 20 แล้วได้ต้านสโลว์ 30% และ Tenacity 30% ไปจนจบไฟต์
+    let centaurAr = 0, centaurAd = 0;
+    if (u.centaurStack) {
+      const st2 = Math.min(u.centaurStack.max, u.cbcStacks || 0);
+      centaurAr = st2 * u.centaurStack.ar;
+      centaurAd = st2 * u.centaurStack.ad;
+      if (st2 >= u.centaurStack.max) {
+        u.cbcSlowResist = u.centaurStack.capSlowResist;
+        u.cbcTenacity = u.centaurStack.capTenacity;
+      }
     }
 
     // Pauldrons of the Nian Beast: stacks from dealing OR taking damage, up to 15,
@@ -183,16 +234,23 @@ export function step(state) {
       }
     }
 
-    u.tenacity = 1 - (1 - (u.baseTenacity || 0)) * (1 - ironJohnTen) * (1 - pnbTen);
+    u.tenacity = 1 - (1 - (u.baseTenacity || 0)) * (1 - ironJohnTen) * (1 - pnbTen) * (1 - (u.cbcTenacity || 0));
 
 
-    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus) * ironJohnMult);
+    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus + centaurAr + (u.weaveArmor || 0)) * ironJohnMult);
+    if (centaurAd) u.ad += centaurAd;
+    // Apollo's Sunlit Quiver: เลือด 50% ขึ้นไปได้ AD ก้อนใหญ่ · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือดแทน
+    if (u.apolloSplit) {
+      const healthy = u.hp / u.maxHp >= u.apolloSplit.hpAbove;
+      if (healthy) u.ad += u.apolloSplit.ad;
+      u.apolloVamp = healthy ? 0 : u.apolloSplit.omnivamp;
+    }
     if (buffSum(u, "ad")) u.ad = Math.round(u.ad * (1 + buffSum(u, "ad")));
     u.ad += buffSum(u, "adFlat");
     const mrBurst = buffSum(u, "mrburst");
     // Hel's Nether Domain ลดต้านเวทของคนที่ยืนในวง — คิดทีหลังสุด
     const mrShred = Math.min(0.6, buffSum(u, "mrshred"));
-    u.mr = Math.round((u.baseMr * (1 - shred) + mjolnirMr + ironJohnBonus + mrBurst) * ironJohnMult * (1 - mrShred));
+    u.mr = Math.round((u.baseMr * (1 - shred) + mjolnirMr + ironJohnBonus + mrBurst + centaurAr + (u.weaveMr || 0)) * ironJohnMult * (1 - mrShred));
 
   }
 
@@ -203,7 +261,8 @@ export function step(state) {
     tickSupportItems(state, u, dt);
     tickMageItems(state, u, dt);
     tickAssassin(state, u, dt);
-    tickLorla(state, u, dt);
+    tickLaura(state, u, dt);
+    tickKlaeder(state, u, dt);
     // Mirror of the Snow Queen: −25% attack speed to enemies within 400
     // ออร่าชนิดเดียวกันจากหลายคนไม่ทับกัน ใช้แท็กกลาง ไม่ใช่แท็กรายคน
     if (u.hasItem("msq")) {
@@ -212,22 +271,28 @@ export function step(state) {
         addBuffUnique(e, "msq", { type: "as", v: -0.25, until: state.t + 0.3 }, state.t);
       }
     }
-    // Prometheus' Hearth: burns enemies within 325 for 20 + 1.5% of the wearer's own max HP per second
-    if (u.hasItem("pmh")) {
-      for (const e of state.units) {
-        if (!e.alive || e.team === u.team || dist(u, e) > 325) continue;
-        state.dmgSrc = tr("ไอเทม Prometheus' Hearth");
-        applyDamage(state, u, e, (20 + 0.015 * u.maxHp) * DT, true, false);
-        state.dmgSrc = null;
+    // Prometheus' Hearth: เผาศัตรูในรัศมี 325 ครั้งละ 20 + 2.5% Max HP ตัวเอง ทุก 2 วินาที
+    // จ่ายเป็นก้อนทุกสองวินาที ไม่ใช่ทยอยต่อเฟรม จะได้ตรงกับที่เขียนไว้ในไอเทม
+    if (u.hearth) {
+      if (u.hearthNext == null) u.hearthNext = state.t + u.hearth.every;
+      if (state.t >= u.hearthNext) {
+        u.hearthNext = state.t + u.hearth.every;
+        for (const e of state.units) {
+          if (!e.alive || e.team === u.team || dist(u, e) > u.hearth.r) continue;
+          state.dmgSrc = tr("ไอเทม Prometheus' Hearth");
+          applyDamage(state, u, e, u.hearth.flat + u.hearth.ownHpPct * u.maxHp, true, false);
+          state.dmgSrc = null;
+        }
       }
     }
     // Siren's Abyssal Bell: charge 3s, then taunt every enemy within 450 for 2s (CD 45s)
     // Siren's Abyssal Bell: charges up to 3s (can release early), taunt scales
     // with how long it actually held the charge — 0.5s at a snap release, 2.0s at max
     if (u.hasItem("sab")) {
+      const sabMax = u.sabCharge || 3;
       if (u.sabFireAt != null && (state.t >= u.sabFireAt || u.sabForceRelease)) {
-        const held = Math.min(3, state.t - (u.sabChargeStart != null ? u.sabChargeStart : state.t));
-        const taunt = 0.5 + 1.5 * (held / 3);
+        const held = Math.min(sabMax, state.t - (u.sabChargeStart != null ? u.sabChargeStart : state.t));
+        const taunt = 0.5 + 1.5 * (held / sabMax);
         for (const e of state.units) {
           if (!e.alive || e.team === u.team || dist(u, e) > 450) continue;
           addBuff(e, { type: "taunt", v: 1, sourceId: u.id, until: state.t + taunt }, state.t);
@@ -238,12 +303,17 @@ export function step(state) {
       } else if (u.sabFireAt == null) {
         const ready = u.sabReadyAt == null || state.t >= u.sabReadyAt;
         const nearby = state.units.filter((e) => e.alive && e.team !== u.team && dist(u, e) <= 450).length;
-        if (ready && nearby >= 2) { u.sabFireAt = state.t + 3; u.sabChargeStart = state.t; }
+        if (ready && nearby >= 2) { u.sabFireAt = state.t + sabMax; u.sabChargeStart = state.t; }
       } else if (u.sabFireAt != null) {
         // early release: if every enemy that justified the charge has since scattered
         // out of the bell's radius, don't waste the rest of the wind-up
         const stillThere = state.units.some((e) => e.alive && e.team !== u.team && dist(u, e) <= 450);
         if (!stillThere) u.sabForceRelease = true;
+      }
+      // ระหว่างกำลังชาร์จระฆัง กันดาเมจได้ 40% ไล่ขึ้นถึง 60% ที่เลเวลเต็ม
+      if (u.sabFireAt != null && u.sabDr) {
+        const g = Math.max(0, Math.min(1, (u.level - 1) / 15));
+        u.drAll = Math.max(u.drAll || 0, u.sabDr.base + (u.sabDr.max - u.sabDr.base) * g);
       }
     }
     // Gleipnir's Binding Shackles: a real skillshot — fires a linear bolt (range 800,
@@ -264,9 +334,9 @@ export function step(state) {
             id: state.nextProjId++, team: u.team, ownerId: u.id,
             x: u.x, y: u.y, dx, dy, speed: 1600, dmg: 0, magic: false,
             width: 80, hitIds: [], life: 800 / 1600,
-            itemLeash: { range: 600, dur: 3.5 },
+            itemLeash: { range: 600, dur: (u.gleipnir && u.gleipnir.dur) || 2.5, tenacityCut: (u.gleipnir && u.gleipnir.tenacityCut) || 0.25 },
           });
-          u.gbsReadyAt = state.t + 60;
+          u.gbsReadyAt = state.t + ((u.gleipnir && u.gleipnir.cd) || 30);
         }
       }
     }
@@ -291,7 +361,7 @@ export function step(state) {
       const ready = u.dssReadyAt == null || state.t >= u.dssReadyAt;
       const ccd = HARD_CC.some((t) => hasBuff(u, t));
       if (ready && ccd) {
-        u.dssReadyAt = state.t + 75;
+        u.dssReadyAt = state.t + (u.cleanseCd || 75);
         u.buffs = u.buffs.filter((b) => !HARD_CC.includes(b.type));
         addBuff(u, { type: "unstoppable", v: 1, until: state.t + 0.5 }, state.t);
         addBuff(u, { type: "ms", v: 0.3, until: state.t + 1.5 }, state.t);
@@ -327,7 +397,7 @@ export function step(state) {
   // plus a straight 30% cut to any crit that lands on the wearer
   for (const u of state.units) {
     if (!u.alive) continue;
-    u.motFlat = u.hasItem("mot") ? 5 + 3.5 * (u.maxHp / 1000) : 0;
+    u.motFlat = u.hasItem("mot") ? (u.motFlatBase || 12) + 3.5 * (u.maxHp / 1000) : 0;
   }
 
   // ---- PASS 1: every unit decides, reading the same frozen world ----
@@ -372,12 +442,12 @@ export function step(state) {
             champ: { value: 1, melee: false, th: tr("จุด") }, targetId: null,
           };
         }
-        if (sk && sk.rank > 0 && (sk.ammoMax ? sk.ammo > 0 : sk.cdLeft <= 0) && tgt && u.castLock <= 0 && !u.stunned) {
+        if (sk && sk.rank > 0 && (sk.ammoMax ? sk.ammo > 0 : sk.cdLeft <= 0) && tgt && u.castLock <= 0 && !u.stunned && !u.silenced) {
           let use = sk;
           if (sk.type === "dual") {
             const half = u.shadow > 0 ? sk.shadow : sk.light;
             use = { ...sk, ...half, key: sk.key, rank: sk.rank, cast: sk.cast, fragCost: true, isShadow: u.shadow > 0 };
-            if (u.shadow > 0) u.shadow -= 1; else if (u.light > 0) u.light -= 1;
+            spendFrag(u, u.shadow > 0);
           } else if (!sk.fragCost) {
             if (sk.ammoMax) { sk.ammo -= 1; if (sk.rechargeAt == null) sk.rechargeAt = state.t + sk.rechargeTime; }
             else sk.cdLeft = fullCd(u, sk);
@@ -402,7 +472,7 @@ export function step(state) {
       const sp = u.rooted || u.atkLock > 0 || u.castLock > 0 ? 0 : u.msEff;
       u.nvx = mvx2 * sp; u.nvy = mvy2 * sp;
       u.atkCd -= dt;
-      if (mo.autoAttack && tgt && dist(u, tgt) <= u.range && u.atkCd <= 0 && !u.stunned && u.castLock <= 0) {
+      if (mo.autoAttack && tgt && dist(u, tgt) <= u.range && u.atkCd <= 0 && !u.stunned && !u.disarmed && u.castLock <= 0) {
         u.atkCd = 1 / u.asEff;
         u.atkLock = (u.champ.windup != null ? u.champ.windup : DEFAULT_WINDUP) / u.asEff;
         u.shots += 1;
@@ -466,8 +536,14 @@ export function step(state) {
     const focus = focusedOnMe(state, u);
     const composure = 1;
     const spots = 0.85 - (sense / 10) * 0.55;       // game sense: a blind player panic-retreats
-    const hpLine = st.retreatAt * composure;
-    const focusLine = focus >= 3 && u.rng() < spots && hpFrac < 0.5 * composure + 0.15;
+    // ตัวยิงระยะไกลที่ไม่ใช่ซัพต้องถอยเร็วกว่าคนอื่น — เขาคือเป้าแรกของทุกทีม
+    // และไม่มีค่าสถานะอะไรให้ยืนรับเลย (มาร์คแมนตายถึง 88% ของไฟต์ก่อนแก้)
+    const squishy = !u.champ.melee && !u.champ.kindness && !/Enchanter|Warden/.test(u.champ.role);
+    const hpLine = (st.retreatAt + (squishy ? 0.16 : 0)) * composure;
+    // โดนรุมตั้งแต่ 2 ตัวก็ถอยแล้วถ้าเป็นตัวเปราะ ไม่ต้องรอ 3
+    const focusNeed = squishy ? 2 : 3;
+    const focusLine = focus >= focusNeed && u.rng() < spots
+      && hpFrac < (squishy ? 0.80 : 0.65) * composure;
     if (!u.retreating && (hpFrac < hpLine || focusLine) && state.t >= u.retreatReadyAt) {
       u.retreating = true;
       u.retreatUntil = state.t + RETREAT_TIME;
@@ -521,10 +597,25 @@ export function step(state) {
           desired = u.range * 0.92 + u.rangeBias * (1 - posQ / 11) * 0.25;
           desired = clamp(desired, 120, u.range * 0.98);
         } else {
-          const discMul = 0.82 + 0.018 * disc;
-          const posMul = 0.92 + 0.008 * posQ;
+          // ตัวระยะไกลควรยืน "ขอบระยะตัวเอง" ไม่ใช่ 60-80% ของระยะ
+          // เดิมมาร์คแมนระยะ 550 ยืนที่ 374 ซึ่งตัวประชิดพุ่งถึงได้สบาย
+          // ผลคือตัวระยะไกลตาย 60% มากกว่าตัวประชิด 57% ทั้งที่ทำดาเมจน้อยกว่าครึ่ง
+          const discMul = 0.88 + 0.012 * disc;
+          const posMul = 0.95 + 0.005 * posQ;
           desired = u.range * st.standoff * discMul * posMul + u.rangeBias * (1 - posQ / 11) * 0.5;
-          desired = clamp(desired, u.range * 0.55, u.range * 0.97);
+          desired = clamp(desired, u.range * 0.78, u.range * 0.99);
+
+          // ระยะที่ปลอดภัยไม่ได้วัดจากระยะของตัวเอง แต่วัดจาก "ศัตรูประชิดที่ใกล้ที่สุด"
+          // ยืนให้พ้นระยะเอื้อมของเขาบวกเผื่อระยะพุ่งเข้าหา ตามสายตาที่อ่านเกมออก
+          let threat = 0;
+          for (const e of state.units) {
+            if (!e.alive || e.team === u.team || !e.champ.melee) continue;
+            const ed = dist(u, e) || 1;
+            if (ed > u.range * 2.2) continue;               // ไกลเกินกว่าจะมาถึงทัน
+            const gap = e.champ.rage ? 560 : 420;           // ตัวที่มีท่าพุ่งเอื้อมได้ไกลกว่า
+            threat = Math.max(threat, e.range + gap * (0.45 + sense / 18));
+          }
+          if (threat > desired) desired = Math.min(u.range * 0.99, threat);
         }
         // smooth spiral: radial correction blended with orbiting, so units don't
         // bang back and forth across the range band (that made aiming unpredictable)
@@ -536,11 +627,39 @@ export function step(state) {
         mvy = dirY * radial + dirX * sgn * tang;
       }
 
-      // don't stand in the middle of their whole team
-      if (posQ > 0) {
+      // ตัวเปราะที่ยิงไกลต้องไม่ใช่คนที่อยู่หน้าสุดของทีมตัวเอง
+      // ถ้าล้ำหน้าแนวหน้าอยู่ ให้ถอยกลับไปอยู่หลังเพื่อนที่ถึกกว่า
+      if (!u.champ.melee && !u.champ.kindness && posQ > 0) {
+        const ec2 = cen[u.team === "blue" ? "red" : "blue"];
+        const myD = Math.hypot(u.x - ec2.x, u.y - ec2.y);
+        let behindMe = 0, mates = 0;
+        for (const a2 of state.units) {
+          if (!a2.alive || a2.team !== u.team || a2.id === u.id) continue;
+          mates++;
+          if (Math.hypot(a2.x - ec2.x, a2.y - ec2.y) > myD) behindMe++;
+        }
+        // เพื่อนอยู่หลังเราเกือบหมด = เราคือคนหน้าสุด ซึ่งไม่ใช่ที่ของตัวยิงไกล
+        // ทีมสองคน (บอทเลน) ต้องให้เพื่อนอยู่หลังจริงๆ ไม่งั้น mates-1 = 0 แล้วเข้าเงื่อนไขตลอด
+        const frontmost = mates >= 2 ? behindMe >= mates - 1 : behindMe >= mates;
+        if (mates && frontmost) {
+          const dd = myD || 1;
+          const pull = 0.45 + posQ / 14;
+          mvx += ((u.x - ec2.x) / dd) * pull;
+          mvy += ((u.y - ec2.y) / dd) * pull;
+        }
+      }
+
+      // อย่ายืนกลางวงทีมศัตรู — แต่กฎนี้ใช้ได้เฉพาะตอนมีศัตรูหลายคนจริงๆ
+      // ในไฟต์เลน 1v1 หรือ 2v2 "จุดกึ่งกลางทีมศัตรู" คือตัวเป้าหมายเราเอง
+      // กฎเลยกลายเป็นห้ามเข้าหาเป้า ตัวประชิดจึงยืนค้างนอกระยะตีของตัวเองทั้งไฟต์
+      // และยิ่งแต้มอ่านเกมสูงยิ่งถูกผลักแรง = ยิ่งเก่งยิ่งไม่ยอมตี
+      let foesAlive = 0;
+      for (const x of state.units) if (x.alive && x.team !== u.team) foesAlive++;
+      if (posQ > 0 && foesAlive >= 3) {
         const ec = cen[u.team === "blue" ? "red" : "blue"];
         const ed2 = Math.hypot(u.x - ec.x, u.y - ec.y) || 1;
-        const safe = u.champ.melee ? 420 : 780;
+        // ระยะปลอดภัยของตัวประชิดต้องไม่เกินระยะตีของมันเอง ไม่งั้นมันจะตีไม่ถึงตลอดกาล
+        const safe = u.champ.melee ? Math.min(420, u.range * 0.9) : 780;
         if (ed2 < safe) {
           const push = ((safe - ed2) / safe) * (0.15 + posQ / 10) * 1.15;
           mvx += ((u.x - ec.x) / ed2) * push;
@@ -562,13 +681,16 @@ export function step(state) {
       // kite the divers: keep clear of any melee enemy, not just the current target
       // never kite yourself out of your own attack range — backing off is only
       // worth it while you can still shoot
-      if (!u.champ.melee && d < u.range * 0.92) {
+      // เดิมข้อนี้ทำงานเฉพาะตอนเข้าใกล้เป้าของตัวเองแล้ว ซึ่งมักจะสายไปแล้ว
+      // ตอนนี้ถอยจากตัวประชิดตลอดเวลา และแรงถอยขึ้นกับว่าเขาเล็งเราอยู่หรือเปล่า
+      if (!u.champ.melee) {
         for (const e of state.units) {
           if (!e.alive || e.team === u.team || !e.champ.melee) continue;
           const ed = dist(u, e) || 1;
-          const danger = e.range + 320;
+          const onMe = e.targetId === u.id;
+          const danger = e.range + (e.champ.rage ? 520 : 400) + (onMe ? 180 : 0);
           if (ed < danger) {
-            const push = ((danger - ed) / danger) * (0.40 + posQ / 14);
+            const push = ((danger - ed) / danger) * (0.55 + posQ / 12) * (onMe ? 1.5 : 1);
             mvx += ((u.x - e.x) / ed) * push;
             mvy += ((u.y - e.y) / ed) * push;
           }
@@ -583,7 +705,7 @@ export function step(state) {
       }
     }
 
-    // ally spacing — Ghosting (Lorla W) เดินทะลุยูนิตได้ ไม่ต้องเบียดกัน
+    // ally spacing — Ghosting (Laura W) เดินทะลุยูนิตได้ ไม่ต้องเบียดกัน
     for (const a of state.units) {
       if (hasBuff(u, "ghost")) break;
       if (a.id === u.id || !a.alive || a.team !== u.team) continue;
@@ -595,7 +717,7 @@ export function step(state) {
       }
     }
 
-    let speed = u.rooted || u.atkLock > 0 || u.castLock > 0 ? 0 : u.msEff;
+    let speed = u.rooted || u.atkLock > 0 || u.castLock > 0 || u.hurl ? 0 : u.msEff;
     // โดน Charm — เดินตรงเข้าหาคนที่สะกดไว้ ช้าลงตามค่าของสกิล
     if (u.charmed) {
       const cs = state.units.find((x) => x.id === u.charmed.sourceId && x.alive);
@@ -635,23 +757,30 @@ export function step(state) {
     else { u.nvx = 0; u.nvy = 0; }
 
     // ---- cast (the AI picks a skill before it thinks about auto attacking)
-    if (u.castLock <= 0 && !u.stunned && u.charging == null) castSkills(state, u, target, d, disc, aw, prec);
+    if (u.castLock <= 0 && !u.stunned && !u.silenced && u.charging == null && u.channeling == null) castSkills(state, u, target, d, disc, aw, prec);
 
     // ---- auto attack: it always lands. Ranged champions just pay a travel delay,
     // which is the whole cost of having range in the first place.
     u.atkCd -= dt;
-    if (d <= u.range && u.atkCd <= 0 && !u.stunned && u.charging == null && state.t >= u.reloadUntil) {
+    if (d <= u.range && u.atkCd <= 0 && !u.stunned && !u.disarmed && u.charging == null && u.channeling == null && state.t >= u.reloadUntil) {
       u.atkCd = 1 / u.asEff;
       u.atkLock = (u.champ.windup != null ? u.champ.windup : DEFAULT_WINDUP) / u.asEff;
       u.shots += 1;
       if (u.blinded) { continue; }
-      // sloppy hands cancel their own attack by walking mid-windup: the cooldown is
-      // spent, the damage never happens. At mechanics 10 this stops entirely.
-      if (u.rng() < ((10 - mech) / 10) * 0.42) { u.wasted = (u.wasted || 0) + 1; continue; }
-      // nobody called it, so everyone waits for someone else to go in
-      if (u.rng() < ((10 - team) / 10) * 0.26) { u.hesitated = (u.hesitated || 0) + 1; continue; }
-      // caught flat-footed: no read on the fight, so the shot never goes out
-      if (u.rng() < ((10 - sense) / 10) * 0.24) { u.caught = (u.caught || 0) + 1; continue; }
+      // ออโต้ที่ "เสียเปล่า" — คูลดาวน์หมดไปแต่ดาเมจไม่เกิด
+      // เมื่อก่อนทอยสามครั้งแยกกัน (42% / 26% / 24%) แล้วคูณทบกัน
+      // แต้ม 5 ทั้งสามช่องจึงพลาดถึง 40% และแต้ม 1 พลาด 63% ซึ่งมากจนไฟต์ไม่มีอะไรเกิดขึ้น
+      // ตอนนี้ทอยครั้งเดียว แล้วค่อยแยกว่าพลาดเพราะอะไรเพื่อเอาไปโชว์ในบันทึก
+      const wMech = ((10 - mech) / 10) * 0.25;
+      const wTeam = ((10 - team) / 10) * 0.05;
+      const wSense = ((10 - sense) / 10) * 0.05;
+      const roll = u.rng();
+      if (roll < wMech + wTeam + wSense) {
+        if (roll < wMech) u.wasted = (u.wasted || 0) + 1;
+        else if (roll < wMech + wTeam) u.hesitated = (u.hesitated || 0) + 1;
+        else u.caught = (u.caught || 0) + 1;
+        continue;
+      }
       let atkDmg = u.ad;
       let didCrit = false;
       if (u.crit > 0 && u.rng() < u.crit) {
@@ -662,6 +791,8 @@ export function step(state) {
       }
       if (target.hasItem("mot")) atkDmg = Math.max(0, atkDmg - target.motFlat);
       if (u.champ.isolde) gainIsolde(state, u, didCrit ? u.champ.isolde.onCrit : u.champ.isolde.onAuto);
+      // Plunder — ออโต้ที่คริได้เงินกระเป๋าแยกเพิ่ม 1
+      if (didCrit && u.champ.bounty && u.champ.bounty.perCrit) u.bountyGold += u.champ.bounty.perCrit;
       // Broadside: critting speeds up the next cannonball's recharge by 2.5s
       if (didCrit && u.hasItem && u.champ.id === "C.HOOK") {
         const eSkill = u.skills.find((x) => x.key === "E" && x.ammoMax);
@@ -675,6 +806,7 @@ export function step(state) {
           u.reloadUntil = state.t + rev.reload;
         }
       }
+      atkDmg *= AUTO_DMG;
       if (!u.champ.missile) {
         state.hitQueue.push({ ownerId: u.id, targetId: target.id, dmg: atkDmg, magic: false });
       } else {
@@ -710,7 +842,7 @@ export function step(state) {
     }
   }
 
-  state.fx = state.fx.filter((f) => state.t - f.t < (f.kind === "num" ? 0.9 : f.kind === "label" ? 1.1 : 0.55));
+  state.fx = state.fx.filter((f) => state.t - f.t < (f.dur || (f.kind === "num" ? 0.9 : f.kind === "label" ? 1.1 : 0.55)));
   for (const f of state.fx) {
     if (f.kind === "trail" && f.pending) {
       const mu = state.units.find((x) => x.id === f.pending);
@@ -754,10 +886,51 @@ export function step(state) {
           id: state.nextProjId++, team: u.team, ownerId: u.id, skill: sk,
           x: u.x, y: u.y, dx: Math.cos(ang2), dy: Math.sin(ang2), speed: sk.projSpeed,
           dmg: skillPower(u, sk, tg), magic: true, width: w, pierce: true, hitIds: [], life: 3,
+          src: skillLabel(u, sk),
         });
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + Math.cos(ang2) * 2500, y2: u.y + Math.sin(ang2) * 2500, w: w / 2, color: "176,140,255", dur: 0.5 });
         u.charging = null;
       } else if (!hasBuff(u, "flying")) addBuff(u, { type: "root", v: 1, until: state.t + 0.1 }, state.t);
+      continue;
+    }
+    if (u.charging.rangeCharge) {
+      const held3 = state.t - u.charging.start;
+      const tg = state.units.find((x) => x.id === u.charging.target);
+      const d3 = tg ? dist(u, tg) : Infinity;
+      const reach = sk.rangeMin + (sk.rangeMax - sk.rangeMin) * Math.min(1, held3 / sk.maxCharge);
+      const full = held3 >= sk.maxCharge;
+      // ปล่อยทันทีที่ชาร์จพอจะถึงเป้า ไม่ต้องอั้นจนเต็มถ้าเป้าอยู่ใกล้
+      if (full || !tg || !tg.alive || (d3 <= reach - 40 && held3 > 0.15)) {
+        const ang3 = tg ? Math.atan2(tg.y - u.y, tg.x - u.x) : 0;
+        // ลำแสงโดนทันทีที่ปล่อย (hitscan) ไม่มีกระสุนวิ่ง — เรียงตามระยะแล้วค่อยลดหลั่นทีละตัว
+        const nx3 = Math.cos(ang3), ny3 = Math.sin(ang3);
+        const halfW = sk.width / 2;
+        const line = [];
+        for (const e of state.units) {
+          if (!e.alive || e.team === u.team) continue;
+          if (hasBuff(e, "stealth") || hasBuff(e, "untargetable")) continue;
+          const rx = e.x - u.x, ry = e.y - u.y;
+          const along = rx * nx3 + ry * ny3;
+          if (along < -e.radius || along > reach + e.radius) continue;
+          if (Math.abs(rx * -ny3 + ry * nx3) > halfW + e.radius) continue;
+          line.push({ e, along });
+        }
+        line.sort((a, b) => a.along - b.along);
+        let beamDmg = skillPower(u, sk, tg);
+        const prevSrc3 = state.dmgSrc;
+        state.dmgSrc = skillLabel(u, sk);
+        for (const { e } of line) {
+          applyDamage(state, u, e, beamDmg, !!sk.magic);
+          if (sk.falloff) beamDmg *= sk.falloff;
+        }
+        state.dmgSrc = prevSrc3;
+        vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + Math.cos(ang3) * reach,
+          y2: u.y + Math.sin(ang3) * reach, w: sk.width / 2, color: "176,140,255", dur: 0.35 });
+        u.charging = null;
+        u.buffs = u.buffs.filter((b) => b.tag !== "qcharge");
+      } else {
+        addBuffUnique(u, "qcharge", { type: "slow", v: sk.selfSlow || 0.2, until: state.t + 0.2 }, state.t);
+      }
       continue;
     }
     if (u.charging.snipe) {
@@ -773,6 +946,37 @@ export function step(state) {
       resolveDash(state, u, sk, tgt, frac, u.charging.prec != null ? u.charging.prec : 6);
       u.charging = null;
       u.buffs = u.buffs.filter((b) => b.type !== "slow" || b.v !== (sk.selfSlow || 0.3));
+    }
+  }
+
+  // แชนแนลอุกกาบาตของ Faustus — ตรึงตัวเองไว้ ยิงทีละระลอกใส่ตำแหน่งศัตรูทุกคน
+  for (const u of state.units) {
+    const ch = u.channeling;
+    if (!ch) continue;
+    // ตายหรือโดน Hard CC = ยกเลิกทันที
+    // root ที่ตัวเองใส่ไว้เพื่อยืนนิ่งไม่นับเป็นการขัดจังหวะ — ดูเฉพาะ CC ที่มาจากคนอื่น
+    const outsideRoot = u.buffs.some((b) => b.type === "root" && b.tag !== "channel" && b.until > state.t);
+    if (!u.alive || hasBuff(u, "stun") || hasBuff(u, "fear") || outsideRoot || u.charmed) {
+      u.channeling = null;
+      continue;
+    }
+    addBuffUnique(u, "channel", { type: "root", v: 1, until: state.t + 0.15 }, state.t);
+    if (state.t < ch.next) continue;
+    const sk = ch.skill;
+    ch.next = state.t + sk.every;
+    ch.left -= 1;
+    for (const e of state.units) {
+      if (!e.alive || e.team === u.team) continue;
+      if (dist(u, e) > ch.range) continue;
+      state.zones.push({
+        x: e.x, y: e.y, r: sk.radius, at: state.t + sk.telegraph,
+        ownerId: u.id, team: u.team, dmg: skillPower(u, sk, e), magic: true, skill: sk,
+      });
+      vfx(state, { kind: "ring", x: e.x, y: e.y, r: sk.radius, color: "229,72,77", grow: 0.15, dur: sk.telegraph });
+    }
+    if (ch.left <= 0) {
+      u.channeling = null;
+      u.buffs = u.buffs.filter((b) => b.tag !== "channel");
     }
   }
 
@@ -807,6 +1011,9 @@ export function step(state) {
   tickNewSystems(state);
   tickDashes(state);
   tickGrabs(state);
+  tickHurls(state);
+  tickGardens(state);
+  tickMirrors(state);
   tickZonesAndSnipes(state);
 
   // ---- projectiles
@@ -846,6 +1053,10 @@ export function step(state) {
 
       state.dmgSrc = p.src || (p.skill ? tr("สกิล") : tr("ออโต้"));
       applyDamage(state, owner, u, p.dmg, !!p.magic);
+      if (p.skill) {
+        vfx(state, { kind: "hit", x: u.x, y: u.y, size: Math.max(60, (p.width || 90) * 0.8),
+          color: p.magic ? "176,140,255" : "255,208,138", dur: 0.4 });
+      }
       state.dmgSrc = null;
       if (owner && !p.skill) owner.hits += 1;
       if (p.root) u.buffs.push({ type: "root", v: 1, until: state.t + p.root });
@@ -862,9 +1073,14 @@ export function step(state) {
       }
       if (p.slow) u.buffs.push({ type: "slow", v: p.slow, until: state.t + (p.dur || 1.5) });
       if (p.charm && owner) applyCharm(state, owner, u, p.charm, p.charmSlow);
+      if (p.polymorph && owner) applyPolymorph(state, owner, u, p.polymorph, p.polySlow || 0.4);
       // Gleipnir's Binding Shackles: the first champion it touches gets leashed to the caster
       if (p.itemLeash && owner) {
         addBuff(u, { type: "leash", v: p.itemLeash.range, sourceId: owner.id, until: state.t + p.itemLeash.dur }, state.t);
+      }
+      // Liar's Reach โดนศัตรู = พาสซีฟ Cricket's Whisper แรงสองเท่าชั่วคราว
+      if (p.skill && p.skill.kindnessBoost && owner && owner.champ.kindness) {
+        owner.kindnessBoostUntil = state.t + (owner.champ.kindness.qDur || 4);
       }
       if (p.pierce) { p.hitIds.push(u.id); if (p.falloff) p.dmg *= p.falloff; }
       else { consumed = true; break; }
@@ -892,6 +1108,19 @@ export function step(state) {
   // ---- end conditions
   const b = aliveOf(state, "blue").length;
   const r = aliveOf(state, "red").length;
+  // อีเวนต์ "ล้มสองตัวจบ" — ฝั่งที่ตายครบก่อนแพ้ทันที ไม่ต้องรอล้มหมดทีม
+  if (state.endOnDeaths) {
+    const bd = state.units.filter((u) => u.team === "blue" && !u.alive).length;
+    const rd = state.units.filter((u) => u.team === "red" && !u.alive).length;
+    if (bd >= state.endOnDeaths || rd >= state.endOnDeaths) {
+      state.over = true;
+      state.winner = bd >= state.endOnDeaths && rd >= state.endOnDeaths
+        ? (bd < rd ? "blue" : rd < bd ? "red" : (state.rng() < 0.5 ? "blue" : "red"))
+        : (bd >= state.endOnDeaths ? "red" : "blue");
+      pushLog(state, tr("☠ ฝั่งหนึ่งล้มครบ {0} ตัว — จบยก", state.endOnDeaths));
+      return state;
+    }
+  }
   if (b === 0 || r === 0) {
     state.over = true;
     state.winner = b > r ? "blue" : r > b ? "red" : (state.rng() < 0.5 ? "blue" : "red");

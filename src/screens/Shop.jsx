@@ -4,77 +4,35 @@ import { CHAMPIONS } from "../data/champions.js";
 import { STAT_KEYS } from "../data/constants.js";
 import { ITEM_BY_ID, buyBlockedReason, effectiveCost } from "../data/items.js";
 import { buildRecipeTree } from "../ui/recipe.jsx";
-import { EVENTS, STYLES } from "../data/tuning.js";
+import { STYLES } from "../data/tuning.js";
+import { LANE_MEMBERS, LANE_TH, STANCES, STANCE_LANES, STANCE_LIST, crewAllowed } from "../data/behaviour.js";
 import { canRank, pointsSpent } from "../engine/skill-ranks.js";
 import { levelProgress } from "../engine/util.js";
 import { STAT_SHORT, laneMax } from "../game/roster.js";
 import { ScoutPanel } from "../ui/Scout.jsx";
+import { FormationPanel } from "../ui/Formation.jsx";
 import { ShopScreen } from "../ui/ShopScreen.jsx";
 import { itemDesc } from "../ui/recipe.jsx";
-import { Shell, btn, card, mini, slot } from "../ui/chrome.jsx";
+import { ItemSlot, Shell, btn, card, mini, slot } from "../ui/chrome.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
 export function ShopPhase(ctx) {
-  const { addRank, buy, eventId, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setEventId, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav , streak, lastFarm } = ctx;
+  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances } = ctx;
 
-    const farmBlocked = lastFarm === round - 1 || round >= mode.maxRounds;
+  // ป่าลงแกงค์ได้เฉพาะเลนที่ยกที่แล้วสั่งรุกล้ำไว้
+  const openLanes = STANCE_LANES.filter((L) => lastStances && lastStances[L] === "AGGRO");
+  const crewMax = crewAllowed(round);
+  const crewPool = STANCE_LANES.filter((L) => L !== jungle.lane && stances[L] === "SAFE");
+  const champOf = (lane) => { const c = team.find((x) => x.lane === lane); return (c && c.champId) || lane; };
+  const TONE = { SAFE: C.blue, NEUTRAL: C.dim, AGGRO: C.red };
 
   return (
-      <Shell round={round} score={score} mode={mode} streak={streak}>
-        <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-          {Object.values(STYLES).map((s) => (
-            <button
-              key={s.key}
-              onClick={() => setTeamStyle(s.key)}
-              style={{
-                ...btn(teamStyle === s.key ? C.gold : C.panel2),
-                color: teamStyle === s.key ? "#0B1220" : C.ink,
-                flex: 1, fontSize: 12, fontWeight: 700, padding: "9px 4px",
-              }}
-            >
-              {tr(s.th)}
-            </button>
-          ))}
-        </div>
-        <div style={{ fontSize: 11, color: C.dim, marginBottom: 12, lineHeight: 1.55 }}>{tr(
-          "บุก ชนะ คุมระยะ · คุมระยะ ชนะ ตั้งรับ · ตั้งรับ ชนะ บุก — สั่งใหม่ได้ทุกยก ไม่เสียเงิน"
-        )}</div>
-        <Label style={{ marginBottom: 6 }}>{tr("EVENT ของยกนี้")}</Label>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 6 }}>
-          {Object.values(EVENTS).map((ev) => {
-            const off = !!ev.farm && farmBlocked;
-            const on = eventId === ev.id;
-            return (
-              <button key={ev.id} disabled={off} onClick={() => !off && setEventId(ev.id)}
-                style={{
-                  background: on ? C.gold : C.panel2,
-                  color: on ? "#0B1220" : off ? C.dim : C.ink,
-                  border: `1px solid ${ev.farm && !on ? "#2E5A3A" : C.line}`, borderRadius: 6, padding: "7px 10px",
-                  fontSize: 11.5, cursor: off ? "default" : "pointer", fontFamily: SANS, flex: "1 1 40%",
-                  opacity: off ? 0.5 : 1,
-                }}>
-                {tr(ev.th)}
-                <span style={{ fontFamily: MONO, opacity: 0.75, marginLeft: 5 }}>
-                  {ev.farm ? tr("ข้ามยก") : ev.duration + "s"}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        <div style={{ fontSize: 10, color: farmBlocked ? C.red : C.dim, marginBottom: 14, lineHeight: 1.5 }}>
-          {farmBlocked
-            ? tr("ยกฟาร์มใช้ไม่ได้ตอนนี้ — ฟาร์มติดกันสองยกไม่ได้ และยกตัดสินต้องสู้")
-            : tr("ยกฟาร์ม = ข้ามการปะทะ ทั้งสองฝั่งได้เงินและ XP ราว 75% ของฝั่งที่แพ้ ไม่มีใครได้แต้ม")}
-        </div>
-
-        <button onClick={() => setScoutOpen(true)}
-          style={{ ...btn(C.panel2), color: C.red, fontSize: 12, fontWeight: 700, marginBottom: 12, padding: "9px 4px" }}>{tr("ส่องทีมคู่แข่ง — ดูตัวละคร ของ และเลเวล")}</button>
-
-        {scoutOpen && (
-          <ScoutPanel foe={foe} team={team} fightState={null} onClose={() => setScoutOpen(false)} onSkill={openSkill} />
-        )}
-
+      <Shell round={round} score={score} mode={mode} streak={streak} maxWidth={wide ? 1060 : 620}>
+        {/* แถบวางแผนแยกออกไปอยู่ข้างๆ และไม่เลื่อนตามรายชื่อนักแข่ง
+            เมื่อก่อนทุกอย่างต่อกันเป็นคอลัมน์เดียว ซื้อของทีต้องเลื่อนขึ้นลงทั้งหน้า */}
+        <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 330px", minWidth: 0, order: wide ? 0 : 1 }}>
         {team.map((c, idx) => (
           <div key={c.lane} style={{ ...card(), marginBottom: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -162,30 +120,45 @@ export function ShopPhase(ctx) {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
               {Array.from({ length: 6 }).map((_, i) => {
                 const list = c.items.filter((x) => !(c.lane === "ADC" && x.kind === "boots"));
-                const it = list[i];
-                return (
-                  <div key={i} style={slot(!!it)}>
-                    {it ? itemName(it) : ""}
-                  </div>
-                );
+                return <ItemSlot key={i} item={list[i]} />;
               })}
               {c.lane === "ADC" && (
-                <div style={{ ...slot(c.items.some((x) => x.kind === "boots")), borderStyle: "dashed" }}>
-                  {c.items.some((x) => x.kind === "boots") ? tr("รองเท้า") : tr("ช่องฟรี")}
-                </div>
+                <ItemSlot
+                  dashed
+                  item={c.items.find((x) => x.kind === "boots")}
+                  empty={tr("ช่องฟรี")}
+                />
               )}
             </div>
 
-            {/* รายการโปรด — ของใครของมัน กดซื้อได้จากตรงนี้เลย ทั้งของใหญ่และชิ้นส่วนที่ยังขาด */}
+            {/* รายการโปรด = แผนออกของ — เรียงลำดับได้ บอกความคืบหน้าและเงินที่ยังขาด
+                กดซื้อได้ทั้งของใหญ่และชิ้นส่วนที่ยังขาด และมีปุ่มซื้อชิ้นถัดไปให้กดรวดเดียว */}
             {favsOf(idx).length > 0 && (() => {
               const picks = favsOf(idx).map((id) => ITEM_BY_ID[id]).filter(Boolean);
               if (!picks.length) return null;
-              const chip = (x, small) => {
+
+              // ไล่สูตรลงไปหาชิ้นที่ยังขาด + นับความคืบหน้าเป็นมูลค่าที่มีอยู่แล้ว
+              const planOf = (x) => {
+                const pool = [...c.items];
+                const missing = [];
+                const walk = (node) => {
+                  if (node.owned) return;
+                  // ชิ้นส่วนครบแล้วแต่ยังไม่ได้ประกอบ — เสนอซื้อตัวมันเองเลย ไม่ต้องไล่ลงไปอีก
+                  if (node.ready) { missing.push(node.item); return; }
+                  if (node.children) node.children.forEach(walk);
+                  else missing.push(node.item);
+                };
+                if (x.parts) x.parts.map((pid) => buildRecipeTree(pool, ITEM_BY_ID[pid])).forEach(walk);
+                const eff = effectiveCost(c.items, x);
+                return { missing, eff, have: x.cost - eff, short: Math.max(0, eff - c.gold) };
+              };
+
+              const chip = (x, small, key) => {
                 const eff = effectiveCost(c.items, x);
                 const why = buyBlockedReason(c, x);
                 const can = !why;
                 return (
-                  <button key={x.id} disabled={!can} onClick={() => can && buy(idx, x)}
+                  <button key={key} disabled={!can} onClick={() => can && buy(idx, x)}
                     title={itemDesc(x)}
                     style={{
                       background: can ? C.panel2 : "transparent",
@@ -194,41 +167,94 @@ export function ShopPhase(ctx) {
                       color: can ? C.ink : C.dim, cursor: can ? "pointer" : "default",
                       display: "flex", alignItems: "center", gap: 6,
                     }}>
-                    <span>{small ? "└ " : ""}{itemName(x)}</span>
+                    <span>{small ? "\u2514 " : ""}{itemName(x)}</span>
                     <span style={{ fontFamily: MONO, color: can ? C.gold : C.dim }}>
                       {can ? eff + "g" : why}
                     </span>
                   </button>
                 );
               };
+
+              const tiny = (label, on, title) => (
+                <button onClick={on} disabled={!on} title={title}
+                  style={{
+                    background: "none", border: `1px solid ${on ? C.line : "transparent"}`, borderRadius: 4,
+                    color: on ? C.dim : "transparent", fontSize: 10, lineHeight: 1,
+                    padding: "3px 5px", cursor: on ? "pointer" : "default", fontFamily: MONO,
+                  }}>{label}</button>
+              );
+
+              // ชิ้นถัดไปที่ควรซื้อ: ไล่จากแผนบนสุดลงล่าง เอาชิ้นแรกที่เงินพอ
+              let next = null;
+              for (const x of picks) {
+                if (c.items.some((y) => y.id === x.id)) continue;
+                const p = planOf(x);
+                const order = [x, ...p.missing];
+                next = order.find((m) => !buyBlockedReason(c, m)) || null;
+                if (next) break;
+              }
+
               return (
-                <div style={{ marginBottom: 8 }}>
-                  <Label style={{ marginBottom: 5, color: C.gold }}>{tr("★ รายการโปรด — ซื้อได้เลย")}</Label>
-                  {picks.map((x) => {
+                <div style={{ ...card(), marginBottom: 8, padding: 9, borderColor: C.gold }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                    <Label style={{ color: C.gold }}>{tr("\u2605 แผนออกของ")}</Label>
+                    <span style={{ fontSize: 9.5, color: C.dim }}>{tr("เรียงจากชิ้นที่จะออกก่อน")}</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {tiny(tr("ล้าง"), () => clearFavs(idx))}
+                    </span>
+                  </div>
+                  {picks.map((x, pi) => {
                     const owned = c.items.some((y) => y.id === x.id);
-                    // ชิ้นส่วนที่ยังขาดของสูตรนี้ — กดซื้อทีละชิ้นได้เลยตอนเงินยังไม่พอ
-                    const pool = [...c.items];
-                    const missing = [];
-                    const walk = (node) => {
-                      if (node.owned) return;
-                      if (node.children) node.children.forEach(walk);
-                      else if (!missing.some((m) => m.id === node.item.id)) missing.push(node.item);
-                    };
-                    if (!owned && x.parts) x.parts.map((pid) => buildRecipeTree(pool, ITEM_BY_ID[pid])).forEach(walk);
+                    const p = planOf(x);
+                    const pct = Math.max(0, Math.min(1, x.cost ? p.have / x.cost : 1));
                     return (
-                      <div key={x.id} style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 4 }}>
-                        {owned
-                          ? (
-                            <span style={{
-                              fontSize: 10.5, color: C.green, border: `1px solid ${C.line}`,
-                              borderRadius: 5, padding: "5px 8px",
-                            }}>✓ {itemName(x)}</span>
-                          )
-                          : chip(x, false)}
-                        {missing.map((m) => chip(m, true))}
+                      <div key={x.id} style={{ marginBottom: 6 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 3 }}>
+                          <span style={{ fontFamily: MONO, fontSize: 10, color: C.dim, width: 14 }}>{pi + 1}.</span>
+                          {owned
+                            ? (
+                              <span style={{ fontSize: 10.5, color: C.green, flex: 1 }}>
+                                {tr("\u2713 {0} \u2014 ออกครบแล้ว", itemName(x))}
+                              </span>
+                            )
+                            : (
+                              <span style={{ fontSize: 10.5, color: C.ink, flex: 1 }}>
+                                {itemName(x)}
+                                <span style={{ fontFamily: MONO, color: C.dim, marginLeft: 6 }}>
+                                  {p.short > 0
+                                    ? tr("ขาดอีก {0}g", p.short)
+                                    : tr("ซื้อได้เลย {0}g", p.eff)}
+                                </span>
+                              </span>
+                            )}
+                          {tiny("\u2191", pi > 0 ? () => moveFav(idx, x.id, -1) : null, tr("เลื่อนขึ้น"))}
+                          {tiny("\u2193", pi < picks.length - 1 ? () => moveFav(idx, x.id, 1) : null, tr("เลื่อนลง"))}
+                          {tiny("\u2715", () => toggleFav(idx, x.id), tr("เอาออกจากรายการโปรด"))}
+                        </div>
+                        {!owned && (
+                          <div style={{ height: 3, background: C.panel2, borderRadius: 2, marginBottom: 4 }}>
+                            <div style={{ height: 3, width: `${Math.round(pct * 100)}%`, background: C.gold, borderRadius: 2 }} />
+                          </div>
+                        )}
+                        {!owned && (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                            {chip(x, false, x.id)}
+                            {p.missing.map((m, mi) => chip(m, true, x.id + ":" + m.id + ":" + mi))}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
+                  {next ? (
+                    <button onClick={() => buy(idx, next)}
+                      style={{
+                        width: "100%", marginTop: 4, background: C.panel2, border: `1px solid ${C.gold}`,
+                        borderRadius: 5, color: C.gold, fontFamily: MONO, fontSize: 11,
+                        padding: "6px 8px", cursor: "pointer",
+                      }}>
+                      {tr("ซื้อชิ้นถัดไป: {0} \u2014 {1}g", itemName(next), effectiveCost(c.items, next))}
+                    </button>
+                  ) : null}
                 </div>
               );
             })()}
@@ -241,12 +267,13 @@ export function ShopPhase(ctx) {
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
                   {["Q", "W", "E", "R"].map((k) => {
+                    const price = CHAMPIONS[c.champId].bounty.price;
                     const owned = (c.upgrades || []).includes(k);
-                    const can = !owned && (c.bountyGold || 0) >= 100;
+                    const can = !owned && (c.bountyGold || 0) >= price;
                     return (
                       <button key={k} disabled={!can}
                         onClick={() => setTeam((t) => t.map((x, i) => i === idx
-                          ? { ...x, bountyGold: x.bountyGold - 100, upgrades: [...(x.upgrades || []), k] } : x))}
+                          ? { ...x, bountyGold: x.bountyGold - price, upgrades: [...(x.upgrades || []), k] } : x))}
                         style={{
                           flex: 1, background: owned ? "#1E3A28" : can ? C.panel2 : "transparent",
                           border: `1px solid ${owned ? C.green : can ? C.gold : C.line}`, borderRadius: 5,
@@ -259,7 +286,7 @@ export function ShopPhase(ctx) {
                   })}
                 </div>
                 <div style={{ fontSize: 9.5, color: C.dim, marginTop: 6, lineHeight: 1.5 }}>{tr(
-                  "Q +8% Max HP · W ดาเมจนกเป็น True · E ระเบิด 8 ลูก · R วง 700 หน่วง 1.5 วิ (ชิ้นละ 100)"
+                  "Q +8% Max HP · W ดาเมจนกเป็น True · E วงระเบิด 300 + วิ่งไว 25% · R วง 700 หน่วง 1.5 วิ (ชิ้นละ 150)"
                 )}</div>
               </div>
             )}
@@ -281,16 +308,142 @@ export function ShopPhase(ctx) {
                 </button>
               );
             })()}
-            <button onClick={() => { setShopCat("START"); setOpenShop(idx); }} style={{ ...btn(C.panel2), fontSize: 12, padding: "7px" }}>{tr("เปิดร้านค้า")}</button>
+            <div style={{ display: "flex", gap: 5 }}>
+              <button onClick={() => { setShopCat("START"); setOpenShop(idx); }}
+                style={{ ...btn(C.panel2), fontSize: 12, padding: "7px", flex: 2 }}>{tr("เปิดร้านค้า")}</button>
+              <button onClick={() => openStats(c)} title={tr("ดูค่าสถานะทั้งหมด")}
+                style={{ ...btn(C.panel2), fontSize: 12, padding: "7px", flex: 1, color: C.blue }}>{tr("ค่าสถานะ")}</button>
+            </div>
 
           </div>
         ))}
+          </div>
+          <div style={{
+            flex: wide ? "0 1 310px" : "1 1 100%", minWidth: 0, order: wide ? 1 : 0,
+            position: wide ? "sticky" : "static", top: 8, alignSelf: "flex-start",
+            maxHeight: wide ? "calc(100vh - 24px)" : "none",
+            overflowY: wide ? "auto" : "visible",
+          }}>
+        {/* นิสัยประจำเลนของยกนี้ — เลือกสั้นๆ ตรงนี้เลย ไม่ต้องข้ามหน้า
+            ไม่บอกว่าจะเกิดอะไร เพราะยังไม่รู้ว่าอีกฝั่งสั่งอะไรมา เฉลยหลังดูผล */}
+        <div style={{ ...card(), padding: 10, marginBottom: 8 }}>
+          {STANCE_LANES.map((L) => (
+            <div key={L} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+              <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.dim, width: 66, flexShrink: 0 }}>
+                {tr(LANE_TH[L])} <span style={{ color: C.line }}>{LANE_MEMBERS[L].map(champOf).join("·")}</span>
+              </span>
+              {STANCE_LIST.map((k) => {
+                const on = stances[L] === k;
+                return (
+                  <button key={k} onClick={() => setStances((v) => ({ ...v, [L]: k }))}
+                    style={{
+                      flex: 1, background: on ? TONE[k] : C.panel2, color: on ? "#0B1220" : C.dim,
+                      border: `1px solid ${on ? TONE[k] : C.line}`, borderRadius: 4,
+                      padding: "5px 2px", cursor: "pointer", fontFamily: SANS,
+                      fontSize: 10.5, fontWeight: on ? 800 : 400,
+                    }}>{tr(STANCES[k].th)}</button>
+                );
+              })}
+            </div>
+          ))}
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.dim, width: 66, flexShrink: 0 }}>
+              {tr("ป่า")} <span style={{ color: C.line }}>{champOf("JUNGLE")}</span>
+            </span>
+            <button onClick={() => setJungle({ lane: null, crew: [] })}
+              style={{
+                flex: 1, background: jungle.lane ? C.panel2 : C.gold, color: jungle.lane ? C.dim : "#0B1220",
+                border: `1px solid ${jungle.lane ? C.line : C.gold}`, borderRadius: 4,
+                padding: "5px 2px", cursor: "pointer", fontFamily: SANS, fontSize: 10.5,
+                fontWeight: jungle.lane ? 400 : 800,
+              }}>{tr("ฟาร์ม")}</button>
+            {STANCE_LANES.map((L) => {
+              const can = openLanes.includes(L);
+              const on = jungle.lane === L;
+              return (
+                <button key={L} disabled={!can} onClick={() => setJungle({ lane: L, crew: [] })}
+                  style={{
+                    flex: 1, background: on ? C.red : C.panel2,
+                    color: on ? "#0B1220" : (can ? C.dim : "#222C42"),
+                    border: `1px solid ${on ? C.red : C.line}`, borderRadius: 4,
+                    padding: "5px 2px", cursor: can ? "pointer" : "default",
+                    fontFamily: SANS, fontSize: 10.5, fontWeight: on ? 800 : 400,
+                  }}>{tr(LANE_TH[L])}</button>
+              );
+            })}
+          </div>
+          {jungle.lane && crewMax > 0 && crewPool.length ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 5 }}>
+              <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.dim, width: 66, flexShrink: 0 }}>
+                {tr("พาไป {0}", crewMax)}
+              </span>
+              {crewPool.map((L) => {
+                const on = (jungle.crew || []).includes(L);
+                return (
+                  <button key={L}
+                    onClick={() => setJungle((j) => {
+                      const cur = j.crew || [];
+                      if (cur.includes(L)) return { ...j, crew: cur.filter((x) => x !== L) };
+                      if (cur.length >= crewMax) return j;
+                      return { ...j, crew: [...cur, L] };
+                    })}
+                    style={{
+                      flex: 1, background: on ? C.blue : C.panel2, color: on ? "#0B1220" : C.dim,
+                      border: `1px solid ${on ? C.blue : C.line}`, borderRadius: 4,
+                      padding: "5px 2px", cursor: "pointer", fontFamily: SANS, fontSize: 10.5,
+                      fontWeight: on ? 800 : 400,
+                    }}>{tr(LANE_TH[L])}</button>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
 
-        <button onClick={startFight} style={{ ...btn(C.gold), color: "#0B1220", fontWeight: 800, marginTop: 6 }}>
-          {EVENTS[eventId].farm && !farmBlocked
-            ? tr("ฟาร์มยกที่ {0} — ข้ามการปะทะ", round)
-            : (round === mode.maxRounds ? tr("เริ่มยกตัดสิน") : tr("เริ่มไฟต์ยกที่ {0}", round)) + " · " + tr(EVENTS[eventId].th) + " " + EVENTS[eventId].duration + "s"}
+        <button onClick={() => { if (net && net.on) { if (!netReadyUp()) startFight(); } else startFight(); }}
+          disabled={!!(net && net.on && net.waiting)}
+          style={{ ...btn(net && net.on && net.waiting ? C.panel2 : C.gold),
+            color: net && net.on && net.waiting ? C.dim : "#0B1220",
+            fontWeight: 800, fontSize: 14, padding: "12px 4px", marginBottom: 12 }}>
+          {net && net.on && net.waiting
+            ? tr("พร้อมแล้ว — รออีกฝั่ง…")
+            : net && net.on
+              ? tr("พร้อมสู้ยกที่ {0}", round)
+              : round === mode.maxRounds ? tr("เริ่มยกตัดสิน") : tr("เริ่มยกที่ {0}", round)}
         </button>
+        <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+          {Object.values(STYLES).map((s) => (
+            <button
+              key={s.key}
+              onClick={() => setTeamStyle(s.key)}
+              style={{
+                ...btn(teamStyle === s.key ? C.gold : C.panel2),
+                color: teamStyle === s.key ? "#0B1220" : C.ink,
+                flex: 1, fontSize: 12, fontWeight: 700, padding: "9px 4px",
+              }}
+            >
+              {tr(s.th)}
+            </button>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: C.dim, marginBottom: 12, lineHeight: 1.55 }}>{tr(
+          "บุก ชนะ คุมระยะ · คุมระยะ ชนะ ตั้งรับ · ตั้งรับ ชนะ บุก — สั่งใหม่ได้ทุกยก ไม่เสียเงิน"
+        )}</div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+          <button onClick={() => setScoutOpen(true)}
+            style={{ ...btn(C.panel2), color: C.red, fontSize: 12, fontWeight: 700, flex: 2, padding: "9px 4px" }}>{tr("ส่องทีมคู่แข่ง")}</button>
+          <button onClick={() => setFormOpen(true)}
+            style={{ ...btn(C.panel2), color: C.blue, fontSize: 12, fontWeight: 700, flex: 1, padding: "9px 4px" }}>{tr("จัดทัพ")}</button>
+        </div>
+
+        {scoutOpen && (
+          <ScoutPanel foe={foe} team={team} fightState={null} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
+        )}
+
+        {formOpen && (
+          <FormationPanel team={team} setTeam={setTeam} onClose={() => setFormOpen(false)} />
+        )}
+          </div>
+        </div>
 
         {openShop !== null && (
           <ShopScreen

@@ -33,6 +33,35 @@ export function centroid(state, team) {
 }
 
 
+// ---------------- พลังของ Luch (Morning Star) ----------------
+// เก็บเป็นตัวเลขเดียว 0-100 แล้วแปลงเป็น light/shadow ให้โค้ดเดิมอ่านต่อได้
+//   light  = จำนวนครั้งที่ร่ายร่างแสงได้ (frag / 20)
+//   shadow = 1 เมื่อพลังเต็ม 100
+export function syncFrag(u) {
+  const f = u.champ.fragments;
+  if (!f) return;
+  u.frag = Math.max(0, Math.min(f.max, u.frag || 0));
+  u.shadow = u.frag >= f.shadowCost ? 1 : 0;
+  u.light = Math.floor(u.frag / f.lightCost);
+}
+
+
+export function addFrag(u, amount) {
+  if (!u.champ.fragments) return;
+  u.frag = (u.frag || 0) + amount;
+  syncFrag(u);
+}
+
+
+// ร่ายสกิลแล้วหักพลัง — ร่างเงากินทั้งหลอด ร่างแสงกินก้อนเดียว
+export function spendFrag(u, isShadow) {
+  const f = u.champ.fragments;
+  if (!f) return;
+  u.frag = (u.frag || 0) - (isShadow ? f.shadowCost : f.lightCost);
+  syncFrag(u);
+}
+
+
 // ---------------- buffs, shields, damage ----------------
 export const HARD_CC = ["stun", "root", "fear", "slow", "taunt", "charm"];
 
