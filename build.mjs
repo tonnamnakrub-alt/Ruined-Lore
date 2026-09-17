@@ -22,7 +22,10 @@ async function emit(result) {
   const js = result.outputFiles[0].text;
   const html = fs.readFileSync(TEMPLATE, "utf8").replace("/*__BUNDLE__*/", () => js);
   fs.writeFileSync(OUT, html);
-  console.log(`${OUT} — ${(html.length / 1024).toFixed(0)} KB`);
+  // index.html เป็นไฟล์เดียวกันเป๊ะ — GitHub Pages เสิร์ฟ index.html ที่โฟลเดอร์ราก
+  // ถ้าไม่มีไฟล์นี้ เปิดลิงก์เว็บแล้วจะเจอ 404 ทั้งที่ build สำเร็จ
+  fs.writeFileSync("index.html", html);
+  console.log(`${OUT} + index.html — ${(html.length / 1024).toFixed(0)} KB`);
 }
 
 if (process.argv.includes("--watch")) {
