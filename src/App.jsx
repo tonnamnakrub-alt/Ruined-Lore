@@ -365,6 +365,10 @@ export function App() {
           // ห้องแบบคนดู: พอได้ทีมครบสองฝั่งก็เริ่มไฟต์ได้เลย
           if (netRef.current.watching && netRef.current.teams[0] && netRef.current.teams[1]) {
             startWatchedFight();
+          } else if (!netRef.current.watching && netRef.current.isHost && netRef.current.iReadied) {
+            // เจ้าบ้านกดพร้อมไปก่อนแล้ว รอทีมอีกฝั่งอยู่ — มาถึงแล้วก็เริ่มเลย
+            // เดิมมีแต่ทางที่อีกฝั่งพร้อมก่อน ถ้าเจ้าบ้านกดก่อนจะค้างกันทั้งคู่
+            hostStartNetFight();
           }
         } else if (m.k === MSG.START) {
           // ผู้เข้าร่วม: รับคำสั่งเริ่มแล้วรันไฟต์ชุดเดียวกัน
@@ -408,6 +412,7 @@ export function App() {
     setNetBusy(true);
     netReset(true);
     netRef.current.watching = role === "watch";
+    netRef.current.isHost = true;
     try {
       const r = await hostRoom((i) => netHandlers(i), role === "watch" ? 2 : 1);
       roomRef.current = r;
@@ -451,6 +456,7 @@ export function App() {
     const p = createPeer(netHandlers(0));
     peerRef.current = p;
     peersRef.current = [p];
+    netRef.current.isHost = true;
     try {
       const code = await p.createOffer();
       setNet({
@@ -530,7 +536,7 @@ export function App() {
     roomRef.current = null;
     peersRef.current = [];
     peerRef.current = null;
-    netRef.current = { theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], watching: false };
+    netRef.current = { theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], watching: false, isHost: false, iReadied: false, myReady: null };
     setNetPaste("");
     setNetPaste2("");
     if (!quiet) setNet((n) => ({
@@ -553,29 +559,45 @@ export function App() {
     setPhase("SETUP");
   }
 
+  // เจ้าบ้านสั่งเริ่มไฟต์ของยกนี้ — ใช้ได้ทั้งตอนกดพร้อมทีหลังอีกฝั่ง และตอนกดพร้อมไปก่อน
+  // แยกออกมาเพราะต้องเรียกได้จากสองที่: ปุ่มพร้อม กับตอนทีมอีกฝั่งวิ่งมาถึงทีหลัง
+  function hostStartNetFight() {
+    const p = peerRef.current || peersRef.current[0];
+    const mine = netRef.current.myReady;
+    if (!p || !p.open || !mine || !netRef.current.theirTeam) return false;
+    const seed = Math.floor(rand() * 1e9);
+    p.send({
+      k: MSG.START, seed, side: "red", other: mine.team,
+      stances: mine.stances, jungle: mine.jungle,
+    });
+    netRef.current.iReadied = false;
+    runNetFight(seed, netRef.current.theirTeam, "blue",
+      netRef.current.theirStances, netRef.current.theirJungle);
+    return true;
+  }
+
   // ยกนี้พร้อมแล้ว — ส่งทีมให้อีกฝั่ง ถ้าเป็นเจ้าบ้านและอีกฝั่งพร้อมแล้วก็เริ่มได้เลย
   function netReadyUp() {
-    const p = peerRef.current;
+    // เจ้าบ้านแบบรหัสห้องเก็บสายไว้ที่ peersRef เท่านั้น ไม่ได้เซ็ต peerRef
+    // เดิมตรงนี้อ่านแต่ peerRef แล้วคืน false ปุ่มเลยตกไปเริ่มไฟต์แบบออฟไลน์
+    // ผลคือเจ้าบ้านเดินหน้าไปคนเดียว ส่วนอีกฝั่งรอ START ที่ไม่มีวันมา
+    const p = peerRef.current || peersRef.current[0];
     if (!p || !p.open) return false;
     const live = liveRef.current;
     const me = live.team.map((c) => ({ ...c, style: live.teamStyle, champId: c.champId || LANE_CHAMPION[c.lane] }));
-    p.send({ k: MSG.READY, team: packTeam(me), stances: live.stances, jungle: live.jungle });
-    if (net.isHost && net.role === "solo" && netRef.current.theirTeam) {
-      const seed = Math.floor(rand() * 1e9);
-      p.send({
-        k: MSG.START, seed, side: "red", other: packTeam(me),
-        stances: live.stances, jungle: live.jungle,
-      });
-      runNetFight(seed, netRef.current.theirTeam, "blue",
-        netRef.current.theirStances, netRef.current.theirJungle);
-      return true;
-    }
+    const packed = { team: packTeam(me), stances: live.stances, jungle: live.jungle };
+    netRef.current.myReady = packed;
+    netRef.current.iReadied = true;
+    p.send({ k: MSG.READY, ...packed });
+    if (net.isHost && net.role !== "watch" && netRef.current.theirTeam && hostStartNetFight()) return true;
     setNet((n) => ({ ...n, waiting: true }));
     return true;
   }
 
   // รันไฟต์ของโหมดออนไลน์ — ทั้งสองเครื่องเรียกด้วย seed และทีมชุดเดียวกัน
   function runNetFight(seed, otherTeam, side, otherStances, otherJungle) {
+    netRef.current.iReadied = false;
+    netRef.current.myReady = null;
     setFoe(otherTeam);
     setNet((n) => ({ ...n, side, waiting: false, peerReady: false }));
     netRef.current.theirTeam = null;
