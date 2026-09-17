@@ -1360,4 +1360,5 @@ export const DICT = {
  "ดูตัวละครทั้งหมดแยกตามเลน พร้อมสกิลเต็ม": "Every champion by lane, with their full ability list",
  "เราสั่งเซฟไว้ ไม่รับไฟต์ — ยื้อให้พ้นเวลาแล้วฝั่งที่มาแกงค์เสียยกฟรี": "We called Safe and refuse the fight — hold out to the clock and the ganking side wastes its whole round",
  "ศัตรูสั่งเซฟไว้ ไม่รับไฟต์ — ถ้าเก็บไม่ได้ในเวลา เราเสียยกฟรี": "They called Safe and refuse the fight — fail to finish them in time and our round is wasted",
+ "ค่าสถานะ · วงเล็บคือต่อเลเวล": "Stats · brackets are per level",
 };

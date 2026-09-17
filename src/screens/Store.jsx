@@ -3,6 +3,7 @@ import React from "react";
 import { CHAMPIONS, playsLane } from "../data/champions.js";
 import { LANES } from "../data/constants.js";
 import { hashStr } from "../engine/util.js";
+import { skillShape } from "../game/skill-desc.js";
 import { Shell, btn } from "../ui/chrome.jsx";
 import { Empty, InfoRow, Panel, Portrait, Tabs, Tile, TileGrid, TwoPane } from "../ui/kit.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
@@ -48,14 +49,32 @@ export function StoreScreen(ctx) {
           <div style={{ fontSize: 10.5, color: C.dim, marginTop: 3, lineHeight: 1.5 }}>
             {ch.role} · {ch.melee ? tr("ประชิด") : tr("ระยะ")} {ch.range}
           </div>
-          <div style={{ fontSize: 10, color: C.green, marginTop: 4 }}>{tr("✓ ปลดล็อกแล้ว")}</div>
+          {/* เลนที่ตัวนี้ลงได้ — เดิมต้องไล่กดทีละแท็บถึงจะรู้ */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 5 }}>
+            {[ch.lane, ...(ch.alsoLanes || [])].map((l) => (
+              <span key={l} style={{
+                fontFamily: MONO, fontSize: 9, letterSpacing: 0.5, padding: "2px 6px", borderRadius: 999,
+                background: l === ch.lane ? "rgba(232,163,61,.16)" : C.panel2,
+                border: `1px solid ${l === ch.lane ? C.gold : C.line}`,
+                color: l === ch.lane ? C.gold : C.dim,
+              }}>{l}</span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div style={{ marginBottom: 10 }}>
+      {/* ค่าสถานะแบบตารางสองคอลัมน์ — เดิมมีแค่สามบรรทัด น้อยกว่าหน้า PICK ด้วยซ้ำ
+          วงเล็บคือค่าที่เพิ่มต่อเลเวล จะได้เทียบตัวที่โตไวกับตัวที่ฐานสูงได้ */}
+      <Label style={{ marginBottom: 5 }}>{tr("ค่าสถานะ · วงเล็บคือต่อเลเวล")}</Label>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 14px", marginBottom: 10 }}>
         <InfoRow k={tr("เลือด")} v={`${ch.hp} (+${ch.hpG})`} />
+        <InfoRow k={tr("ฟื้นเลือด")} v={`${ch.hp5 || 0} (+${ch.hp5G || 0})`} />
         <InfoRow k={tr("โจมตี")} v={`${ch.ad} (+${ch.adG})`} />
-        <InfoRow k={tr("เกราะ / ต้านเวท")} v={`${ch.armor} / ${ch.mr}`} />
+        <InfoRow k={tr("ความเร็วโจมตี")} v={`${ch.as} (+${Math.round((ch.asG || 0) * 1000) / 10}%)`} />
+        <InfoRow k={tr("เกราะ")} v={`${ch.armor} (+${ch.armorG})`} />
+        <InfoRow k={tr("ต้านเวท")} v={`${ch.mr} (+${ch.mrG})`} />
+        <InfoRow k={tr("ความเร็วเดิน")} v={String(ch.ms)} />
+        <InfoRow k={tr("ระยะโจมตี")} v={String(ch.range)} />
       </div>
 
       <Label style={{ marginBottom: 5 }}>{tr("สกิล — กดดูรายละเอียด")}</Label>
@@ -63,12 +82,16 @@ export function StoreScreen(ctx) {
         {ch.skills.map((sk) => (
           <button key={sk.key} onClick={() => openSkill(ch.id, sk.key)}
             style={{
-              flex: 1, textAlign: "center", background: C.panel2, border: `1px solid ${C.line}`,
+              flex: 1, textAlign: "center", background: C.panel2, border: `1px solid ${sk.ult ? C.gold : C.line}`,
               borderRadius: 6, padding: "6px 3px", cursor: "pointer", fontFamily: SANS, color: C.ink,
             }}>
             <div style={{ fontFamily: MONO, fontSize: 11, color: sk.ult ? C.gold : C.ink }}>{sk.key}</div>
             <div style={{ fontSize: 8.5, color: C.dim, marginTop: 2, lineHeight: 1.3 }}>
               {sk.type === "dual" ? sk.light.th + " / " + sk.shadow.th : sk.th}
+            </div>
+            {/* รูปแบบสกิล (กรวย/พุ่ง/ลงพื้น) — อ่านออกตั้งแต่ยังไม่กดเข้าไปดู */}
+            <div style={{ fontSize: 8, color: C.blue, marginTop: 3, lineHeight: 1.25 }}>
+              {skillShape(sk)}
             </div>
           </button>
         ))}
