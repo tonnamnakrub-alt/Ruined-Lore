@@ -1370,6 +1370,229 @@ export const DICT = {
  "ฝั่งเราถอย ศัตรูกินเลนฟรี ได้เงินเพิ่ม 2": "We backed off — the enemy farms the lane for free, +2 gold",
  "ศัตรูถอย เรากินเลนฟรี ได้เงินเพิ่ม 2": "They backed off — we farm the lane for free, +2 gold",
 
+ // ================= Patch 0.3 =================
+ // ---- ชื่อและบทบาทของตัวละครใหม่ ----
+ "เอลล่า": "Ella",
+ "ปิโรสก้า": "Piroska",
+ "โยดากะ": "Yodaka",
+ "ทศกัณฐ์": "Totsakan",
+ "ฮูด": "Hood",
+ "แจ็ค": "Jack",
+ "พุสส์": "Puss",
+ "เหนียน": "Nian",
+ "แฮม ไส้กรอก เบคอน": "Ham, Sausage & Bacon",
+ "อาเธอร์": "Arthur",
+
+ // ---- พาสซีฟของตัวละครใหม่ ----
+ "ออโต้ทุกครั้งพ่วงดาเมจเวท 15 ที่เลเวล 1 ไล่ถึง 75 ที่เลเวล 18 (+25% AP) · ถ้าเป้าหมายเลือดต่ำกว่า 50% ก้อนนี้แรงขึ้นสองเท่าทันที (30-150 +50% AP)":
+   "Every auto attack carries bonus magic damage, 15 at level 1 rising to 75 at level 18 (+25% AP) · against a target below 50% health it doubles on the spot (30-150 +50% AP)",
+ "เลือดตกต่ำกว่า 50% ครั้งแรก ได้ความเร็วเดิน +60/70/80% (ตามเลเวล 1/7/13) นาน 3 วิ ค่อยๆ จาง พร้อมเดินทะลุยูนิต · คูลดาวน์ 75/60/45 วิ และต้องฟื้นเลือดเกิน 50% ก่อนถึงจะพร้อมอีกครั้ง":
+   "The first time she drops below 50% health she bolts: +60/70/80% move speed (at levels 1/7/13) for 3s, decaying, and she walks through units · 75/60/45s cooldown, and her health has to climb back over 50% before it arms again",
+ "ร่ายสกิล Q/W/E/R หรือเดินตัดพายุ Q ได้ 1 สแตก สูงสุด 3 สแตก อยู่ได้ 6 วิ · มีสแตกแล้วออโต้จะล็อกเป้าได้ไกลถึง 400 และพุ่งทะลวงไปหยุดหลังเป้า 300 หน่วย · ศัตรูทุกตัวในแนวพุ่ง (กว้าง 120) กินดาเมจเวท 25 ที่เลเวล 1 ไล่ถึง 140 ที่เลเวล 18 (+40% AP)":
+   "Casting Q/W/E/R or walking through his own Q storm grants 1 stack, up to 3, lasting 6s · with a stack his auto attack reaches out to 400 and he pierces straight through the target, stopping 300 units behind it · everyone along that line (120 wide) takes magic damage, 25 at level 1 rising to 140 at level 18 (+40% AP)",
+ "ค่าสถานะที่ได้จากไอเทมทุกชิ้นเพิ่มขึ้น 10% — Bonus AD, Bonus HP, เกราะ, ต้านเวท, เร่งสกิล, ความเร็วโจมตี และ Tenacity":
+   "Every stat his items give him is 10% larger — bonus AD, bonus HP, armor, magic resist, Ability Haste, attack speed and tenacity",
+ "ออโต้ที่ติดคริไม่ทำดาเมจคริทันที (เป้ากินแค่ 100% AD) แต่ส่วนเกินที่ควรได้จะกลายเป็นเลือดไหล 150% ของส่วนเกินนั้น จ่ายทุก 0.5 วิ ตลอด 3 วิ · ซ้อนได้สูงสุด 5 ชั้น แต่ละชั้นนับเวลาและดาเมจแยกกัน":
+   "A critical strike doesn't burst (the target only takes 100% AD) — the excess it should have dealt becomes a bleed worth 150% of that excess, paid out every 0.5s over 3s · up to 5 stacks, each with its own timer and damage",
+ "สกิลของแจ็คหรือการโจมตีของยักษ์ที่โดนศัตรู แปะเมล็ดถั่ว 1 สแตก อยู่ได้ 5 วิ · ครบ 3 สแตก รากงอกตรึงเท้า 1.25/1.5/1.75 วิ (ตามเลเวล 1/7/13) พร้อมดาเมจเวท 40 ที่เลเวล 1 ไล่ถึง 180 ที่เลเวล 18 (+30% AP) · โดนตรึงแล้วกันติดซ้ำ 8 วิ":
+   "Jack's skills, and every attack his giant lands, plant one bean on the target for 5s · at 3 beans roots burst out and hold them for 1.25/1.5/1.75s (at levels 1/7/13) plus magic damage, 40 at level 1 rising to 180 at level 18 (+30% AP) · a rooted target can't be re-seeded for 8s",
+ "ตราประทับท้าดวลศัตรูหนึ่งตัวตอนเริ่มไฟต์ — ทำดาเมจใส่เป้านั้นแรงขึ้น 15% (+1% ต่อ Bonus AD ทุก 20) และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ · เก็บศพหรือช่วยเก็บเป้าที่มีตรา ได้เงินเพิ่ม 30% · ถ้าพุสส์ตายตอนเป้ายังไม่ตาย จะล่องหนแตะไม่ได้ 2 วิ แล้วฟื้นด้วยเลือด 30% (ตราหายไปทันที)":
+   "He marks one enemy for a duel at the start of the fight — he deals 15% more damage to that target (+1% per 20 bonus AD) and the two of them lock onto each other first · a kill or assist on the marked target pays 30% more gold · if Puss dies while the mark is still alive he vanishes untargetable for 2s and comes back at 30% health (the mark is lost)",
+ "ออร่าไฟฟ้ารัศมี 375 รอบตัว · ทุก 2 วิ ประจุฟาดศัตรู 1 ตัวในระยะ (เล็งแชมเปี้ยนก่อน) ดาเมจเวท 20 ที่เลเวล 1 ไล่ถึง 90 ที่เลเวล 18 (+15% AP) (+3% Bonus HP)":
+   "A 375-radius electric aura · every 2s the charge lashes one enemy inside it (champions first) for magic damage, 20 at level 1 rising to 90 at level 18 (+15% AP) (+3% bonus HP)",
+ "หลอดเลือดแบ่งเป็น 3 ขั้น · ขั้นบ้านฟาง (100-75%) หมูครบ 3 ตัว กินดาเมจน้อยลง 15% · ขั้นบ้านไม้ (ต่ำกว่า 75%) หมูหนีไปตัวหนึ่ง ตัวเล็กลง 10% สกิลกว้างขึ้น 15% สิ่งก่อสร้างอึดขึ้น 20% และเพดานเลือดในไฟต์ล็อกที่ 75% · ขั้นบ้านอิฐ (ต่ำกว่า 50%) เล็กลงอีก สกิลกว้างขึ้น 30% สิ่งก่อสร้างอึดขึ้น 50% เพดานเลือดล็อกที่ 50% แต่กินดาเมจมากขึ้น 15%":
+   "His health bar is split into three tiers · Straw House (100-75%) all three pigs present, 15% less damage taken · Wood House (below 75%) one pig runs off, model 10% smaller, skills 15% wider, structures 20% tougher, and his in-fight health ceiling locks at 75% · Brick House (below 50%) another pig runs, smaller again, skills 30% wider, structures 50% tougher, ceiling locks at 50% — but he takes 15% more damage",
+ "ดาเมจกายภาพและดาเมจจริงที่อาเธอร์ทำได้ทุกแหล่ง แปลงเป็นโล่ 15% ของยอดนั้น · โล่อยู่ 3.5 วิ สะสมทับได้ไม่เกิน 30% ของ Max HP · เลือดต่ำกว่า 50% อัตราแปลงขึ้นเป็น 25%":
+   "All physical and true damage Arthur deals, from any source, converts into a shield worth 15% of it · the shield lasts 3.5s and stacks up to 30% of his max health · below 50% health the conversion rises to 25%",
+
+ // ---- ข้อความของกลไกใหม่ในไฟต์ ----
+ "{0} {1} หายเข้าไปในราชรถ": "{0} {1} disappears into the carriage",
+ "{0} {1} เปิดออร่าความจริง": "{0} {1} opens the aura of truth",
+ "{0} {1} ทุบพื้นสามระลอก": "{0} {1} slams the ground three times",
+ "{0} {1} เรียกยักษ์สวรรค์ลงมา": "{0} {1} calls down the cloud giant",
+ "{0} {1} เรียกพายุอสนีบาต": "{0} {1} summons the thunderstorm",
+ "{0} {1} ก่อบ้านอิฐคุ้มภัย": "{0} {1} raises the brick bunker",
+ "{0} {1} พิพากษา {2}": "{0} {1} passes judgment on {2}",
+ "{0} {1} วิ่งหนีสุดชีวิต": "{0} {1} runs for her life",
+ "{0} {1} ใช้ชีวิตที่เก้า": "{0} {1} spends the ninth life",
+ "{0} {1} สลายตัวหนีไปในเงา": "{0} {1} melts into the shadows",
+ "พาสซีฟ Static Discharge": "Passive Static Discharge",
+ "พาสซีฟ Beanstalk Guile": "Passive Beanstalk Guile",
+ "พาสซีฟ Lacerating Precision": "Passive Lacerating Precision",
+ "พาสซีฟ Glass Shards": "Passive Glass Shards",
+ "พาสซีฟ Starlight Piercing": "Passive Starlight Piercing",
+ "พาสซีฟ Cleave": "Passive Cleave",
+ "ยักษ์สวรรค์ ": "Cloud Giant ",
+ "ไอเทม Mímir's Whispering Well": "Item Mímir's Whispering Well",
+ "ไอเทม Fafnir's Devouring Maw": "Item Fafnir's Devouring Maw",
+ "ไอเทม William Tell's Sovereign Crossbow": "Item William Tell's Sovereign Crossbow",
+ "ไอเทม Skadi's Triple Arrow": "Item Skadi's Triple Arrow",
+
+ // ---- ชิปตัวนับ ----
+ " พร้อม": " ready",
+ " รอออโต้": " needs an auto",
+ "ล่องหน": "invisible",
+ "ไม่มีเป้า": "no mark",
+ "ใช้แล้ว": "spent",
+ "เหลือ 1": "1 left",
+ "บ้านฟาง": "Straw",
+ "บ้านไม้": "Wood",
+ "บ้านอิฐ": "Brick",
+
+ // ---- หน้าจอดราฟต์ ----
+ "ยังไม่เลือก": "empty",
+ "แบน": "Bans",
+ "ดราฟต์ครบแล้ว": "Draft complete",
+ "ตาคุณแบน": "Your ban",
+ "ฝ่ายตรงข้ามกำลังแบน": "They are banning",
+ "ตาคุณเลือก": "Your pick",
+ "ฝ่ายตรงข้ามกำลังเลือก": "They are picking",
+ "ถูกแบน": "banned",
+ "ถูกเลือกแล้ว": "taken",
+ "แตะการ์ดเพื่ออ่านตัวละคร แล้วกดปุ่มด้านล่างเพื่อยืนยัน · ตัวที่ถูกเลือกหรือถูกแบนไปแล้วหยิบซ้ำไม่ได้":
+   "Tap a card to read the champion, then confirm with the button below · anything already picked or banned is off the table",
+ "รอฝ่ายตรงข้าม": "Waiting for them",
+ "ตัวนี้ถูกหยิบไปแล้ว": "Already taken",
+ "แบน {0}": "Ban {0}",
+ "เลือก {0}": "Pick {0}",
+ "ระยะไกล": "Ranged",
+ "พาสซีฟ": "Passive",
+ "ทัวร์นาเมนต์ · แบน 3 เลือก 5": "Tournament · ban 3, pick 5",
+ "ดราฟต์พิก": "Draft Pick",
+ "ฝ่ายตรงข้าม": "Them",
+ "บันทึกการดราฟต์": "Draft log",
+ "วิธีเลือกตัวละคร": "How champions are picked",
+ "เลือกปิดตา": "Blind Pick",
+ "ทัวร์นาเมนต์": "Tournament",
+ "เลือกเองครบ 5 ตัว ไม่เห็นของอีกฝั่ง — แบบเดิม": "Pick all five yourself without seeing theirs — the original way",
+ "ผลัดกันเลือกแบบเปิดเผย ห้ามซ้ำกัน ลำดับ 1-2-2-2-2-1": "Take turns picking in the open, no duplicates, 1-2-2-2-2-1 order",
+ "แบนฝั่งละ 3 ตัวก่อน แล้วค่อยผลัดกันเลือกแบบดราฟต์": "Three bans each first, then the same open snake draft",
+ "แบนฝั่งละ 3 ตัว แล้วผลัดกันเลือกแบบดราฟต์ — เห็นของอีกฝั่งตลอด":
+   "Three bans each, then an open snake draft — you see their side the whole way",
+ "🔴 ฝ่ายตรงข้ามแบน {0}": "🔴 They banned {0}",
+ "🔴 ฝ่ายตรงข้ามเลือก {0}": "🔴 They picked {0}",
+ "🔵 คุณแบน {0}": "🔵 You banned {0}",
+ "🔵 คุณเลือก {0}": "🔵 You picked {0}",
+
+ // ---- คำอธิบายไอเทมใหม่ ----
+ "ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ {0} (+{1}% Bonus AD) นาน {2} วิ และวิ่งเร็วขึ้น {3}% ขณะมีโล่ (ทุก {4} วิ)":
+   "The first damage you land on an enemy champion grants a {0} (+{1}% bonus AD) shield for {2}s and {3}% move speed while it holds (every {4}s)",
+ "ทุก {0} วิ ปล่อยคลื่นเวท {1} (+{2}% Bonus HP) รอบตัวในระยะ {3} · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น {4}% นาน {5} วิ":
+   "Every {0}s, a magic pulse of {1} (+{2}% bonus HP) washes out to {3} · anyone it hits takes {4}% more magic damage from every source for {5}s",
+ "ออโต้ทำดาเมจกายภาพเพิ่ม {0}% (ประชิด) หรือ {1}% (ระยะไกล) ของเลือดปัจจุบันเป้า":
+   "Auto attacks deal bonus physical damage worth {0}% (melee) or {1}% (ranged) of the target's current health",
+ "ตีเป้าเดิมครบ {0} ครั้ง ระเบิด {1}% Max HP และขโมยความเร็วเดิน {2}% นาน {3} วิ (ทุก {4} วิ ต่อเป้า)":
+   "Every {0} hits on the same target detonates for {1}% max HP and steals {2}% move speed for {3}s (every {4}s per target)",
+ "ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า {0}% นาน {1} วิ ซ้อนได้ {2} ชั้น (รวม {3}%)":
+   "Magic damage to a champion cuts {0}% of their magic resist for {1}s, stacking {2} times (up to {3}%)",
+ "แชมเปี้ยนศัตรูแต่ละตัวในระยะ {0} ให้ +{1} เกราะ และ +{1} ต้านเวท (สูงสุด {2} ตัว)":
+   "Each enemy champion within {0} grants +{1} armor and +{1} magic resist (up to {2} of them)",
+ "เลือดต่ำกว่า {0}% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ {1} วิ (ทุก {2} วิ)":
+   "Dropping below {0}% health freezes you in stasis — untargetable and immune to damage — for {1}s (every {2}s)",
+ "เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง {0}% ของคูลดาวน์เต็ม":
+   "A kill or assist cuts {0}% of the ultimate's full cooldown off whatever is left",
+ "ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +{0}% แล้วค่อยๆ จางใน {1} วิ (ทุก {2} วิ)":
+   "The first auto attack of an engagement grants +{0}% move speed, decaying over {1}s (every {2}s)",
+ "เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +{0} และความเร็วเดิน +{1}% นาน {2} วิ":
+   "A kill or assist grants +{0} attack range and +{1}% move speed for {2}s",
+ "ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก {0} ตัวในระยะ {1} ตัวละ {2}% Total AD":
+   "Auto attacks fire extra bolts at {0} nearby enemies within {1}, each for {2}% total AD",
+ "กดอัลติแล้วปล่อยเขตรัศมี {0} นาน {1} วิ ศัตรูในเขตติดสโลว์ {2}% (ทุก {3} วิ)":
+   "Casting your ultimate opens a {0}-radius field for {1}s that slows enemies inside by {2}% (every {3}s)",
+ "ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน {0} วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น {1}% หนึ่งครั้ง (ทุก {2} วิ ต่อเป้า)":
+   "Damaging an enemy who is slowed or crowd-controlled marks them for {0}s · the next damaging hit from your team lands {1}% harder, once (every {2}s per target)",
+ "ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง)":
+   "Every 100 AP you hold grants 3 more magic penetration (counted after its own AP% multiplier)",
+ "สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที":
+   "Magic damage from an ability reveals the champion it hits for 2s — anyone invisible is exposed on the spot",
+ "ออโต้ที่ติดคริ ทำให้เป้าติดสโลว์ 20% นาน 1 วิ": "A critical strike slows the target by 20% for 1s",
+ "ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD":
+   "The first auto attack on each enemy in a fight carries an extra 50% AD as true damage",
+
+ // ---- แพตช์โน้ต 0.3 ----
+ "ตัวละครใหม่ 10 ตัว · ไอเทมใหม่ 12 ชิ้น · โหมดดราฟต์และทัวร์นาเมนต์":
+   "Ten new champions, twelve new items, and draft & tournament modes",
+ "แพตช์ที่ใหญ่ที่สุดตั้งแต่เปิดเกม — ตัวละครเพิ่มจาก 12 เป็น 22 ตัว · ของใหญ่เพิ่ม 12 ชิ้น · เลือกตัวแบบผลัดกันเลือกหรือแบนก่อนได้แล้ว":
+   "The biggest patch since launch — the roster goes from 12 to 22, twelve more Tier 3 items, and you can now draft or ban before a match",
+ "ตัวละครใหม่ 10 ตัว": "Ten new champions",
+ "โหมดเลือกตัวใหม่": "New ways to pick",
+ "ไอเทม Tier 3 ใหม่ 12 ชิ้น": "Twelve new Tier 3 items",
+ "เติมเอฟเฟกต์ให้ของเก่า": "Old items that needed an effect",
+ "อื่นๆ ในแพตช์นี้": "Everything else in this patch",
+ "ELLA (ซินเดอเรลล่า · Assassin AP · MID/JUNGLE) — ออโต้พ่วงเศษแก้วที่แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง · Q เป็นคอมโบสามจังหวะที่ต้องออโต้คั่น · W จดดาเมจที่ทำใส่เป้าไว้แล้วสั่งระเบิดทีเดียว · R ล่องหนแล้วเปิดตัวด้วยรถม้าฟักทองทุบ":
+   "ELLA (Cinderella · AP Assassin · MID/JUNGLE) — autos carry glass shards that double against a target below half health · Q is a three-beat combo that needs an auto between each step · W records the damage she deals to a target, then detonates it all at once · R goes invisible and opens with a pumpkin carriage slam",
+ "PIROSKA (หนูน้อยหมวกแดง · Enchanter AP · SUPPORT) — เลือดตกครึ่งครั้งแรกแล้ววิ่งหนีทะลุยูนิต · W ตะกร้าเสบียงฮีลและบัฟทุก 2 วิ · R ออร่าที่ขยายบัฟฝ่ายเราและดีบัฟฝ่ายศัตรูพร้อมกัน":
+   "PIROSKA (Little Red Riding Hood · AP Enchanter · SUPPORT) — the first time she drops to half health she bolts straight through units · W drops a basket that heals and buffs every 2s · R is an aura that amplifies your buffs and their debuffs at the same time",
+ "YODAKA (วิหคราตรี · AP Assassin · JUNGLE/MID) — สะสมสแตกดาวแล้วออโต้กลายเป็นการพุ่งทะลวงไปโผล่หลังเป้า · Q พายุที่ลอยไปค้างเป็นวังวน เดินตัดผ่านแล้วระเบิดได้":
+   "YODAKA (The Burnt Starlight · AP Assassin · JUNGLE/MID) — banks starlight stacks, and with one his auto becomes a pierce that leaves him behind the target · Q floats out and parks as a vortex he can walk through to detonate",
+ "TOTSAKAN (ทศกัณฐ์ · Vanguard/AD Tank · TOP/JUNGLE) — ค่าสถานะจากไอเทมทุกชิ้นแรงขึ้น 10% · W พุ่งชนแล้วจับเหวี่ยงข้ามหัว · R ทุบพื้น 3 ระลอก วงขยายถึง 700 ปิดท้ายด้วยสตันหมู่":
+   "TOTSAKAN (The Ten-Faced Asura King · Vanguard/AD Tank · TOP/JUNGLE) — every stat his items give him is 10% larger · W charges in and flings the first champion over his head · R slams three times, the last ring reaching 700 and stunning everyone in it",
+ "HOOD (โรบินฮู้ด · Marksman · ADC) — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลซ้อนได้ 5 ชั้น · R ห่าฝนธนูพร้อมเลือดไหลหมู่":
+   "HOOD (The Merry Outlaw · Marksman · ADC) — crits don't burst; the excess becomes a bleed that stacks five times · R rains arrows and opens the same wound on everyone under them",
+ "JACK (แจ็คผู้ฆ่ายักษ์ · Burst AP Mage · MID) — แปะเมล็ดถั่ว ครบ 3 แล้วรากงอกตรึงเท้า · R อัญเชิญยักษ์สวรรค์ที่เดินตีเองเป็นลูป 3 จังหวะ สเตตัสสเกลตาม AP":
+   "JACK (The Usurper of the Sky · Burst AP Mage · MID) — plants beans, and the third one roots the target in place · R summons a cloud giant that walks and attacks on its own in a three-swing loop, scaling off his AP",
+ "PUSS (พุสส์อินบู๊ทส์ · AD Assassin · JUNGLE/TOP) — ตราท้าดวลทำให้ตีเป้านั้นแรงขึ้นและทั้งคู่ล็อกหากัน · ตายตอนเป้ายังไม่ตายจะล่องหนหนีแล้วฟื้นด้วยเลือด 30%":
+   "PUSS (The Fearless Duelist · AD Assassin · JUNGLE/TOP) — his duel mark makes him hit that target harder and locks the two of them onto each other · dying while the mark still lives sends him invisible, then back at 30% health",
+ "NIAN (เหนียน · Vanguard/AP Tank · TOP/JUNGLE) — ออร่าไฟฟ้าฟาดเองทุก 2 วิ · R พายุฟาด 5 ระลอกพร้อมสแตกกระตุกสตันที่ไม่มีคูลดาวน์":
+   "NIAN (The Primordial Calamity · Vanguard/AP Tank · TOP/JUNGLE) — an electric aura lashes out on its own every 2s · R strikes five times and carries a micro-stun stack with no per-target cooldown",
+ "H.S.B (แฮม ไส้กรอก เบคอน · Warden/Tank · SUPPORT/TOP) — ยิ่งเสียเลือดยิ่งตัวเล็ก สกิลกว้างขึ้น สิ่งก่อสร้างอึดขึ้น · W กำแพงอิฐกันกระสุน · R บ้านที่เพื่อนข้างในไม่กินดาเมจ":
+   "H.S.B (Ham, Sausage & Bacon · Warden/Tank · SUPPORT/TOP) — the more health he loses the smaller he gets, the wider his skills reach and the tougher his buildings are · W is a brick wall that eats projectiles · R is a house where allies inside take no damage at all",
+ "ARTHUR (กษัตริย์อาเธอร์ · Diver/AD Fighter · TOP/JUNGLE) — ดาเมจกายภาพที่ทำได้กลายเป็นโล่ · W กดได้แม้ติด CC แล้วหมุนฟันสวนพร้อมตัดเวลา CC ครึ่งหนึ่ง · R ดาเมจจริงแล้วประหาร":
+   "ARTHUR (The Once and Future Sovereign · Diver/AD Fighter · TOP/JUNGLE) — the physical damage he deals comes back as a shield · W can be cast through crowd control, spinning into a counter-slash that halves the CC still on him · R is true damage followed by an execute",
+ "ดราฟต์พิก — ผลัดกันเลือกแบบเปิดเผย ห้ามตัวซ้ำ ลำดับ Snake 1-2-2-2-2-1":
+   "Draft Pick — take turns picking in the open, no duplicates, snake order 1-2-2-2-2-1",
+ "ทัวร์นาเมนต์ — แบนฝั่งละ 3 ตัวสลับกันก่อน แล้วค่อยดราฟต์ด้วยลำดับเดียวกัน":
+   "Tournament — three alternating bans each first, then the same snake draft",
+ "หน้าจอดราฟต์: ฝั่งเราซ้าย ตารางตัวละครตรงกลาง ฝั่งตรงข้ามขวา แถวแบนอยู่บนสุด":
+   "The draft screen: your side on the left, the champion grid in the middle, theirs on the right, bans along the top",
+ "กดการ์ดเพื่ออ่านพาสซีฟและสกิลทั้งสี่ก่อนยืนยัน และกดชื่อสกิลเปิดตัวเลขเต็มได้":
+   "Tap a card to read the passive and all four abilities before you commit — tap an ability name for the full numbers",
+ "ฝ่ายตรงข้ามเป็นบอทที่ลงมือทันทีหลังเรากด จึงเห็นตัวที่มันหยิบแบบเรียลไทม์":
+   "The opposing side is a bot that moves the instant you do, so you watch its picks land in real time",
+ "การ์ด TOURNAMENT ในเมนูเลิกเป็น \"เร็วๆ นี้\" แล้ว": "The TOURNAMENT card in the menu is no longer \"coming soon\"",
+ "The Legendary Excalibur — ดาเมจก้อนแรกที่ลงแชมเปี้ยนแลกมาเป็นโล่พร้อมความเร็วเดิน":
+   "The Legendary Excalibur — your first damage on a champion comes back as a shield and a burst of move speed",
+ "Mímir's Whispering Well — คลื่นเวทรอบตัวทุก 1 วิ แล้วขยายดาเมจเวทที่เป้ากิน 12%":
+   "Mímir's Whispering Well — a magic pulse every second that leaves its targets taking 12% more magic damage",
+ "Fafnir's Devouring Maw — ออโต้กิน % เลือดปัจจุบัน ครบ 3 ฮิตระเบิดพร้อมขโมยความเร็ว":
+   "Fafnir's Devouring Maw — autos bite a share of current health, and every third hit detonates and steals move speed",
+ "Morgana's Unravelling Thread — ดาเมจเวทลดต้านเวทเป้าซ้อนได้ 6 ชั้น รวม 30%":
+   "Morgana's Unravelling Thread — magic damage shreds magic resist, stacking six times for 30%",
+ "Argus' Hundred Eyes — ยิ่งมีศัตรูรุมยิ่งหนา (+8 เกราะ/+8 ต้านเวท ต่อศัตรูหนึ่งตัว)":
+   "Argus' Hundred Eyes — the more enemies surround you the tougher you get (+8 armor / +8 magic resist each)",
+ "Sleeping Beauty's Spindle — เลือดต่ำกว่า 30% แช่แข็งตัวเอง 2 วิ":
+   "Sleeping Beauty's Spindle — dropping below 30% health freezes you in stasis for 2s",
+ "Mordred's Usurping Blade — เก็บศพแล้วคืนคูลดาวน์อัลติ 25%":
+   "Mordred's Usurping Blade — a takedown refunds 25% of your ultimate's cooldown",
+ "Atalanta's Swift Quiver — ออโต้แรกของการปะทะให้ความเร็วเดินก้อนใหญ่":
+   "Atalanta's Swift Quiver — the first auto of an engagement hands you a big burst of move speed",
+ "Odysseus' Unstrung Bow — เก็บศพแล้วได้ระยะโจมตี +100 นาน 6 วิ":
+   "Odysseus' Unstrung Bow — a takedown grants +100 attack range for 6s",
+ "Skadi's Triple Arrow — ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัว":
+   "Skadi's Triple Arrow — autos fire extra bolts at two more nearby enemies",
+ "Heimdall's Warding Horn — เร่งอัลติ +15 และกดอัลติแล้วปล่อยเขตสโลว์รอบตัว":
+   "Heimdall's Warding Horn — +15 ultimate haste, and casting your ultimate opens a slowing field around you",
+ "Ariadne's Guiding Thread — ตีเป้าที่ติด CC แล้วแปะตราให้ทีมตบซ้ำแรงขึ้น 15%":
+   "Ariadne's Guiding Thread — hitting a crowd-controlled enemy marks them so your team's next hit lands 15% harder",
+ "ไล่ตรวจของใหญ่ทั้งหมดแล้ว เหลือแค่ 4 ชิ้นที่ไม่มีเอฟเฟกต์อะไรเลยจริงๆ — เติมให้ครบแล้ว":
+   "Audited every Tier 3 item — only four turned out to have no effect at all, and all four now do",
+ "Thoth's Emerald Tablet — ทุก 100 AP แถมเจาะต้านเวทให้อีก 3":
+   "Thoth's Emerald Tablet — every 100 AP grants 3 more magic penetration",
+ "Eye of Horus — สกิลเวทที่โดนแชมเปี้ยนเปิดตำแหน่งเป้า 2 วิ (เผยคนที่ล่องหนอยู่)":
+   "Eye of Horus — magic damage from an ability reveals the champion for 2s, exposing anyone invisible",
+ "Artemis' Silver Crescent — ออโต้ที่ติดคริทำให้เป้าติดสโลว์ 20% นาน 1 วิ":
+   "Artemis' Silver Crescent — a critical strike slows the target by 20% for 1s",
+ "William Tell's Sovereign Crossbow — ออโต้ครั้งแรกต่อเป้าแต่ละตัวพ่วงดาเมจจริง 50% AD":
+   "William Tell's Sovereign Crossbow — the first auto on each target carries an extra 50% AD as true damage",
+ "เปลี่ยนชื่อ Excalibur's Scabbard เป็น Durandal's Whetted Edge เพราะของใหญ่ชิ้นใหม่ใช้ชื่อ Excalibur แล้ว":
+   "Excalibur's Scabbard is now Durandal's Whetted Edge, because the new Tier 3 item took the Excalibur name",
+ "แก้บั๊กที่หน้าจัดตำแหน่งสุ่มตัวละครให้ฝ่ายตรงข้ามใหม่ทั้งกองตอนกดยืนยัน ทำให้ทีมที่บอทดราฟต์มาถูกทิ้งทุกครั้ง":
+   "Fixed the lane-assignment screen rerolling the enemy's entire roster on confirm, which threw away whatever the bot had drafted",
+ "ชิปตัวนับในไฟต์รองรับของใหม่ครบ — สแตกดาว เมล็ดถั่ว ขั้นหมู ตราท้าดวล ชีวิตที่เก้า โล่ Aegis และสแตกประจุ":
+   "The in-fight counter chips cover everything new — starlight stacks, beans, pig tier, the duel mark, the ninth life, the Aegis shield and jolt charges",
+ "สนามวาดยักษ์ กำแพง บ้านอิฐ พายุ วังวน และวงเตือนก่อนสแลมให้เห็นชัดทั้งหมด":
+   "The arena now draws the giant, walls, the brick bunker, storms, vortexes and the warning ring before a slam",
+
  // ---- Patch 0.2C ----
  "เงินที่ได้ยกนี้": "Gold this round",
  "ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ": "the round goes to whoever earned more",

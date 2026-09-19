@@ -52,6 +52,22 @@ node .claude/serve.mjs
 | [ui/draw-fx.js](src/ui/draw-fx.js) | เอฟเฟกต์กลาง ใช้ร่วมกับห้องซ้อม · `drawGround` `drawFx` `drawFxText` `shakeAmount` |
 | [ui/Arena.jsx](src/ui/Arena.jsx) | พื้นหลัง ตัวละคร ลูกกระสุน กล้อง ซูม |
 | [ui/item-desc.js](src/ui/item-desc.js) | คำอธิบายไอเทมเป็นข้อความล้วน — **แยกออกจาก `recipe.jsx`** เพื่อให้สคริปต์ node import ได้ (node โหลด `.jsx` เองไม่ได้) `recipe.jsx` re-export ต่อให้ ของเดิมไม่ต้องแก้ |
+| [ui/draw-lore.js](src/ui/draw-lore.js) | **ของ Patch 0.3** — ยักษ์ของ JACK · กำแพงและบ้านอิฐของ H.S.B · พายุของ NIAN · วังวนของ YODAKA · โซนตะกร้า/บั้งไฟ · วงเตือนก่อนสแลม |
+
+### ไฟล์ที่เพิ่มมาใน Patch 0.3
+
+| ไฟล์ | หน้าที่ |
+|---|---|
+| [data/champions-lore.js](src/data/champions-lore.js) | ข้อมูลตัวละครใหม่ 10 ตัว · `champions.js` รวมสองก้อนเข้าด้วยกัน (`CORE_CHAMPIONS` + `LORE_CHAMPIONS`) |
+| [engine/lore.js](src/engine/lore.js) | กลไกของตัวละครใหม่ทั้งหมด · `fireLoreSkill` ถูกเรียกจาก `default:` ของ switch ใน `fire-skill.js` · `tickLoreUnit` เรียกทุกเฟรมจาก `step.js` · `tickLore` เรียกจาก `systems.js` |
+| [engine/lore-items.js](src/engine/lore-items.js) | เอฟเฟกต์ของไอเทมชุดใหม่ 12 ชิ้น + ของเก่าที่เติมเอฟเฟกต์ให้ |
+| [game/draft.js](src/game/draft.js) | กติกาดราฟต์ล้วนๆ (ลำดับ Snake · ใครถึงตา · ลงมือหนึ่งก้าว) เทสได้โดยไม่ต้องเปิดเบราว์เซอร์ |
+| [screens/Draft.jsx](src/screens/Draft.jsx) | หน้าจอดราฟต์/ทัวร์นาเมนต์ · ใช้แทน `Pick.jsx` เมื่อ `draftStyle !== "BLIND"` |
+
+**วิธีเพิ่มตัวละครใหม่หลังจากนี้:** ใส่ข้อมูลใน `champions-lore.js` แล้วถ้า `type` ของสกิลยังไม่มี
+ให้เพิ่ม `case` ใน `fireLoreSkill` ของ [engine/lore.js](src/engine/lore.js) — ไม่ต้องแตะ `fire-skill.js`
+อย่าลืมเพิ่มเงื่อนไข `shouldCast` ใน [engine/ai.js](src/engine/ai.js) ไม่งั้นบอทจะไม่กดสกิลนั้นเลย
+และเพิ่มชื่อ type ใน `SHAPES` ของ [game/skill-desc.js](src/game/skill-desc.js) เพื่อให้หน้าข้อมูลอ่านรู้เรื่อง
 
 กติกาสำคัญของชั้นนี้: **ห้ามใช้ `Math.random()` ในโค้ดวาดภาพ**
 ทุกอย่างที่ดูสุ่มต้องคำนวณจากตำแหน่งกับเวลาเกิดของเอฟเฟกต์ (ดูฟังก์ชัน `hash`) ไม่งั้นภาพจะกระพริบเปลี่ยนทุกเฟรม
