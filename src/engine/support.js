@@ -125,7 +125,8 @@ export function tickSupportItems(state, u, dt) {
     const watch = u.cleanseAll ? LOCKING_CC.concat(["slow", "silence", "disarm", "blind"]) : LOCKING_CC;
     const victim = alliesIn(state, u, ALLY_RADIUS).find((a) => watch.some((tp) => hasBuff(a, tp)));
     if (victim) {
-      u.hmbReadyAt = state.t + 60 * (1 - cdr);
+      // ของซัพ — เพื่อนโดน CC เมื่อไหร่ก็กดให้เพื่อนทันที (คูลดาวน์อ่านจากตัวไอเทมเอง)
+      u.hmbReadyAt = state.t + (u.cleanseCd || 60) * (1 - cdr);
       victim.buffs = victim.buffs.filter((b) => !CLEAN.includes(b.type));
       addBuff(victim, { type: "unstoppable", v: 1, until: state.t + 1 }, state.t);
       withSrc(state, tr("ไอเทม Hermes' Moly Blossom"), u, () => {

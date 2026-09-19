@@ -56,9 +56,15 @@ export function onMageDamageHook(state, source, target, dmg) {
 
   // Surtr's Twilight Cinder — ไฟติดตัวเผา % Max HP ต่อวินาที (ต่ออายุ ไม่ซ้อน)
   if (source.burnPctHp) {
+    const every = source.burnPctHp.every || 0.5;
+    const old = target.stcBurn;
     target.stcBurn = {
       ownerId: source.id,
       dps: target.maxHp * source.burnPctHp.pct,
+      every,
+      // เต้นเป็นจังหวะ ไม่ใช่ทุกเฟรม — ของเดิมยิงดาเมจ 60 ครั้งต่อวินาที
+      // แปลว่าทุกสแตก ทุกการสะท้อน ทุกการดูดเลือดที่ผูกกับ "โดนดาเมจ" ทำงาน 60 เท่า
+      nextAt: old && old.nextAt > t ? old.nextAt : t + every,
       until: t + source.burnPctHp.dur,
     };
   }
@@ -207,11 +213,16 @@ export function tickMageItems(state, u, dt) {
     } else {
       const owner = state.units.find((x) => x.id === u.stcBurn.ownerId);
       if (!owner || !owner.alive) u.stcBurn = null;
-      else echo(() => {
-        withSrc(state, tr("ไอเทม Surtr's Twilight Cinder"), owner, () => {
-          applyDamage(state, owner, u, u.stcBurn.dps * dt, true, false);
+      else if (t >= u.stcBurn.nextAt) {
+        const every = u.stcBurn.every || 0.5;
+        const tick = u.stcBurn.dps * every;
+        u.stcBurn.nextAt = t + every;
+        echo(() => {
+          withSrc(state, tr("ไอเทม Surtr's Twilight Cinder"), owner, () => {
+            applyDamage(state, owner, u, tick, true, false);
+          });
         });
-      });
+      }
     }
   }
 

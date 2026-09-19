@@ -110,7 +110,8 @@ export function ItemGrid({ list, headline, selectedId, onPick, badgeOf }) {
             <Tile
               key={x.id}
               title={itemName(x)}
-              sub={`${x.cost}g`}
+              // ของที่ออกซ้ำกลุ่มกันไม่ได้ (เช่นตัดฮีล) ต้องเห็นตั้งแต่ในตาราง ไม่ใช่ต้องกดเข้าไปดู
+              sub={x.uniq ? `${x.cost}g · ${tr("ห้ามซ้ำ")}` : `${x.cost}g`}
               badge={badgeOf ? badgeOf(x) : null}
               selected={selectedId === x.id}
               onClick={() => onPick(x)}

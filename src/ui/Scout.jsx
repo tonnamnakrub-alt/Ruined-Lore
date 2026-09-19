@@ -59,7 +59,7 @@ function ScoutRow({ c, unit, onSkill, onStats }) {
               {Math.round(unit.damageDealt || 0)} dmg · {unit.kills || 0}/{unit.assists || 0}
             </span>
           </div>
-          <Bar value={unit.hp} max={unit.maxHp} color={unit.alive ? C.red : "#26314A"} height={4} />
+          <Bar value={unit.hp} max={unit.maxHp} shield={unit.shield} color={unit.alive ? C.red : "#26314A"} height={4} />
         </div>
       )}
 

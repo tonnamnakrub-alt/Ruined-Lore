@@ -1365,4 +1365,88 @@ export const DICT = {
  "พร้อมใช้": "ready",
  " (+{0} HP)": " (+{0} HP)",
  "เห็นสแตกแล้ว และ Versus เล่นจบได้จริง": "Stacks are visible now, and Versus plays through",
+
+ // ---- Patch 0.2C ----
+ "ห้ามซ้ำ": "exclusive",
+ "จุดระเบิดมีดสั้น": "Dagger detonation",
+ "{0} {1} คุกเข่าลง แต่ยังไม่ยอมแพ้": "{0} {1} drops to one knee, but will not yield",
+ "{0} {1} ลุกขึ้นยืนอีกครั้ง": "{0} {1} rises again",
+ "ร่ายสกิลใดก็ได้ ได้เกราะป้องกัน 3 วิ (40 + 10×เลเวล + 10% Bonus HP + 60% Bonus AD) คูลดาวน์ 14 วิ ที่เลเวล 1 ไล่ลงถึง 12 วิ ที่เลเวลเต็ม — ไม่ลดตามเร่งสกิล (AH) · ร่ายสกิล Q/W/E/R ลดคูลดาวน์พาสซีฟลงทันที 4 วิ":
+   "Casting any skill grants a 3s shield (40 + 10×level + 10% bonus HP + 60% bonus AD) · 14s cooldown at level 1, down to 12s at max level — it does NOT scale with Ability Haste · casting Q/W/E/R immediately cuts 4s off the passive cooldown",
+ "สะสมพลังได้ 100 · ออโต้โดน +20 · เร่งสกิล (AH) ทุก 10 คืนให้ 2 ต่อวินาที · ร่ายร่างแสงกิน 20 · เต็ม 100 เข้าร่างเงา (สกิลกินทั้ง 100) · ออกจากคอมแบต 5 วิ เต็มทันที · มีพลังร่างแสงอยู่ ทุก 10 หน่วยลดดาเมจที่รับ 4% สูงสุด 40% — เข้าร่างเงาแล้วโบนัสนี้หายไป · อยู่ร่างเงา เดินเข้าหาศัตรูเร็วขึ้น 15% และทุกครั้งที่ออโต้หรือสกิลโดน จะพ่วงดาเมจจริงตาม Max HP ของเป้า (สเกลทั้ง Bonus AD และ AP)":
+   "Holds up to 100 fragments · +20 on an auto attack that lands · every 10 Ability Haste regenerates 2 per second · a light cast spends 20 · at a full 100 he enters shadow form (a shadow cast spends all 100) · 5s out of combat refills it instantly · while holding light fragments, every 10 of them cuts incoming damage by 4%, up to 40% — entering shadow form removes that bonus · in shadow form, moving toward an enemy is 15% faster and every auto or skill that lands adds true damage based on the target's Max HP (scaling with both bonus AD and AP)",
+ "ได้ความเร็วเดิน +1 ต่อ AP ทุก 10 · ยืนในพื้นน้ำของอัลติได้ 3 เท่า · ความเร็วเดินส่วนที่เกินค่าฐาน 345 (รวมจากรองเท้าและไอเทมด้วย) ไปเร่งทุกสกิล — Q ร่ายเร็วขึ้นจาก 1 วิ เหลือน้อยสุด 0.25 · W เดินไปทุบไวขึ้นจาก 1 วิ เหลือน้อยสุด 0.25 · E ลอยฟ้าจาก 0.5 วิ ยืดได้ถึง 1.5 วิ · R คลื่นกว้างขึ้น ไกลขึ้น และเร็วขึ้น":
+   "+1 move speed per 10 AP · standing in her ultimate's water triples that bonus · move speed above her 345 base (boots and items count) sharpens every skill instead of adding damage — Q's cast drops from 1s to as low as 0.25s · W reaches the slam faster, from 1s down to 0.25s · E's knockup grows from 0.5s up to 1.5s · R's wave gets wider, longer and faster",
+ "ทุก 1 วิ เพื่อนในรัศมี 1200 ฟื้นเลือด 8 + 1.2 ต่อเลเวล + 0.06 ต่อ AP (เลเวล 16 · AP 300 = 45 ต่อวินาที) · เพื่อนที่เลือดต่ำกว่า 40% ได้สองเท่า · คนที่โดน Q ของพิน็อกคิโอจะได้สองเท่าอีก 4 วิ":
+   "Every 1s, allies within 1200 heal for a flat 8 + 1.2 per level + 0.06 per AP (level 16 at 300 AP = 45 per second) · allies below 40% health get double · and hitting an enemy with Q doubles it again for 4s",
+ "สแตกถาวร สะสมข้ามยก ไม่มีเพดาน · จบยกได้ 5 สแตก (ไม่ต้องลงไฟต์) · สังหารหรือช่วยสังหารได้ 5 · Q หรือ E โดนศัตรูได้ 1 ต่อเป้าหมายที่โดน · 1 สแตก = Max HP ถาวร +7 · Q/E แรงขึ้น 0.35 ต่อสแตก และ R แรงขึ้น 0.10 ต่อสแตก · จำนวนสแตกดูได้ที่ชิป SANGUINE ตอนเลือกตัวในไฟต์":
+   "Permanent stacks that carry across rounds with no cap · +5 for finishing a round (even without fighting) · +5 per kill or assist · +1 per enemy hit by Q or E · each stack is a permanent +7 Max HP · Q/E gain 0.35 per stack and R gains 0.10 per stack · the SANGUINE chip shows the count when you select her mid-fight",
+
+ // Patch 0.2C notes
+ "ยกเครื่องตัวละครตามใบตรวจ และของตัดฮีลกลับมาแล้ว": "Champion overhaul from the review sheet, and grievous wounds are back",
+ "Tristan ล้มแล้วลุกได้ · Luch เป็นลูกผสม AD/AP จริง · Ariel เลิกสเกลดาเมจตามความเร็วเดิน · ของตัดฮีลกลับมาครบทุกสาย · ไฟของ Surtr เลิกเผาทุกเฟรม · หลอดเลือดโชว์โล่แล้ว":
+   "Tristan falls and gets back up · Luch is a real AD/AP hybrid · Ariel stops turning move speed into damage · every class has a grievous-wounds option again · Surtr's fire stops burning every frame · health bars show shields",
+ "ท่าที่เปลี่ยนไปทั้งท่า": "Abilities rebuilt from scratch",
+ "TRISTAN R — กดเองไม่ได้อีกแล้ว มันทำงานเองตอนดาเมจจะฆ่า: คุกเข่านิ่ง 2.5 วิ แตะไม่ได้ แล้วลุกกลับมาเลือดเต็มพร้อมบัฟชุดเดิม":
+   "TRISTAN R — you no longer cast it. It fires itself on lethal damage: he kneels untargetable for 2.5s, then rises at full health with the same buffs",
+ "LUCH R Paradise Lost — เลิกรอกินดาเมจสด เปลี่ยนเป็นเอาดาเมจที่กินมา 3 วิก่อนหน้ามาสาดกลับเป็นกรวย 60° ระยะ 1500 พร้อมฮีลและกางโล่ให้เพื่อนที่โดนมาด้วยกัน · ใช้ได้ครั้งเดียวต่อไฟต์":
+   "LUCH R Paradise Lost — it no longer waits to soak damage. It banks whatever the last 3 seconds cost him and throws it back in a 60° cone out to 1500, healing and shielding the allies who took the beating with him · once per fight",
+ "ARIEL W — ว่ายไปทุบถึงที่จริงๆ แล้วทิ้งน้ำตกไว้ในรัศมี 200 ไม่ใช่เสกวงดาเมจลอยๆ":
+   "ARIEL W — she actually swims to the spot and slams it, leaving a waterfall in a 200 radius, instead of conjuring a damage circle out of nowhere",
+ "ARIEL R — คลื่นทิ้งพื้นน้ำไว้ตามทางระหว่างที่มันวิ่ง ไม่ใช่รอคลื่นจบแล้วค่อยปูทีเดียว":
+   "ARIEL R — the wave lays water down along its path as it travels, instead of waiting until it stops and carpeting everything at once",
+ "PETER R — เป็นลูกธนูที่ทะลุทุกคน ไม่ใช่เลเซอร์ เอาเส้นแสงออกแล้ว และดาเมจไม่ลดตามจำนวนตัวที่โดน":
+   "PETER R — it's a piercing bolt, not a laser. The beam line is gone, and damage no longer falls off per body hit",
+ "ไอเทมใหม่ Baba Yaga's Iron Cauldron (แทงค์ Tier 3) — เลือด 400 เกราะ 45 เร่งสกิล 10 พร้อมตัดฮีล 40%":
+   "New item Baba Yaga's Iron Cauldron (Tank, Tier 3) — 400 HP, 45 armor, 10 Ability Haste and 40% grievous wounds",
+ "ระบบและ UI": "Systems and UI",
+ "หลอดเลือดในแผงทีมโชว์โล่ต่อท้ายเป็นแถบขาวแล้ว พร้อมตัวเลข +โล่ — เดิมมีโล่อยู่แต่หลอดไม่เปลี่ยนอะไรเลย ตีแล้วเลือดไม่ลดก็ดูเหมือนบั๊ก":
+   "Health bars in the team panels now carry the shield as a white segment plus a +shield number — before, a shield changed nothing on the bar, so hits that didn't drop health just looked like a bug",
+ "ของที่ออกซ้ำกลุ่มกันไม่ได้ ขึ้นป้าย \"ห้ามซ้ำ\" ตั้งแต่ในตารางร้านค้า ไม่ต้องกดเข้าไปดูทีละชิ้น":
+   "Items that can't stack with each other are tagged \"exclusive\" right in the shop grid, so you don't have to open each one to find out",
+ "จัดกลุ่มห้ามซ้ำให้ครบ — ตัดฮีล (8 ชิ้น) · อุ้มทีม · ฮีลแล้วบัฟ · ออโต้ฮิตที่ 3":
+   "Exclusive groups are complete — grievous wounds (8 items) · team saves · heal-and-buff · third-hit procs",
+ "ของล้าง CC ทำงานทันทีที่โดน CC ที่ล็อกตัวจริงๆ — เดิม Draupnir's ผลาญคูลดาวน์ทิ้งตั้งแต่โดนสโลว์เบาๆ":
+   "Cleanse items fire the moment real locking CC lands — Draupnir's used to burn its cooldown on a light slow",
+ "พาสซีฟ Golden Touch ของ KAZEM ทำงานในห้องซ้อมแล้ว — เดิมโค้ดอยู่ในทางเดินของบอททางเดียว กดเองไม่เคยติด":
+   "KAZEM's Golden Touch passive works in the practice room — the code only lived on the bot's path, so casting it yourself never triggered it",
+ "LUCH — ทุกท่าสเกลทั้ง Bonus AD และ AP แล้ว (รวมดาเมจพ่วง %Max HP ของร่างเงา) · E ร่างแสงหลบ 100% · ร่างเงาพุ่ง 750 ความเร็ว 1000 รัศมี 450":
+   "LUCH — every ability now scales with both bonus AD and AP (including shadow form's %Max HP rider) · light E evades 100% · shadow E dashes 750 at speed 1000 with a 450 radius",
+ "KAZEM — W ระยะ 450→550 · E ระยะพุ่ง 500→700 · R ไม่ถึงตัวก็พุ่งเข้าไปหาเองด้วยความเร็ว 1000 · พาสซีฟสเกลเลเวลและ Bonus AD แรงขึ้น":
+   "KAZEM — W range 450→550 · E dash 500→700 · R lunges at the target at speed 1000 instead of walking after them · the passive scales harder with level and bonus AD",
+ "TRISTAN Q — ตัดคูลดาวน์ที่ \"เหลืออยู่\" ทิ้ง 30% ต่อฮิต (เดิมคิดจากคูลดาวน์เต็ม แปลว่าท่าคูลดาวน์สั้นแทบไม่ได้อะไร)":
+   "TRISTAN Q — each hit cuts 30% off the REMAINING cooldown (it used to take 30% of the full cooldown, which barely helped short-cooldown abilities)",
+ "ARIEL — ความเร็วเดินส่วนเกิน (รองเท้านับด้วย) ไปเร่งสกิลแทนการบวกดาเมจ: Q/W ร่ายจาก 1 วิ ลดได้ถึง 0.25 · E ลอยฟ้าจาก 0.5 ยืดได้ถึง 1.5 วิ · R กว้าง ไกล และเร็วขึ้น":
+   "ARIEL — move speed above base (boots included) sharpens her kit instead of adding damage: Q/W cast from 1s down to 0.25s · E knockup from 0.5s up to 1.5s · R gets wider, longer and faster",
+ "PINO — พาสซีฟรัศมี 1000→1200 และจ่ายเป็นตัวเลขตรงๆ (8 + 1.2 ต่อเลเวล + 0.06 ต่อ AP) ไม่ใช่ % Max HP ที่เอาใจแต่แทงค์":
+   "PINO — passive radius 1000→1200 and it heals a flat number (8 + 1.2 per level + 0.06 per AP) instead of a % of Max HP that only ever rewarded tanks",
+ "PINO E — เพื่อนเดินผ่านกรงได้ตามปกติ ติดอยู่ข้างในเฉพาะศัตรู":
+   "PINO E — allies walk through the cage freely; only enemies are trapped inside",
+ "C.HOOK E — ฮุคได้ความเร็วเดินทันทีที่กด ไม่ต้องรอกระสุนลง และเพื่อนที่ยืนในวงได้ 20% ที่ค่อยๆ จาง":
+   "C.HOOK E — Hook gets the move speed the instant he casts, not when the shell lands, and allies caught in the blast get 20% that decays",
+ "PETER W — มีดปักอยู่แล้วโดนสกิลซ้ำ เลือดที่เหลือแตกทันที (เดิมมีแต่ออโต้ที่จุดระเบิดได้)":
+   "PETER W — any follow-up skill on a target with the dagger stuck in it detonates the rest of the bleed (only autos used to)",
+ "LAURA — 1 สแตก = Max HP +7 · Q/E แรงขึ้น 0.35 ต่อสแตก · R 0.10 ต่อสแตก (เดิม 0.20/0.05 ทำให้สแตกดูไร้ความหมาย)":
+   "LAURA — each stack is +7 Max HP · Q/E gain 0.35 per stack · R gains 0.10 (it was 0.20/0.05, which made stacking feel pointless)",
+ "FAUSTUS E — ระยะกรวย 450→600": "FAUSTUS E — cone range 450→600",
+ "ของตัดฮีลกลับมาแล้ว — เดิมชิ้นส่วน Tier 2 ตัดฮีลได้ แต่พออัพเป็นของใหญ่แล้วผลหายไปเฉยๆ ตอนนี้ Nemesis' Vengeful Scales (เวท) · Shiva's Trishula (มาร์คแมน) · Baba Yaga's Iron Cauldron (แทงค์) · Cuirass of the Bleeding Centaur (ไฟท์เตอร์) · Anubis' Death Mark (แอสซาซิน) ตัดฮีล 40% ครบทุกชิ้น":
+   "Grievous wounds are back — Tier 2 parts applied it, then the effect simply vanished when you upgraded. Nemesis' Vengeful Scales (mage) · Shiva's Trishula (marksman) · Baba Yaga's Iron Cauldron (tank) · Cuirass of the Bleeding Centaur (fighter) · Anubis' Death Mark (assassin) all cut healing by 40%",
+ "Surtr's Twilight Cinder — ไฟเต้นทุก 0.5 วิ ไม่ใช่ทุกเฟรม และลดจาก 2% เหลือ 1.2% Max HP ต่อวินาที · ของเดิมยิงดาเมจ 60 ครั้งต่อวินาที แปลว่าทุกสแตก ทุกการสะท้อน ทุกการดูดเลือดที่ผูกกับ \"โดนดาเมจ\" ทำงาน 60 เท่า":
+   "Surtr's Twilight Cinder — the burn ticks every 0.5s instead of every frame, and drops from 2% to 1.2% Max HP per second · the old one dealt damage 60 times a second, so every stack, reflect and lifesteal hook tied to \"taking damage\" fired 60× as often",
+ "FAUSTUS R — ดาเมจต่อลูก 150/225/300 → 95/145/195 และ AP 0.20→0.14":
+   "FAUSTUS R — damage per meteor 150/225/300 → 95/145/195, AP ratio 0.20→0.14",
+ "FAUSTUS W — รัศมี 260→200 · ดีเลย์ 1→0.75 วิ · สโลว์ 2→1 วิ":
+   "FAUSTUS W — radius 260→200 · delay 1→0.75s · slow duration 2→1s",
+ "LAURA R — ดาเมจต่อฮิตลดลง และดูดเลือดคงที่ 50% ทุกแรงก์ (เดิมไล่ถึง 80%)":
+   "LAURA R — lower damage per tick and a flat 50% drain at every rank (it used to climb to 80%)",
+ "C.HOOK Q อัพเกรด — 8%→5% Max HP · E ไม่มีโล่ให้ตัวเองแล้ว":
+   "C.HOOK Q upgrade — 8%→5% Max HP · E no longer shields him",
+ "LUCH ร่างแสง — ลดดาเมจที่รับสูงสุด 40% ไม่ใช่ 50% และหายไปทันทีที่เข้าร่างเงา":
+   "LUCH light form — caps damage reduction at 40% instead of 50%, and it drops the moment he enters shadow form",
+ "KAZEM พาสซีฟ — คูลดาวน์ 14 วิ ไล่ลงถึง 12 วิ ที่เลเวลเต็ม และไม่ลดตามเร่งสกิล (AH) อีกแล้ว":
+   "KAZEM passive — 14s cooldown down to 12s at max level, and it no longer scales with Ability Haste",
+ "ALUCARD R — ตรวจแล้วโค้ดเพิ่ม \"ระยะ\" ออโต้ +50 และระยะสกิล +100 อยู่แล้วตามที่ตั้งใจ ผิดแค่ในเอกสารที่เขียนว่าเป็นดาเมจ":
+   "ALUCARD R — checked: the code already adds +50 auto RANGE and +100 skill RANGE as intended. Only the documentation was wrong in calling it damage",
+ "ของตัดฮีลออกซ้ำกันไม่ได้แล้ว รวมทั้งชิ้นส่วน Tier 2 กับของใหญ่ที่ต่อยอดจากมัน (ชิ้นส่วนที่ถูกกลืนเข้าสูตรไม่นับว่าซ้ำ)":
+   "Grievous-wounds items are mutually exclusive, Tier 2 parts included — a part being consumed by the recipe doesn't count as a clash",
 };

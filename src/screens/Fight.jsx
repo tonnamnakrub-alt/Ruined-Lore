@@ -69,9 +69,13 @@ export function FightScreen(ctx) {
                   }}>
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginBottom: 2 }}>
                     <span style={{ fontFamily: MONO, color: u.alive ? C.ink : "#42506E" }}>{u.champ.id}</span>
-                    <span style={{ fontFamily: MONO, color: C.dim }}>{Math.max(0, Math.round(u.hp))}</span>
+                    <span style={{ fontFamily: MONO, color: C.dim }}>
+                      {Math.max(0, Math.round(u.hp))}
+                      {/* โล่ต่อท้ายเลือด — เดิมไม่โชว์เลย ตีแล้วเลือดไม่ลดก็ดูเหมือนบั๊ก */}
+                      {u.shield > 0 && <span style={{ color: "#E4EBF7" }}>{" +" + Math.round(u.shield)}</span>}
+                    </span>
                   </div>
-                  <Bar value={u.hp} max={u.maxHp} color={u.alive ? (side === "blue" ? C.blue : C.red) : "#26314A"} height={4} />
+                  <Bar value={u.hp} max={u.maxHp} shield={u.shield} color={u.alive ? (side === "blue" ? C.blue : C.red) : "#26314A"} height={4} />
                 </button>
               ))}
             </div>

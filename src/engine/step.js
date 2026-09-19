@@ -366,7 +366,8 @@ export function step(state) {
     // then a moment of CC immunity and a speed kick — CD 75s
     if (u.hasItem("dss")) {
       const ready = u.dssReadyAt == null || state.t >= u.dssReadyAt;
-      const ccd = HARD_CC.some((t) => hasBuff(u, t));
+      // ทำงานทันทีที่โดน CC ที่ "ล็อกตัว" จริงๆ — สโลว์เฉยๆ ไม่นับ ไม่งั้นมันผลาญคูลดาวน์ทิ้งทันที
+      const ccd = HARD_CC.some((t) => t !== "slow" && hasBuff(u, t));
       if (ready && ccd) {
         u.dssReadyAt = state.t + (u.cleanseCd || 75);
         u.buffs = u.buffs.filter((b) => !HARD_CC.includes(b.type));
