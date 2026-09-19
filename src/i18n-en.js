@@ -2054,4 +2054,18 @@ export const DICT = {
    "Older patch notes that had never been translated (0.2B and the spectator-room section) are now fully in English",
  "ป้ายเลนที่เขียนค้างไว้ในแพตช์โน้ต 0.3 และเอกสารนักพัฒนายังเป็นของเก่า ตอนนี้ตรงกับข้อมูลจริงทุกที่แล้ว":
    "The lane labels left behind in the 0.3 patch notes and the developer docs still showed the old ones — every one of them now matches the actual data",
+ "โหมดออนไลน์ — ผลสองฝั่งตรงกันแล้ว":
+   "Online mode — both sides now agree on the result",
+ "เล่นด้วยกันได้ แต่จบยกแล้วสองเครื่องสรุปผลคนละอย่าง เพราะต่างคนต่างจำลองไฟต์จากข้อมูลที่ไม่เหมือนกัน":
+   "You could play together, but at the end of a round the two machines reported different results, because each was simulating the fight from data the other didn't share",
+ "ท่าทีทีม (บุก/คุมระยะ/ตั้งรับ) ไม่เคยถูกส่งข้ามสายเลย ปลายทางตั้งเป็น คุมระยะ ตายตัว — ทีมของอีกฝ่ายจึงยืนและถอยผิดนิสัยบนจอเรา":
+   "Team stance (Engage / Poke / Hold) was never sent across the wire — the receiving end hard-coded it to Poke, so the other team stood and retreated wrong on your screen",
+ "สแตก Wendigo's Voracious Claw ที่สะสมข้ามยกก็ไม่ถูกส่ง ปลายทางเลยคิด AD ของเขาน้อยกว่าจริง":
+   "Wendigo's Voracious Claw stacks carried between rounds weren't sent either, so the other end calculated their AD lower than it really was",
+ "Heimdall's Warding Horn ใช้รหัสไอเทม hwh ชนกับ Horn of the Wild Hunt ที่มีอยู่ก่อน — ของที่ส่งข้ามสายด้วยรหัสจึงกลายร่างเป็นอีกชิ้นที่ปลายทาง เปลี่ยนรหัสเป็น hwg แล้ว":
+   "Heimdall's Warding Horn used the item id hwh, which already belonged to Horn of the Wild Hunt — items are sent by id, so one turned into the other on arrival. It is now hwg",
+ "ของสองชิ้นนั้นยังใช้ตัวจับเวลาคูลดาวน์ตัวเดียวกันด้วย แยกออกจากกันแล้ว":
+   "Those two items were also sharing one cooldown timer — they have their own now",
+ "เพิ่มชุดทดสอบที่จำลองมุมมองของทั้งสองเครื่องแล้วเทียบผล — 250 ไฟต์ ตรงกันทุกไฟต์":
+   "Added a test that simulates both machines' view of the same fight and compares them — 250 fights, all identical",
 };

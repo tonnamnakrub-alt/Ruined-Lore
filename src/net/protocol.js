@@ -22,6 +22,9 @@ export function packTeam(team) {
     sp: c.spot || null,
     ch: c.char,
     an: c.athleteName,
+    // ต้องส่งสองอันนี้ด้วย ไม่งั้นสองเครื่องจำลองไฟต์คนละแบบแล้วได้ผลไม่ตรงกัน
+    st: c.style,              // บุก/คุมระยะ/ตั้งรับ — เปลี่ยนระยะยืน การถอย และโบนัสไอเทมตามสาย
+    w: c.wvcStacks || 0,      // สแตก Wendigo's Voracious Claw ที่สะสมข้ามยกมาเป็น AD ติดตัว
   }));
 }
 
@@ -42,7 +45,10 @@ export function unpackTeam(rows) {
     spot: r.sp || null,
     char: r.ch,
     athleteName: r.an,
-    style: "POKE",
+    // เดิมตรงนี้ตั้งเป็น POKE ตายตัว ทั้งที่อีกฝั่งอาจสั่งบุกหรือตั้งรับไว้
+    // แต่ละเครื่องจึงจำลองทีมของอีกฝ่ายผิดนิสัย แล้วได้ผลการต่อสู้คนละอย่าง
+    style: r.st || "POKE",
+    wvcStacks: r.w || 0,
     autoLevel: false,
   }));
 }

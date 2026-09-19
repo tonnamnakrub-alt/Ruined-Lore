@@ -756,7 +756,7 @@ export function tickLore(state, dt) {
       }
       state.dmgSrc = prev; state.srcUnit = prevU;
       vfx(state, { kind: "ring", x: z.x, y: z.y, r: z.r, color: "63,191,127", grow: 0.25, dur: 0.4 });
-    } else if (z.kind === "hwh") {
+    } else if (z.kind === "hwg") {
       // Heimdall's Warding Horn — เขตสโลว์ที่เปิดตอนกดอัลติ
       for (const e of enemiesOf(state, u)) {
         if (Math.hypot(e.x - z.x, e.y - z.y) > z.r + e.radius) continue;

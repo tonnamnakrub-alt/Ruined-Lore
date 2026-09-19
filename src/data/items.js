@@ -346,7 +346,9 @@ export const ITEMS = [
   { id: "sta", th: "Skadi's Triple Arrow — ศรสามดอกสกาดี", cat: "MARKSMAN", tier: 3, cost: 56,
     asPct: 0.35, crit: 0.25, msPct: 0.07,
     splitBolts: { count: 2, ratio: 0.40, range: 500 }, parts: ["vtp", "asf", "iwb"] },
-  { id: "hwh", th: "Heimdall's Warding Horn — แตรเฝ้าสะพานไฮม์ดัล", cat: "TANK", also: ["SUPPORT"], tier: 3, cost: 45,
+  // รหัสเดิมของชิ้นนี้คือ hwh ซึ่งไปชนกับ Horn of the Wild Hunt ที่มีมาก่อน
+  // ITEM_BY_ID เก็บได้รหัสละชิ้น ของที่ส่งข้ามสายด้วยรหัสจึงกลายร่างเป็นอีกชิ้นที่ปลายทาง
+  { id: "hwg", th: "Heimdall's Warding Horn — แตรเฝ้าสะพานไฮม์ดัล", cat: "TANK", also: ["SUPPORT"], tier: 3, cost: 45,
     armor: 30, mr: 30, hp: 250, ultAh: 15,
     ultSlowField: { r: 450, dur: 3, slow: 0.45, cd: 30 }, parts: ["gb", "pon"] },
   { id: "agt", th: "Ariadne's Guiding Thread — เส้นด้ายนำทางอาเรียดเน", cat: "SUPPORT", also: ["MAGE"], tier: 3, cost: 48,

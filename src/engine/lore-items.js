@@ -69,10 +69,10 @@ export function tickLoreItems(state, u, dt) {
 export function onUltCastItems(state, u) {
   if (!u.ultSlowField) return;
   const cfg = u.ultSlowField;
-  if (u.hwhReadyAt != null && state.t < u.hwhReadyAt) return;
-  u.hwhReadyAt = state.t + cfg.cd;
+  if (u.hwgReadyAt != null && state.t < u.hwgReadyAt) return;
+  u.hwgReadyAt = state.t + cfg.cd;
   state.lore.sights.push({
-    kind: "hwh", ownerId: u.id, team: u.team, x: u.x, y: u.y, r: cfg.r,
+    kind: "hwg", ownerId: u.id, team: u.team, x: u.x, y: u.y, r: cfg.r,
     until: state.t + cfg.dur, next: 0, every: 0.2, slow: cfg.slow,
     sk: { th: "Heimdall's Warding Horn" }, rank: 0,
   });
