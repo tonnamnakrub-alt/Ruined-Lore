@@ -3,6 +3,7 @@ import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREAT_COOLDOWN, RETREAT_TIME, STYLES } from "../data/tuning.js";
 import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
+import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
 import { fireSnipe, resolveDash, startGrab, tickDashes, tickGrabs } from "./motion.js";
@@ -156,6 +157,7 @@ export function step(state) {
       }
     }
     tickLastStand(state, u);
+    tickLoreUnit(state, u, dt);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
     if (vf) {
@@ -811,8 +813,15 @@ export function step(state) {
         const motCut = target.motFlat != null && target.hasItem("mot") ? 0.3 : 0;
         atkDmg = u.ad + critBonus * (1 - motCut);
         didCrit = true;
+        // HOOD passive — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลแทน
+        if (u.champ.critBleed) {
+          hoodBleed(state, u, target, critBonus * (1 - motCut) * AUTO_DMG);
+          atkDmg = u.ad;
+        }
       }
       if (target.hasItem("mot")) atkDmg = Math.max(0, atkDmg - target.motFlat);
+      // YODAKA — ออโต้ที่มีสแตกดาว จะพุ่งทะลวงไปโผล่หลังเป้าแล้วกวาดทั้งแนว
+      if (u.champ.starlight) starPierce(state, u, target);
       if (u.champ.isolde) gainIsolde(state, u, didCrit ? u.champ.isolde.onCrit : u.champ.isolde.onAuto);
       // Plunder — ออโต้ที่คริได้เงินกระเป๋าแยกเพิ่ม 1
       if (didCrit && u.champ.bounty && u.champ.bounty.perCrit) u.bountyGold += u.champ.bounty.perCrit;

@@ -8,6 +8,7 @@ import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
 import { onLauraDamage, onLauraTakedown } from "./laura.js";
 import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
+import { arthurAegis, debuffAmpOf, duelAmp, ellaStash, jackSeed, nianJolt, nineLivesCatch } from "./lore.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -58,7 +59,11 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   // Jack's Giantbane Harp: ตีแรงขึ้นใส่ศัตรูที่เลือดยังมากกว่าครึ่ง
   const healthy = source && source.healthyAmp && target.maxHp > 0
     && target.hp / target.maxHp > source.healthyAmp.hpAbove ? 1 + source.healthyAmp.amp : 1;
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy
+  // Patch 0.3 — ตราท้าดวลของ PUSS · ออร่าขยายดีบัฟของ PIROSKA · ขั้นบ้านอิฐของ H.S.B
+  const duel = duelAmp(source, target);
+  const auraAmp = debuffAmpOf(target);
+  const frail = 1 + (target.pigFrail || 0);
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
@@ -71,6 +76,15 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       state.dmgSrc = tr("ไอเทม Oath of the Dioscuri");
       try { applyDamage(state, source, guard, share, false, true); }
       finally { state.oodSplitting = false; state.dmgSrc = ps; }
+    }
+  }
+  // H.S.B R — ใครยืนในบ้านอิฐ ดาเมจจากข้างนอกไปลงที่ตัวบ้านแทน
+  if (target.inBunker && source && source.team !== target.team) {
+    const b = target.inBunker;
+    if (Math.hypot(source.x - b.x, source.y - b.y) > b.r) {
+      b.hp -= dmg;
+      state.fx.push({ x: target.x, y: target.y, t: state.t, kind: "hit", size: 40 });
+      return;
     }
   }
   // Fang of the Midgard Serpent: ดาเมจกินหลอดโล่แรงขึ้น
@@ -197,6 +211,15 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   }
   if (source) {
     source.damageDealt += dmg;
+    // ---- Patch 0.3 ----
+    // ARTHUR — ดาเมจกายภาพ/ดาเมจจริงที่ทำได้กลายเป็นโล่
+    if (!magic) arthurAegis(state, source, dmg, magic, trueDmg);
+    // ELLA W — จดยอดดาเมจไว้บนตัวเป้า รอ W ระเบิด
+    if (source.champ.glassShards) ellaStash(state, source, target, dmg);
+    // JACK — สกิลโดนแล้วแปะเมล็ดถั่ว (ออโต้ไม่นับ)
+    if (!isAuto && source.champ.beanstalk && /^[QWER] /.test(String(state.dmgSrc || ""))) jackSeed(state, source, target);
+    // NIAN — ทุกดาเมจจากสกิลของเหนียนสะสมประจุกระตุกสตัน
+    if (!isAuto && source.champ.staticAura && /^[QWER] /.test(String(state.dmgSrc || ""))) nianJolt(state, source, target);
     // ของตัดฮีล (Grievous Wounds) — ติดให้เป้าหมายทุกครั้งที่ดาเมจเข้า
     if (source.antihealOnDmg && target.alive) {
       const ah = source.antihealOnDmg;
@@ -251,6 +274,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (denyDeath(state, target)) return;
     // I WILL NOT YIELD — กดเองไม่ได้ ทำงานเองตอนจะตาย: ล้มนิ่ง 2.5 วิ แล้วลุกกลับมาพร้อมบัฟ
     if (lastStandCatch(state, target)) return;
+    // PUSS — ชีวิตที่เก้า: ตายตอนเป้าที่มีตรายังอยู่ = ล่องหนหนี 2 วิ แล้วฟื้นด้วยเลือด 30%
+    if (nineLivesCatch(state, target)) return;
     // Shroud of Osiris: once per fight, dying instead freezes you invulnerable
     // for 3s before reviving at 50% of your base HP
     if (target.hasItem && target.hasItem("soo") && !target.sooUsed && !target.sooRevive) {

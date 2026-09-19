@@ -32,7 +32,7 @@ export const BASE = { projSpeed: 1350, radius: 65 };
 export const ROLE_RADIUS = {
   Juggernaut: 80, Vanguard: 80, "Battle Mage": 72, Diver: 72, Bruiser: 76,
   "Bruiser AD": 76, Specialist: 70, Skirmisher: 68, Assassin: 62,
-  Marksman: 60, "Burst Mage": 58, Enchanter: 56,
+  Marksman: 60, "Burst Mage": 58, Enchanter: 56, Warden: 82, Controller: 60,
 };
 
 export function radiusOf(ch) { return ch.radius || ROLE_RADIUS[ch.role] || BASE.radius; }

@@ -4,6 +4,7 @@ import { EVENTS, RAMP_FRAC, RAMP_SCALE } from "../data/tuning.js";
 import { skillRank } from "./skill-ranks.js";
 import { deriveStats } from "./stats.js";
 import { hashStr, mulberry32 } from "./util.js";
+import { loreState } from "./lore.js";
 
 
 export function buildFight(blueDefs, redDefs, seed, event) {
@@ -207,6 +208,7 @@ export function buildFight(blueDefs, redDefs, seed, event) {
     grabs: [],
     hurls: [],
     gardens: [],
+    lore: loreState(),
     mirrors: [],
     hitQueue: [],
     fx: [],

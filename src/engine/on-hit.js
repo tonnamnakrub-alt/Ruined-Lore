@@ -5,6 +5,7 @@ import { supportOnHitBonus } from "./support.js";
 import { mageOnHit } from "./mage.js";
 import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
+import { arthurCleave, ellaOnHit, pickDuelMark } from "./lore.js";
 
 
 // Lost Boys' Blade — มีดยังปักอยู่ แล้วโดนอะไรก็ตามจากคนปาซ้ำ (ออโต้ "หรือสกิล")
@@ -74,6 +75,14 @@ export function onAutoLanded(state, u, target) {
   // Another Eye: (mark now detonates centrally in applyDamage on any damage source)
   for (const x of activeSkills(u)) if (x.cdPerAuto && x.cdLeft > 0) x.cdLeft = Math.max(0, x.cdLeft - x.cdPerAuto);
   popDagger(state, u, target);
+  // ---- Patch 0.3 ----
+  // ELLA — เศษแก้วติดออโต้ และปลดล็อกจังหวะถัดไปของคอมโบ Q
+  if (u.champ.glassShards) {
+    ellaOnHit(state, u, target);
+    if (u.comboStep && state.t < (u.comboUntil || 0)) u.comboArmed = true;
+  }
+  // ARTHUR — ออโต้ฟันกวาดรอบเป้า
+  if (u.champ.aegis) arthurCleave(state, u, target);
   if (u.champ.fragments && u.shadow <= 0) addFrag(u, u.champ.fragments.onAuto);
   if (u.champ.fragments) applyFragmentDamage(state, u, target);
   if (u.champ.doubleTrouble) {
@@ -257,6 +266,13 @@ export function consumeOnHit(state, u, target) {
   // สเปคใหม่: ตัด "คูลดาวน์ที่เหลืออยู่" ทิ้ง 30% ต่อฮิต ไม่ใช่ตัดตามคูลดาวน์เต็ม (อัลติไม่โดน)
   if (sk.cdCutOnHit) for (const x of activeSkills(u)) if (x.key !== "R" && x.cdLeft > 0) {
     x.cdLeft = Math.max(0, x.cdLeft * (1 - sk.cdCutOnHit));
+  }
+  // ARTHUR Q — เป้าเลือดเกินครึ่ง จะสับซ้ำอีกดาบทันทีด้วยความเร็วสูงสุด
+  if (sk.doubleAbove && target.alive && target.hp / target.maxHp > sk.doubleAbove) {
+    state.dmgSrc = tr("ออโต้");
+    applyDamage(state, u, target, u.ad, false, false, true);
+    onAutoLanded(state, u, target);
+    u.hits += 1;
   }
   u.onHit.charges -= 1;
   if (u.onHit.charges <= 0) u.onHit = null;

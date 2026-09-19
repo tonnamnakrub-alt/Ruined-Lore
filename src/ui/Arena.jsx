@@ -2,6 +2,7 @@ import { tr } from "../i18n.js";
 import React, { useRef, useEffect, useState } from "react";
 import { ARENA_H, ARENA_W, RENDER_SCALE } from "../data/constants.js";
 import { drawFx, drawFxText, drawGround, shakeAmount } from "./draw-fx.js";
+import { drawLore } from "./draw-lore.js";
 import { C, MONO } from "./theme.js";
 
 
@@ -112,6 +113,7 @@ export function Arena({ stateRef, tick, focusId, showRanges, drawRef }) {
     }
 
     drawGround(ctx, st, S);
+    drawLore(ctx, st, S);
     drawFx(ctx, st, S);
     for (const p of st.projectiles) {
       const skill = !!p.skill;

@@ -43,6 +43,39 @@ export function stackChips(u, now) {
   }
   if (ch.bounty) add("PLUNDER", (u.bountyGold || 0) + "g", C.gold, null);
 
+  // --- ตัวนับของ Patch 0.3 ---
+  if (ch.starlight) {
+    const max = ch.starlight.max || 3;
+    const n = u.starStacks || 0;
+    add("STARLIGHT", n + "/" + max, n > 0 ? "#7EC7FF" : C.dim, n / max);
+  }
+  if (ch.glassShards) {
+    // จังหวะที่ค้างอยู่ของคอมโบ Q และยอดดาเมจที่ W สะสมไว้บนเป้า
+    if (u.comboStep > 0) add("WALTZ", "Q" + (u.comboStep + 1) + (u.comboArmed ? tr(" พร้อม") : tr(" รอออโต้")), "#B08CFF", null);
+    if (u.carriage) add("CARRIAGE", tr("ล่องหน"), C.gold, null);
+  }
+  if (ch.beanstalk) {
+    const n = u.bean ? u.bean.n : 0;
+    if (n > 0) add("BEANS", n + "/" + (ch.beanstalk.need || 3), C.green, n / (ch.beanstalk.need || 3));
+  }
+  if (ch.duel) {
+    add("DUEL", u.duelMarkId ? String(u.duelMarkId).split("-").pop() : tr("ไม่มีเป้า"), C.gold, null);
+    add("LIVES", u.nineUsed ? tr("ใช้แล้ว") : tr("เหลือ 1"), u.nineUsed ? C.dim : "#F0648F", null);
+  }
+  if (ch.threePigs) {
+    const names = [tr("บ้านฟาง"), tr("บ้านไม้"), tr("บ้านอิฐ")];
+    add("PIGS", names[u.pigTier || 0], "#F0648F", 1 - (u.pigTier || 0) / 2);
+  }
+  if (ch.aegis && u.aegisShield > 0) {
+    add("AEGIS", Math.round(u.aegisShield) + "", "#E4EBF7", null);
+  }
+  if (ch.critBleed) {
+    const n = (u.bleedStacks != null ? u.bleedStacks : 0);
+    if (n > 0) add("BLEED", n + "/" + ch.critBleed.maxStacks, C.red, n / ch.critBleed.maxStacks);
+  }
+  if (u.jolt > 0) add("JOLT", u.jolt + "/3", "#7EC7FF", u.jolt / 3);
+  if (u.truthAura) add("TRUTH", "+" + Math.round(u.truthAura.amp * 100) + "%", "#E3B75F", null);
+
   // --- สแตกจากไอเทม (มีอายุ หมดแล้วหาย) ---
   if (u.pnbStacks && live(u.pnbUntil)) {
     add("PNB", u.pnbStacks + "/15", "#D9C48F", u.pnbStacks / 15);

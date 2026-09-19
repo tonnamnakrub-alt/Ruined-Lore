@@ -136,6 +136,59 @@ export function tickDashes(state) {
       }
       continue;
     }
+    // ---- TOTSAKAN W · ชนตัวแรกแล้วจับเหวี่ยงข้ามหัวไปด้านหลัง
+    if (dsh.fling) {
+      const grabbed = enemiesOf(state, u).find((e) => dist(u, e) <= e.radius + u.radius + 30);
+      if (grabbed || dsh.left <= 0) {
+        u.dashing = null;
+        if (grabbed) {
+          state.dmgSrc = skillLabel(u, sk);
+          applyDamage(state, u, grabbed, dsh.fling.dmg, false);
+          state.dmgSrc = null;
+          addBuff(grabbed, { type: "stun", v: 1, until: state.t + sk.airborne }, state.t);
+          grabbed.x = clamp(u.x - dsh.dx * dsh.fling.toss, grabbed.radius, ARENA_W - grabbed.radius);
+          grabbed.y = clamp(u.y - dsh.dy * dsh.fling.toss, grabbed.radius, ARENA_H - grabbed.radius);
+          vfx(state, { kind: "trail", x: u.x, y: u.y, x2: grabbed.x, y2: grabbed.y, color: "255,208,138", dur: 0.45 });
+          // จับโดนแล้ว ออโต้ 3 ครั้งถัดไปเร็วขึ้นและแรงขึ้น
+          addBuff(u, { type: "as", v: sk.asBuff, until: state.t + sk.window }, state.t);
+          u.onHit = { skill: { ...sk, dmg: sk.hitDmg, adRatio: sk.hitAdRatio, selfBonusHp: sk.hitBonusHp, badRatio: 0, apRatio: 0 },
+            charges: sk.charges, until: state.t + sk.window };
+        }
+      }
+      continue;
+    }
+    // ---- H.S.B E · พุ่งทะลุคน ชนกำแพงเมื่อไหร่ระเบิดกระแทกลอย
+    if (dsh.boar) {
+      for (const e of enemiesOf(state, u)) {
+        if (dsh.hitIds.includes(e.id)) continue;
+        if (dist(u, e) > e.radius + u.radius) continue;
+        dsh.hitIds.push(e.id);
+        state.dmgSrc = skillLabel(u, sk);
+        applyDamage(state, u, e, skillPower(u, sk, e), false);
+        state.dmgSrc = null;
+      }
+      const walls = (state.lore && state.lore.walls) || [];
+      const hitWall = walls.some((w) => {
+        const rx = u.x - w.x, ry = u.y - w.y;
+        return Math.abs(rx * w.nx + ry * w.ny) <= w.half && Math.abs(rx * -w.ny + ry * w.nx) <= u.radius + 24;
+      }) || u.x <= u.radius + 4 || u.y <= u.radius + 4
+        || u.x >= ARENA_W - u.radius - 4 || u.y >= ARENA_H - u.radius - 4;
+      if (hitWall || dsh.left <= 0) {
+        u.dashing = null;
+        if (hitWall) {
+          const dmg = sk.hitDmg[dsh.boar.rank] + sk.hitBadRatio * u.bonusAd + sk.hitBonusHp * (u.bonusHp || 0);
+          vfx(state, { kind: "shock", x: u.x, y: u.y, r: dsh.boar.radius, color: "255,208,138", dur: 0.7 });
+          state.dmgSrc = skillLabel(u, sk);
+          for (const e of enemiesOf(state, u)) {
+            if (dist(u, e) > dsh.boar.radius + e.radius) continue;
+            applyDamage(state, u, e, dmg, false);
+            addBuff(e, { type: "stun", v: 1, until: state.t + sk.knockup }, state.t);
+          }
+          state.dmgSrc = null;
+        }
+      }
+      continue;
+    }
     const bumped = !sk.unstoppable && !sk.drag && enemiesOf(state, u).some((e) => dist(u, e) <= e.radius + u.radius);
     if (bumped || dsh.left <= 0) {
       if (sk.drag) for (const e of state.units) if (e.dragBy === u.id) e.dragBy = null;

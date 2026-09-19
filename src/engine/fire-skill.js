@@ -5,10 +5,11 @@ import { startGrab } from "./motion.js";
 import { applyCharm, startBloodStorm } from "./laura.js";
 import { castDismissal, castGuardBurst } from "./klaeder.js";
 import { castAllyBlink, castTeaGarden, castWonderland } from "./alice.js";
-import { addBuff, bonusMs, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
+import { addBuff, addBuffUnique, bonusMs, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
+import { fireLoreSkill, gainStar } from "./lore.js";
 
 
 // ครอบ fireSkillEffect ไว้ เพื่อติดป้าย "ดาเมจนี้มาจากสกิลไหน" ให้ทุกอย่างที่สกิลนี้ปล่อยออกไป
@@ -128,8 +129,36 @@ function fireSkillEffect(state, u, sk, target, prec) {
       if (sk.slowImmune) { u.slowImmuneUntil = state.t + (sk.slowImmuneDur || sk.dur); }
       if (sk.flying) addBuff(u, { type: "flying", v: 1, until: state.t + (sk.durByRank ? sk.durByRank[r] : sk.dur) }, state.t);
       if (sk.asBuff) u.buffs.push({ type: "as", v: sk.asBuff[r], until: state.t + sk.dur });
-      if (sk.msBuff) u.buffs.push({ type: "ms", v: sk.msBuff[r], until: state.t + sk.dur });
-      if (sk.stealth && !hasBuff(u, "revealed")) u.buffs.push({ type: "stealth", v: 1, until: state.t + sk.dur });
+      if (sk.msBuff) {
+        // ความเร็วเดินมีอายุของตัวเองได้ (msDur) และค่อยๆ จางได้ (msDecay)
+        const mUntil = state.t + (sk.msDur || sk.dur);
+        u.buffs.push({ type: "ms", v: sk.msBuff[r], until: mUntil, decayFrom: sk.msDecay ? state.t : undefined });
+      }
+      if (sk.stealth && !hasBuff(u, "revealed")) {
+        const sUntil = state.t + (sk.durByRank ? sk.durByRank[r] : sk.dur);
+        u.buffs.push({ type: "stealth", v: 1, until: sUntil });
+        // ออกจากการล่องหนเมื่อไหร่ก็ได้ความเร็วโจมตีก้อนใหญ่ (จัดการใน step.js)
+        if (sk.ambushAs) u.ambush = { as: sk.ambushAs[r], dur: sk.ambushDur, until: sUntil };
+      }
+      // ---- ของ Patch 0.3 ----
+      if (sk.drAll) addBuff(u, { type: "dr", v: sk.drAll[r], until: state.t + sk.dur }, state.t);
+      if (sk.onHitMagic) {
+        addBuffUnique(u, "plumage", { type: "onHitMagic", v: sk.onHitMagic[r] + (sk.onHitApRatio || 0) * u.ap,
+          until: state.t + sk.dur }, state.t);
+      }
+      if (sk.dashFaster) u.starRush = { until: state.t + sk.dur, mul: 1 + sk.dashFaster };
+      if (sk.overcharge) u.overchargeUntil = state.t + sk.dur;
+      if (sk.gainStack) gainStar(state, u, sk.gainStack);
+      if (sk.pet && state.lore) {
+        for (const g of state.lore.pets) {
+          if (g.ownerId !== u.id) continue;
+          g.shield = sk.pet.shield[r] + (sk.pet.shieldAp || 0) * u.ap;
+          g.msBuff = sk.pet.ms[r];
+          g.as = sk.pet.as[r];
+          g.buffUntil = state.t + sk.pet.dur;
+          vfx(state, { kind: "ring", x: g.x, y: g.y, r: g.radius + 20, color: "232,214,120", grow: 0.8 });
+        }
+      }
       break;
     }
     case "targeted": {
@@ -331,9 +360,16 @@ function fireSkillEffect(state, u, sk, target, prec) {
     case "blinkBehind": {
       vfx(state, { kind: "trail", x: u.x, y: u.y, color: "255,143,208", pending: u.id });
       const dd = dist(u, target) || 1;
-      u.x = clamp(target.x + ((target.x - u.x) / dd) * 90, u.radius, ARENA_W - u.radius);
-      u.y = clamp(target.y + ((target.y - u.y) / dd) * 90, u.radius, ARENA_H - u.radius);
-      u.empower = sk.empower[Math.max(0, sk.rank - 1)] + (sk.baseAdRatio || 0) * (u.ad - u.bonusAd);
+      const back = sk.behind || 90;
+      u.x = clamp(target.x + ((target.x - u.x) / dd) * back, u.radius, ARENA_W - u.radius);
+      u.y = clamp(target.y + ((target.y - u.y) / dd) * back, u.radius, ARENA_H - u.radius);
+      // แบบเดิม (Double Cross) ติดพลังให้ออโต้ครั้งถัดไป · แบบใหม่ (PUSS Q) แทงทันที
+      if (sk.empower) u.empower = sk.empower[Math.max(0, sk.rank - 1)] + (sk.baseAdRatio || 0) * (u.ad - u.bonusAd);
+      if (sk.dmg) {
+        applyDamage(state, u, target, power, !!sk.magic);
+        // แทงจากข้างหลังเสมอ เลยติดสโลว์ทุกครั้งที่โดน
+        if (sk.backSlow) addBuff(target, { type: "slow", v: sk.backSlow, until: state.t + (sk.backSlowDur || 1.5) }, state.t);
+      }
       break;
     }
     case "tether": {
@@ -624,6 +660,11 @@ function fireSkillEffect(state, u, sk, target, prec) {
         hp: sk.hp[Math.max(0, sk.rank - 1)], breakSlow: sk.breakSlow, breakSlowDur: sk.breakSlowDur,
         allyPass: !!sk.allyPass,
       });
+      break;
+    }
+    default: {
+      // ท่าของตัวละคร Patch 0.3 อยู่ใน engine/lore.js
+      fireLoreSkill(state, u, sk, target, prec, { missX, missY, ang });
       break;
     }
   }

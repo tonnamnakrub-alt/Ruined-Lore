@@ -102,6 +102,16 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     if (sk.type === "meteorStorm") return nearby >= 1 || d <= sk.rangeByRank[Math.max(0, sk.rank - 1)];
     if (sk.type === "bloodStorm") return enemiesOf(state, u).some((e) => dist(u, e) <= sk.radius) || hpFrac < 0.5;
     if (sk.type === "absorbReflect") return nearby >= 2 || hpFrac < 0.55;
+    // ---- อัลติของ Patch 0.3 ----
+    if (sk.type === "carriage") return d <= 1200;
+    if (sk.type === "truthAura") return nearby >= 1 || alliesOf(state, u).filter((a) => dist(u, a) < sk.radius).length >= 2;
+    if (sk.type === "starfall") return nearby >= 1 || d <= 900;
+    if (sk.type === "tripleSlam") return nearby >= 1 || d <= 420;
+    if (sk.type === "summonGiant") return d <= sk.range;
+    if (sk.type === "bounceSlash") return d <= sk.range;
+    if (sk.type === "tempest") return d <= sk.range && nearby >= 1;
+    if (sk.type === "bunker") return nearby >= 1 || hpFrac < 0.6;
+    if (sk.type === "judgment") return d <= sk.range;
     if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
   if (sk.type === "markNext") return d <= sk.range;
   if (sk.type === "barrage") return d <= sk.range && nearby >= 1;
@@ -129,6 +139,44 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
     return d <= (sk.range || 900);
   }
+  // ---- ท่าของตัวละคร Patch 0.3 ----
+  if (sk.type === "combo") {
+    // จังหวะถัดไปของคอมโบต้องรอให้ออโต้โดนก่อน (comboArmed)
+    if ((u.comboStep || 0) > 0 && !u.comboArmed) return false;
+    const step = sk.steps[Math.min(u.comboStep || 0, sk.steps.length - 1)];
+    return d <= (step.dashRange || step.radius || step.range || 300) + 60;
+  }
+  if (sk.type === "damageStash") {
+    return enemiesOf(state, u).some((e) => e.chime && e.chime.ownerId === u.id && dist(u, e) <= sk.range);
+  }
+  if (sk.type === "skyward") return hpFrac < 0.6 || nearby >= 2;
+  if (sk.type === "carriage") return d <= 1200;
+  if (sk.type === "basketZone") return alliesOf(state, u).some((a) => dist(u, a) <= sk.range);
+  if (sk.type === "allyRush") return d > u.range * 1.1 || alliesOf(state, u).some((a) => a.hp / a.maxHp < 0.7);
+  if (sk.type === "truthAura") return nearby >= 1 || alliesOf(state, u).filter((a) => dist(u, a) < sk.radius).length >= 2;
+  if (sk.type === "vortex") return d <= sk.range;
+  if (sk.type === "deltaDash") return d <= sk.side * 1.6;
+  if (sk.type === "starfall") return nearby >= 1 || d <= 900;
+  if (sk.type === "chargeFling") return d <= sk.dashRange;
+  if (sk.type === "tripleSlam") return nearby >= 1 || d <= 420;
+  if (sk.type === "rampBuff") return d <= u.range * 1.1;
+  if (sk.type === "sightZone") return enemiesOf(state, u).some((e) => hasBuff(e, "stealth")) || d <= sk.range;
+  if (sk.type === "summonGiant") return d <= sk.range;
+  if (sk.type === "channelCone") return d <= sk.range * 0.8;
+  if (sk.type === "bounceSlash") return d <= sk.range;
+  if (sk.type === "coneVolley") return d <= sk.range * 0.85;
+  if (sk.type === "tempest") return d <= sk.range && nearby >= 1;
+  if (sk.type === "sledge") {
+    const lore = state.lore || {};
+    const hurt = [...(lore.walls || []), ...(lore.bunkers || [])].some((w) => w.ownerId === u.id && w.hp < w.maxHp);
+    return hurt || d <= sk.range;
+  }
+  if (sk.type === "wall") return d <= sk.range + 200;
+  if (sk.type === "steerDash") return d > u.range * 1.1 && d <= sk.dashRange * 1.3;
+  if (sk.type === "bunker") return nearby >= 1 || hpFrac < 0.6;
+  if (sk.type === "pommel") return d <= sk.range + 40;
+  if (sk.type === "lungeSweep") return d <= sk.dashRange * 1.1;
+  if (sk.type === "judgment") return d <= sk.range;
   if (sk.type === "teaGarden") return d <= sk.range;
   if (sk.type === "allyBlink") return hpFrac < 0.85 || alliesOf(state, u).some((a) => a.hp / a.maxHp < 0.8);
   if (sk.type === "wonderland") return d <= sk.range;

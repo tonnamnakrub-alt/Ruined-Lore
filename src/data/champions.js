@@ -1,7 +1,8 @@
 import { C } from "../ui/theme.js";
+import { LORE_CHAMPIONS } from "./champions-lore.js";
 
 
-export const CHAMPIONS = {
+const CORE_CHAMPIONS = {
   KAZEM: {
     id: "KAZEM", skillPriority: ["Q","E","W"], missile: 0, windup: 0.19, value: 0.7, th: "คาเซม", role: "Bruiser AD", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true,
     hp: 645, hpG: 112, hp5: 9.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.8, mr: 32, mrG: 2.1,
@@ -338,6 +339,10 @@ export const CHAMPIONS = {
     ],
   },
 };
+
+
+// ตัวละครทั้งหมดในเกม — ชุดเดิม 12 ตัว บวกชุด Patch 0.3 อีก 10 ตัว
+export const CHAMPIONS = { ...CORE_CHAMPIONS, ...LORE_CHAMPIONS };
 
 
 // เลนที่ตัวนี้ลงได้ทั้งหมด — เลนถนัดมาก่อน แล้วตามด้วยเลนรอง
