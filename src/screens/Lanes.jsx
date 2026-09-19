@@ -98,6 +98,10 @@ export function LanesScreen(ctx) {
             ? tr("เลือกได้เองว่าจะดูเลนไหนก่อน — ผลของทุกเลนรวมกันตอนจบยก")
             : tr("กดดูไฟต์ แล้วค่อยปิดยก")}
         </div>
+        {/* กติกาใหม่ — ชนะเลนไม่ได้แปลว่าชนะยก ต้องบอกให้ชัดก่อนสั่งนิสัยเลน */}
+        <div style={{ fontSize: 11, color: C.gold, marginTop: 5, lineHeight: 1.6 }}>
+          {tr("ยกนี้ตัดสินที่เงิน — ใครได้เงินรวมทั้งทีมเยอะกว่าในยกนี้ คนนั้นได้แต้ม")}
+        </div>
       </div>
 
       {(plan.foeJungleLane || (plan.lanes.TOP.myGank || plan.lanes.MID.myGank || plan.lanes.BOT.myGank)) ? (

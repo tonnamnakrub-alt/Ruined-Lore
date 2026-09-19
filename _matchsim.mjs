@@ -18,6 +18,8 @@ import { MODES } from "./src/data/modes.js";
 const MODE = MODES[process.argv[2] || "LONG"];
 const GAMES = Number(process.argv[3] || 10);
 const DIFF = diffOf(process.argv[4] || "NORMAL");
+// นับว่ากติกาใหม่ (ตัดสินด้วยเงิน) ให้ผลต่างจากกติกาเดิม (ชนะเลนมากกว่า) บ่อยแค่ไหน
+let draws = 0, goldRounds = 0, disagree = 0;
 
 function playMatch(seed) {
   const rand = mulberry32(seed);
@@ -70,8 +72,6 @@ function playMatch(seed) {
         perUnit[k] = cur;
       }
     }
-    if (win > loss) score.a++; else if (loss > win) score.b++;
-
     const inc = plan.income;
     const finc = foeIncome(plan);
     const pay = (list, side, table) => {
@@ -99,8 +99,17 @@ function playMatch(seed) {
       }
       return out;
     };
+    const beforeA = A, beforeB = B;
     A = pay(A, "blue", inc);
     B = pay(B, "red", finc);
+    // สเปคใหม่: ยกนี้ใครได้เงินรวมทั้งทีมเยอะกว่า คนนั้นได้แต้ม (ไม่ใช่ชนะเลนมากกว่า)
+    const gainA = A.reduce((t, c, i) => t + (c.gold - beforeA[i].gold), 0);
+    const gainB = B.reduce((t, c, i) => t + (c.gold - beforeB[i].gold), 0);
+    if (gainA > gainB) score.a++; else if (gainB > gainA) score.b++; else draws++;
+    goldRounds++;
+    const laneWinner = win > loss ? 1 : loss > win ? -1 : 0;
+    const goldWinner = gainA > gainB ? 1 : gainB > gainA ? -1 : 0;
+    if (laneWinner !== goldWinner) disagree++;
     lastA = sa; lastB = sb;
     if (score.a >= MODE.wins || score.b >= MODE.wins) break;
   }
@@ -143,3 +152,5 @@ for (const lane of ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"]) {
 const all = Object.values(byLane).reduce((a, b) => ({ lv: a.lv + b.lv, items: a.items + b.items, gold: a.gold + b.gold, left: a.left + b.left, n: a.n + b.n }), { lv: 0, items: 0, gold: 0, left: 0, n: 0 });
 console.log("\nรวมทุกเลน  เลเวลเฉลี่ย " + (all.lv / all.n).toFixed(1) + " · ของใหญ่+รองเท้าเฉลี่ย " + (all.items / all.n).toFixed(1) + " ชิ้น · มูลค่าของ " + (all.gold / all.n).toFixed(0) + "g · เงินเหลือ " + (all.left / all.n).toFixed(0) + "g");
 console.log("ยกเฉลี่ยต่อแมตช์ " + (totRounds / GAMES).toFixed(1) + " · ไฟต์ทั้งหมด " + totFights + " (หมดเวลา " + totTimeouts + " = " + (100 * totTimeouts / Math.max(1, totFights)).toFixed(0) + "%) · ศพรวม " + totKills + " = " + (totKills / Math.max(1, totFights)).toFixed(2) + " ศพต่อไฟต์");
+
+console.log("ยกที่ตัดสินด้วยเงิน " + goldRounds + " · เสมอ " + draws + " (" + (100*draws/Math.max(1,goldRounds)).toFixed(0) + "%) · ผลต่างจากกติกาเดิม " + disagree + " (" + (100*disagree/Math.max(1,goldRounds)).toFixed(0) + "%)");

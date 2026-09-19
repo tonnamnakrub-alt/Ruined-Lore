@@ -807,14 +807,14 @@ export function App() {
       for (const c of crew) for (const m of LANE_MEMBERS[c] || []) bag[m] = { gold: 0, xp: 0 };
     }
 
+    // เลนที่ชนะ/แพ้ยังนับไว้โชว์ในสรุปยก แต่ไม่ใช่ตัวตัดสินแต้มอีกแล้ว
+    // สเปคใหม่: ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ (คิดหลังแจกรายได้เสร็จ ด้านล่าง)
     let laneWins = 0, laneLoss = 0;
     for (const L of STANCE_LANES) {
       const r = done[L];
       if (!r) continue;
       if (r.iWon) laneWins++; else laneLoss++;
     }
-    const iWon = laneWins > laneLoss;
-    const drawn = laneWins === laneLoss;
 
     // รวมค่าที่ได้จากทุกไฟต์ของยกนี้ ต่อหนึ่งนักแข่ง
     const perUnit = {};
@@ -891,6 +891,17 @@ export function App() {
     const nextFoe = shareToSupport(foe, award(foe, foeSide, foeInc));
     const goldGain = {};
     team.forEach((c, i) => { goldGain[c.lane] = nextMe[i].gold - c.gold; });
+
+    // ---- ใครได้เงินเยอะกว่าในยกนี้ คนนั้นชนะยก
+    // รวมทุกอย่างที่เข้ากระเป๋ากลางของทั้งทีม — รายได้เลน เงินศพ ส่วนแบ่งของซัพ
+    // ไม่นับกระเป๋าโจรสลัดของ C.HOOK เพราะมันได้ฟรีทุกยกโดยไม่ต้องลงไฟต์
+    // ถ้านับด้วย ฝั่งที่มีฮุคจะชนะยกอัตโนมัติตลอดทั้งแมตช์
+    const sumGain = (before, after) => after.reduce((s, c, i) => s + (c.gold - before[i].gold), 0);
+    const myGold = sumGain(team, nextMe);
+    const foeGold = sumGain(foe, nextFoe);
+    const iWon = myGold > foeGold;
+    const drawn = myGold === foeGold;
+
     const ns = {
       me: score.me + (iWon ? 1 : 0),
       foe: score.foe + (!iWon && !drawn ? 1 : 0),
@@ -914,7 +925,7 @@ export function App() {
     }
 
     setResult({
-      iWon, drawn, laneWins, laneLoss,
+      iWon, drawn, laneWins, laneLoss, myGold, foeGold,
       time: Object.values(done).reduce((a, r) => a + r.time, 0),
       byLane: STANCE_LANES.map((L) => ({
         lane: L,

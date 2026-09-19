@@ -603,8 +603,11 @@ export function step(state) {
         // has no choice but to close. Discipline and positioning only nudge this now.
         let desired;
         if (u.champ.melee) {
-          desired = u.range * 0.92 + u.rangeBias * (1 - posQ / 11) * 0.25;
-          desired = clamp(desired, 120, u.range * 0.98);
+          // ตัวประชิดไม่มีเหตุผลต้องยืน "ขอบระยะ" เหมือนตัวระยะไกล
+          // เดิมตั้งไว้ที่ 92% ของ 175 = เหลือขอบแค่ 14 หน่วย ขยับนิดเดียวก็หลุดระยะ
+          // แล้วไปยืนเก้ๆ กังๆ ข้างเป้าโดยไม่ตี — เข้าไปติดตัวเลยดีกว่า
+          desired = u.range * 0.66 + u.rangeBias * (1 - posQ / 11) * 0.25;
+          desired = clamp(desired, 90, u.range * 0.85);
         } else {
           // ตัวระยะไกลควรยืน "ขอบระยะตัวเอง" ไม่ใช่ 60-80% ของระยะ
           // เดิมมาร์คแมนระยะ 550 ยืนที่ 374 ซึ่งตัวประชิดพุ่งถึงได้สบาย
@@ -629,7 +632,11 @@ export function step(state) {
         // smooth spiral: radial correction blended with orbiting, so units don't
         // bang back and forth across the range band (that made aiming unpredictable)
         const err = d - desired;
-        const radial = clamp(err / 175, -1, 1);
+        // อยู่นอกระยะตีแล้วต้องวิ่งเข้าตรงๆ ไม่ใช่วนรอบ
+        // เดิมหารด้วย 175 เสมอ ตัวประชิดที่ห่างเป้า 200 จึงได้แรงเข้าหาแค่ 22%
+        // ที่เหลือไหลไปทางข้าง — ไล่ตัวระยะไกลที่ถอยด้วยความเร็วพอกันจึงไม่มีวันถึง
+        const band = d > u.range ? 50 : 175;
+        const radial = clamp(err / band, -1, 1);
         const tang = (1 - Math.abs(radial)) * (0.55 + posQ / 20);
         const sgn = u.orbitDir;
         mvx = dirX * radial + -dirY * sgn * tang;

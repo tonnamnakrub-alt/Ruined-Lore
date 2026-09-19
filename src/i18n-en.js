@@ -1366,7 +1366,33 @@ export const DICT = {
  " (+{0} HP)": " (+{0} HP)",
  "เห็นสแตกแล้ว และ Versus เล่นจบได้จริง": "Stacks are visible now, and Versus plays through",
 
+ // บันทึกผลเลนสองบรรทัดนี้หลุดเป็นภาษาไทยมาตลอด — ตัวสแกนจับไม่เจอเพราะเรียกผ่านตัวแปร
+ "ฝั่งเราถอย ศัตรูกินเลนฟรี ได้เงินเพิ่ม 2": "We backed off — the enemy farms the lane for free, +2 gold",
+ "ศัตรูถอย เรากินเลนฟรี ได้เงินเพิ่ม 2": "They backed off — we farm the lane for free, +2 gold",
+
  // ---- Patch 0.2C ----
+ "เงินที่ได้ยกนี้": "Gold this round",
+ "ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ": "the round goes to whoever earned more",
+ "ยกนี้ตัดสินที่เงิน — ใครได้เงินรวมทั้งทีมเยอะกว่าในยกนี้ คนนั้นได้แต้ม":
+   "This round is decided by gold — whichever team earns more of it this round takes the point",
+ "กติกาใหม่ — ยกนี้ตัดสินที่เงิน": "New rule — rounds are decided by gold",
+ "ยกไหนใครได้เงินรวมทั้งทีมเยอะกว่า คนนั้นได้แต้ม — เดิมนับว่าชนะเลนมากกว่า":
+   "Whichever team earns more gold in a round takes the point — it used to be whoever won more lanes",
+ "แปลว่ายกที่ไม่มีใครปะทะกันเลยก็มีผู้ชนะแล้ว ไม่ใช่เสมอทิ้งไปเฉยๆ และการชนะไฟต์แต่เสียรายได้เลนทั้งยก = แพ้ยกได้":
+   "So a round where nobody fights still has a winner instead of being thrown away as a draw — and winning the fight while bleeding lane income all round can still lose you the round",
+ "หน้าสรุปยกโชว์เงินสองฝั่งเทียบกันให้เห็นว่าทำไมถึงชนะหรือแพ้":
+   "The round summary shows both sides' gold side by side, so you can see why you won or lost",
+ "ไม่นับกระเป๋าโจรสลัดของ C.HOOK เพราะมันได้ฟรีทุกยกโดยไม่ต้องลงไฟต์ — ถ้านับด้วย ฝั่งที่มีฮุคจะชนะยกอัตโนมัติตลอดแมตช์":
+   "C.HOOK's separate plunder purse doesn't count — he collects it every round without fighting, so counting it would hand the round to whichever side drafted him, every time",
+ "ตัวประชิดไปถึงแล้วตีได้จริง": "Melee champions arrive and actually swing",
+ "ตัวตีใกล้ยืนติดเป้าแต่ไม่ตี — วัดแล้วมันอยู่ในระยะตีแค่ 30% ของเวลา ที่เหลือวนอยู่ข้างๆ":
+   "Melee champions stood right next to their target without attacking — measured, they were inside attack range only 30% of the time and circled beside it for the rest",
+ "ต้นเหตุ 1: ระยะที่ตัวประชิด \"อยากยืน\" ตั้งไว้ที่ 92% ของระยะตี (161 จาก 175) เหลือขอบแค่ 14 หน่วย ขยับนิดเดียวก็หลุด — ลดเหลือ 66% ให้เข้าไปติดตัวเลย":
+   "Cause 1: a melee champion's preferred standing distance was 92% of its attack range (161 of 175), leaving only 14 units of margin — one step and it fell out. Now 66%, so it closes to the body",
+ "ต้นเหตุ 2: แรงเดินถูกผสมระหว่าง \"เข้าหา\" กับ \"วนรอบ\" โดยหารด้วย 175 เสมอ ตัวประชิดที่ห่างเป้า 200 จึงได้แรงเข้าหาแค่ 22% ที่เหลือไหลไปทางข้าง ไล่ตัวระยะไกลที่ถอยด้วยความเร็วพอกันไม่มีวันถึง — ตอนนี้ถ้าอยู่นอกระยะตี วิ่งเข้าตรงๆ":
+   "Cause 2: movement blended \"close in\" with \"orbit\" against a fixed 175 band, so a melee champion 200 units away put only 22% of its speed into closing and the rest into sidestepping — it could never catch a ranged champion backing off at a similar speed. Now, out of attack range means run straight in",
+ "ผลวัด: อยู่ในระยะตี 30% → 45% · ออโต้ที่ปล่อยออกจริง +24% · ไฟต์ที่จบเพราะหมดเวลา 22% → 10%":
+   "Measured: time inside attack range 30% → 45% · autos actually thrown +24% · fights ending on the clock 22% → 10%",
  "ห้ามซ้ำ": "exclusive",
  "จุดระเบิดมีดสั้น": "Dagger detonation",
  "{0} {1} คุกเข่าลง แต่ยังไม่ยอมแพ้": "{0} {1} drops to one knee, but will not yield",

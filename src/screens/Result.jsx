@@ -53,6 +53,25 @@ export function ResultScreen(ctx) {
             {tr("ทั้งสองฝั่งเก็บเงินและ XP แล้วข้ามยกไป แต้มไม่ขยับ สถิติชนะรวด/แพ้รวดคงเดิม")}
           </div>
         )}
+        {/* ยกนี้ตัดสินด้วยเงิน ไม่ใช่จำนวนเลนที่ชนะ — ต้องเห็นตัวเลขที่ตัดสินด้วย */}
+        {!over && result && result.myGold != null ? (
+          <div style={{
+            display: "flex", alignItems: "baseline", gap: 8, marginTop: 9,
+            padding: "7px 9px", background: C.panel2, borderRadius: 6,
+          }}>
+            <Label>{tr("เงินที่ได้ยกนี้")}</Label>
+            <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: result.myGold >= result.foeGold ? C.green : C.ink }}>
+              {result.myGold}g
+            </span>
+            <span style={{ fontFamily: MONO, fontSize: 11, color: C.dim }}>vs</span>
+            <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: result.foeGold > result.myGold ? C.red : C.ink }}>
+              {result.foeGold}g
+            </span>
+            <span style={{ marginLeft: "auto", fontSize: 10.5, color: C.dim }}>
+              {tr("ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ")}
+            </span>
+          </div>
+        ) : null}
         <div style={{ fontSize: 12, color: C.dim, marginTop: 4, fontFamily: MONO }}>
           {score.me} – {score.foe}{result ? `  ·  ${result.time.toFixed(1)}s` : ""}
         </div>
