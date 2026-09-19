@@ -1645,26 +1645,26 @@ export const DICT = {
  "ไอเทม Tier 3 ใหม่ 12 ชิ้น": "Twelve new Tier 3 items",
  "เติมเอฟเฟกต์ให้ของเก่า": "Old items that needed an effect",
  "อื่นๆ ในแพตช์นี้": "Everything else in this patch",
- "ELLA (ซินเดอเรลล่า · Assassin AP · MID/JUNGLE) — ออโต้พ่วงเศษแก้วที่แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง · Q เป็นคอมโบสามจังหวะที่ต้องออโต้คั่น · W จดดาเมจที่ทำใส่เป้าไว้แล้วสั่งระเบิดทีเดียว · R ล่องหนแล้วเปิดตัวด้วยรถม้าฟักทองทุบ":
-   "ELLA (Cinderella · AP Assassin · MID/JUNGLE) — autos carry glass shards that double against a target below half health · Q is a three-beat combo that needs an auto between each step · W records the damage she deals to a target, then detonates it all at once · R goes invisible and opens with a pumpkin carriage slam",
+ "ELLA (ซินเดอเรลล่า · Assassin AP · JUNGLE/SUPPORT) — ออโต้พ่วงเศษแก้วที่แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง · Q เป็นคอมโบสามจังหวะที่ต้องออโต้คั่น · W จดดาเมจที่ทำใส่เป้าไว้แล้วสั่งระเบิดทีเดียว · R ล่องหนแล้วเปิดตัวด้วยรถม้าฟักทองทุบ":
+   "ELLA (Cinderella · AP Assassin · JUNGLE/SUPPORT) — autos carry glass shards that double against a target below half health · Q is a three-beat combo that needs an auto between each step · W records the damage she deals to a target, then detonates it all at once · R goes invisible and opens with a pumpkin carriage slam",
  "PIROSKA (หนูน้อยหมวกแดง · Enchanter AP · SUPPORT) — เลือดตกครึ่งครั้งแรกแล้ววิ่งหนีทะลุยูนิต · W ตะกร้าเสบียงฮีลและบัฟทุก 2 วิ · R ออร่าที่ขยายบัฟฝ่ายเราและดีบัฟฝ่ายศัตรูพร้อมกัน":
    "PIROSKA (Little Red Riding Hood · AP Enchanter · SUPPORT) — the first time she drops to half health she bolts straight through units · W drops a basket that heals and buffs every 2s · R is an aura that amplifies your buffs and their debuffs at the same time",
  "YODAKA (วิหคราตรี · AP Assassin · JUNGLE/MID) — สะสมสแตกดาวแล้วออโต้กลายเป็นการพุ่งทะลวงไปโผล่หลังเป้า · Q พายุที่ลอยไปค้างเป็นวังวน เดินตัดผ่านแล้วระเบิดได้":
    "YODAKA (The Burnt Starlight · AP Assassin · JUNGLE/MID) — banks starlight stacks, and with one his auto becomes a pierce that leaves him behind the target · Q floats out and parks as a vortex he can walk through to detonate",
- "TOTSAKAN (ทศกัณฐ์ · Vanguard/AD Tank · TOP/JUNGLE) — ค่าสถานะจากไอเทมทุกชิ้นแรงขึ้น 10% · W พุ่งชนแล้วจับเหวี่ยงข้ามหัว · R ทุบพื้น 3 ระลอก วงขยายถึง 700 ปิดท้ายด้วยสตันหมู่":
-   "TOTSAKAN (The Ten-Faced Asura King · Vanguard/AD Tank · TOP/JUNGLE) — every stat his items give him is 10% larger · W charges in and flings the first champion over his head · R slams three times, the last ring reaching 700 and stunning everyone in it",
+ "TOTSAKAN (ทศกัณฐ์ · Vanguard/AD Tank · TOP) — ค่าสถานะจากไอเทมทุกชิ้นแรงขึ้น 10% · W พุ่งชนแล้วจับเหวี่ยงข้ามหัว · R ทุบพื้น 3 ระลอก วงขยายถึง 700 ปิดท้ายด้วยสตันหมู่":
+   "TOTSAKAN (The Ten-Faced Asura King · Vanguard/AD Tank · TOP) — every stat his items give him is 10% larger · W charges in and flings the first champion over his head · R slams three times, the last ring reaching 700 and stunning everyone in it",
  "HOOD (โรบินฮู้ด · Marksman · ADC) — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลซ้อนได้ 5 ชั้น · R ห่าฝนธนูพร้อมเลือดไหลหมู่":
    "HOOD (The Merry Outlaw · Marksman · ADC) — crits don't burst; the excess becomes a bleed that stacks five times · R rains arrows and opens the same wound on everyone under them",
  "JACK (แจ็คผู้ฆ่ายักษ์ · Burst AP Mage · MID) — แปะเมล็ดถั่ว ครบ 3 แล้วรากงอกตรึงเท้า · R อัญเชิญยักษ์สวรรค์ที่เดินตีเองเป็นลูป 3 จังหวะ สเตตัสสเกลตาม AP":
    "JACK (The Usurper of the Sky · Burst AP Mage · MID) — plants beans, and the third one roots the target in place · R summons a cloud giant that walks and attacks on its own in a three-swing loop, scaling off his AP",
- "PUSS (พุสส์อินบู๊ทส์ · AD Assassin · JUNGLE/TOP) — ตราท้าดวลทำให้ตีเป้านั้นแรงขึ้นและทั้งคู่ล็อกหากัน · ตายตอนเป้ายังไม่ตายจะล่องหนหนีแล้วฟื้นด้วยเลือด 30%":
-   "PUSS (The Fearless Duelist · AD Assassin · JUNGLE/TOP) — his duel mark makes him hit that target harder and locks the two of them onto each other · dying while the mark still lives sends him invisible, then back at 30% health",
- "NIAN (เหนียน · Vanguard/AP Tank · TOP/JUNGLE) — ออร่าไฟฟ้าฟาดเองทุก 2 วิ · R พายุฟาด 5 ระลอกพร้อมสแตกกระตุกสตันที่ไม่มีคูลดาวน์":
-   "NIAN (The Primordial Calamity · Vanguard/AP Tank · TOP/JUNGLE) — an electric aura lashes out on its own every 2s · R strikes five times and carries a micro-stun stack with no per-target cooldown",
+ "PUSS (พุสส์อินบู๊ทส์ · AD Assassin · JUNGLE) — ตราท้าดวลทำให้ตีเป้านั้นแรงขึ้นและทั้งคู่ล็อกหากัน · ตายตอนเป้ายังไม่ตายจะล่องหนหนีแล้วฟื้นด้วยเลือด 30%":
+   "PUSS (The Fearless Duelist · AD Assassin · JUNGLE) — his duel mark makes him hit that target harder and locks the two of them onto each other · dying while the mark still lives sends him invisible, then back at 30% health",
+ "NIAN (เหนียน · Vanguard/AP Tank · TOP/MID) — ออร่าไฟฟ้าฟาดเองทุก 2 วิ · R พายุฟาด 5 ระลอกพร้อมสแตกกระตุกสตันที่ไม่มีคูลดาวน์":
+   "NIAN (The Primordial Calamity · Vanguard/AP Tank · TOP/MID) — an electric aura lashes out on its own every 2s · R strikes five times and carries a micro-stun stack with no per-target cooldown",
  "H.S.B (แฮม ไส้กรอก เบคอน · Warden/Tank · SUPPORT/TOP) — ยิ่งเสียเลือดยิ่งตัวเล็ก สกิลกว้างขึ้น สิ่งก่อสร้างอึดขึ้น · W กำแพงอิฐกันกระสุน · R บ้านที่เพื่อนข้างในไม่กินดาเมจ":
    "H.S.B (Ham, Sausage & Bacon · Warden/Tank · SUPPORT/TOP) — the more health he loses the smaller he gets, the wider his skills reach and the tougher his buildings are · W is a brick wall that eats projectiles · R is a house where allies inside take no damage at all",
- "ARTHUR (กษัตริย์อาเธอร์ · Diver/AD Fighter · TOP/JUNGLE) — ดาเมจกายภาพที่ทำได้กลายเป็นโล่ · W กดได้แม้ติด CC แล้วหมุนฟันสวนพร้อมตัดเวลา CC ครึ่งหนึ่ง · R ดาเมจจริงแล้วประหาร":
-   "ARTHUR (The Once and Future Sovereign · Diver/AD Fighter · TOP/JUNGLE) — the physical damage he deals comes back as a shield · W can be cast through crowd control, spinning into a counter-slash that halves the CC still on him · R is true damage followed by an execute",
+ "ARTHUR (กษัตริย์อาเธอร์ · Diver/AD Fighter · TOP) — ดาเมจกายภาพที่ทำได้กลายเป็นโล่ · W กดได้แม้ติด CC แล้วหมุนฟันสวนพร้อมตัดเวลา CC ครึ่งหนึ่ง · R ดาเมจจริงแล้วประหาร":
+   "ARTHUR (The Once and Future Sovereign · Diver/AD Fighter · TOP) — the physical damage he deals comes back as a shield · W can be cast through crowd control, spinning into a counter-slash that halves the CC still on him · R is true damage followed by an execute",
  "ดราฟต์พิก — ผลัดกันเลือกแบบเปิดเผย ห้ามตัวซ้ำ ลำดับ Snake 1-2-2-2-2-1":
    "Draft Pick — take turns picking in the open, no duplicates, snake order 1-2-2-2-2-1",
  "ทัวร์นาเมนต์ — แบนฝั่งละ 3 ตัวสลับกันก่อน แล้วค่อยดราฟต์ด้วยลำดับเดียวกัน":
@@ -2052,4 +2052,6 @@ export const DICT = {
    "Shared English clauses had a fixed gender baked in, so Totsakan and Nian were being called \"her\" — they all read neutrally now",
  "แพตช์โน้ตเก่าที่ยังไม่มีคำแปลอังกฤษ (0.2B และหัวข้อห้องแบบเจ้าบ้านนั่งดู) แปลครบแล้ว":
    "Older patch notes that had never been translated (0.2B and the spectator-room section) are now fully in English",
+ "ป้ายเลนที่เขียนค้างไว้ในแพตช์โน้ต 0.3 และเอกสารนักพัฒนายังเป็นของเก่า ตอนนี้ตรงกับข้อมูลจริงทุกที่แล้ว":
+   "The lane labels left behind in the 0.3 patch notes and the developer docs still showed the old ones — every one of them now matches the actual data",
 };
