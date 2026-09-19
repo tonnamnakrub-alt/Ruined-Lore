@@ -9,6 +9,7 @@ import { onLauraDamage, onLauraTakedown } from "./laura.js";
 import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, ellaStash, jackSeed, nianJolt, nineLivesCatch } from "./lore.js";
+import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -63,7 +64,9 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   const duel = duelAmp(source, target);
   const auraAmp = debuffAmpOf(target);
   const frail = 1 + (target.pigFrail || 0);
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail
+  // ตราขยายดาเมจของ Ariadne และตราเวทของ Mímir
+  const itemAmp = loreItemAmp(state, source, target, magic);
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
@@ -220,6 +223,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (!isAuto && source.champ.beanstalk && /^[QWER] /.test(String(state.dmgSrc || ""))) jackSeed(state, source, target);
     // NIAN — ทุกดาเมจจากสกิลของเหนียนสะสมประจุกระตุกสตัน
     if (!isAuto && source.champ.staticAura && /^[QWER] /.test(String(state.dmgSrc || ""))) nianJolt(state, source, target);
+    // เอฟเฟกต์ของไอเทมชุด Patch 0.3 ที่ผูกกับการทำดาเมจ
+    loreItemsOnDamage(state, source, target, dmg, magic, isAuto);
     // ของตัดฮีล (Grievous Wounds) — ติดให้เป้าหมายทุกครั้งที่ดาเมจเข้า
     if (source.antihealOnDmg && target.alive) {
       const ah = source.antihealOnDmg;
@@ -311,6 +316,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
           onMageTakedown(state, helper);
           onAssassinKill(state, helper, false);
           onLauraTakedown(state, helper);
+          loreItemsOnTakedown(state, helper);
           if (helper.centaurBleed) cbcCleanse(state, helper);
         }
       }
@@ -320,6 +326,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       onMageTakedown(state, source);
       onAssassinKill(state, source, true);
       onLauraTakedown(state, source);
+      loreItemsOnTakedown(state, source);
       if (source.hasItem && source.hasItem("cbc")) {
         state.dots = state.dots.filter((d) => !(d.targetId === source.id && d.cbc));
         healUnit(state, source, source.maxHp * 0.08);

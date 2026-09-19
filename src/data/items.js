@@ -192,7 +192,7 @@ export const ITEMS = [
   // --- ชิ้นส่วน Tier 2 สายไฟท์เตอร์
   { id: "wha", th: "Woodcutter's Hewing Axe — ขวานคนตัดไม้", cat: "T2", tier: 2, cost: 16,
     ad: 15, hp: 150, parts: ["bt2", "nd"] },
-  { id: "ecs", th: "Excalibur's Scabbard — ฝักดาบเอ็กซ์คาลิเบอร์", cat: "T2", tier: 2, cost: 16,
+  { id: "dwe", th: "Durandal's Whetted Edge — คมดาบดูรันดัล", cat: "T2", tier: 2, cost: 16,
     ad: 25, parts: ["bt2", "bt2"] },
   { id: "hwt", th: "Hiawatha's Tomahawk — ขวานซัดไฮอาวาธา", cat: "T2", tier: 2, cost: 13,
     ad: 10, asPct: 0.15, parts: ["bt2", "cf"] },
@@ -207,7 +207,7 @@ export const ITEMS = [
   { id: "biv", th: "Blade of the Impaled Voivode — ดาบวลาดผู้เสียบ", cat: "FIGHTER", tier: 3, cost: 62,
     ad: 45, hp: 350, ah: 15, parts: ["wha", "cc", "nd"] },
   { id: "soo", th: "Shroud of Osiris — ผ้าห่อโอซิริส", cat: "FIGHTER", uniq: ["lifeline"], also: ["TANK"], tier: 3, cost: 64,
-    ad: 45, armor: 40, reviveHp: 0.30, parts: ["ecs", "gva", "bc"] },
+    ad: 45, armor: 40, reviveHp: 0.30, parts: ["dwe", "gva", "bc"] },
   { id: "cbc", th: "Cuirass of the Bleeding Centaur — เกราะเลือดเซนทอร์", cat: "FIGHTER", uniq: ["antiheal"], also: ["TANK"], tier: 3, cost: 62,
     ad: 50, armor: 40, ah: 15, antihealOnDmg: { v: 0.40, dur: 3 },
     centaurBleed: { pct: 0.30, dur: 3, healBack: 1.50 },
@@ -226,7 +226,7 @@ export const ITEMS = [
   { id: "goh", th: "Girdle of Hippolyta — เข็มขัดฮิปโปลิตา", cat: "FIGHTER", also: ["TANK"], tier: 3, cost: 60,
     ad: 40, hp: 350, asPct: 0.2, ah: 10, parts: ["hwt", "wha", "pon"] },
   { id: "dss", th: "Draupnir's Sovereign Signet — แหวนดราวป์เนียร์", cat: "FIGHTER", uniq: ["cleanse"], also: ["TANK", "MARKSMAN"], tier: 3, cost: 64,
-    ad: 50, armor: 30, mr: 30, cleanseCd: 45, parts: ["ecs", "rwd", "bc"] },
+    ad: 50, armor: 30, mr: 30, cleanseCd: 45, parts: ["dwe", "rwd", "bc"] },
 
   // --- ชิ้นส่วน Tier 2 สายแอสซาซิน
   { id: "hsd", th: "Huntsman's Skinning Dirk — มีดถลกหนังนายพราน", cat: "T2", tier: 2, cost: 15,
@@ -309,6 +309,49 @@ export const ITEMS = [
     ad: 50, arPen: 10, ah: 15, denyDeath: { dur: 2 }, parts: ["hsd", "lmd", "nd"] },
   { id: "wvc", th: "Wendigo's Voracious Claw — กรงเล็บตะกละเวนดิโก", cat: "ASSASSIN", also: ["FIGHTER"], tier: 3, cost: 60,
     ad: 55, arPen: 15, wendigo: { execPct: 0.20, gold: 2, once: true }, parts: ["hsd", "fcl"] },
+
+  // ---------------------------------------------------------------
+  // Patch 0.3 — ของใหญ่ชุดใหม่ 12 ชิ้น
+  // ชื่อทุกชิ้นอ้างอิงตำนานหรือนิทานพื้นบ้านตามธีมเดิมของเกม
+  // สูตรคราฟต์ประกอบจากชิ้นส่วนที่มีอยู่แล้ว ไม่ต้องเพิ่มชิ้นส่วนใหม่
+  // ---------------------------------------------------------------
+  { id: "lex", th: "The Legendary Excalibur — เอกซ์คาลิเบอร์ในตำนาน", cat: "FIGHTER", also: ["ASSASSIN", "TANK"], tier: 3, cost: 64,
+    ad: 55, hp: 250, ah: 15,
+    firstHitShield: { flat: 120, badRatio: 1.0, dur: 3.5, ms: 0.10, cd: 15 }, parts: ["dwe", "wha", "lmd"] },
+  { id: "mww", th: "Mímir's Whispering Well — บ่อน้ำกระซิบมิเมียร์", cat: "TANK", also: ["MAGE", "SUPPORT"], tier: 3, cost: 58,
+    hp: 450, mr: 60, ah: 10,
+    magicPulse: { flat: 25, bonusHpPct: 0.015, every: 1, radius: 400, amp: 0.12, dur: 3 }, parts: ["rrc", "vsb", "pon"] },
+  { id: "fdm", th: "Fafnir's Devouring Maw — ปากเขี้ยวฟาฟเนียร์", cat: "MARKSMAN", also: ["FIGHTER", "ASSASSIN"], tier: 3, cost: 63,
+    ad: 50, asPct: 0.25, omnivampFlat: 0.10,
+    curHpOnHit: { melee: 0.08, ranged: 0.05 },
+    maulBurst: { hits: 3, pct: 0.05, msSteal: 0.20, dur: 2, cd: 20 }, parts: ["hwt", "lbn", "slf"] },
+  { id: "mut", th: "Morgana's Unravelling Thread — เส้นด้ายคลายมนตร์มอร์กานา", cat: "MAGE", tier: 3, cost: 60,
+    ap: 85, hp: 250, ah: 15,
+    mrShredStack: { pct: 0.05, dur: 4, max: 6 }, parts: ["cbl", "cyw", "ppf"] },
+  { id: "ahe", th: "Argus' Hundred Eyes — ร้อยดวงตาอาร์กัส", cat: "TANK", also: ["SUPPORT"], tier: 3, cost: 58,
+    hp: 400, armor: 40, mr: 40, ah: 10,
+    crowdGuard: { radius: 650, per: 8, max: 5 }, parts: ["gb", "ghs", "cwc"] },
+  { id: "sbs", th: "Sleeping Beauty's Spindle — กระสวยเจ้าหญิงนิทรา", cat: "MAGE", uniq: ["lifeline"], also: ["ASSASSIN"], tier: 3, cost: 62,
+    ap: 85, armor: 45, ah: 15,
+    stasis: { hpBelow: 0.30, dur: 2.0, cd: 45 }, parts: ["cyw", "cwc", "cn"] },
+  { id: "mub", th: "Mordred's Usurping Blade — ดาบทรยศมอร์เดรด", cat: "ASSASSIN", also: ["FIGHTER"], tier: 3, cost: 62,
+    ad: 50, armorPenPct: 0.30, ah: 15,
+    ultRefundOnTakedown: 0.25, parts: ["wtb", "hsd", "lmd"] },
+  { id: "atq", th: "Atalanta's Swift Quiver — กระบอกศรอตาลันตา", cat: "MARKSMAN", tier: 3, cost: 58,
+    ad: 45, crit: 0.25, asPct: 0.20,
+    openerMs: { ms: 0.35, dur: 2.5, cd: 15 }, parts: ["hys", "asf", "cf"] },
+  { id: "oub", th: "Odysseus' Unstrung Bow — คันศรที่ไม่มีใครน้าวไหว", cat: "MARKSMAN", tier: 3, cost: 60,
+    ad: 40, crit: 0.25, asPct: 0.25,
+    takedownReach: { range: 100, ms: 0.08, dur: 6 }, parts: ["hys", "vtp", "dvc"] },
+  { id: "sta", th: "Skadi's Triple Arrow — ศรสามดอกสกาดี", cat: "MARKSMAN", tier: 3, cost: 56,
+    asPct: 0.35, crit: 0.25, msPct: 0.07,
+    splitBolts: { count: 2, ratio: 0.40, range: 500 }, parts: ["vtp", "asf", "iwb"] },
+  { id: "hwh", th: "Heimdall's Warding Horn — แตรเฝ้าสะพานไฮม์ดัล", cat: "TANK", also: ["SUPPORT"], tier: 3, cost: 45,
+    armor: 30, mr: 30, hp: 250, ultAh: 15,
+    ultSlowField: { r: 450, dur: 3, slow: 0.45, cd: 30 }, parts: ["gb", "pon"] },
+  { id: "agt", th: "Ariadne's Guiding Thread — เส้นด้ายนำทางอาเรียดเน", cat: "SUPPORT", also: ["MAGE"], tier: 3, cost: 48,
+    hp: 250, ap: 35, ah: 15, hors: 0.10,
+    ccMark: { dur: 4, amp: 0.15, cd: 8 }, parts: ["cbl", "ccr", "isw"] },
 ];
 
 

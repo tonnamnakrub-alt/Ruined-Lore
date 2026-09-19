@@ -32,7 +32,7 @@ function show(label, enemies) {
   }
 }
 const apTeam = team(11, 12, 0).map((c) => ({ ...c, champId: "ARIEL", items: [ITEM_BY_ID.tet, ITEM_BY_ID.cyw] }));
-const adTeam = team(11, 12, 0).map((c) => ({ ...c, champId: "KAZEM", items: [ITEM_BY_ID.ecs, ITEM_BY_ID.wha] }));
+const adTeam = team(11, 12, 0).map((c) => ({ ...c, champId: "KAZEM", items: [ITEM_BY_ID.dwe, ITEM_BY_ID.wha] }));
 const healTeam = team(11, 12, 0).map((c) => ({ ...c, champId: "PINO", items: [ITEM_BY_ID.ats, ITEM_BY_ID.yrh] }));
 const tankTeam = team(11, 12, 0).map((c) => ({ ...c, champId: "KAZEM", items: [ITEM_BY_ID.ghs, ITEM_BY_ID.aoi, ITEM_BY_ID.nlm] }));
 console.log("\nthreat readings:");

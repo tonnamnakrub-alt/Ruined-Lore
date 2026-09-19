@@ -1,6 +1,7 @@
 import { tr } from "../i18n.js";
 import { DEFAULT_CAST } from "../data/tuning.js";
 import { onKazemCast } from "./kazem.js";
+import { onUltCastItems } from "./lore-items.js";
 import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
 import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
@@ -35,6 +36,7 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
     state.castQueue.push({ u, sk: use, target, prec });
     if (use.fragCost) spendFrag(u, u.shadow > 0);
     onKazemCast(state, u);
+    if (use.ult) onUltCastItems(state, u);
     if (!use.fragCost) {
       if (sk.ammoMax) {
         sk.ammo -= 1;

@@ -6,6 +6,7 @@ import { mageOnHit } from "./mage.js";
 import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
 import { arthurCleave, ellaOnHit, pickDuelMark } from "./lore.js";
+import { loreItemsOnHit } from "./lore-items.js";
 
 
 // Lost Boys' Blade — มีดยังปักอยู่ แล้วโดนอะไรก็ตามจากคนปาซ้ำ (ออโต้ "หรือสกิล")
@@ -101,6 +102,7 @@ export function onAutoLanded(state, u, target) {
       applyDamage(state, u, target, bonus, true, false);
     }
   }
+  loreItemsOnHit(state, u, target);
   mageOnHit(state, u, target);
   assassinOnHit(state, u, target);
   marksmanOnHit(state, u, target);

@@ -182,6 +182,64 @@ export function itemAbility(it) {
     Math.round(it.chainBolt.arcApRatio * 100), it.chainBolt.cd
   ));
 
+  // ---- ของชุด Patch 0.3 ----
+  if (it.firstHitShield) p.push(tr(
+    "ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ {0} (+{1}% Bonus AD) นาน {2} วิ และวิ่งเร็วขึ้น {3}% ขณะมีโล่ (ทุก {4} วิ)",
+    it.firstHitShield.flat, Math.round(it.firstHitShield.badRatio * 100),
+    it.firstHitShield.dur, Math.round(it.firstHitShield.ms * 100), it.firstHitShield.cd
+  ));
+  if (it.magicPulse) p.push(tr(
+    "ทุก {0} วิ ปล่อยคลื่นเวท {1} (+{2}% Bonus HP) รอบตัวในระยะ {3} · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น {4}% นาน {5} วิ",
+    it.magicPulse.every, it.magicPulse.flat, (it.magicPulse.bonusHpPct * 100).toFixed(1),
+    it.magicPulse.radius, Math.round(it.magicPulse.amp * 100), it.magicPulse.dur
+  ));
+  if (it.curHpOnHit) p.push(tr(
+    "ออโต้ทำดาเมจกายภาพเพิ่ม {0}% (ประชิด) หรือ {1}% (ระยะไกล) ของเลือดปัจจุบันเป้า",
+    Math.round(it.curHpOnHit.melee * 100), Math.round(it.curHpOnHit.ranged * 100)
+  ));
+  if (it.maulBurst) p.push(tr(
+    "ตีเป้าเดิมครบ {0} ครั้ง ระเบิด {1}% Max HP และขโมยความเร็วเดิน {2}% นาน {3} วิ (ทุก {4} วิ ต่อเป้า)",
+    it.maulBurst.hits, Math.round(it.maulBurst.pct * 100),
+    Math.round(it.maulBurst.msSteal * 100), it.maulBurst.dur, it.maulBurst.cd
+  ));
+  if (it.mrShredStack) p.push(tr(
+    "ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า {0}% นาน {1} วิ ซ้อนได้ {2} ชั้น (รวม {3}%)",
+    Math.round(it.mrShredStack.pct * 100), it.mrShredStack.dur, it.mrShredStack.max,
+    Math.round(it.mrShredStack.pct * it.mrShredStack.max * 100)
+  ));
+  if (it.crowdGuard) p.push(tr(
+    "แชมเปี้ยนศัตรูแต่ละตัวในระยะ {0} ให้ +{1} เกราะ และ +{1} ต้านเวท (สูงสุด {2} ตัว)",
+    it.crowdGuard.radius, it.crowdGuard.per, it.crowdGuard.max
+  ));
+  if (it.stasis) p.push(tr(
+    "เลือดต่ำกว่า {0}% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ {1} วิ (ทุก {2} วิ)",
+    Math.round(it.stasis.hpBelow * 100), it.stasis.dur, it.stasis.cd
+  ));
+  if (it.ultRefundOnTakedown) p.push(tr(
+    "เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง {0}% ของคูลดาวน์เต็ม",
+    Math.round(it.ultRefundOnTakedown * 100)
+  ));
+  if (it.openerMs) p.push(tr(
+    "ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +{0}% แล้วค่อยๆ จางใน {1} วิ (ทุก {2} วิ)",
+    Math.round(it.openerMs.ms * 100), it.openerMs.dur, it.openerMs.cd
+  ));
+  if (it.takedownReach) p.push(tr(
+    "เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +{0} และความเร็วเดิน +{1}% นาน {2} วิ",
+    it.takedownReach.range, Math.round(it.takedownReach.ms * 100), it.takedownReach.dur
+  ));
+  if (it.splitBolts) p.push(tr(
+    "ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก {0} ตัวในระยะ {1} ตัวละ {2}% Total AD",
+    it.splitBolts.count, it.splitBolts.range, Math.round(it.splitBolts.ratio * 100)
+  ));
+  if (it.ultSlowField) p.push(tr(
+    "กดอัลติแล้วปล่อยเขตรัศมี {0} นาน {1} วิ ศัตรูในเขตติดสโลว์ {2}% (ทุก {3} วิ)",
+    it.ultSlowField.r, it.ultSlowField.dur, Math.round(it.ultSlowField.slow * 100), it.ultSlowField.cd
+  ));
+  if (it.ccMark) p.push(tr(
+    "ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน {0} วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น {1}% หนึ่งครั้ง (ทุก {2} วิ ต่อเป้า)",
+    it.ccMark.dur, Math.round(it.ccMark.amp * 100), it.ccMark.cd
+  ));
+
   const passive = PASSIVES()[it.id];
   if (passive) p.push(passive);
   return p;
@@ -259,5 +317,10 @@ function PASSIVES() {
     ood: tr(
       "ผูกกับเพื่อน 1 คน (เน้นแครี่) · รับดาเมจแทน 15% (หยุดเมื่อตัวเองเลือดต่ำกว่า 20%) · ฮีลตัวเอง 10% ของดาเมจที่เพื่อนทำได้ · เพื่อนตายแล้วผูกใหม่ใน 5 วิ"
     ),
+    // ---- Patch 0.3 เติมเอฟเฟกต์ให้ของเก่า 4 ชิ้นที่เดิมมีแต่ค่าสถานะล้วน ----
+    tet: tr("ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง)"),
+    eoh: tr("สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที"),
+    asc: tr("ออโต้ที่ติดคริ ทำให้เป้าติดสโลว์ 20% นาน 1 วิ"),
+    wtc: tr("ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD"),
   };
 }

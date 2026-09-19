@@ -63,6 +63,10 @@ export function deriveStats(unitDef) {
   let ultSurge = null, abwSurge = null, sabCharge = null, sabDr = null;
   let lifeBondShare = 0.10, reviveHp = 0.50, cleanseCd = 75, cleanseAll = false, goldPerTakedown = 0;
   let antihealOnDmg = null;  // { v, dur } — ตัดฮีลเป้าหมายเมื่อทำดาเมจใส่ (เอาอันที่แรงสุด)
+  // ฟิลด์กลไกของไอเทมชุด Patch 0.3
+  let firstHitShield = null, magicPulse = null, curHpOnHit = null, maulBurst = null;
+  let mrShredStack = null, crowdGuard = null, stasis = null, ultRefundOnTakedown = 0;
+  let openerMs = null, takedownReach = null, splitBolts = null, ultSlowField = null, ccMark = null;
   let healAmp = 0;      // % more effective healing, shielding, and vamp this unit RECEIVES
   let hors = 0;         // Heal & Shield Power — พลังฮีล/โล่ที่ยูนิตนี้ "จ่ายออก" ให้คนอื่น
   let omnivampFlat = 0; // Chaos Blade: flat omnivamp stacking with any champion vamp
@@ -148,6 +152,19 @@ export function deriveStats(unitDef) {
     if (it.cleanseAll) cleanseAll = true;
     if (it.goldPerTakedown) goldPerTakedown += it.goldPerTakedown;
     if (it.antihealOnDmg && (!antihealOnDmg || it.antihealOnDmg.v > antihealOnDmg.v)) antihealOnDmg = it.antihealOnDmg;
+    if (it.firstHitShield && !firstHitShield) firstHitShield = it.firstHitShield;
+    if (it.magicPulse && !magicPulse) magicPulse = it.magicPulse;
+    if (it.curHpOnHit && !curHpOnHit) curHpOnHit = it.curHpOnHit;
+    if (it.maulBurst && !maulBurst) maulBurst = it.maulBurst;
+    if (it.mrShredStack && !mrShredStack) mrShredStack = it.mrShredStack;
+    if (it.crowdGuard && !crowdGuard) crowdGuard = it.crowdGuard;
+    if (it.stasis && !stasis) stasis = it.stasis;
+    if (it.ultRefundOnTakedown) ultRefundOnTakedown = Math.max(ultRefundOnTakedown, it.ultRefundOnTakedown);
+    if (it.openerMs && !openerMs) openerMs = it.openerMs;
+    if (it.takedownReach && !takedownReach) takedownReach = it.takedownReach;
+    if (it.splitBolts && !splitBolts) splitBolts = it.splitBolts;
+    if (it.ultSlowField && !ultSlowField) ultSlowField = it.ultSlowField;
+    if (it.ccMark && !ccMark) ccMark = it.ccMark;
     if (it.hors) hors += it.hors;
     if (it.tier3ScalingHors) hors += it.tier3ScalingHors * tier3Count;
     if (it.omnivampFlat) omnivampFlat += it.omnivampFlat;
@@ -170,6 +187,28 @@ export function deriveStats(unitDef) {
   ad *= adMul;
   ap *= apMul;
   moveSpeed *= msMul;
+
+  // Thoth's Emerald Tablet — สเปคใหม่: ของชิ้นนี้ไม่ใช่ค่าสถานะล้วนอีกแล้ว
+  // ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง)
+  if (items.some((i) => i.id === "tet")) mrPen += (ap / 100) * 3;
+
+  // TOTSAKAN — พาสซีฟดึงค่าสถานะจากไอเทมออกมาได้มากกว่าคนอื่น 10%
+  // คิดเฉพาะ "ส่วนที่มาจากไอเทม" เท่านั้น ค่าฐานของตัวละครไม่โดนคูณ
+  const iamp = ch.itemAmp || 0;
+  if (iamp) {
+    const bAd = ch.ad + ch.adG * g;
+    const bHp = ch.hp + ch.hpG * g;
+    const bAr = ch.armor + ch.armorG * g;
+    const bMr = ch.mr + ch.mrG * g;
+    ad += Math.max(0, ad - bAd) * iamp;
+    maxHp += Math.max(0, maxHp - bHp) * iamp;
+    armor += Math.max(0, armor - bAr) * iamp;
+    mr += Math.max(0, mr - bMr) * iamp;
+    ah += ah * iamp;
+    const bAs = ch.as * (1 + ch.asG * g);
+    atkSpeed += Math.max(0, atkSpeed - bAs) * iamp;
+    tenacity = Math.min(0.9, tenacity * (1 + iamp));
+  }
 
   // พาสซีฟมิด — Adaptive Force เพิ่มตามเลเวล 3/5/8/12% ที่เลเวล 1/6/11/16
   // เพิ่มให้ค่าที่สูงกว่าระหว่าง AD กับ AP เท่านั้น ไม่ได้เพิ่มทั้งคู่
@@ -250,6 +289,8 @@ export function deriveStats(unitDef) {
     deathMark, denyDeath, adPerKill, resetOnKill, resetOnce,
     ultSurge, abwSurge, sabCharge, sabDr,
     lifeBondShare, reviveHp, cleanseCd, cleanseAll, goldPerTakedown,
+    firstHitShield, magicPulse, curHpOnHit, maulBurst, mrShredStack, crowdGuard,
+    stasis, ultRefundOnTakedown, openerMs, takedownReach, splitBolts, ultSlowField, ccMark,
     hors,
     auraTags,
     omnivampFlat,

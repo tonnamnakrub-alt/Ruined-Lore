@@ -4,6 +4,7 @@ import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREA
 import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
+import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
 import { fireSnipe, resolveDash, startGrab, tickDashes, tickGrabs } from "./motion.js";
@@ -158,6 +159,7 @@ export function step(state) {
     }
     tickLastStand(state, u);
     tickLoreUnit(state, u, dt);
+    tickLoreItems(state, u, dt);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
     if (vf) {
@@ -170,6 +172,9 @@ export function step(state) {
       u.skillRangeBoost = 0;
       u.range = u.champ.range;
     }
+    // Odysseus' Unstrung Bow — ระยะโจมตีที่ได้จากการเก็บศพ (ทับค่าระยะทีหลังเสมอ)
+    if (u.reachAdd && state.t > (u.reachUntil || 0)) u.reachAdd = 0;
+    if (u.reachAdd) u.range = u.champ.range + u.reachAdd;
     u.untargetable = hasBuff(u, "untargetable") || hasBuff(u, "invuln");
     if (u.sooRevive && state.t >= u.sooRevive.until) {
       const baseHp = u.champ.hp + u.champ.hpG * (u.level - 1);
@@ -246,7 +251,8 @@ export function step(state) {
     u.tenacity = 1 - (1 - (u.baseTenacity || 0)) * (1 - ironJohnTen) * (1 - pnbTen) * (1 - (u.cbcTenacity || 0));
 
 
-    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus + centaurAr + (u.weaveArmor || 0)) * ironJohnMult);
+    const argus = (u.argusStacks || 0) * ((u.crowdGuard && u.crowdGuard.per) || 0);
+    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus + centaurAr + argus + (u.weaveArmor || 0)) * ironJohnMult);
     if (centaurAd) u.ad += centaurAd;
     // Apollo's Sunlit Quiver: เลือด 50% ขึ้นไปได้ AD ก้อนใหญ่ · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือดแทน
     if (u.apolloSplit) {
@@ -259,7 +265,7 @@ export function step(state) {
     const mrBurst = buffSum(u, "mrburst");
     // Hel's Nether Domain ลดต้านเวทของคนที่ยืนในวง — คิดทีหลังสุด
     const mrShred = Math.min(0.6, buffSum(u, "mrshred"));
-    u.mr = Math.round((u.baseMr * (1 - shred) + mjolnirMr + ironJohnBonus + mrBurst + centaurAr + (u.weaveMr || 0)) * ironJohnMult * (1 - mrShred));
+    u.mr = Math.round((u.baseMr * (1 - shred) + mjolnirMr + ironJohnBonus + mrBurst + centaurAr + argus + (u.weaveMr || 0)) * ironJohnMult * (1 - mrShred));
 
   }
 
@@ -813,6 +819,8 @@ export function step(state) {
         const motCut = target.motFlat != null && target.hasItem("mot") ? 0.3 : 0;
         atkDmg = u.ad + critBonus * (1 - motCut);
         didCrit = true;
+        // Artemis' Silver Crescent — คริติคอลที่ลงติดสโลว์สั้นๆ
+        if (u.hasItem("asc")) addBuff(target, { type: "slow", v: 0.20, until: state.t + 1 }, state.t);
         // HOOD passive — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลแทน
         if (u.champ.critBleed) {
           hoodBleed(state, u, target, critBonus * (1 - motCut) * AUTO_DMG);
