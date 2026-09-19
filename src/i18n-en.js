@@ -1361,4 +1361,8 @@ export const DICT = {
  "เราสั่งเซฟไว้ ไม่รับไฟต์ — ยื้อให้พ้นเวลาแล้วฝั่งที่มาแกงค์เสียยกฟรี": "We called Safe and refuse the fight — hold out to the clock and the ganking side wastes its whole round",
  "ศัตรูสั่งเซฟไว้ ไม่รับไฟต์ — ถ้าเก็บไม่ได้ในเวลา เราเสียยกฟรี": "They called Safe and refuse the fight — fail to finish them in time and our round is wasted",
  "ค่าสถานะ · วงเล็บคือต่อเลเวล": "Stats · brackets are per level",
+ " (เกราะ {0} · ต้านเวท {1})": " (armor {0} · MR {1})",
+ "พร้อมใช้": "ready",
+ " (+{0} HP)": " (+{0} HP)",
+ "เห็นสแตกแล้ว และ Versus เล่นจบได้จริง": "Stacks are visible now, and Versus plays through",
 };

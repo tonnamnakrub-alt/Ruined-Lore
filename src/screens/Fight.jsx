@@ -5,6 +5,7 @@ import { ScoutPanel } from "../ui/Scout.jsx";
 import { StatsPanel } from "../ui/Stats.jsx";
 import { liveReport } from "../game/report.js";
 import { Shell, btn, card } from "../ui/chrome.jsx";
+import { stackChips } from "../ui/stacks.js";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
@@ -85,11 +86,16 @@ export function FightScreen(ctx) {
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
                 <span style={{ fontFamily: MONO, fontWeight: 800, color: u.team === "blue" ? C.blue : C.red, fontSize: 14 }}>{u.champ.id}</span>
                 <span style={{ fontSize: 11, color: C.dim }}>{u.champ.role}</span>
-                {u.champ.fragments && (
-                  <span style={{ fontFamily: MONO, fontSize: 11, color: u.shadow ? "#B08CFF" : C.gold }}>
-                    {u.shadow ? "SHADOW" : "LIGHT " + u.light + "/5"}
+                {/* ตัวนับสะสมทั้งหมดของตัวนี้ — ดูรายละเอียดใน ui/stacks.js
+                    เดิมมีแต่ LUCH และหารเพดานผิด (ใช้ /5 ทั้งที่ fragments.max = 100) */}
+                {stackChips(u, st.t).map((s) => (
+                  <span key={s.label} style={{
+                    fontFamily: MONO, fontSize: 10, color: s.color,
+                    border: `1px solid ${s.color}55`, borderRadius: 999, padding: "1px 6px",
+                  }}>
+                    {s.label} {s.text}
                   </span>
-                )}
+                ))}
                 {u.form && (
                   <span style={{ fontFamily: MONO, fontSize: 11, color: u.form === "BLUE" ? C.blue : "#FF8FD0" }}>
                     {u.form}
