@@ -340,7 +340,10 @@ export function App() {
   //   เจ้าบ้านเป็นคนรันเอนจินฝั่งเดียว แล้วส่ง seed + ทีมทั้งสองฝั่งให้อีกเครื่อง
   //   อีกเครื่องรันจาก seed เดียวกัน จึงเห็นไฟต์เดียวกันเป๊ะและพร้อมกัน
   // ---------------------------------------------------------------
-  liveRef.current = { team, teamStyle, modeId, stances, jungle };
+  // ทุกอย่างที่ตัวจัดการข้อความของสายต้องใช้ ต้องอยู่ในนี้ให้ครบ
+  // เพราะ handler ถูกสร้างตอนต่อสายครั้งเดียว มันเลยจำ state ของ render แรกไว้ตลอด
+  // (render แรก = แต้มนักแข่งยังเป็น 0 และยังไม่ได้เลือกตัวละคร)
+  liveRef.current = { team, teamStyle, modeId, stances, jungle, foe, round, diffId, foeLastStances };
 
   // slot = ช่องผู้เล่นที่สายนี้ผูกอยู่ (ใช้เฉพาะห้องแบบเจ้าบ้านเป็นคนดู)
   function netHandlers(slot = 0) {
@@ -584,7 +587,14 @@ export function App() {
     const p = peerRef.current || peersRef.current[0];
     if (!p || !p.open) return false;
     const live = liveRef.current;
-    const me = live.team.map((c) => ({ ...c, style: live.teamStyle, champId: c.champId || LANE_CHAMPION[c.lane] }));
+    // ส่ง ranks ที่ "แก้แล้ว" ออกไป ไม่ใช่ค่าดิบ — อีกฝั่งจะได้ใช้ต่อได้เลยโดยไม่ต้องเดาเอง
+    const me = live.team.map((c) => {
+      const champId = c.champId || LANE_CHAMPION[c.lane];
+      return {
+        ...c, style: live.teamStyle, champId,
+        ranks: c.autoLevel ? autoRanks(c.level, priorityOf(champId), null) : c.ranks,
+      };
+    });
     const packed = { team: packTeam(me), stances: live.stances, jungle: live.jungle };
     netRef.current.myReady = packed;
     netRef.current.iReadied = true;
@@ -629,11 +639,35 @@ export function App() {
 
   // สั่งนิสัยครบแล้ว — รวมกับนิสัยฝั่งบอท แล้วดูว่ายกนี้จะเกิดอะไรบ้าง
   function lockStances(netPlan) {
-    const me = team.map((c) => ({ ...c, style: teamStyle, champId: c.champId || LANE_CHAMPION[c.lane] }));
+    // ออนไลน์: ฟังก์ชันนี้ถูกเรียกจากตัวจัดการข้อความของสาย ซึ่งจำ state ของ render แรกไว้
+    // ถ้าอ่าน team/stances จาก closure ตรงๆ จะได้ทีมเปล่าที่แต้มนักแข่งเป็น 0 ทั้งทีม
+    // ต้องอ่านจาก liveRef ที่อัปเดตทุก render แทน
+    const L = liveRef.current || {};
+    const team = L.team || [];
+    const teamStyle = L.teamStyle;
+    const stances = L.stances;
+    const jungle = L.jungle;
+    const round = L.round;
+    const foe = L.foe || [];
+    const diffId = L.diffId;
+    const foeLastStances = L.foeLastStances;
+    // ranks ของทีมตัวเองต้องผ่านกฎเดียวกับที่ใช้กับฝั่งตรงข้าม
+    // เดิมปล่อยไว้ดิบๆ ยกแรกจึงเป็น emptyRanks() คือไม่มีสกิลเลยสักท่า
+    // ขณะที่ฝั่งตรงข้ามได้ autoRanks เต็ม — ผู้เล่นเสียเปรียบฟรีทุกเกมในยกแรก
+    const me = team.map((c) => {
+      const champId = c.champId || LANE_CHAMPION[c.lane];
+      return {
+        ...c, style: teamStyle, champId,
+        ranks: c.autoLevel ? autoRanks(c.level, priorityOf(champId), null) : c.ranks,
+      };
+    });
     const foeSrc = (netPlan && netPlan.foeTeam) || foe;
     const shopped = foeSrc.map((c) => {
       const champId = c.champId || LANE_CHAMPION[c.lane];
-      return { ...c, champId, ranks: autoRanks(c.level, CHAMPIONS[champId].skillPriority, null) };
+      // ออนไลน์: เชื่อ ranks ที่ส่งมาตามสาย ห้ามคำนวณใหม่
+      // ไม่งั้นการอัพสกิลเองของอีกฝั่งจะหาย และสองเครื่องจะเห็นไม่ตรงกัน
+      const ranks = netPlan ? c.ranks : autoRanks(c.level, CHAMPIONS[champId].skillPriority, null);
+      return { ...c, champId, ranks };
     });
     setTeam(me);
     setFoe(shopped);
