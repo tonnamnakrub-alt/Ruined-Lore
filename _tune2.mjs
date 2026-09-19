@@ -17,13 +17,13 @@ function msqTeam(give) {
   });
   const st = buildFight(mk(true), mk(false), 9, EV);
   for (const u of st.units) { u.maxHp = 1e9; u.hp = 1e9; }
-  let worst = 0, holders = 0;
+  let worst = 0;
   for (let n = 0; n < 60 * 20; n++) {
     step(st);
     for (const u of st.units) { u.hp = 1e9; u.alive = true; }
     for (const e of st.units) if (e.team === "red") worst = Math.min(worst, buffSum(e, "as"));
   }
-  holders = st.units.filter((u) => u.team === "blue" && u.hasItem("msq")).length;
+  const holders = st.units.filter((u) => u.team === "blue" && u.hasItem("msq")).length;
   return { worst, holders };
 }
 const r = msqTeam(true);

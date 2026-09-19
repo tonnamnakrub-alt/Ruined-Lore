@@ -21,7 +21,7 @@ const tab = async () => p.evaluate(() => {
 const sel = async () => p.evaluate(() => {
   const d = document.body.innerText;
   const m = d.match(/(?:STATS)[\s\S]{0,0}/);
-  const h = [...document.querySelectorAll("div")].filter((x) => x.children.length === 0 && /^[A-Z][A-Za-z' \-]{5,40}$/.test(x.innerText.trim()));
+  const h = [...document.querySelectorAll("div")].filter((x) => x.children.length === 0 && /^[A-Z][A-Za-z' -]{5,40}$/.test(x.innerText.trim()));
   return h.length ? h[h.length - 1].innerText.trim() : "?";
 });
 
