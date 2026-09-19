@@ -671,14 +671,14 @@ export const DICT = {
  "จุติราชันย์แวมไพร์": "ascends to true vampire sovereign",
  "{0} {1} สะกดจิต {2}": "{0} {1} charmed {2}",
  "สลายร่างเป็นไอหมอก เร่งฝีเท้าและเดินทะลุยูนิตได้ · ระหว่างเปิดอัลติเปลี่ยนเป็นวาป {0} หน่วย": "Dissolves into blood mist for extra move speed and unit-ghosting · while the ultimate is up it becomes a {0}-unit blink",
- "แผ่พายุโลหิตรอบตัวรัศมี {0} หน่วย กัดทุกคนในวงทุก {1} วิ": "Spreads a blood storm {0} units around her, biting everyone inside every {1}s",
- "สะกดจิต (Charm) {0} วิ — ทำอะไรไม่ได้ แล้วเดินเข้าหาเราช้าลง {1}%": "Charms for {0}s — the target can't act and walks toward her {1}% slower",
+ "แผ่พายุโลหิตรอบตัวรัศมี {0} หน่วย กัดทุกคนในวงทุก {1} วิ": "Spreads a blood storm {0} units around the caster, biting everyone inside every {1}s",
+ "สะกดจิต (Charm) {0} วิ — ทำอะไรไม่ได้ แล้วเดินเข้าหาเราช้าลง {1}%": "Charms for {0}s — the target can't act and walks toward you {1}% slower",
  "มีศัตรูอยู่ในวง เวลาไม่เดิน แถมคืนเวลาให้ {0} วิต่อจังหวะ (ไม่เกิน {1} วิ)": "while an enemy stands inside, the timer freezes and refunds {0}s per tick (capped at {1}s)",
  "สะสมพลังได้ 100 · ออโต้โดน +20 · เร่งสกิล (AH) ทุก 10 คืนให้ 1 ต่อวินาที · ร่ายร่างแสงกิน 20 · เต็ม 100 เข้าร่างเงา · ออกจากคอมแบต 5 วิ เต็มทันที": "Holds up to 100 power · +20 on every auto that lands · every 10 Ability Haste restores 1 per second · a Light cast spends 20 · at a full 100 he enters Shadow · 5s out of combat refills it instantly",
  "ออโต้ +5 · คริ +10 · สกิลโดน +10 ต่อตัว · โดนออโต้หรือสกิลใส่ +5 (สกิลหนึ่งครั้งนับครั้งเดียว) · ครบ 100 ฮีลตามเลือดที่หายไป 6.5% + 0.5% ต่อเลเวล": "Auto +5 · crit +10 · skill hit +10 per target · taking an auto or an ability +5 (one ability counts once) · at 100 it heals 6.5% + 0.5% per level of the health he is missing",
  "เพื่อนในรัศมี 750 ฮีลตามเลือดที่หายไป 0.5% + 0.05% ต่อเลเวล + 0.5% ต่อ AP 100 ทุกครั้งที่ตีหรือร่าย": "Allies within 750 heal for 0.5% + 0.05% per level + 0.5% per 100 AP of the health they are missing, every time he attacks or casts",
  "สกิลโดนแชมเปี้ยนศัตรู ได้ Max HP ถาวร +5 ต่อตัว (นับครั้งเดียวต่อการร่ายหนึ่งครั้ง) · ร่วมสังหารได้อีก +25 · สะสมข้ามยกได้สูงสุด 400": "A skill hitting an enemy champion grants +5 permanent Max HP per target (once per cast) · a takedown grants +25 more · carries across rounds up to 400",
- "ดาเมจบวกเพิ่มตาม Bonus HP ของเราเอง {0}%": "adds {0}% of her own Bonus HP to the damage",
+ "ดาเมจบวกเพิ่มตาม Bonus HP ของเราเอง {0}%": "adds {0}% of their own Bonus HP to the damage",
  "ดร. เฟาสตุส": "Dr. Faustus",
  "แพตช์โน้ต": "Patch notes",
  "ทุกอย่างที่เปลี่ยนในแต่ละรอบอัปเดต · แพตช์เก่าก็กดดูย้อนได้": "Everything that changed in each update · older patches are still here",
@@ -701,12 +701,12 @@ export const DICT = {
  "เขาตายแค่ 38% ของไฟต์ ทั้งที่ออกแบบให้เปราะ เพราะยิงจาก 1450 หน่วยแล้วไม่มีใครเดินไปถึง": "He only dies in 38% of fights despite being designed as fragile, because nothing reaches him at 1450 units",
  "ชาร์จค้างแล้วยิงลำแสงทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย": "Charges, then fires a beam that pierces the line — the longer the charge, the further it reaches ({0}–{1} units)",
  "กระแทกคลื่นเป็นกรวยด้านหน้าไกล {0} หน่วย": "Slams a shockwave forward in a cone {0} units long",
- "ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ศัตรูทุกคนบนสนามทีละระลอก": "Roots himself and calls meteors down on every enemy on the field, wave after wave",
+ "ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ศัตรูทุกคนบนสนามทีละระลอก": "Roots in place and calls meteors down on every enemy on the field, wave after wave",
  "ตัดจังหวะการพุ่งของศัตรู": "cuts an enemy dash short",
  "ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ": "{0} waves, {1}s apart",
  "มีวงเตือนบนพื้นก่อนตก {0} วิ": "a warning circle appears {0}s before impact",
- "ตรึงตัวเองระหว่างร่าย โดน Hard CC แล้วยกเลิกทันที": "roots himself while channelling — any hard CC cancels it",
- "ระหว่างชาร์จตัวเองช้าลง {0}%": "he moves {0}% slower while charging",
+ "ตรึงตัวเองระหว่างร่าย โดน Hard CC แล้วยกเลิกทันที": "roots in place while channelling — any hard CC cancels it",
+ "ระหว่างชาร์จตัวเองช้าลง {0}%": "they move {0}% slower while charging",
  "{0} {1} เปิดประตูมิติ": "{0} {1} tore open the sky",
  "พาสซีฟ Faustian Bargain — สกิลทุกท่าพ่วงดาเมจจริงเพิ่มอีกก้อน 8% (+1.5% ต่อ AP 100) ของดาเมจต้น ทะลุทั้งเกราะและต้านเวท": "Passive Faustian Bargain — every skill carries a second hit of true damage worth 8% (+1.5% per 100 AP) of its base damage, through both armor and magic resist",
  "ปิดหน้าต่าง": "Close",
@@ -745,12 +745,12 @@ export const DICT = {
  "R Sovereign Dismissal — จับศัตรูในระยะ 250 ระงับการกระทำ 0.5 วิ แล้วเหวี่ยงทุ่มเข้าหากลางทีมตัวเองไกลสุด 650 · ระเบิดจุดตกรัศมี 300 คนที่โดนทุ่มเจ็บหนักกว่าคนรอบข้าง ทุกคนโดนสโลว์ 60–80% นาน 2 วิ": "R Sovereign Dismissal — grabs an enemy within 250, suppresses them for 0.5s, then hurls them up to 650 toward his own team · the landing bursts in a 300 radius, hitting the thrown target hardest, and everything caught is slowed 60–80% for 2s",
  "Dr. Faustus หลังตัดสเกล AP — ชนะ 54% ที่เลเวล 6, 50% ที่เลเวล 11 และ 64% ที่เลเวล 16 (ก่อนหน้านี้ 84%) ดาเมจรวมลดจาก 5624 เหลือ 3618": "Dr. Faustus after the AP cut — 54% at level 6, 50% at level 11 and 64% at level 16 (down from 84%), with total damage falling from 5624 to 3618",
  "เขายังแรงกว่าเส้นเล็กน้อยตอนปลายเกม แต่ไม่ได้แตะเลขดาเมจฐานเลย ตัดเฉพาะส่วนที่โตตามไอเทม": "He is still a little above the line late, but not one base damage number was touched — only the part that grows with items",
- "กางโล่ให้ตัวเอง แล้วถ้าโล่ยังไม่แตกจะสะบัดคลื่นรอบตัวรัศมี {0} หน่วย": "Shields himself, then sweeps a shockwave {0} units around him if the shield is still standing",
+ "กางโล่ให้ตัวเอง แล้วถ้าโล่ยังไม่แตกจะสะบัดคลื่นรอบตัวรัศมี {0} หน่วย": "Shields themselves, then sweeps a shockwave {0} units around them if the shield is still standing",
  "จับศัตรูในระยะ {0} แล้วเหวี่ยงทุ่มไปไกลสุด {1} หน่วย ระเบิดที่จุดตกรัศมี {2}": "Grabs an enemy within {0} and hurls them up to {1} units away, bursting in a {2} radius where they land",
  "ระงับการกระทำ {0} วิ ระหว่างยกตัวขึ้น": "suppresses them for {0}s while they are lifted",
  "สะบัดออกหลังกางโล่ {0} วิ ถ้าโล่ยังเหลืออยู่": "sweeps {0}s after the shield goes up, if any of it is left",
  "ศัตรูตัวอื่นที่จุดตกก็โดนด้วย": "others caught at the landing spot take damage too",
- "{0} {1} สะบัดเสื้อคลุม": "{0} {1} swept his cloak",
+ "{0} {1} สะบัดเสื้อคลุม": "{0} {1} swept their cloak",
  "{0} {1} จับ {2} เหวี่ยงทิ้ง": "{0} {1} grabbed {2} and hurled them away",
  "สกิลทุกท่าพ่วงดาเมจจริงเพิ่มอีก 10% (+1% ต่อ AP 100) ของดาเมจต้น ทะลุทั้งเกราะและต้านเวท": "Every skill carries extra true damage worth 10% (+1% per 100 AP) of its base damage, straight through armor and magic resist",
  "ตั้งกติกาใหม่: ตัวเลขดาเมจ เปอร์เซ็นต์ รัศมี ระยะ และค่าสถานะทุกตัวต้องหารด้วย 5 ลงตัว จะได้อ่านและจำง่าย (คูลดาวน์กับระยะเวลายกเว้น ไม่งั้นต้องกระโดดทีละ 5 วิ)": "New house rule: damage numbers, percentages, radii, ranges and stat values all have to divide by 5, so they are easy to read and remember (cooldowns and durations are exempt, or they would have to jump in 5-second steps)",
@@ -780,12 +780,12 @@ export const DICT = {
  "โดนดาเมจจากแชมเปี้ยนศัตรูแล้วได้ชั้นภูษา 1 ชั้น — กายภาพทอเกราะ เวททอต้านเวท · ครบ 20 ชั้นได้ค่านั้น +20% และ +10% ต่อ Bonus HP ทุก 500 (สูงสุด +60%) ยิ่งออกเลือดยิ่งทอหนา · รวมกันไม่เกิน 20 ชั้น เต็มแล้วชนิดใหม่จะไปแทนชั้นเก่าสุดของอีกชนิด · ครบ 20 ชั้นได้ความเร็วเดิน +10% และ +5% ต่อ Bonus HP ทุก 500 (สูงสุด +20%) · ชั้นอยู่ได้ 6 วิ ต่ออายุทุกครั้งที่โดนตี": "Damage from an enemy champion weaves one layer — physical weaves armor, magic weaves magic resist · a full 20 layers grants +20% of that resist plus +10% per 500 Bonus HP, capped at +60%, so the more health he builds the thicker it gets · up to 20 layers, and once full a new type replaces the oldest layer of the other type · a full 20 layers also grants +10% move speed plus +5% per 500 Bonus HP, capped at +20% · layers last 6s and refresh on every hit",
  "พาสซีฟ Imperial Weave — โดนดาเมจแล้วทอชั้นภูษากันดาเมจชนิดนั้น กายภาพทอเกราะ เวททอต้านเวท · ครบ 20 ชั้นได้ค่านั้น +30/40/50% ตามเลเวล 1/7/13 คิดเป็นสัดส่วนของค่าที่มีอยู่จริง เลยโตตามไอเทมที่ซื้อ · เต็มแล้วชนิดใหม่จะไปแทนชั้นเก่าสุดของอีกชนิด · ครบ 20 ชั้นได้ความเร็วเดิน +10/15/20% · ชั้นอยู่ 6 วิ ต่ออายุทุกครั้งที่โดนตี": "Passive Imperial Weave — damage taken weaves a layer against that type: physical weaves armor, magic weaves magic resist · a full 20 layers grants a share of that resist that grows with his Bonus HP · once full a new type replaces the oldest layer of the other type · a full 20 layers also grants move speed · layers last 6s and refresh on every hit",
  "วางโต๊ะน้ำชาลงพื้นในระยะ {0} วงกว้าง {1} หน่วย ฮีลเพื่อนและตอดศัตรูเป็นจังหวะ": "Sets a tea table on the ground within {0}, {1} units wide, healing allies and chipping enemies in pulses",
- "มุดไปโผล่ข้างเพื่อนในระยะ {0} แล้วแจกโล่รอบจุดที่โผล่ {1} หน่วย": "Slips underground and reappears beside an ally within {0}, shielding everyone within {1} of where she lands",
+ "มุดไปโผล่ข้างเพื่อนในระยะ {0} แล้วแจกโล่รอบจุดที่โผล่ {1} หน่วย": "Slips underground and reappears beside an ally within {0}, shielding everyone within {1} of the landing spot",
  "กางอาณาเขตกระจกลงพื้นในระยะ {0} วงกว้าง {1} หน่วย": "Unfolds a mirror realm on the ground within {0}, {1} units wide",
  "สาปเป็นกระต่าย {0} วิ — ใช้สกิลไม่ได้ ตีไม่ได้ และเดินช้าลง {1}%": "hexes into a rabbit for {0}s — no skills, no attacks, and {1}% slower",
  "ใบ้ {0} วิ": "silences for {0}s",
  "ฮีลเพื่อนที่ยืนในวงทุก {0} วิ ตลอด {1} วิ": "heals allies standing inside every {0}s for {1}s",
- "แจกโล่ให้ตัวเองและเพื่อนรอบจุดที่โผล่ นาน {0} วิ": "shields herself and nearby allies for {0}s",
+ "แจกโล่ให้ตัวเองและเพื่อนรอบจุดที่โผล่ นาน {0} วิ": "shields themselves and nearby allies for {0}s",
  "{0} {1} สาป {2} เป็นกระต่าย": "{0} {1} hexed {2} into a rabbit",
  "{0} {1} กางอาณาเขตมหัศจรรย์": "{0} {1} unfolded Wonderland",
  "ยกเครื่องเอฟเฟกต์ทั้งเกม": "Effects overhaul",
@@ -1370,6 +1370,132 @@ export const DICT = {
  "ฝั่งเราถอย ศัตรูกินเลนฟรี ได้เงินเพิ่ม 2": "We backed off — the enemy farms the lane for free, +2 gold",
  "ศัตรูถอย เรากินเลนฟรี ได้เงินเพิ่ม 2": "They backed off — we farm the lane for free, +2 gold",
 
+ // ================= ป้ายชื่อในตาราง skill-desc.js =================
+ // พวกนี้เรียกผ่าน tr(ตัวแปร) ตัวสแกนเดิมจับไม่เจอ จึงหลุดเป็นภาษาไทยในโหมด EN มาตลอด
+ "คอมโบสามจังหวะ": "Three-beat combo",
+ "สะสมดาเมจแล้วจุดระเบิด": "Stores damage, then detonates",
+ "กระโดดลอยหลบ": "Hop out of reach",
+ "ล่องหนแล้วเปิดตัว": "Go invisible, then open",
+ "วางโซนฮีลและบัฟ": "Drops a healing and buffing zone",
+ "จูงเพื่อนวิ่ง": "Sprints with an ally",
+ "ออร่าขยายบัฟและดีบัฟ": "Aura that amplifies buffs and debuffs",
+ "พายุลอยแล้วค้าง": "Storm drifts, then parks",
+ "พุ่งเป็นสามเหลี่ยม": "Triangle dash",
+ "เหาะขึ้นฟ้าแล้วดิ่งลง": "Fly up, then dive",
+ "พุ่งชนแล้วจับเหวี่ยง": "Charge, grab and fling",
+ "ทุบพื้นสามระลอก": "Three expanding slams",
+ "ชาร์จเพิ่มระยะ": "Charge for range",
+ "เร่งความเร็วโจมตีสองจังหวะ": "Two-stage attack speed",
+ "โซนเปิดตัวคนล่องหน": "Zone that reveals invisibility",
+ "อัญเชิญยักษ์": "Summons a giant",
+ "ยืนแทงรัวเป็นกรวย": "Channelled cone flurry",
+ "ฟันกระเด้งหลายเป้า": "Bouncing slashes",
+ "กรวยรัวสามระลอก": "Three rapid cones",
+ "พายุฟาดหลายระลอก": "Repeating storm strikes",
+ "ขว้างค้อน (ซ่อมของตัวเองได้)": "Hammer throw (repairs your own builds)",
+ "ก่อกำแพงขวาง": "Raises a wall",
+ "พุ่งทะลุ ชนกำแพงแล้วระเบิด": "Pierces through, erupts on a wall",
+ "ก่อบ้านคุ้มภัย": "Raises a shelter",
+ "กระแทกด้ามดาบ (กดได้ตอนติด CC)": "Pommel strike (castable through CC)",
+ "พุ่งแล้วฟันครึ่งวง": "Dash into a half-circle sweep",
+ "ดาเมจจริงและประหาร": "True damage and execute",
+ "กรวยผลักกระเด็น": "Cone knockback",
+ "เรียกฝนอุกกาบาต": "Calls a meteor storm",
+ "สลายร่างเป็นหมอก": "Turns to mist",
+ "พายุโลหิตรอบตัว": "Blood storm around you",
+ "สวนน้ำชา": "Tea garden",
+ "วาร์ปช่วยเพื่อน": "Blinks an ally out",
+ "แดนมหัศจรรย์": "Wonderland",
+ "เกราะแล้วระเบิด": "Guard, then burst",
+ "จับแล้วทุ่ม": "Grab and throw",
+ "วาร์ปไปหลังเป้า": "Blink behind the target",
+ "โดนแล้วตัดคูลดาวน์ที่เหลือ": "Hit cuts remaining cooldown",
+ "จำนวนระลอก": "Waves",
+ "ทุกๆ": "Every",
+ "จำนวนฮิต": "Hits",
+ "เวลาเตือนก่อนลง": "Telegraph time",
+ "หยุดก่อนฟัน": "Pause before the slash",
+ "ดำอยู่ใต้น้ำนาน": "Time submerged",
+ "โผล่ขึ้นแล้วหน่วงก่อนทุบ": "Delay after surfacing",
+ "ความเร็วสูงสุด": "Max speed",
+ "ระยะทุ่ม": "Throw distance",
+ "ระยะสูงสุด": "Max range",
+ "ความกว้างต่ำสุด": "Min width",
+ "ความกว้างสูงสุด": "Max width",
+ "ระเบิดที่วินาทีที่": "Bursts at second",
+ "ระเบิดเป็น % ของโล่": "Burst as % of the shield",
+ "ฮีลคืนเป็น % ของดาเมจ": "Heals back as % of damage",
+ "โอกาสหลบ": "Evade chance",
+ "ดาเมจต่อสแตกของตัวเอง": "Damage per own stack",
+ "สเกลตาม Bonus HP": "Scales with bonus HP",
+ "โล่ต่อ Bonus AD": "Shield per bonus AD",
+ "โล่ต่อ Bonus HP": "Shield per bonus HP",
+ "เลือดสิ่งก่อสร้างต่อ Bonus HP": "Structure HP per bonus HP",
+ "เกราะ/ต้านเวทของสิ่งก่อสร้าง": "Structure armor / magic resist",
+ "สเกลตามเกราะ/ต้านเวทของตัวเอง": "Scales with your own armor / magic resist",
+ "ดาเมจตอนชน": "Impact damage",
+ "ดาเมจตอนชนต่อ Bonus HP": "Impact damage per bonus HP",
+ "ความเร็วเดินอยู่นาน": "Move speed lasts",
+ "ได้สแตกตอนกด": "Stacks gained on cast",
+ "ระยะวาร์ป": "Blink range",
+ "สโลว์ตอนโดนเสน่ห์": "Slow while charmed",
+ "กันสโลว์นาน": "Slow immunity lasts",
+ "คืนเวลาต่อฮิต": "Time refunded per hit",
+ "สโลว์จากเลือดไหล": "Slow from the bleed",
+ "คริแล้วได้เงินโจรสลัด": "Plunder gold per crit",
+ "สโลว์ตอนกรงแตก": "Slow when the cage breaks",
+ "สโลว์ตอนกรงแตกนาน": "Cage-break slow lasts",
+ "ความเร็วพุ่งเข้าหา": "Lunge speed",
+ "ระยะพุ่งเข้าหา": "Lunge range",
+ "เวลาลอยต่อความเร็วเดินส่วนเกิน 1": "Knockup per 1 bonus move speed",
+ "เวลาลอยสูงสุด": "Max knockup",
+ "เวลาลอยต่อ MS จาก AP 100": "Knockup per 100 AP worth of move speed",
+ "เพื่อนในวงเร็วขึ้น": "Allies inside gain move speed",
+ "เพื่อนเร็วขึ้นนาน": "Ally move speed lasts",
+ "ตัวเองเร็วขึ้น": "Your move speed",
+ "บัฟตัวเองนาน": "Self buff lasts",
+ "ฮีล/โล่ให้เพื่อนคิดเป็น % ของดาเมจที่เขากินมา": "Ally heal/shield as % of the damage they took",
+ "สะท้อนคืน": "Reflected back",
+ "ย้อนดูดาเมจที่กินมา": "Looks back over",
+ "ล้มนิ่งก่อนลุก": "Down before rising",
+ "ลุกมาพร้อมเลือด": "Revives at health",
+ "อัพเกรดแล้วบวกดาเมจตาม Max HP เป้า": "Upgraded: bonus damage from target max HP",
+ "อัพเกรดแล้วรัศมี": "Upgraded radius",
+ "อัพเกรดแล้วดีเลย์": "Upgraded delay",
+ "ยืดต่อได้อีก": "Can extend by",
+ "ต้องมีศัตรูในวงกี่ตัวถึงอยู่ต่อ": "Enemies inside needed to keep it up",
+ "เปิดพาสซีฟฮีลให้ทำงานเต็มกำลัง": "Powers the healing passive to full",
+ "ทิ้งพื้นค้างไว้": "Leaves ground behind",
+ "ทิ้งแอ่งน้ำไว้": "Leaves a pool behind",
+ "บัฟยูนิตที่อัญเชิญด้วย": "Also buffs your summon",
+ "สเกลตามความเร็วเดินส่วนเกิน": "Scales with bonus move speed",
+ "เวลาร่ายสั้นลงตามความเร็วเดิน": "Cast time shortens with move speed",
+ "ใช้ได้ครั้งเดียวต่อไฟต์": "Once per fight",
+ "ทำงานเองตอนจะตาย กดเองไม่ได้": "Fires itself on lethal damage — you can't cast it",
+ "ว่ายไปถึงจุดนั้นจริงก่อนทุบ": "Actually travels there before slamming",
+ "เพื่อนเดินผ่านได้": "Allies walk through",
+ "ตัดจังหวะสกิลที่กำลังร่าย": "Interrupts channels",
+ "ลากศัตรูติดไปด้วย": "Drags enemies along",
+ "อมตะระหว่างท่า": "Invulnerable during the cast",
+ "เดินทะลุยูนิต": "Walks through units",
+ "ตรึงตัวเองระหว่างร่าย": "Roots you while casting",
+ "ติดคริได้": "Can crit",
+ "ติดเอฟเฟกต์ออนฮิตได้": "Applies on-hit effects",
+ "กวาดแค่ครึ่งวงด้านหน้า": "Sweeps the front half only",
+
+ // ---- ที่อื่นที่ยังหลุด ----
+ "Adaptive Force — ค่าที่สูงกว่า (AD หรือ AP) เพิ่ม 3/5/8/12% ที่เลเวล 1/6/11/16":
+   "Adaptive Force — whichever is higher (AD or AP) gains 3/5/8/12% at levels 1/6/11/16",
+ "ไม่บังคับ — แค่เตรียมลำดับของที่อยากซื้อไว้ล่วงหน้า ตอนเล่นจริงยังต้องกดซื้อเองทุกครั้ง แค่มีปุ่ม \"ซื้อจากแผน\" ให้ และเปลี่ยนใจซื้ออย่างอื่นได้เสมอ":
+   "Optional — just queue up the items you want. You still buy them yourself in game; the plan only adds a \"Buy from plan\" button, and you can always buy something else instead",
+ "โค้ดนี้ไม่ใช่โค้ดตอบกลับ": "That isn't an answer code",
+ "โค้ดนี้ไม่ใช่โค้ดสร้างห้อง": "That isn't a room code",
+ "ใหม่": "new",
+ "ยังไม่มีข่าวกรอง": "No intel yet",
+ "การส่องทีมคู่แข่งอ่านได้แค่ของที่เขาเปิดไว้ \"เมื่อยกที่แล้ว\" — ยกแรกจึงยังไม่มีอะไรให้ดู จบยกนี้ก่อนแล้วค่อยกลับมา":
+   "Scouting only reads what they had at the END of the previous round — so there is nothing to see in round one. Finish this round and come back",
+ "ของและสกิลที่เขาเปิดไว้เมื่อจบยกที่ {0}": "What they had at the end of round {0}",
+
  // ================= Patch 0.3 =================
  // ---- ชื่อและบทบาทของตัวละครใหม่ ----
  "เอลล่า": "Ella",
@@ -1698,4 +1824,232 @@ export const DICT = {
    "ALUCARD R — checked: the code already adds +50 auto RANGE and +100 skill RANGE as intended. Only the documentation was wrong in calling it damage",
  "ของตัดฮีลออกซ้ำกันไม่ได้แล้ว รวมทั้งชิ้นส่วน Tier 2 กับของใหญ่ที่ต่อยอดจากมัน (ชิ้นส่วนที่ถูกกลืนเข้าสูตรไม่นับว่าซ้ำ)":
    "Grievous-wounds items are mutually exclusive, Tier 2 parts included — a part being consumed by the recipe doesn't count as a clash",
+ "ติดอาวุธให้ออโต้ {0} ครั้งถัดไป ภายใน {1} วิ":
+   "Empowers the next {0} autos, within {1}s",
+ "ติดอาวุธให้ออโต้ครั้งถัดไป ภายใน {0} วิ":
+   "Empowers the next auto, within {0}s",
+ "ออโต้ทุกครั้งฟันกวาดรอบเป้ารัศมี {0} หน่วยอยู่แล้ว":
+   "every auto already cleaves around the target in a {0}-unit radius",
+ "ถ้าเป้าเลือดเกิน {0}% จะสับซ้ำอีกดาบทันที":
+   "if the target is above {0}% HP it immediately strikes a second time",
+ "ลดดาเมจที่รับทุกแหล่ง":
+   "takes less damage from every source",
+ "ออโต้พ่วงดาเมจเวทเพิ่ม":
+   "autos carry bonus magic damage",
+ "การพุ่งของพาสซีฟเร็วขึ้น {0}%":
+   "the passive's dash is {0}% faster",
+ "พาสซีฟช็อตศัตรูทุกตัวในวงพร้อมกัน":
+   "the passive shocks every enemy in the ring at once",
+ "ยักษ์ที่อัญเชิญไว้ได้โล่ ความเร็วเดิน และความเร็วโจมตีด้วย":
+   "the summoned giant gets the shield, move speed and attack speed too",
+ "ได้สแตกพาสซีฟทันที {0}":
+   "grants {0} passive stacks straight away",
+ "พอเผยตัวออกมาได้ความเร็วโจมตีก้อนใหญ่ {0} วิ":
+   "breaking cover grants a big burst of attack speed for {0}s",
+ "คอมโบ {0} จังหวะ กดต่อกันภายใน {1} วิ — แต่ละจังหวะต้องออโต้ให้โดนก่อนถึงจะกดท่าถัดไปได้":
+   "A {0}-hit combo chained within {1}s — each step needs an auto to land before the next one unlocks",
+ "ทุกดาเมจที่ลงเป้าถูกจดไว้ {0} วิ แล้วกดสั่งระเบิดยอดสะสมทั้งหมดในระยะ {1} หน่วย":
+   "All damage dealt to a target is recorded for {0}s, then detonated in full within {1} units",
+ "กระโดดลอยขึ้นฟ้า {0} วิ แตะไม่ได้และไม่กินดาเมจ แล้วลงพื้นพร้อมความเร็วเดิน":
+   "Leaps skyward for {0}s — untargetable and immune to damage — then lands with bonus move speed",
+ "ล่องหน {0} วิ · ออโต้ครั้งแรกล็อกเป้าได้ไกลถึง {1} แล้วลากรถม้าตามมาทุบรัศมี {2} หน่วย":
+   "Stealth for {0}s · the first auto locks on from up to {1} away and drags the chariot in to smash a {2}-unit radius",
+ "วางตะกร้าลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ แจกฮีลและบัฟทุก {3} วิ":
+   "Sets a basket down within {0}, {1} units wide, lasting {2}s, handing out healing and buffs every {3}s",
+ "เล็งเพื่อนในระยะ {0} หน่วย แล้วทั้งคู่ได้ความเร็วเดินและเดินทะลุยูนิต":
+   "Targets an ally within {0} units — both gain move speed and can walk through units",
+ "กางออร่ารัศมี {0} หน่วยที่เดินตามตัว อยู่ {1} วิ":
+   "Opens an aura of {0} units that trails the caster, lasting {1}s",
+ "ยิงพายุลอยช้าไกล {0} หน่วย แล้วค้างเป็นวังวนรัศมี {1} หน่วยอีก {2} วิ · เดินตัดผ่านเองเพื่อระเบิดมันได้":
+   "Fires a slow-drifting storm {0} units out, which then lingers as a {1}-unit vortex for another {2}s · walk through it yourself to set it off",
+ "พุ่งเป็นรูปสามเหลี่ยมด้านละ {0} หน่วย แล้วกลับมายืนจุดเดิม — ขอบเส้นทางแรงกว่าพื้นที่ข้างใน":
+   "Dashes a triangle {0} units per side and ends back where it started — the edges of the path hit harder than the area inside",
+ "เหาะขึ้นฟ้าสูงสุด {0} วิ แตะไม่ได้ เลื่อนวงเล็งตามตัวได้ แล้วดิ่งลงกลางวงรัศมี {1} หน่วย":
+   "Soars for up to {0}s, untargetable, steering the target ring along the way, then slams down into a {1}-unit radius",
+ "พุ่งไกล {0} หน่วย ชนแชมเปี้ยนตัวแรกแล้วจับเหวี่ยงข้ามหัวไปด้านหลัง {1} หน่วย":
+   "Charges {0} units, catches the first champion hit and flings them {1} units overhead to the rear",
+ "ตรึงตัวเองแล้วทุบพื้น {0} ระลอก วงขยายขึ้นเรื่อยๆ จนถึง {1} หน่วย":
+   "Plants in place and pounds the ground {0} times, the ring widening each wave up to {1} units",
+ "เร่งความเร็วโจมตีสองจังหวะ — แรงมากช่วง {0} วิแรก แล้วลดลงมารักษาระดับอีก {1} วิ":
+   "A two-stage attack-speed surge — huge for the first {0}s, then settling to a smaller boost for another {1}s",
+ "ยิงบั้งไฟลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ — เปิดตัวศัตรูที่ล่องหนอยู่ในวง":
+   "Fires a rocket into the ground within {0}, a {1}-unit ring lasting {2}s — reveals any stealthed enemy inside it",
+ "เรียกยักษ์ลงมาทุบจุดเป้าหมายในระยะ {0} รัศมี {1} หน่วย แล้วยักษ์อยู่ต่ออีก {2} วิ เดินตีเองเป็นลูป 3 จังหวะ":
+   "Calls a giant down onto a spot within {0}, a {1}-unit radius, and it stays for another {2}s, attacking on its own in a 3-beat loop",
+ "ยืนอยู่กับที่แล้วแทงรัวเป็นกรวยไกล {0} หน่วย {1} ระลอก (ยกเลิกเองได้)":
+   "Stands still and stabs rapidly in a cone {0} units out, {1} waves (cancellable)",
+ "หายตัวแล้วฟันกระเด้ง {0} ครั้งในระยะ {1} หน่วย — ฟันเป้าที่มีตราท้าดวลก่อนเสมอ":
+   "Vanishes and strikes {0} times, bouncing between targets within {1} units — always hitting the duel-marked target first",
+ "คำรามเป็นกรวยด้านหน้าไกล {0} หน่วย {1} ระลอกติด":
+   "Roars in a frontal cone {0} units out, {1} waves back to back",
+ "เรียกพายุลงพื้นในระยะ {0} วงกว้าง {1} หน่วย ฟาด {2} ระลอก ระลอกละ {3} ตัว":
+   "Calls a storm down within {0}, a {1}-unit ring, striking {2} waves and hitting {3} targets per wave",
+ "ขว้างค้อนเป็นเส้นตรงไกล {0} หน่วย — โดนศัตรูคือดาเมจ โดนกำแพงหรือบ้านของตัวเองคือซ่อม":
+   "Throws a hammer in a straight line {0} units — it damages an enemy it hits, and repairs its own wall or hut instead",
+ "ก่อกำแพงอิฐกว้าง {0} หน่วยในระยะ {1} หน่วย อยู่ {2} วิ — กระสุนของศัตรูทะลุไม่ได้":
+   "Raises a brick wall {0} units wide at a range of {1} units, lasting {2}s — enemy projectiles cannot pass through it",
+ "พุ่งทะลุยูนิตไกล {0} หน่วย — ถ้าชนกำแพงจะระเบิดรอบตัวรัศมี {1} หน่วยพร้อมกระแทกลอย":
+   "Dashes {0} units through units — hitting the wall sets off a {1}-unit blast that knocks enemies up",
+ "ก่อบ้านอิฐล้อมตัวเองรัศมี {0} หน่วย อยู่ {1} วิ — เพื่อนข้างในไม่กินดาเมจจากข้างนอกเลย":
+   "Builds a brick hut around the caster, {0} units across, lasting {1}s — allies inside take no damage from outside at all",
+ "กระแทกด้ามดาบใส่ศัตรูในระยะ {0} หน่วย — กดได้แม้ตัวเองติด CC อยู่ แล้วจะหมุนฟันสวนรอบตัวรัศมี {1} หน่วย":
+   "Slams the pommel into an enemy within {0} units — castable even while crowd-controlled — then spins a counter-slash in a {1}-unit radius",
+ "พุ่งเป็นเส้นตรง {0} หน่วย แล้วฟันกวาดครึ่งวงรัศมี {1} หน่วยที่ปลายทาง":
+   "Dashes {0} units in a straight line, then cleaves a half-circle of {1} units at the end of it",
+ "ฟันดาบพิพากษาใส่เป้าเดี่ยวในระยะ {0} หน่วย เป็นดาเมจจริง แล้วประหารทันทีถ้าเลือดเหลือต่ำกว่าเกณฑ์":
+   "Brings the sword of judgment down on a single target within {0} units as true damage, executing outright below the HP threshold",
+ "ทำดาเมจจริง ทะลุทั้งเกราะและต้านเวท":
+   "Deals true damage, ignoring both armour and magic resist",
+ "ไม่เจอตัวละครที่ตรงกับที่ค้น":
+   "No champion matches your search",
+ "ค้นหาตัวละคร เช่น ป่า, assassin, ระยะไกล":
+   "Search champions — jungle, assassin, ranged…",
+ "ทั้งหมด":
+   "All",
+ "ส่องทีมคู่แข่งเป็นข่าวกรองยกที่แล้ว · บอทออกของไม่ซ้ำกันแล้ว":
+   "Scouting now reads last round's intel · bots stop building the same items",
+ "รอบเก็บกวาดหลัง 0.3 — แก้เลนถนัดของตัวใหม่ เพิ่มช่องค้นหาในหน้าเลือกตัว และเขียนคำอธิบายสกิลใหม่ทั้งหมด":
+   "Clean-up pass after 0.3 — fixed the new champions' lanes, added a search box to champion select, and rewrote every skill description",
+ "ตอนนี้อ่านได้แค่ \"ข่าวกรองของยกที่แล้ว\" ไม่ใช่ของสดๆ ในยกนี้ — ยกแรกจึงยังไม่มีอะไรให้ดูเลย":
+   "It now reads \"last round's intel\" rather than a live feed of this round — so round one shows nothing at all",
+ "ไอเทมที่เขาเพิ่งซื้อยกที่แล้วมีป้าย ใหม่ กำกับ และสกิลที่เพิ่งอัพจะขึ้น ▲ ให้เห็น":
+   "Items they bought last round carry a NEW tag, and skills they just ranked up show a ▲",
+ "เลเวลที่ขึ้นในยกนั้นก็โชว์ด้วย จะได้รู้ว่าเลนไหนของเขาโตเร็ว":
+   "The levels they gained that round show too, so you can tell which of their lanes is snowballing",
+ "แกงค์ตามคำสั่งยกนี้":
+   "Ganking follows this round's orders",
+ "ป่าลงแกงค์เลนที่สั่ง รุกล้ำ หรือ ปกติ ไว้ใน \"ยกนี้\" ได้เลย ไม่ต้องรอผลยกที่แล้วอีกแล้ว":
+   "The jungler can gank any lane set to Aggressive or Neutral \"this round\" — no more waiting on last round's orders",
+ "สลับท่าทีเลนแล้วถ้าเลนที่เล็งไว้ใช้ไม่ได้ ระบบจะปลดเป้าแกงค์ให้เอง":
+   "Change a lane's stance and, if the lane you had targeted no longer qualifies, the gank target clears itself",
+ "บอทป่าใช้กติกาเดียวกันเป๊ะ":
+   "The bot jungler plays by exactly the same rule",
+ "บอทออกของหลากหลายขึ้น":
+   "Bots build more varied items",
+ "เดิมคะแนนเลือกไอเทมเกือบจะตายตัว ทุกตัวจึงจบด้วยของชุดเดียวกันแทบทุกนัด":
+   "The item scoring used to be almost entirely deterministic, so everyone finished with the same build nearly every match",
+ "ตอนนี้นักแข่งแต่ละคนมีรสนิยมประจำตัวติดมาตั้งแต่เริ่มแมตช์ และคงที่ตลอดทั้งแมตช์":
+   "Each athlete now carries a personal taste from the start of the match, and keeps it all match long",
+ "วัดจาก 300 นัด: ชุดของที่ไม่ซ้ำกัน 120 → 297 ชุด · ชุดที่ฮิตที่สุดเคยโผล่ 18 ครั้ง เหลือ 3 ครั้ง":
+   "Measured over 300 matches: distinct builds 120 → 297 · the most common build appeared 18 times, now 3",
+ "หน้าเลือกตัว":
+   "Champion select",
+ "มีช่องค้นหาแล้ว พิมพ์ได้ทั้งชื่อ บทบาท เลน และคำว่าประชิด/ระยะไกล":
+   "There is a search box now — type a name, a role, a lane, or melee/ranged",
+ "ไม่ได้เจาะเลนไหนไว้ ตารางจะไล่เรียงแยกเป็นหมวด TOP / JUNGLE / MID / ADC / SUPPORT ให้":
+   "With no lane filter set, the grid lays itself out in TOP / JUNGLE / MID / ADC / SUPPORT sections",
+ "ใช้ได้ทั้งหน้า PICK ปกติและหน้าดราฟต์":
+   "Works on the normal PICK screen and in draft",
+ "เลนถนัดของตัวใหม่":
+   "Lanes for the new champions",
+ "ALUCARD — ป่าอย่างเดียว":
+   "ALUCARD — jungle only",
+ "ELLA — ป่า / ซัพพอร์ต":
+   "ELLA — jungle / support",
+ "PUSS — ป่าอย่างเดียว":
+   "PUSS — jungle only",
+ "YODAKA — ป่า / มิด":
+   "YODAKA — jungle / mid",
+ "TOTSAKAN — ท็อปอย่างเดียว":
+   "TOTSAKAN — top only",
+ "ARTHUR — ท็อปอย่างเดียว":
+   "ARTHUR — top only",
+ "NIAN — ท็อป / มิด":
+   "NIAN — top / mid",
+ "คำอธิบายและคำแปล":
+   "Descriptions and translations",
+ "เขียนคำอธิบายสกิลของตัวใหม่ทั้ง 10 ตัวใหม่หมด — เดิมท่าแปลกๆ อย่างคอมโบสามจังหวะ วังวนที่เดินตัดเองได้ หรือยักษ์ที่เดินตีเอง ขึ้นมาเป็นประโยคกลางๆ ที่ไม่ได้บอกอะไร":
+   "Rewrote the skill descriptions for all 10 new champions — the odd ones like the three-beat combo, the vortex you set off yourself, or the giant that attacks on its own used to come out as bland sentences that told you nothing",
+ "โหมดภาษาอังกฤษไม่มีภาษาไทยหลุดแล้ว — ป้ายชื่อในคำอธิบายสกิล 111 คำที่เรียกผ่านตัวแปรเคยรอดสายตาเครื่องตรวจมาตลอด":
+   "No more Thai leaking into English mode — 111 labels in the skill descriptions are called through variables and had slipped past the checker every time",
+ "เห็นสแตกของทุกตัวละครแล้ว · แก้บั๊กที่ทำให้ฝั่งหนึ่งค้างใน Versus · บอทเลิกจัดตัวลงเลนมั่ว · เพิ่มทางออกให้เลนที่โดนแกงค์ซ้ำ · ร้านในห้องซ้อมกลับมาใช้ได้":
+   "Every champion's stacks are visible now · fixed the bug that froze one side in Versus · bots stop assigning champions to lanes they can't play · gave repeatedly ganked lanes a way out · the practice-room shop works again",
+ "เห็นตัวนับสะสมแล้ว":
+   "You can see the stack counters",
+ "แตะชื่อตัวละครระหว่างไฟต์ จะเห็นสแตกของมันครบทุกตัว — เดิมมีแต่ Luch ที่โชว์":
+   "Tap a champion's name during a fight to see all of its stacks — only Luch used to show them",
+ "Laura เห็นสแตกถาวรและเลือดที่ได้มาแล้ว · Tristan เห็นมาตร Isolde ว่าใกล้ได้โล่หรือยัง":
+   "Laura shows her permanent stacks and the health she has gained · Tristan shows the Isolde meter and how close the shield is",
+ "Klaeder เห็นจำนวนชั้นภูษาแยกเกราะกับต้านเวท · C.HOOK เห็นเงินกระเป๋าแยก":
+   "Klaeder shows his robe layers split into armour and magic resist · C.HOOK shows his purse separately",
+ "สแตกจากไอเทมก็เห็นด้วย (Pauldrons of the Nian Beast · Mjölnir's Grounding Cloak · Wendigo's Voracious Claw)":
+   "Item stacks are visible too (Pauldrons of the Nian Beast · Mjölnir's Grounding Cloak · Wendigo's Voracious Claw)",
+ "Luch เคยโชว์ผิดเป็น \"LIGHT 40/5\" เพราะหารเพดานเก่า ตอนนี้เทียบกับ 100 ที่ถูกต้อง":
+   "Luch used to read \"LIGHT 40/5\" because it divided by the old cap — it now measures against the correct 100",
+ "บั๊กที่แก้":
+   "Bugs fixed",
+ "Versus: เจ้าบ้านเดินหน้าเล่นคนเดียว อีกฝั่งค้างที่ยกแรกตลอด — เจ้าบ้านแบบรหัสห้องไม่เคยส่งสัญญาณพร้อมออกไปเลย ปุ่มพร้อมตกไปเริ่มไฟต์แบบออฟไลน์แทน":
+   "Versus: the host played on alone while the other side sat stuck on round one — a room-code host never sent the ready signal, so the ready button fell through to starting an offline fight instead",
+ "Versus: ถ้าเจ้าบ้านกดพร้อมก่อนอีกฝั่ง จะค้างรอกันไปมาไม่มีใครเริ่ม — เดิมเริ่มได้ทางเดียวคือต้องให้อีกฝั่งกดก่อน":
+   "Versus: if the host readied up first, both sides waited on each other and nobody started — the only way through used to be letting the other side press first",
+ "ห้องซ้อม: ร้านค้าเปิดแล้วว่างเปล่าทุกหมวด ซื้อของไม่ได้เลย — หมวดตั้งต้นชี้ไปหมวดที่ไม่มีอยู่จริง":
+   "Practice room: the shop opened empty in every category and nothing could be bought — the default category pointed at one that doesn't exist",
+ "ป่าพาเพื่อนไปแกงค์ แล้วเพื่อนคนนั้นยังค้างอยู่ในเลนตัวเองด้วย — คนเดียวสู้สองเลนในยกเดียวกัน":
+   "The jungler took an ally on a gank while that ally was still stuck in their own lane — one person fighting two lanes in the same round",
+ "บอทจัดตัวละครลงเลนที่มันเล่นไม่ได้ ราว 36% ของแมตช์ ตอนนี้เหลือ 0.2%":
+   "Bots put champions in lanes they can't play in about 36% of matches — now 0.2%",
+ "ทางออกของเลนที่โดนแกงค์ซ้ำ":
+   "A way out for repeatedly ganked lanes",
+ "เลนที่สั่ง \"เซฟ\" ไว้แล้วโดนยกพวกมาแกงค์ ไฟต์จะเหลือ 10 วิ (ปกติ 35 วิ) — ไม่ต้องชนะ แค่ยื้อให้พ้นเวลา":
+   "A lane set to Safe that gets jumped runs a 10-second fight instead of the usual 35 — you don't have to win, just survive the clock",
+ "ยื้อรอดโดยยังมีคนเหลือ = ป่าฝั่งที่มาแกงค์และคนที่ถูกดึงมาช่วย ได้ 0 เงิน 0 XP ทั้งยก":
+   "Survive with anyone still standing and the ganking jungler — plus whoever they dragged along — earns 0 gold and 0 XP for the whole round",
+ "แลกกันตรงที่เซฟได้รายได้ฐานต่ำสุดอยู่แล้ว (3 เงิน) การยืนรับจึงไม่ใช่ของฟรี":
+   "The trade-off is that Safe already earns the lowest base income (3 gold), so turtling is never free",
+ "เลนที่โดนถอนคนไปช่วยแกงค์ อีกฝั่งได้กินเลนฟรี เงิน +2":
+   "A lane whose player was pulled away to help gank hands the other side a free lane, +2 gold",
+ "หน้าตา":
+   "Presentation",
+ "ช่องเก็บของโชว์ค่าสถานะย่อแล้ว (+20 AD +70 HP …) ทั้งหน้าเตรียมยก ร้านค้า และหน้าส่องทีมคู่แข่ง":
+   "Item slots show a short stat line (+20 AD +70 HP …) on the round-prep screen, in the shop, and while scouting",
+ "CHARACTER STORE เปลี่ยนชื่อเป็น CHARACTER INFO และโชว์ค่าสถานะครบ 8 ค่าแทน 3 ค่า พร้อมป้ายเลนที่ลงได้":
+   "CHARACTER STORE is now CHARACTER INFO, showing all 8 stats instead of 3, plus the lanes the champion can play",
+ "ปุ่มสกิลบอกรูปแบบตั้งแต่ยังไม่กดเข้าไป เช่น \"กรวยด้านหน้า\" \"พุ่งแล้วกระแทก\"":
+   "Skill buttons name their shape before you open them, e.g. \"frontal cone\" or \"dash then slam\"",
+ "เอฟเฟกต์ตอนสู้: ตัวละครมีมิติและเงา · เด้งตอนโดน · กล้องสะบัดเมื่อโดนหนัก · มีจังหวะล้มตอนตาย · ตัวเลขดาเมจโตตามดาเมจจริง":
+   "Combat effects: champions have depth and shadows · they recoil when hit · the camera shakes on heavy hits · there's a death fall · damage numbers scale with the actual damage",
+ "ข้อความที่เคยโผล่เป็นภาษาไทยตอนเล่นภาษาอังกฤษ แก้ครบ 39 จุด":
+   "Text that used to appear in Thai while playing in English — 39 spots fixed",
+ "แพตช์นี้ไม่ได้แตะตัวเลขบาลานซ์ของตัวละครหรือไอเทมเลย — เป็นการแก้บั๊กกับปรับการมองเห็นล้วนๆ":
+   "This patch doesn't touch a single champion or item balance number — it's purely bug fixes and visibility",
+ "วัดแล้ว 100 แมตช์ (4,860 ยก): เลเวลเฉลี่ย 16.5 · ของใหญ่ 2.7 ชิ้น · ศพ 1.51 ต่อไฟต์ เท่าเดิมทุกค่า":
+   "Measured over 100 matches (4,860 rounds): average level 16.5 · 2.7 legendary items · 1.51 deaths per fight — unchanged across the board",
+ "ห้องแบบเจ้าบ้านนั่งดู":
+   "Spectator-host rooms",
+ "สร้างห้องแล้วให้อีกสองคนสู้กัน ตัวเองนั่งดูข้างสนาม — เครื่องเจ้าบ้านเป็นคนรันไฟต์ให้ทั้งคู่":
+   "Open a room, let two other people fight, and watch from the sideline — the host machine runs the fight for both of them",
+ "ใน PLAY → VERSUS มีปุ่มใหม่ “สร้างห้องแบบนั่งดู” — เจ้าบ้านไม่ได้ลงเล่น แต่เป็นคนเปิดห้องให้ผู้เล่นสองคนมาเจอกัน":
+   "PLAY → VERSUS has a new \"Create a spectator room\" button — the host doesn't play, they just open the room for two players to meet in",
+ "ห้องนี้จะได้โค้ดสองก้อนคนละก้อน ส่งให้ผู้เล่นคนที่ 1 และคนที่ 2 แล้วเอาโค้ดตอบกลับของแต่ละคนมาวางตามช่องของตัวเอง":
+   "The room produces two separate codes — send one to player 1 and one to player 2, then paste each reply code into its own field",
+ "พอต่อครบสองสาย กด “เริ่มแมตช์” ทั้งคู่จะเข้าหน้าเลือกตัวของตัวเอง ฝั่งซ้ายเป็นน้ำเงิน ฝั่งขวาเป็นแดง":
+   "Once both links are up, press \"Start match\" and each player enters their own champion select — left side blue, right side red",
+ "พอทั้งคู่กด “พร้อมสู้” เจ้าบ้านสุ่ม seed แล้วส่งให้ทั้งสองเครื่องพร้อมกัน — ทั้งสามจอจึงเห็นไฟต์เดียวกันเป๊ะทุกเฟรม":
+   "When both press \"Ready\", the host rolls a seed and sends it to both machines at once — so all three screens see exactly the same fight, frame for frame",
+ "เจ้าบ้านไม่มีร้านค้า ไม่มีการเลือกตัว ไม่มีการกดต่อยก — จบยกแล้วกลับไปหน้ารอเอง รอยกถัดไปอัตโนมัติ":
+   "The host has no shop, no champion select and no round button — when a round ends they drop back to the waiting screen and wait for the next one automatically",
+ "หน้ารอของเจ้าบ้านบอกว่าผู้เล่นคนไหนต่อแล้วบ้าง และสรุปผลยกล่าสุดให้ดู":
+   "The host's waiting screen shows which players are connected and sums up the latest round",
+ "ข้อจำกัดเดิมยังอยู่: ทั้งสามคนต้องเปิดจากไฟล์ ruined-lore.html ในเครื่องตัวเอง หน้าที่เปิดจากลิงก์แชร์ต่อสายไม่ได้":
+   "The old limitation stands: all three have to open ruined-lore.html from their own machine — a page opened from a shared link can't connect",
+ "เครื่องเจ้าบ้านถือสองสายพร้อมกัน ถ้าฝั่งใดฝั่งหนึ่งหลุด จะขึ้นแจ้งเตือนและต้องเปิดห้องใหม่":
+   "The host machine holds both links at once — if either drops you get a warning and have to open a new room",
+ "วาร์ปข้ามไปโผล่หลังเป้าในระยะ {0} หน่วย ห่างจากหลังมันอีก {1} หน่วย":
+   "Blinks past a target within {0} units and lands {1} units behind them",
+ "บอทยืนผิดเลนอีกทาง":
+   "The other way bots ended up off-lane",
+ "Blind Pick: พอจัดเลนของเราเสร็จ เกมสับรายชื่อตัวละครทั้ง 22 ตัวแล้วยัดลงเลนฝ่ายตรงข้ามตามลำดับ ไม่ดูเลยว่าตัวนั้นลงเลนนั้นได้ไหม":
+   "Blind Pick: once you finished assigning your own lanes, the game shuffled all 22 champions and dealt them into the enemy's lanes in order, with no check that a champion could play the lane",
+ "ทีมที่คัดมาให้ถูกเลนตั้งแต่ต้นแมตช์จึงถูกทับทิ้งทุกครั้ง — เจอมาร์คแมนไปยืนท็อปหรือแท็งก์ไปยืนมิดเป็นประจำ":
+   "So the lane-correct team drafted at the start of the match was overwritten every single time — marksmen in top and tanks in mid were routine",
+ "แพตช์ 0.2B แก้การยืนผิดเลนไปแล้วรอบหนึ่ง แต่แก้ที่ตัวดราฟต์ ไม่ได้แตะทางนี้ ของที่แก้ไว้เลยไม่เคยได้ใช้ในโหมด Blind Pick":
+   "Patch 0.2B already fixed off-lane bots once, but it fixed the drafter and never touched this path, so that fix never actually applied in Blind Pick",
+ "ตอนนี้สุ่มทีมใหม่ผ่านตัวดราฟต์ตัวเดียวกับโหมดอื่น ได้ทั้งเลนที่ถูกและทีมที่มีแนวหน้า ตัวฟื้นฟู และตัวยิงระยะไกลครบ":
+   "It now re-rolls through the same drafter every other mode uses, so the lanes fit and the team still has a frontliner, a sustain pick and a ranged carry",
+ "TOTSAKAN R เคยขึ้นว่า \"[object Object] ระลอก\" และ PUSS Q ขึ้นแค่ \"ร่ายสกิล\" เพราะท่าสองแบบนี้ไม่มีสูตรบรรยายของตัวเอง":
+   "TOTSAKAN's R used to read \"[object Object] waves\" and PUSS's Q just said \"Casts a skill\", because neither skill shape had a description of its own",
+ "คำแปลอังกฤษที่ใช้ร่วมกันหลายตัวเคยล็อกเพศไว้ในประโยค ทำให้ทศกัณฐ์กับเหนียนถูกเรียกว่า her — เปลี่ยนเป็นคำกลางหมดแล้ว":
+   "Shared English clauses had a fixed gender baked in, so Totsakan and Nian were being called \"her\" — they all read neutrally now",
+ "แพตช์โน้ตเก่าที่ยังไม่มีคำแปลอังกฤษ (0.2B และหัวข้อห้องแบบเจ้าบ้านนั่งดู) แปลครบแล้ว":
+   "Older patch notes that had never been translated (0.2B and the spectator-room section) are now fully in English",
 };

@@ -18,10 +18,11 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
 export function ShopPhase(ctx) {
-  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances } = ctx;
+  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel } = ctx;
 
-  // ป่าลงแกงค์ได้เฉพาะเลนที่ยกที่แล้วสั่งรุกล้ำไว้
-  const openLanes = STANCE_LANES.filter((L) => lastStances && lastStances[L] === "AGGRO");
+  // สเปคใหม่: ป่าลงแกงค์เลนที่ "ยกนี้" สั่งรุกล้ำหรือปกติไว้ได้เลย
+  // เดิมต้องรอให้เลนนั้นสั่งรุกล้ำไว้ตั้งแต่ยกที่แล้ว ซึ่งช้าไปหนึ่งยกเสมอ
+  const openLanes = STANCE_LANES.filter((L) => stances[L] === "AGGRO" || stances[L] === "NEUTRAL");
   const crewMax = crewAllowed(round);
   const crewPool = STANCE_LANES.filter((L) => L !== jungle.lane && stances[L] === "SAFE");
   const champOf = (lane) => { const c = team.find((x) => x.lane === lane); return (c && c.champId) || lane; };
@@ -335,7 +336,13 @@ export function ShopPhase(ctx) {
               {STANCE_LIST.map((k) => {
                 const on = stances[L] === k;
                 return (
-                  <button key={k} onClick={() => setStances((v) => ({ ...v, [L]: k }))}
+                  <button key={k} onClick={() => {
+                    setStances((v) => ({ ...v, [L]: k }));
+                    // สั่งเลนที่ป่ากำลังจะลงเป็น "เซฟ" แล้วแกงค์ไม่ได้อีก — ยกเลิกให้อัตโนมัติ
+                    if (k === "SAFE" && jungle.lane === L) setJungle({ lane: null, crew: [] });
+                    // เลนที่ถูกดึงไปเป็นลูกหาบต้องเป็นเลนเซฟเท่านั้น
+                    if (k !== "SAFE") setJungle((j) => ((j.crew || []).includes(L) ? { ...j, crew: j.crew.filter((x) => x !== L) } : j));
+                  }}
                     style={{
                       flex: 1, background: on ? TONE[k] : C.panel2, color: on ? "#0B1220" : C.dim,
                       border: `1px solid ${on ? TONE[k] : C.line}`, borderRadius: 4,
@@ -436,7 +443,7 @@ export function ShopPhase(ctx) {
         </div>
 
         {scoutOpen && (
-          <ScoutPanel foe={foe} team={team} fightState={null} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
+          <ScoutPanel foe={foe} team={team} intel={foeIntel} fightState={null} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
         )}
 
         {formOpen && (

@@ -174,6 +174,18 @@ function tasteFor(c, pf) {
 // ---------------------------------------------------------------
 export function shopFor(c, enemies, rand, noise = 10) {
   let cur = { ...c, items: [...c.items] };
+  // ---- รสนิยมประจำตัวของนักแข่งคนนี้ในแมตช์นี้ ----
+  // เดิมคะแนนความอยากได้เป็นสูตรตายตัวเกือบทั้งหมด (สาย + ราคา + แก้ทาง + สัดส่วนอึด)
+  // มีแค่ rand() * noise ก้อนเล็กๆ ที่สุ่ม แต่มันสุ่มใหม่ทุกยก จึงไม่เคยเปลี่ยนลำดับที่ชนะ
+  // ผลคือมาร์คแมนทุกตัวจบเกมด้วยของชุดเดียวกันเป๊ะ (HOOD มีบิลด์ต่างกันแค่ 2 แบบ)
+  // ตอนนี้แจก "ความชอบ" คงที่ต่อไอเทมให้แต่ละคนตั้งแต่ยกแรก แล้วใช้ค่าเดิมทุกยก
+  // ได้บิลด์ที่หลากหลายระหว่างแมตช์ แต่ยังยึดแผนเดิมภายในแมตช์เดียวกัน
+  if (cur.buildSeed == null) cur.buildSeed = 1 + Math.floor(rand() * 1e9);
+  const taste2 = (id) => {
+    let h = cur.buildSeed ^ 0x9e3779b9;
+    for (let i = 0; i < id.length; i++) { h = Math.imul(h ^ id.charCodeAt(i), 0x85ebca6b); h ^= h >>> 13; }
+    return ((h >>> 0) % 1000) / 1000;
+  };
   const pf = champProfile(cur.champId);
   const threat = readThreat(enemies);
   const taste = tasteFor(cur, pf);
@@ -233,8 +245,10 @@ export function shopFor(c, enemies, rand, noise = 10) {
       // ยึดเป้าหมายเดิมไว้ — ถ้าเก็บชิ้นส่วนของอันนี้ไว้แล้ว ต้องทำให้จบ
       // ไม่งั้นพอเงินเข้าช้าๆ มันจะเปลี่ยนใจทุกยกจนช่องเต็มไปด้วยชิ้นส่วนคนละสาย
       const commit = ownedParts(cur.items, i).reduce((a, p) => a + p.cost, 0) * 5;
+      // taste2 = ความชอบประจำตัวที่คงที่ทั้งแมตช์ · rand() = ความลังเลรายยก
       return (taste.length - rank) * 10 + i.cost * 0.08
-        + counterScore(i, threat, pf, cur) + boots + fit + commit + rand() * noise;
+        + counterScore(i, threat, pf, cur) + boots + fit + commit
+        + taste2(i.id) * 26 + rand() * noise;
     };
     goals.sort((a, b) => want(b) - want(a));
     const goal = goals[0];

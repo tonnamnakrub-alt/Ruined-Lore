@@ -15,7 +15,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   ELLA: {
     id: "ELLA", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.19, value: 1.2,
-    th: "เอลล่า", role: "Assassin", lane: "MID", alsoLanes: ["JUNGLE"], melee: true,
+    th: "เอลล่า", role: "Assassin", lane: "JUNGLE", alsoLanes: ["SUPPORT"], melee: true,
     hp: 570, hpG: 92, hp5: 6.5, hp5G: 0.6, ad: 56, adG: 3.1, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.026, ms: 340, range: 150,
     // เศษแก้วติดออโต้ — แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง
@@ -125,7 +125,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   TOTSAKAN: {
     id: "TOTSAKAN", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.2, value: 0.85,
-    th: "ทศกัณฐ์", role: "Vanguard", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true, rage: 0.12,
+    th: "ทศกัณฐ์", role: "Vanguard", lane: "TOP", melee: true, rage: 0.12,
     hp: 630, hpG: 105, hp5: 8.5, hp5G: 0.8, ad: 64, adG: 3.8, armor: 38, armorG: 4.3, mr: 32, mrG: 2.05,
     as: 0.64, asG: 0.022, ms: 340, range: 175,
     // ค่าสถานะจากไอเทมทุกอย่างแรงขึ้น 10%
@@ -241,7 +241,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   PUSS: {
     id: "PUSS", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.18, value: 1.25,
-    th: "พุสส์", role: "Assassin", lane: "JUNGLE", alsoLanes: ["TOP"], melee: true, rage: 0.15,
+    th: "พุสส์", role: "Assassin", lane: "JUNGLE", melee: true, rage: 0.15,
     hp: 575, hpG: 90, hp5: 6.5, hp5G: 0.65, ad: 60, adG: 3.5, armor: 30, armorG: 3.7, mr: 32, mrG: 2.05,
     as: 0.68, asG: 0.03, ms: 345, range: 150,
     // ท้าดวลศัตรูหนึ่งตัว + ชีวิตที่เก้า
@@ -274,7 +274,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   NIAN: {
     id: "NIAN", skillPriority: ["E", "Q", "W"], missile: 0, windup: 0.2, value: 1.0,
-    th: "เหนียน", role: "Vanguard", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true, rage: 0.12,
+    th: "เหนียน", role: "Vanguard", lane: "TOP", alsoLanes: ["MID"], melee: true, rage: 0.12,
     hp: 620, hpG: 102, hp5: 8.0, hp5G: 0.8, ad: 58, adG: 3.2, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.64, asG: 0.022, ms: 345, range: 175,
     // ออร่าไฟฟ้ารอบตัว ฟาดเป้าสุ่มทุก 2 วิ (W ทำให้ฟาดทุกตัวพร้อมกัน)
@@ -353,7 +353,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   ARTHUR: {
     id: "ARTHUR", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.19, value: 1.05,
-    th: "อาเธอร์", role: "Diver", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true, rage: 0.15,
+    th: "อาเธอร์", role: "Diver", lane: "TOP", melee: true, rage: 0.15,
     hp: 625, hpG: 98, hp5: 8.0, hp5G: 0.75, ad: 64, adG: 3.6, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.665, asG: 0.019, ms: 345, range: 175,
     // ดาเมจกายภาพและดาเมจจริงที่ทำได้ แปลงเป็นโล่

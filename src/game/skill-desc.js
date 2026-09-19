@@ -378,6 +378,8 @@ function actionClause(sk) {
     case "targeted": return tr("ล็อกเป้าหมายเดียวในระยะ {0} หน่วย", r || 0);
     case "dash": return tr("พุ่งไปข้างหน้า {0} หน่วย", sk.dashRange || r || 0);
     case "blinkDash": return tr("วาร์ปไปที่จุดหมายในระยะ {0} หน่วย", r || 0);
+    case "blinkBehind":
+      return tr("วาร์ปข้ามไปโผล่หลังเป้าในระยะ {0} หน่วย ห่างจากหลังมันอีก {1} หน่วย", r || 0, sk.behind || 0);
     case "crossDash": return tr("พุ่งทะลุเป็นรูปกากบาทไกล {0} หน่วย", sk.armLen || r || 0);
     case "chargeDash": return tr("ชาร์จค้างไว้แล้วพุ่งทะยานไกล {0} หน่วย ยิ่งชาร์จนานยิ่งแรง", sk.dashRange || r || 0);
     case "chargedBeam": return tr("ชาร์จลำแสงแล้วยิงออกไปไกล {0} หน่วย", r || 0);
@@ -392,8 +394,28 @@ function actionClause(sk) {
       ? tr("โจมตีได้ทั่วทั้งสนาม ไม่จำกัดระยะ")
       : tr("โจมตีข้ามสนามถึงเป้าหมายไกลสุด {0} หน่วย", r || 0);
     case "markNext": return tr("แปะมาร์กไว้ที่เป้า แล้วจุดระเบิดทีหลัง");
-    case "onHit": return tr("ติดอาวุธให้ออโต้ครั้งถัดไป");
-    case "selfBuff": return tr("บัฟตัวเอง");
+    case "onHit": {
+      const n = sk.charges || 1;
+      const base = n > 1
+        ? tr("ติดอาวุธให้ออโต้ {0} ครั้งถัดไป ภายใน {1} วิ", n, sk.window || 5)
+        : tr("ติดอาวุธให้ออโต้ครั้งถัดไป ภายใน {0} วิ", sk.window || 5);
+      const more = [];
+      if (sk.cleaveRadius) more.push(tr("ออโต้ทุกครั้งฟันกวาดรอบเป้ารัศมี {0} หน่วยอยู่แล้ว", sk.cleaveRadius));
+      if (sk.doubleAbove) more.push(tr("ถ้าเป้าเลือดเกิน {0}% จะสับซ้ำอีกดาบทันที", Math.round(sk.doubleAbove * 100)));
+      return [base, ...more].join(" · ");
+    }
+    case "selfBuff": {
+      const more = [];
+      if (sk.stealth) more.push(tr("ล่องหน"));
+      if (sk.drAll) more.push(tr("ลดดาเมจที่รับทุกแหล่ง"));
+      if (sk.onHitMagic) more.push(tr("ออโต้พ่วงดาเมจเวทเพิ่ม"));
+      if (sk.dashFaster) more.push(tr("การพุ่งของพาสซีฟเร็วขึ้น {0}%", Math.round(sk.dashFaster * 100)));
+      if (sk.overcharge) more.push(tr("พาสซีฟช็อตศัตรูทุกตัวในวงพร้อมกัน"));
+      if (sk.pet) more.push(tr("ยักษ์ที่อัญเชิญไว้ได้โล่ ความเร็วเดิน และความเร็วโจมตีด้วย"));
+      if (sk.gainStack) more.push(tr("ได้สแตกพาสซีฟทันที {0}", sk.gainStack));
+      if (sk.ambushAs) more.push(tr("พอเผยตัวออกมาได้ความเร็วโจมตีก้อนใหญ่ {0} วิ", sk.ambushDur || 3));
+      return [tr("บัฟตัวเอง"), ...more].join(" · ");
+    }
     case "teamHeal": return tr("ฮีลเพื่อนทั้งทีมพร้อมกัน");
     case "allyHot": return tr("ฮีลเพื่อนต่อเนื่องทีละนิด");
     case "lastStand": return tr("เข้าสู่โหมดยืนหยัด ตายยากขึ้นชั่วคราว");
@@ -412,6 +434,36 @@ function actionClause(sk) {
     case "pulse": return tr("ปล่อยคลื่นเป็นจังหวะรอบตัวรัศมี {0} หน่วย", rad || 0);
     case "burstShield": return tr("กางโล่ แล้วระเบิดออกเมื่อโล่หมด");
     case "dual": return tr("มีสองร่าง สลับใช้คนละผล");
+    // ---- ท่าของตัวละคร Patch 0.3 ----
+    case "combo": {
+      const n = (sk.steps || []).length;
+      return tr("คอมโบ {0} จังหวะ กดต่อกันภายใน {1} วิ — แต่ละจังหวะต้องออโต้ให้โดนก่อนถึงจะกดท่าถัดไปได้", n, sk.window || 5);
+    }
+    case "damageStash": return tr("ทุกดาเมจที่ลงเป้าถูกจดไว้ {0} วิ แล้วกดสั่งระเบิดยอดสะสมทั้งหมดในระยะ {1} หน่วย", sk.stashDur || 3, r || 0);
+    case "skyward": return tr("กระโดดลอยขึ้นฟ้า {0} วิ แตะไม่ได้และไม่กินดาเมจ แล้วลงพื้นพร้อมความเร็วเดิน", sk.airTime || 0.75);
+    case "carriage": return tr("ล่องหน {0} วิ · ออโต้ครั้งแรกล็อกเป้าได้ไกลถึง {1} แล้วลากรถม้าตามมาทุบรัศมี {2} หน่วย", sk.dur || 10, sk.openRange || 0, rad || 0);
+    case "basketZone": return tr("วางตะกร้าลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ แจกฮีลและบัฟทุก {3} วิ", r || 0, rad || 0, sk.life || 0, sk.every || 0);
+    case "allyRush": return tr("เล็งเพื่อนในระยะ {0} หน่วย แล้วทั้งคู่ได้ความเร็วเดินและเดินทะลุยูนิต", r || 0);
+    case "truthAura": return tr("กางออร่ารัศมี {0} หน่วยที่เดินตามตัว อยู่ {1} วิ", rad || 0, sk.dur || 0);
+    case "vortex": return tr("ยิงพายุลอยช้าไกล {0} หน่วย แล้วค้างเป็นวังวนรัศมี {1} หน่วยอีก {2} วิ · เดินตัดผ่านเองเพื่อระเบิดมันได้", r || 0, sk.zoneRadius || 0, sk.zoneDur || 0);
+    case "deltaDash": return tr("พุ่งเป็นรูปสามเหลี่ยมด้านละ {0} หน่วย แล้วกลับมายืนจุดเดิม — ขอบเส้นทางแรงกว่าพื้นที่ข้างใน", sk.side || 0);
+    case "starfall": return tr("เหาะขึ้นฟ้าสูงสุด {0} วิ แตะไม่ได้ เลื่อนวงเล็งตามตัวได้ แล้วดิ่งลงกลางวงรัศมี {1} หน่วย", sk.airTime || 0, rad || 0);
+    case "chargeFling": return tr("พุ่งไกล {0} หน่วย ชนแชมเปี้ยนตัวแรกแล้วจับเหวี่ยงข้ามหัวไปด้านหลัง {1} หน่วย", sk.dashRange || 0, sk.toss || 0);
+    case "tripleSlam": return tr("ตรึงตัวเองแล้วทุบพื้น {0} ระลอก วงขยายขึ้นเรื่อยๆ จนถึง {1} หน่วย", (sk.waves || []).length, ((sk.waves || []).slice(-1)[0] || {}).radius || 0);
+    case "rampBuff": return tr("เร่งความเร็วโจมตีสองจังหวะ — แรงมากช่วง {0} วิแรก แล้วลดลงมารักษาระดับอีก {1} วิ", sk.burstDur || 0, sk.holdDur || 0);
+    case "sightZone": return tr("ยิงบั้งไฟลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ — เปิดตัวศัตรูที่ล่องหนอยู่ในวง", r || 0, rad || 0, sk.life || 0);
+    case "summonGiant": return tr("เรียกยักษ์ลงมาทุบจุดเป้าหมายในระยะ {0} รัศมี {1} หน่วย แล้วยักษ์อยู่ต่ออีก {2} วิ เดินตีเองเป็นลูป 3 จังหวะ", r || 0, rad || 0, sk.life || 0);
+    case "channelCone": return tr("ยืนอยู่กับที่แล้วแทงรัวเป็นกรวยไกล {0} หน่วย {1} ระลอก (ยกเลิกเองได้)", r || 0, sk.ticks || 0);
+    case "bounceSlash": return tr("หายตัวแล้วฟันกระเด้ง {0} ครั้งในระยะ {1} หน่วย — ฟันเป้าที่มีตราท้าดวลก่อนเสมอ", sk.hits || 0, r || 0);
+    case "coneVolley": return tr("คำรามเป็นกรวยด้านหน้าไกล {0} หน่วย {1} ระลอกติด", r || 0, sk.ticks || 0);
+    case "tempest": return tr("เรียกพายุลงพื้นในระยะ {0} วงกว้าง {1} หน่วย ฟาด {2} ระลอก ระลอกละ {3} ตัว", r || 0, rad || 0, sk.strikes || 0, sk.targetsPerStrike || 0);
+    case "sledge": return tr("ขว้างค้อนเป็นเส้นตรงไกล {0} หน่วย — โดนศัตรูคือดาเมจ โดนกำแพงหรือบ้านของตัวเองคือซ่อม", r || 0);
+    case "wall": return tr("ก่อกำแพงอิฐกว้าง {0} หน่วยในระยะ {1} หน่วย อยู่ {2} วิ — กระสุนของศัตรูทะลุไม่ได้", sk.span || 0, r || 0, sk.life || 0);
+    case "steerDash": return tr("พุ่งทะลุยูนิตไกล {0} หน่วย — ถ้าชนกำแพงจะระเบิดรอบตัวรัศมี {1} หน่วยพร้อมกระแทกลอย", sk.dashRange || 0, sk.hitRadius || 0);
+    case "bunker": return tr("ก่อบ้านอิฐล้อมตัวเองรัศมี {0} หน่วย อยู่ {1} วิ — เพื่อนข้างในไม่กินดาเมจจากข้างนอกเลย", rad || 0, sk.life || 0);
+    case "pommel": return tr("กระแทกด้ามดาบใส่ศัตรูในระยะ {0} หน่วย — กดได้แม้ตัวเองติด CC อยู่ แล้วจะหมุนฟันสวนรอบตัวรัศมี {1} หน่วย", r || 0, sk.whirlRadius || 0);
+    case "lungeSweep": return tr("พุ่งเป็นเส้นตรง {0} หน่วย แล้วฟันกวาดครึ่งวงรัศมี {1} หน่วยที่ปลายทาง", sk.dashRange || 0, sk.sweepRadius || 0);
+    case "judgment": return tr("ฟันดาบพิพากษาใส่เป้าเดี่ยวในระยะ {0} หน่วย เป็นดาเมจจริง แล้วประหารทันทีถ้าเลือดเหลือต่ำกว่าเกณฑ์", r || 0);
     default: return tr("ใช้สกิล");
   }
 }
@@ -425,7 +477,12 @@ function timingClause(sk) {
   if (sk.delay) out.push(tr("หน่วง {0} วิก่อนลง", sk.delay));
   if (sk.airborne || sk.airTime) out.push(tr("ลอยอยู่กลางอากาศ {0} วิ", sk.airborne || sk.airTime));
   if (sk.maxCharge) out.push(tr("ชาร์จได้ถึง {0} วิ", sk.maxCharge));
-  if (sk.waves) out.push(tr("ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ", sk.waves[Math.max(0, (sk.rank || 1) - 1)], sk.every));
+  if (sk.waves) {
+    // waves มีสองแบบ — ตัวเลขจำนวนระลอกไล่ตามแรงก์ กับตารางบรรยายแต่ละระลอกทีละก้อน
+    const w = sk.waves[Math.max(0, (sk.rank || 1) - 1)];
+    const n = typeof w === "number" ? w : sk.waves.length;
+    out.push(tr("ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ", n, sk.every));
+  }
   if (sk.telegraph) out.push(tr("มีวงเตือนบนพื้นก่อนตก {0} วิ", sk.telegraph));
   return out;
 }
@@ -512,7 +569,11 @@ export function skillSentence(sk) {
   }
   const bits = [actionClause(sk), ...timingClause(sk)];
   const dmgRow = Array.isArray(sk.dmg) && sk.dmg.some((x) => x > 0);
-  if (dmgRow) bits.push(sk.magic ? tr("ทำดาเมจเวท") : tr("ทำดาเมจกายภาพ"));
+  // judgment เป็นดาเมจจริงล้วน ไม่ใช่กายภาพ — บอกให้ตรงกับที่เอนจินคิดจริง
+  if (dmgRow) {
+    bits.push(sk.type === "judgment" ? tr("ทำดาเมจจริง ทะลุทั้งเกราะและต้านเวท")
+      : sk.magic ? tr("ทำดาเมจเวท") : tr("ทำดาเมจกายภาพ"));
+  }
   bits.push(...ccClause(sk), ...supportClause(sk), ...extraClause(sk));
   return bits.filter(Boolean).join(" · ");
 }

@@ -13,7 +13,7 @@ import { Bar, Label } from "../ui/widgets.jsx";
 const rankMap = (u) => Object.fromEntries((u.skills || []).map((s) => [s.key, s.rank]));
 
 export function FightScreen(ctx) {
-  const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide } = ctx;
+  const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide, foeIntel } = ctx;
 
     const st = fightRef.current;
     return (
@@ -44,7 +44,7 @@ export function FightScreen(ctx) {
         </div>
 
         {scoutOpen && (
-          <ScoutPanel foe={foe} team={team} fightState={st} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
+          <ScoutPanel foe={foe} team={team} intel={foeIntel} fightState={st} onClose={() => setScoutOpen(false)} onSkill={openSkill} onStats={openStats} />
         )}
 
         {statsOpen && (

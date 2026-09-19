@@ -106,7 +106,13 @@ export function App() {
   const [draftStyle, setDraftStyle] = useState("BLIND");
   const [draft, setDraft] = useState(null);
   const [foeDraft, setFoeDraft] = useState(null);        // ตัวที่ฝ่ายตรงข้ามดราฟต์ได้
+  // ข่าวกรองฝ่ายตรงข้าม — ถ่ายภาพไว้ตอนปิดยก แล้วค่อยให้ส่องดูในยกถัดไป
+  // ยกแรกจึงยังไม่มีอะไรให้ดู เพราะเขายังไม่ได้เปิดของอะไรเลย
+  const [foeIntel, setFoeIntel] = useState(null);
   const [inspectId, setInspectId] = useState(null);      // ตัวละครที่กำลังดูข้อมูล
+  // ตัวกรองตารางตัวละคร — หน้าจอเป็นฟังก์ชันธรรมดาไม่มีฮุค สเตตเลยต้องอยู่ตรงนี้
+  const [pickQuery, setPickQuery] = useState("");
+  const [pickLane, setPickLane] = useState("ALL");
   const [storeLane, setStoreLane] = useState("TOP");
   const [bookCat, setBookCat] = useState("START");
   const [bookItem, setBookItem] = useState(null);
@@ -278,6 +284,18 @@ export function App() {
         return { ...c, autoLevel: false, ranks: { ...c.ranks, [key]: c.ranks[key] + 1 } };
       })
     );
+  }
+
+  // Blind Pick — ฝ่ายตรงข้ามสุ่มทีมใหม่ตอนเราจัดเลนเสร็จ
+  // เดิมหน้า POSITION สับรายชื่อตัวละครทั้งหมดแล้วยัดลงเลนตามลำดับดัชนี ไม่ดูเลยว่าตัวนั้นลงเลนนั้นได้ไหม
+  // ทีมที่ draftFoe คัดมาให้ถูกเลนตั้งแต่ต้นแมตช์เลยถูกทับทิ้งทุกครั้ง — เจอ ADC ไปยืนท็อปประจำ
+  function rerollFoe() {
+    const d0 = diffOf(diffId);
+    const spots = draftFoe(rand, d0.variety, d0.offRole);
+    setFoe((f) => f.map((c) => {
+      const s = spots.find((x) => x.lane === c.lane);
+      return { ...c, champId: s ? s.champId : c.champId, ranks: emptyRanks() };
+    }));
   }
 
   function resetRanks(idx) {
@@ -1004,6 +1022,14 @@ export function App() {
       log: Object.values(done).flatMap((r) => r.log).slice(-8),
     });
     setScoutOpen(false);
+    // ถ่ายภาพทีมคู่แข่ง "ตอนจบยกนี้" ไว้ให้ส่องดูในยกถัดไป
+    // เก็บของยกก่อนหน้าไว้ด้วย จะได้ไฮไลต์ได้ว่ายกที่แล้วเขาซื้ออะไรและอัพสกิลไหน
+    const snap = (list) => list.map((c) => ({
+      lane: c.lane, champId: c.champId, level: c.level,
+      items: (c.items || []).slice(), ranks: { ...(c.ranks || {}) },
+      upgrades: (c.upgrades || []).slice(),
+    }));
+    setFoeIntel((old) => ({ round, roster: snap(foe), prev: old ? old.roster : null }));
     setTeam(nextMe);
     setFoe(nextFoe);
     setScore(ns);
@@ -1042,7 +1068,8 @@ export function App() {
     setTeam, setTeamStyle, shopCat, showRanges, slotsUsed, speed,
     scoutOpen, setScoutOpen, startMatch, statsOpen, setStatsOpen, history,
     mode, modeId, setModeId, wide, lang, changeLang, inspectId, setInspectId,
-    draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes,
+    pickQuery, setPickQuery, pickLane, setPickLane,
+    draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes, foeIntel, rerollFoe,
     storeLane, setStoreLane, bookCat, setBookCat, bookItem, setBookItem,
     bookQuery, setBookQuery, shopItem, setShopItem, shopQuery, setShopQuery,
     patchOpen, setPatchOpen, statView, setStatView, openStats,

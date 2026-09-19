@@ -46,7 +46,9 @@ export function botStances(rand, me, foe, skill, round) {
 //   แกงค์ได้เฉพาะเลนที่ยกที่แล้วสั่ง AGGRO ไว้เท่านั้น
 // ---------------------------------------------------------------
 export function botJungle(rand, me, foe, stances, lastStances, skill, round) {
-  const open = STANCE_LANES.filter((L) => lastStances && lastStances[L] === "AGGRO");
+  // สเปคใหม่เหมือนฝั่งผู้เล่น — ดูนิสัยของ "ยกนี้" ไม่ใช่ยกที่แล้ว
+  void lastStances;
+  const open = STANCE_LANES.filter((L) => stances[L] === "AGGRO" || stances[L] === "NEUTRAL");
   if (!open.length) return { lane: null, crew: [] };
   // ฝีมือต่ำ = ไม่ค่อยคิด ฟาร์มไปเรื่อยหรือลงมั่ว
   if (rand() > skill * 0.9 + 0.05) return rand() < 0.5 ? { lane: null, crew: [] } : { lane: pick(rand, open), crew: [] };

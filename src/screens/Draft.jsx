@@ -3,7 +3,8 @@ import React from "react";
 import { CHAMPIONS, lanesOf } from "../data/champions.js";
 import { BAN_ORDER, PICK_ORDER, draftTurn } from "../game/draft.js";
 import { Shell, btn, card } from "../ui/chrome.jsx";
-import { Panel, Tile, TileGrid } from "../ui/kit.jsx";
+import { ChampFilterBar, LaneHeading, filterChamps, groupByLane } from "../ui/champ-pick.jsx";
+import { Empty, Panel, Tile, TileGrid } from "../ui/kit.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 import { skillShape } from "../game/skill-desc.js";
@@ -20,6 +21,7 @@ export function DraftScreen(ctx) {
   const {
     score, mode, wide, draft, draftAct, draftBack, setPhase,
     inspectId, setInspectId, openSkill,
+    pickQuery, setPickQuery, pickLane, setPickLane,
   } = ctx;
 
   if (!draft) return null;
@@ -106,6 +108,29 @@ export function DraftScreen(ctx) {
     );
   })();
 
+  const shown = filterChamps(pickQuery, pickLane);
+  const champTile = (c, keyPrefix) => {
+    const out = taken.has(c.id);
+    const banned = draft.bans.some((b) => b.champId === c.id);
+    return (
+      <div key={keyPrefix + c.id} style={{ opacity: out ? 0.32 : 1, position: "relative" }}>
+        <Tile
+          title={c.id}
+          sub={banned ? tr("ถูกแบน") : out ? tr("ถูกเลือกแล้ว") : lanesOf(c).join("/")}
+          selected={c.id === ch.id}
+          onClick={() => setInspectId(c.id)}
+        />
+        {banned ? (
+          <div style={{
+            position: "absolute", inset: 0, pointerEvents: "none",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: C.red, fontSize: 22, fontWeight: 900,
+          }}>×</div>
+        ) : null}
+      </div>
+    );
+  };
+
   const grid = (
     <Panel style={{ padding: 10 }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
@@ -115,29 +140,25 @@ export function DraftScreen(ctx) {
         </span>
       </div>
       {stepBar}
-      <TileGrid min={88}>
-        {Object.values(CHAMPIONS).map((c) => {
-          const out = taken.has(c.id);
-          const banned = draft.bans.some((b) => b.champId === c.id);
-          return (
-            <div key={c.id} style={{ opacity: out ? 0.32 : 1, position: "relative" }}>
-              <Tile
-                title={c.id}
-                sub={banned ? tr("ถูกแบน") : out ? tr("ถูกเลือกแล้ว") : lanesOf(c).join("/")}
-                selected={c.id === ch.id}
-                onClick={() => setInspectId(c.id)}
-              />
-              {banned ? (
-                <div style={{
-                  position: "absolute", inset: 0, pointerEvents: "none",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: C.red, fontSize: 22, fontWeight: 900,
-                }}>×</div>
-              ) : null}
-            </div>
-          );
-        })}
-      </TileGrid>
+
+      <ChampFilterBar
+        query={pickQuery} setQuery={setPickQuery}
+        lane={pickLane} setLane={setPickLane} count={shown.length}
+      />
+
+      {!shown.length ? (
+        <Empty>{tr("ไม่เจอตัวละครที่ตรงกับที่ค้น")}</Empty>
+      ) : pickLane === "ALL" ? (
+        groupByLane(shown).map((g) => (
+          <div key={g.lane}>
+            <LaneHeading lane={g.lane} n={g.list.length} />
+            <TileGrid min={88}>{g.list.map((c) => champTile(c, g.lane + "-"))}</TileGrid>
+          </div>
+        ))
+      ) : (
+        <TileGrid min={88}>{shown.map((c) => champTile(c, ""))}</TileGrid>
+      )}
+
       <div style={{ fontSize: 10.5, color: C.dim, marginTop: 8, lineHeight: 1.5 }}>
         {tr("แตะการ์ดเพื่ออ่านตัวละคร แล้วกดปุ่มด้านล่างเพื่อยืนยัน · ตัวที่ถูกเลือกหรือถูกแบนไปแล้วหยิบซ้ำไม่ได้")}
       </div>

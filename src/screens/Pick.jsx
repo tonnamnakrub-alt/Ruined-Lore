@@ -3,6 +3,7 @@ import React from "react";
 import { CHAMPIONS, lanesOf } from "../data/champions.js";
 import { emptyRanks } from "../engine/skill-ranks.js";
 import { Shell, btn } from "../ui/chrome.jsx";
+import { ChampFilterBar, LaneHeading, filterChamps, groupByLane } from "../ui/champ-pick.jsx";
 import { Empty, InfoRow, Panel, Portrait, Tile, TileGrid, TwoPane } from "../ui/kit.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
@@ -15,6 +16,7 @@ export function PickScreen(ctx) {
   const {
     score, mode, wide, team, setTeam, setPhase, setDraftPool, setHeldChamp,
     inspectId, setInspectId, skillOrders, setSkillOrders, priorityOf, openSkill,
+    pickQuery, setPickQuery, pickLane, setPickLane,
   } = ctx;
 
   const picked = team.map((c) => c.champId).filter(Boolean);
@@ -46,6 +48,21 @@ export function PickScreen(ctx) {
     setSkillOrders((s) => ({ ...s, [ch.id]: next }));
   }
 
+  const shown = filterChamps(pickQuery, pickLane);
+  const champTile = (c, keyPrefix) => {
+    const idx = picked.indexOf(c.id);
+    return (
+      <Tile
+        key={keyPrefix + c.id}
+        title={c.id}
+        sub={`${lanesOf(c).join("/")} · ${c.melee ? tr("ประชิด") : tr("ระยะ")}`}
+        badge={idx >= 0 ? idx + 1 : null}
+        selected={c.id === ch.id}
+        onClick={() => setInspectId(c.id)}
+      />
+    );
+  };
+
   const grid = (
     <Panel style={{ padding: 10 }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
@@ -54,21 +71,26 @@ export function PickScreen(ctx) {
           {new Set(picked).size}/5
         </span>
       </div>
-      <TileGrid min={92}>
-        {Object.values(CHAMPIONS).map((c) => {
-          const idx = picked.indexOf(c.id);
-          return (
-            <Tile
-              key={c.id}
-              title={c.id}
-              sub={`${lanesOf(c).join("/")} · ${c.melee ? tr("ประชิด") : tr("ระยะ")}`}
-              badge={idx >= 0 ? idx + 1 : null}
-              selected={c.id === ch.id}
-              onClick={() => setInspectId(c.id)}
-            />
-          );
-        })}
-      </TileGrid>
+
+      <ChampFilterBar
+        query={pickQuery} setQuery={setPickQuery}
+        lane={pickLane} setLane={setPickLane} count={shown.length}
+      />
+
+      {!shown.length ? (
+        <Empty>{tr("ไม่เจอตัวละครที่ตรงกับที่ค้น")}</Empty>
+      ) : pickLane === "ALL" ? (
+        // ไม่ได้เจาะเลนไหน ก็ไล่เรียงเป็นหมวดตำแหน่งให้ · ตัวที่ลงได้สองเลนจะโผล่สองที่
+        groupByLane(shown).map((g) => (
+          <div key={g.lane}>
+            <LaneHeading lane={g.lane} n={g.list.length} />
+            <TileGrid min={92}>{g.list.map((c) => champTile(c, g.lane + "-"))}</TileGrid>
+          </div>
+        ))
+      ) : (
+        <TileGrid min={92}>{shown.map((c) => champTile(c, ""))}</TileGrid>
+      )}
+
       <div style={{ fontSize: 10, color: C.dim, marginTop: 8 }}>{tr("แตะกล่องเพื่อดูข้อมูล แล้วกดปุ่มด้านขวาเพื่อเลือกเข้าทีม")}</div>
     </Panel>
   );
