@@ -10,7 +10,7 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 
 export function PositionScreen(ctx) {
-  const { draftPool, heldChamp, rand, round, score, setFoe, setHeldChamp, setPhase, setTeam, team, mode } = ctx;
+  const { draftPool, heldChamp, rand, round, score, setFoe, setHeldChamp, setPhase, setTeam, team, mode, foeDraft, assignLanes, startDraft, draftStyle } = ctx;
 
     const roster = draftPool;
     const placed = team.map((c) => c.champId).filter(Boolean);
@@ -86,6 +86,14 @@ export function PositionScreen(ctx) {
           disabled={!ready}
           onClick={() => {
             setFoe((f) => {
+              // โหมดดราฟต์ — ฝ่ายตรงข้ามต้องได้ตัวที่มันดราฟต์มาจริง แล้วจัดลงเลนให้ตรงบทบาท
+              if (foeDraft && foeDraft.length === 5) {
+                const spots = assignLanes(foeDraft);
+                return f.map((c) => {
+                  const s2 = spots.find((x) => x.lane === c.lane);
+                  return { ...c, champId: s2 ? s2.champId : c.champId, ranks: emptyRanks() };
+                });
+              }
               const pool = Object.values(CHAMPIONS).map((ch) => ch.id);
               for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
               return f.map((c, i) => ({ ...c, champId: pool[i % pool.length], ranks: emptyRanks() }));
@@ -95,7 +103,7 @@ export function PositionScreen(ctx) {
           style={{ ...btn(ready ? C.gold : "#243049"), color: ready ? "#0B1220" : C.dim, fontWeight: 800, marginTop: 14 }}>
           {ready ? tr("ไปวางแผนซื้อของ (ข้ามได้)") : tr("วางให้ครบทุกเลนก่อน")}
         </button>
-        <button onClick={() => setPhase("DRAFT")} style={{ ...btn(C.panel2), marginTop: 6, fontSize: 12 }}>{tr("กลับไปดราฟต์ใหม่")}</button>
+        <button onClick={() => startDraft(draftStyle)} style={{ ...btn(C.panel2), marginTop: 6, fontSize: 12 }}>{tr("กลับไปดราฟต์ใหม่")}</button>
       </Shell>
     );
 }

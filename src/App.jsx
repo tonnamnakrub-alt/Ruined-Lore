@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { SetupScreen } from "./screens/Setup.jsx";
 import { MenuScreen, PlayMenuScreen } from "./screens/Menu.jsx";
 import { PickScreen } from "./screens/Pick.jsx";
+import { DraftScreen } from "./screens/Draft.jsx";
 import { StoreScreen } from "./screens/Store.jsx";
 import { ItemBookScreen } from "./screens/ItemBook.jsx";
 import { PatchScreen } from "./screens/Patch.jsx";
@@ -18,7 +19,8 @@ import { CATEGORIES, ITEMS, ITEM_BY_ID, applyBuy, buyBlockedReason, effectiveCos
 import { LANE_INFO } from "./data/lanes.js";
 import { shopFor } from "./game/shop-ai.js";
 import { nextStreak, streakMods } from "./game/streak.js";
-import { botSpread, draftFoe } from "./game/bot-draft.js";
+import { assignLanes, botBan, botPickOne, botSpread, draftFoe } from "./game/bot-draft.js";
+import { draftApply, draftPicksOf, draftTaken, draftTurn, newDraft } from "./game/draft.js";
 import { STANCE_LANES, LANE_MEMBERS, KILL, ASSIST_SOLO, ASSIST_GROUP, SAFE_STAND_SECONDS, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
 import { DIFFS, diffOf } from "./data/difficulty.js";
 import { buildRoundPlan, foeIncome } from "./game/round-plan.js";
@@ -100,6 +102,10 @@ export function App() {
     try { return localStorage.getItem("sideline.lang") === "th" ? "th" : "en"; } catch { return "en"; }
   });
   const [modeId, setModeId] = useState(DEFAULT_MODE);
+  // รูปแบบการเลือกตัว — BLIND (แบบเดิม) · DRAFT (ผลัดกันเลือก) · TOURNEY (แบน 3 ก่อน)
+  const [draftStyle, setDraftStyle] = useState("BLIND");
+  const [draft, setDraft] = useState(null);
+  const [foeDraft, setFoeDraft] = useState(null);        // ตัวที่ฝ่ายตรงข้ามดราฟต์ได้
   const [inspectId, setInspectId] = useState(null);      // ตัวละครที่กำลังดูข้อมูล
   const [storeLane, setStoreLane] = useState("TOP");
   const [bookCat, setBookCat] = useState("START");
@@ -201,11 +207,67 @@ export function App() {
 
   function quickStart() {
     setTeam((t) => t.map((c) => ({ ...c, athlete: randomSpread(rand) })));
-    setPhase("DRAFT");
+    startDraft(draftStyle);
   }
 
   function pickChamp(lane, id) {
     setTeam((t) => t.map((c) => (c.lane === lane ? { ...c, champId: id, ranks: emptyRanks() } : c)));
+  }
+
+  // ---------------- โหมดดราฟต์ (Patch 0.3) ----------------
+  // ฝ่ายตรงข้ามเป็นบอท มันจึงลงมือทันทีหลังเรากด — ผู้เล่นเห็นผลแบบเรียลไทม์
+  function botSteps(d0) {
+    let d = d0;
+    const dv = diffOf(diffId).variety;
+    let guard = 0;
+    while (guard++ < 30) {
+      const turn = draftTurn(d);
+      if (!turn || turn.side !== "B") break;
+      const taken = draftTaken(d);
+      const id = turn.kind === "ban"
+        ? botBan(rand, taken)
+        : botPickOne(rand, taken, draftPicksOf(d, "B"), dv);
+      if (!id) break;
+      d = draftApply(d, id, turn.kind === "ban"
+        ? tr("🔴 ฝ่ายตรงข้ามแบน {0}", id)
+        : tr("🔴 ฝ่ายตรงข้ามเลือก {0}", id));
+    }
+    return d;
+  }
+
+  function startDraft(style) {
+    setDraftStyle(style);
+    setFoeDraft(null);
+    setDraft(style === "BLIND" ? null : botSteps(newDraft(style)));
+    setTeam((t) => t.map((c) => ({ ...c, champId: null, ranks: emptyRanks() })));
+    setHeldChamp(null);
+    setPhase("DRAFT");
+  }
+
+  function draftAct(champId) {
+    setDraft((d) => {
+      if (!d) return d;
+      const turn = draftTurn(d);
+      if (!turn || turn.side !== "A") return d;
+      const after = draftApply(d, champId, turn.kind === "ban"
+        ? tr("🔵 คุณแบน {0}", champId)
+        : tr("🔵 คุณเลือก {0}", champId));
+      if (after === d) return d;
+      const next = botSteps(after);
+      // ดราฟต์จบแล้ว — ส่งตัวที่ได้ไปให้หน้าจัดตำแหน่ง
+      if (!draftTurn(next)) {
+        setDraftPool(draftPicksOf(next, "A"));
+        setFoeDraft(draftPicksOf(next, "B"));
+      }
+      return next;
+    });
+  }
+
+  function draftBack() {
+    if (draftStyle === "BLIND") { setPhase("SETUP"); return; }
+    setDraft(botSteps(newDraft(draftStyle)));
+    setFoeDraft(null);
+    setDraftPool([]);
   }
 
   function addRank(idx, key) {
@@ -980,6 +1042,7 @@ export function App() {
     setTeam, setTeamStyle, shopCat, showRanges, slotsUsed, speed,
     scoutOpen, setScoutOpen, startMatch, statsOpen, setStatsOpen, history,
     mode, modeId, setModeId, wide, lang, changeLang, inspectId, setInspectId,
+    draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes,
     storeLane, setStoreLane, bookCat, setBookCat, bookItem, setBookItem,
     bookQuery, setBookQuery, shopItem, setShopItem, shopQuery, setShopQuery,
     patchOpen, setPatchOpen, statView, setStatView, openStats,
@@ -1002,7 +1065,7 @@ export function App() {
     if (phase === "SETTING") return SettingScreen(ctx);
     if (phase === "SETUP") return SetupScreen(ctx);
     if (phase === "PRACTICE") return <Practice onExit={() => setPhase("PLAY_MENU")} openSkill={openSkill} />;
-    if (phase === "DRAFT") return PickScreen(ctx);
+    if (phase === "DRAFT") return draftStyle === "BLIND" ? PickScreen(ctx) : DraftScreen(ctx);
     if (phase === "POSITION") return PositionScreen(ctx);
     if (phase === "PLAN") return PlanScreen(ctx);
     if (phase === "SHOP") return ShopPhase(ctx);

@@ -3,6 +3,8 @@ import React from "react";
 import { Shell } from "../ui/chrome.jsx";
 import { MenuButton } from "../ui/kit.jsx";
 import { LATEST_PATCH, patchLabel } from "../data/patches.js";
+import { MODES } from "../data/modes.js";
+import { DRAFT_STYLES } from "../game/draft.js";
 import { C, MONO, SANS } from "../ui/theme.js";
 
 // ---------------- เมนูหลัก ----------------
@@ -49,7 +51,7 @@ export function MenuScreen(ctx) {
 
 // ---------------- เมนูเลือกโหมด ----------------
 export function PlayMenuScreen(ctx) {
-  const { score, mode, modeId, setModeId, setPhase } = ctx;
+  const { score, mode, modeId, setModeId, setPhase, draftStyle, setDraftStyle } = ctx;
   const MODE_LIST = [
     { id: "LONG", th: "Normal", rounds: 50 },
     { id: "RUSH", th: "Quick Play", rounds: 20 },
@@ -79,6 +81,25 @@ export function PlayMenuScreen(ctx) {
         </div>
         <div style={{ fontSize: 11, color: C.dim, marginBottom: 10, lineHeight: 1.5 }}>{tr(mode.desc)}</div>
 
+        {/* Patch 0.3 — เลือกได้ว่าจะเลือกตัวแบบไหน */}
+        <div style={{ fontSize: 10, letterSpacing: 1.2, color: C.dim, fontWeight: 700, marginBottom: 5 }}>
+          {tr("วิธีเลือกตัวละคร")}
+        </div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
+          {Object.values(DRAFT_STYLES).map((s) => (
+            <button key={s.id} onClick={() => setDraftStyle(s.id)}
+              style={{
+                flex: 1, background: draftStyle === s.id ? C.blue : C.panel2,
+                color: draftStyle === s.id ? "#0B1220" : C.ink, border: `1px solid ${C.line}`,
+                borderRadius: 6, padding: "8px 6px", cursor: "pointer", fontFamily: SANS,
+                fontSize: 12, fontWeight: draftStyle === s.id ? 800 : 400,
+              }}>{tr(s.th)}</button>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: C.dim, marginBottom: 10, lineHeight: 1.5 }}>
+          {tr(DRAFT_STYLES[draftStyle].desc)}
+        </div>
+
         <button onClick={() => setPhase("SETUP")}
           style={{
             width: "100%", background: C.gold, color: "#0B1220", border: "none", borderRadius: 7,
@@ -89,7 +110,10 @@ export function PlayMenuScreen(ctx) {
       <MenuButton title="VERSUS" tone={C.blue} onClick={() => setPhase("ONLINE")}
         sub={tr("เล่นกับเพื่อนแบบต่อตรง — แลกโค้ดกันครั้งเดียว ไม่ต้องมีเซิร์ฟเวอร์")} />
       <MenuButton title="RANK" disabled sub={tr("ระบบแต้ม/ตีระดับ — เร็วๆ นี้")} />
-      <MenuButton title="TOURNAMENT" disabled sub={tr("สายแข่งหลายแมตช์ แพ้ตกรอบ — เร็วๆ นี้")} />
+      {/* Patch 0.3 — ทัวร์นาเมนต์เล่นได้แล้ว: แบนฝั่งละ 3 แล้วดราฟต์แบบ Snake */}
+      <MenuButton title="TOURNAMENT" tone={C.red}
+        onClick={() => { setDraftStyle("TOURNEY"); setPhase("SETUP"); }}
+        sub={tr("แบนฝั่งละ 3 ตัว แล้วผลัดกันเลือกแบบดราฟต์ — เห็นของอีกฝั่งตลอด")} />
 
       <button onClick={() => setPhase("PRACTICE")}
         style={{

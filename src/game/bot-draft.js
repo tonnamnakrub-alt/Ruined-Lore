@@ -102,3 +102,83 @@ export function botSpread(rand, champId, floor = 4) {
   }
   return o;
 }
+
+
+// ---------------------------------------------------------------
+// Patch 0.3 — โหมดดราฟต์ (Draft Pick / Tournament)
+//
+// ต่างจาก draftFoe ตรงที่ตรงนี้เลือก "ทีละตัว" สลับกับผู้เล่น
+// และต้องเลี่ยงตัวที่ถูกแบนหรือถูกหยิบไปแล้วทั้งสองฝั่ง
+// ---------------------------------------------------------------
+
+// ตัวที่ยังหยิบได้
+export function openPool(taken) {
+  const used = new Set(taken);
+  return Object.values(CHAMPIONS).filter((c) => !used.has(c.id));
+}
+
+
+// บอทแบน — เล็งตัวที่ "แรงและยืดหยุ่น" ก่อน (ค่า AI value สูง ลงได้หลายเลน)
+export function botBan(rand, taken) {
+  const pool = openPool(taken);
+  if (!pool.length) return null;
+  let best = pool[0], bestS = -1;
+  for (const c of pool) {
+    const s = c.value * 10 + (c.alsoLanes || []).length * 3 + rand() * 6;
+    if (s > bestS) { bestS = s; best = c; }
+  }
+  return best.id;
+}
+
+
+// บอทหยิบหนึ่งตัว — เลือกตัวที่ทำให้ทีมของมันสมบูรณ์ที่สุดเท่าที่เหลืออยู่
+//   mine = รหัสตัวที่บอทหยิบไปแล้ว
+export function botPickOne(rand, taken, mine, variety = 0.25) {
+  const pool = openPool(taken);
+  if (!pool.length) return null;
+  const have = mine.map((id) => CHAMPIONS[id]).filter(Boolean);
+  const needFront = !have.some((c) => FRONT.test(c.role));
+  const needSustain = !have.some(SUSTAIN);
+  const needRanged = !have.some(RANGED);
+  // เลนที่ทีมยังไม่มีคนลงได้เลย
+  const covered = new Set();
+  for (const c of have) for (const l of [c.lane, ...(c.alsoLanes || [])]) covered.add(l);
+  let best = pool[0], bestS = -Infinity;
+  for (const c of pool) {
+    let s = c.value * 6;
+    if (needFront && FRONT.test(c.role)) s += 28;
+    if (needSustain && SUSTAIN(c)) s += 24;
+    if (needRanged && RANGED(c)) s += 22;
+    for (const l of [c.lane, ...(c.alsoLanes || [])]) if (!covered.has(l)) { s += 18; break; }
+    // ไม่อยากได้บทบาทซ้ำกันทั้งทีม
+    if (have.some((h) => h.role === c.role)) s -= 12;
+    s += rand() * 30 * variety;
+    if (s > bestS) { bestS = s; best = c; }
+  }
+  return best.id;
+}
+
+
+// เอา 5 ตัวที่ดราฟต์มาแล้วไปลงเลน — เลือกชุดที่ลงตรงเลนมากที่สุด
+export function assignLanes(ids) {
+  const list = ids.filter(Boolean);
+  if (list.length !== LANES.length) {
+    return LANES.map((lane, i) => ({ lane, champId: list[i] || poolFor(lane)[0].id }));
+  }
+  let best = null, bestS = -Infinity;
+  const perm = (arr, k, acc) => {
+    if (k === arr.length) {
+      const picks = LANES.map((lane, i) => ({ lane, champId: acc[i] }));
+      const s = compScore(picks);
+      if (s > bestS) { bestS = s; best = picks; }
+      return;
+    }
+    for (let i = k; i < arr.length; i++) {
+      const c = arr.slice();
+      [c[k], c[i]] = [c[i], c[k]];
+      perm(c, k + 1, c);
+    }
+  };
+  perm(list, 0, list);
+  return best || LANES.map((lane, i) => ({ lane, champId: list[i] }));
+}

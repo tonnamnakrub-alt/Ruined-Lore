@@ -9,7 +9,7 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Label, Pip } from "../ui/widgets.jsx";
 
 export function SetupScreen(ctx) {
-  const { bump, clearOne, quickStart, ready, rollAll, rollOne, round, score, setPhase, spent, team, mode, modeId, setModeId } = ctx;
+  const { bump, clearOne, quickStart, ready, rollAll, rollOne, round, score, setPhase, spent, team, mode, modeId, setModeId, startDraft, draftStyle } = ctx;
 
     return (
       <Shell round={0} score={score} mode={mode} title={tr("สร้างทีม")} onBack={() => setPhase("PLAY_MENU")}>
@@ -67,7 +67,7 @@ export function SetupScreen(ctx) {
 
         <button
           disabled={!ready}
-          onClick={() => setPhase("DRAFT")}
+          onClick={() => startDraft(draftStyle)}
           style={{ ...btn(ready ? C.gold : "#243049"), color: ready ? "#0B1220" : C.dim, marginTop: 14, fontWeight: 800 }}
         >
           {ready ? tr("เริ่มแมตช์ (Bo15 — ถึง 8 ก่อนชนะ)") : tr("แจกแต้มให้ครบทุกคนก่อน")}
