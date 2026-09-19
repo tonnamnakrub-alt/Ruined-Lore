@@ -46,6 +46,23 @@ export function syncFrag(u) {
 }
 
 
+// ดาเมจที่ยูนิตนี้กินไปใน n วินาทีที่ผ่านมา — ใช้กับ R ของ Luch ที่สะท้อนของเก่าคืน
+// บันทึกถูกเขียนใน applyDamage และถูกตัดทิ้งของเก่าทุกเฟรมใน step.js
+export function recentTaken(u, now, window) {
+  let sum = 0;
+  for (const e of u.tookLog || []) if (now - e[0] <= window) sum += e[1];
+  return sum;
+}
+
+
+// ความเร็วเดิน "ส่วนที่เกินค่าฐานของตัวเอง" — รวมรองเท้า ไอเทม และ MS ที่ได้จาก AP
+// ใช้กับ Ariel ที่ทุกสกิลเร่งตามความเร็ว (ไม่ใช้ msEff เพราะสโลว์ไม่ควรไปลดคุณภาพสกิล)
+export function bonusMs(u) {
+  const base = (u.champ && u.champ.ms) || 0;
+  return Math.max(0, (u.moveSpeed || 0) - base) + (u.apMs || 0);
+}
+
+
 export function addFrag(u, amount) {
   if (!u.champ.fragments) return;
   u.frag = (u.frag || 0) + amount;

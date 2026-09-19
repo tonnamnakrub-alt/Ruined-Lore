@@ -5,7 +5,7 @@ import { startGrab } from "./motion.js";
 import { applyCharm, startBloodStorm } from "./laura.js";
 import { castDismissal, castGuardBurst } from "./klaeder.js";
 import { castAllyBlink, castTeaGarden, castWonderland } from "./alice.js";
-import { addBuff, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
+import { addBuff, bonusMs, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -97,7 +97,24 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     case "aoeGround": {
-      state.zones.push({ x: missX, y: missY, r: sk.radius, at: state.t + sk.delay, ownerId: u.id, team: u.team, dmg: power, magic: !!sk.magic, skill: sk });
+      // Crashing Tide — ไม่ใช่วางวงเฉยๆ แล้ว แอเรียลว่ายไปถึงจุดนั้นจริง
+      // ตลอดช่วงร่าย (ซึ่งสั้นลงตามความเร็วเดิน) แล้วค่อยทุบทิ้งน้ำตกไว้
+      let tx = missX, ty = missY;
+      if (sk.strideTo) {
+        const dd = Math.hypot(missX - u.x, missY - u.y) || 1;
+        const go = Math.min(dd, sk.range);
+        tx = clamp(u.x + ((missX - u.x) / dd) * go, u.radius, ARENA_W - u.radius);
+        ty = clamp(u.y + ((missY - u.y) / dd) * go, u.radius, ARENA_H - u.radius);
+        const walk = sk.castByMs
+          ? Math.max(sk.castByMs.min, sk.castByMs.base - bonusMs(u) / sk.castByMs.per)
+          : (sk.cast || 0);
+        u.striding = { x0: u.x, y0: u.y, x: tx, y: ty, t0: state.t, t1: state.t + walk };
+        vfx(state, { kind: "trail", x: u.x, y: u.y, x2: tx, y2: ty, color: "75,141,248", dur: walk });
+        state.zones.push({ x: tx, y: ty, r: sk.radius, at: state.t + walk + sk.delay, ownerId: u.id,
+          team: u.team, dmg: power, magic: !!sk.magic, skill: sk, pool: sk.pool });
+        break;
+      }
+      state.zones.push({ x: tx, y: ty, r: sk.radius, at: state.t + sk.delay, ownerId: u.id, team: u.team, dmg: power, magic: !!sk.magic, skill: sk });
       break;
     }
     case "selfBuff": {
@@ -247,7 +264,12 @@ function fireSkillEffect(state, u, sk, target, prec) {
     }
     case "grabSlam": {
       if (dist(u, target) <= sk.grabRange + target.radius) startGrab(state, u, sk, target);
-      else u.chasing = { targetId: target.id, until: state.t + sk.lockTime, skill: sk };
+      else {
+        // สเปคใหม่: ไม่ถึงตัวก็พุ่งเข้าไปหาเลยด้วยความเร็ว 1000 ไม่ใช่เดินไล่เฉยๆ
+        u.chasing = { targetId: target.id, until: state.t + sk.lockTime, skill: sk,
+          lungeSpeed: sk.lungeSpeed || 0, lungeLeft: sk.lungeRange || 0 };
+        if (sk.lungeSpeed) vfx(state, { kind: "trail", x: u.x, y: u.y, color: "255,208,138", pending: u.id });
+      }
       break;
     }
     case "shredWave": {
@@ -299,9 +321,11 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     case "absorbReflect": {
-      vfx(state, { kind: "aura", id: u.id, r: sk.radius * 0.4, color: "255,255,255", dur: sk.dur });
+      // สเปคใหม่: ไม่ได้รอกินดาเมจสดอย่างเดียวแล้ว — เอาดาเมจที่ทีมกินไปเมื่อ 3 วิก่อนหน้ามาเป็นทุน
+      if (sk.oncePerFight) u.paradiseUsed = true;
+      vfx(state, { kind: "aura", id: u.id, r: 180, color: "255,255,255", dur: sk.dur });
       addBuff(u, { type: "invuln", v: 1, until: state.t + sk.dur }, state.t);
-      u.absorb = { dmg: 0, until: state.t + sk.dur, skill: sk };
+      u.absorb = { dmg: recentTaken(u, state.t, sk.lookback || 0), until: state.t + sk.dur, skill: sk };
       break;
     }
     case "blinkBehind": {
@@ -375,9 +399,12 @@ function fireSkillEffect(state, u, sk, target, prec) {
       const ty = u.y + ((target.y - u.y) / dd) * Math.min(dd, sk.range);
       addBuff(u, { type: "untargetable", v: 1, until: state.t + dur }, state.t);
       addBuff(u, { type: "invuln", v: 1, until: state.t + dur }, state.t);
-      const kn = sk.knockupPerApMs
-        ? Math.min(sk.knockupCap, sk.knockup + ((u.apMs || 0) / 100) * sk.knockupPerApMs)
-        : sk.knockup;
+      // ลอยฟ้านานขึ้นตามความเร็วเดินส่วนเกิน (รองเท้าก็นับ) จาก 0.5 วิ ยืดได้ถึง 1.5 วิ
+      const kn = sk.knockupPerMs
+        ? Math.min(sk.knockupCap, sk.knockup + bonusMs(u) * sk.knockupPerMs)
+        : sk.knockupPerApMs
+          ? Math.min(sk.knockupCap, sk.knockup + ((u.apMs || 0) / 100) * sk.knockupPerApMs)
+          : sk.knockup;
       state.submerges.push({ ownerId: u.id, at: state.t + dur, x: tx, y: ty, r: sk.radius, dmg: power,
         knockup: kn, magic: !!sk.magic, surfaceDelay: sk.surfaceDelay || 0 });
       break;
@@ -385,11 +412,16 @@ function fireSkillEffect(state, u, sk, target, prec) {
     case "wave": {
       const dd = dist(u, target) || 1;
       const nx = (target.x - u.x) / dd, ny = (target.y - u.y) / dd;
-      const spd = Math.min(sk.speedMax || sk.speed, sk.speed + (u.apMs || 0) * 2);
+      // ความเร็วเดินส่วนเกินทำให้คลื่นใหญ่ขึ้น ไกลขึ้น และเร็วขึ้น (ไม่ใช่แรงขึ้น)
+      const ms = sk.msScale ? bonusMs(u) : 0;
+      const sc = sk.msScale || {};
+      const spd = Math.min(sk.speedMax || sk.speed, sk.speed + (u.apMs || 0) * 2) + ms * (sc.speed || 0);
+      const halfW = (sk.width + ms * (sc.width || 0)) / 2;
+      const reach = sk.range + ms * (sc.range || 0);
       const r = Math.max(0, sk.rank - 1);
       state.waves.push({
         ownerId: u.id, team: u.team, x: u.x, y: u.y, nx, ny, speed: spd,
-        left: sk.range, halfW: sk.width / 2, dmg: power, magic: !!sk.magic,
+        left: reach, span: reach, halfW, dmg: power, magic: !!sk.magic,
         knockup: sk.knockupByRank ? sk.knockupByRank[r] : 0, hitIds: [], skill: sk, rank: r,
         startX: u.x, startY: u.y,
       });
@@ -465,15 +497,14 @@ function fireSkillEffect(state, u, sk, target, prec) {
       // อัพเกรดแล้วยังเป็นลูกเดียว แต่วงกว้างขึ้น และโดนใครก็ได้ความเร็วเดินที่ค่อยๆ จาง
       const up = u.upgrades.includes("E");
       const rad = up ? sk.upRadius : sk.radius;
+      // สเปคใหม่: ไม่มีโล่แล้ว — เพื่อนที่ยืนในวงตอนกระสุนลงได้ความเร็วเดินที่ค่อยๆ จาง
       state.zones.push({ x: cx, y: cy, r: rad, at: state.t + impactDelay,
         ownerId: u.id, team: u.team, dmg: power, magic: false, skill: sk,
-        msGain: up ? sk.upMs : 0, msDur: sk.upMsDur });
+        allyMs: sk.allyMs || 0, allyMsDur: sk.allyMsDur });
       vfx(state, { kind: "ring", x: cx, y: cy, r: rad, color: "232,163,61", dur: impactDelay });
-      // ยิงปืนใหญ่ลงที่ไหนก็ได้ — ตัวคนยิงได้โล่กับความเร็วเดินทันทีเสมอ
-      if (sk.selfShield) {
-        grantShield(u, sk.selfShield * (u.bonusAd || 0));
-        u.buffs.push({ type: "shield", v: 1, until: state.t + (sk.selfDur || 3) });
-        addBuff(u, { type: "ms", v: sk.selfMs || 0, until: state.t + (sk.selfDur || 3) }, state.t);
+      // ส่วนตัวคนยิงได้ความเร็วเดินทันทีที่กด ไม่ต้องรอให้กระสุนลง
+      if (sk.selfMs) {
+        addBuff(u, { type: "ms", v: sk.selfMs, decayFrom: state.t, until: state.t + (sk.selfDur || 3) }, state.t);
         vfx(state, { kind: "aura", id: u.id, r: u.radius + 26, color: "232,163,61", dur: sk.selfDur || 3 });
       }
       break;
@@ -488,6 +519,8 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     case "lastStand": {
+      // สเปคใหม่: กดเองไม่ได้ — มันทำงานเองตอนดาเมจจะฆ่า (engine/kazem.js: lastStandCatch)
+      if (sk.onDeath) break;
       const r = Math.max(0, sk.rank - 1);
       u.hp = u.maxHp;
       u.lastStand = { until: state.t + 99, drain: sk.drain };
@@ -589,6 +622,7 @@ function fireSkillEffect(state, u, sk, target, prec) {
         ownerId: u.id, team: u.team, x: cx, y: cy, r: sk.radius, thick: sk.thickness,
         at: state.t + sk.delay, until: state.t + sk.delay + sk.life,
         hp: sk.hp[Math.max(0, sk.rank - 1)], breakSlow: sk.breakSlow, breakSlowDur: sk.breakSlowDur,
+        allyPass: !!sk.allyPass,
       });
       break;
     }

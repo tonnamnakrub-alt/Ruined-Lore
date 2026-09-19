@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { applyDamage, edgeDamage, grantShield, healUnit } from "./damage.js";
 import { applyFragmentDamage } from "./on-hit.js";
-import { addBuff, dist, pushLog, skillLabel, vfx } from "./state-util.js";
+import { addBuff, dist, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { DT, step } from "./step.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -65,6 +65,8 @@ export function tickNewSystems(state) {
     if (state.t < c.at) return true;
     for (const u of state.units) {
       if (!u.alive || u.dashing || u.charging) continue;
+      // สเปคใหม่: เพื่อนของคนวางกรงเดินผ่านได้ตามปกติ ติดอยู่ข้างในเฉพาะศัตรู
+      if (c.allyPass && u.team === c.team) continue;
       const dx = u.x - c.x, dy = u.y - c.y;
       const dd = Math.hypot(dx, dy) || 1;
       const inside = dd < c.r;
@@ -136,14 +138,29 @@ export function tickNewSystems(state) {
       if (w.skill && w.skill.falloff) w.dmg *= w.skill.falloff;
       if (w.knockup > 0) addBuff(e, { type: "stun", v: 1, until: state.t + w.knockup }, state.t);
     }
+    const f = w.skill.field;
+    // สเปคใหม่: คลื่นทิ้ง "น้ำตามทาง" ระหว่างวิ่ง ไม่ใช่รอจบแล้วค่อยปูทีเดียว
+    // แอ่งแต่ละก้อนเริ่มนับอายุของตัวเองตั้งแต่ตอนที่มันเกิด
+    if (f && f.trail) {
+      if (w.nextPuddle == null) w.nextPuddle = 0;
+      const gone = w.span - w.left;
+      if (gone >= w.nextPuddle) {
+        w.nextPuddle = gone + w.halfW * 0.8;
+        state.fields.push({
+          ownerId: w.ownerId, team: w.team, x: w.x, y: w.y, nx: w.nx, ny: w.ny,
+          r: w.halfW, halfLen: w.halfW, halfW: w.halfW, until: state.t + f.dur,
+          slow: f.slow[w.rank] + f.slowPerAp * ((owner ? owner.ap : 0) / 100),
+          selfBoost: f.selfBoost,
+        });
+      }
+    }
     if (w.left > 0) return true;
     // คลื่นบางท่าไม่ทิ้งพื้นค้างไว้ (เช่น Q ของ Laura) — จบก็คือจบ
-    const f = w.skill.field;
-    if (!f) return false;
+    if (!f || f.trail) return false;
     state.fields.push({
       ownerId: w.ownerId, team: w.team,
       x: (w.startX + w.x) / 2, y: (w.startY + w.y) / 2,
-      nx: w.nx, ny: w.ny, halfLen: w.skill.range / 2, halfW: w.halfW,
+      nx: w.nx, ny: w.ny, halfLen: w.span / 2, halfW: w.halfW,
       until: state.t + f.dur,
       slow: f.slow[w.rank] + f.slowPerAp * ((owner ? owner.ap : 0) / 100),
       selfBoost: f.selfBoost,
@@ -151,14 +168,18 @@ export function tickNewSystems(state) {
     return false;
   });
 
-  // water field slows anyone standing in it
+  // water field slows anyone standing in it — แอ่งกลม (r) หรือแถบยาว (halfLen/halfW)
   state.fields = state.fields.filter((f) => {
     if (state.t > f.until) return false;
     for (const e of state.units) {
       if (!e.alive || e.team === f.team) continue;
-      const rx = e.x - f.x, ry = e.y - f.y;
-      if (Math.abs(rx * f.nx + ry * f.ny) > f.halfLen) continue;
-      if (Math.abs(rx * -f.ny + ry * f.nx) > f.halfW) continue;
+      if (f.r) {
+        if (Math.hypot(e.x - f.x, e.y - f.y) > f.r) continue;
+      } else {
+        const rx = e.x - f.x, ry = e.y - f.y;
+        if (Math.abs(rx * f.nx + ry * f.ny) > f.halfLen) continue;
+        if (Math.abs(rx * -f.ny + ry * f.nx) > f.halfW) continue;
+      }
       addBuff(e, { type: "slow", v: f.slow, until: state.t + 0.2 }, state.t);
     }
     return true;
@@ -210,11 +231,16 @@ export function tickNewSystems(state) {
       state.dmgSrc = skillLabel(u, sk);
       applyDamage(state, u, e, out, false);
     }
+    // เพื่อนที่เพิ่งโดนตีมาด้วยกัน ได้ฮีลและโล่คิดเป็น % ของดาเมจที่ "เขา" กินไปเมื่อ 3 วิก่อน
+    const ap = sk.allyPct ? sk.allyPct[r] : 0.5;
     for (const a of state.units) {
       if (!a.alive || a.team !== u.team || dist(u, a) > sk.radius) continue;
-      healUnit(state, a, out * 0.5);
-      grantShield(a, out * 0.5);
+      const hurt = sk.lookback ? recentTaken(a, state.t, sk.lookback) : out;
+      if (hurt <= 0) continue;
+      healUnit(state, a, hurt * ap);
+      grantShield(a, hurt * ap);
       addBuff(a, { type: "shield", v: 1, until: state.t + 3 }, state.t);
+      vfx(state, { kind: "ring", x: a.x, y: a.y, r: a.radius + 26, color: "255,255,255", grow: 0.8 });
     }
     if (out > 0) vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.radius, ang: base, half: half, color: "255,255,255", dur: 0.7 });
     if (out > 0) pushLog(state, tr(
@@ -311,11 +337,23 @@ export function tickZonesAndSnipes(state) {
         if (z.skill && z.skill.blindFlat) addBuff(e, { type: "blind", v: 1, until: state.t + z.skill.blindFlat }, state.t);
       }
     }
-    // Broadside อัพเกรด — ยิงโดนใครก็ตาม คนยิงได้ความเร็วเดินที่ค่อยๆ จางใน 2 วิ
-    if (zoneHit && z.msGain && owner && owner.alive) {
-      addBuff(owner, { type: "ms", v: z.msGain, decayFrom: state.t,
-        until: state.t + (z.msDur || 2) }, state.t);
-      vfx(state, { kind: "ring", x: owner.x, y: owner.y, r: owner.radius + 24, color: "232,163,61", grow: 0.8 });
+    // Broadside — เพื่อนที่ยืนอยู่ในวงตอนกระสุนลง ได้ความเร็วเดินที่ค่อยๆ จางไปด้วย
+    if (z.allyMs && owner && owner.alive) {
+      for (const a of state.units) {
+        if (!a.alive || a.team !== z.team || a.id === owner.id) continue;
+        if (Math.hypot(a.x - z.x, a.y - z.y) > z.r + a.radius) continue;
+        addBuff(a, { type: "ms", v: z.allyMs, decayFrom: state.t, until: state.t + (z.allyMsDur || 3) }, state.t);
+        vfx(state, { kind: "ring", x: a.x, y: a.y, r: a.radius + 24, color: "232,163,61", grow: 0.8 });
+      }
+    }
+    // น้ำตกของ Crashing Tide — ทุบแล้วทิ้งแอ่งน้ำสโลว์ไว้ตรงนั้น
+    if (z.pool && owner) {
+      state.fields.push({
+        ownerId: z.ownerId, team: z.team, x: z.x, y: z.y,
+        nx: 1, ny: 0, r: z.pool.r || z.r, halfLen: z.pool.r || z.r, halfW: z.pool.r || z.r,
+        until: state.t + z.pool.dur, slow: z.pool.slow, selfBoost: 1,
+      });
+      vfx(state, { kind: "ring", x: z.x, y: z.y, r: z.pool.r || z.r, color: "75,141,248", grow: 0.5, dur: 0.8 });
     }
     return false;
   });

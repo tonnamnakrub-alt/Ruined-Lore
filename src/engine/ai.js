@@ -1,8 +1,8 @@
 import { tr } from "../i18n.js";
 import { DEFAULT_CAST } from "../data/tuning.js";
-import { grantShield } from "./damage.js";
-import { dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
-import { cdrFromAh, fullCd } from "./stats.js";
+import { onKazemCast } from "./kazem.js";
+import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
+import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
 
 
@@ -34,17 +34,7 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
     }
     state.castQueue.push({ u, sk: use, target, prec });
     if (use.fragCost) spendFrag(u, u.shadow > 0);
-    if (u.champ.id === "KAZEM") {
-      const ready = u.kazemPassiveReadyAt == null || state.t >= u.kazemPassiveReadyAt;
-      if (ready) {
-        const sh = 40 + 6 * u.level + 0.10 * u.bonusHp + 0.40 * u.bonusAd;
-        grantShield(u, Math.round(sh));
-        u.buffs.push({ type: "shield", v: 1, until: state.t + 3 });
-        u.kazemPassiveReadyAt = state.t + 10 * (1 - cdrFromAh(u.ah || 0));
-      } else {
-        u.kazemPassiveReadyAt = Math.max(state.t, u.kazemPassiveReadyAt - 4);
-      }
-    }
+    onKazemCast(state, u);
     if (!use.fragCost) {
       if (sk.ammoMax) {
         sk.ammo -= 1;
@@ -54,7 +44,7 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
       }
     }
     let ct = use.cast != null ? use.cast : DEFAULT_CAST;
-    if (use.castByMs) ct = Math.max(use.castByMs.min, use.castByMs.base - (u.apMs || 0) / use.castByMs.per);
+    if (use.castByMs) ct = Math.max(use.castByMs.min, use.castByMs.base - bonusMs(u) / use.castByMs.per);
     u.castLock = ct;
     u.casts += 1;
     pushLog(state, tr(
@@ -74,6 +64,8 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
 
 
 export function shouldCast(state, u, sk, target, d, disc, aw) {
+  // Paradise Lost — ครั้งเดียวต่อไฟต์ (คูลดาวน์เป็น 0 เลยต้องกันตรงนี้)
+  if (sk.oncePerFight && u.paradiseUsed) return false;
   const hpFrac = u.hp / u.maxHp;
   // Fragments are the one resource that does NOT tick away while you hold it, so
   // saving Light to reach Shadow is a real payoff — this is Discipline's best channel.

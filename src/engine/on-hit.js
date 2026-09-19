@@ -7,6 +7,25 @@ import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
 
 
+// Lost Boys' Blade — มีดยังปักอยู่ แล้วโดนอะไรก็ตามจากคนปาซ้ำ (ออโต้ "หรือสกิล")
+// เลือดที่เหลือจะแตกออกมาทั้งก้อนทันที · กันเรียกซ้อนตัวเองด้วย popping
+let popping = false;
+export function popDagger(state, u, target) {
+  if (popping || !target.dagger || target.dagger.ownerId !== u.id) return;
+  const d = state.dots.find((x) => x.targetId === target.id && x.ownerId === u.id && x.dagger);
+  target.dagger = null;
+  if (!d) return;
+  const left = Math.max(0, d.until - state.t) * d.dps;
+  state.dots = state.dots.filter((x) => x !== d);
+  if (left <= 0) return;
+  popping = true;
+  const prev = state.dmgSrc;
+  state.dmgSrc = tr("จุดระเบิดมีดสั้น");
+  try { applyDamage(state, u, target, left, false); }
+  finally { popping = false; state.dmgSrc = prev; }
+}
+
+
 // fragments, Monochrome's magic rider, and Double Cross's empowered hit
 export function onAutoLanded(state, u, target) {
   vfx(state, { kind: "flash", x: target.x, y: target.y, r: 34, color: u.team === "blue" ? "140,190,255" : "255,150,155", dur: 0.18 });
@@ -54,17 +73,7 @@ export function onAutoLanded(state, u, target) {
   }
   // Another Eye: (mark now detonates centrally in applyDamage on any damage source)
   for (const x of activeSkills(u)) if (x.cdPerAuto && x.cdLeft > 0) x.cdLeft = Math.max(0, x.cdLeft - x.cdPerAuto);
-  // Peter's dagger: hitting a stuck target cashes in the rest of the bleed at once
-  if (target.dagger && target.dagger.ownerId === u.id) {
-    const d = state.dots.find((x) => x.targetId === target.id && x.ownerId === u.id && x.dagger);
-    if (d) {
-      const left = Math.max(0, d.until - state.t) * d.dps;
-      state.dmgSrc = tr("ไอเทม จุดระเบิดพิษกริช");
-      if (left > 0) applyDamage(state, u, target, left, false);
-      state.dots = state.dots.filter((x) => x !== d);
-    }
-    target.dagger = null;
-  }
+  popDagger(state, u, target);
   if (u.champ.fragments && u.shadow <= 0) addFrag(u, u.champ.fragments.onAuto);
   if (u.champ.fragments) applyFragmentDamage(state, u, target);
   if (u.champ.doubleTrouble) {
@@ -153,12 +162,13 @@ export function marksmanOnHit(state, u, target, echo) {
 export function applyFragmentDamage(state, u, target) {
   const L = u.level;
   const tier = L >= 16 ? 3 : L >= 11 ? 2 : L >= 6 ? 1 : 0;
+  // ลูกผสมจริง — ก้อนนี้สเกลทั้ง Bonus AD และ AP พอๆ กัน จะออกของสายไหนก็ได้ผล
   if (u.shadow > 0) {
-    const pct = [0.05, 0.06, 0.07, 0.08][tier] + 0.01 * (u.bonusAd / 100);
+    const pct = [0.05, 0.06, 0.07, 0.08][tier] + 0.01 * (u.bonusAd / 100) + 0.01 * ((u.ap || 0) / 200);
     state.dmgSrc = tr("พาสซีฟ ร่างเงา");
     applyDamage(state, u, target, target.maxHp * pct, false, true);
   } else if (u.light > 0) {
-    const per = [0.005, 0.0075, 0.01, 0.0125][tier] + 0.0012 * (u.bonusAd / 100);
+    const per = [0.005, 0.0075, 0.01, 0.0125][tier] + 0.0012 * (u.bonusAd / 100) + 0.0012 * ((u.ap || 0) / 200);
     state.dmgSrc = tr("พาสซีฟ ร่างแสง");
     applyDamage(state, u, target, target.maxHp * per * u.light, false, true);
   }
@@ -225,12 +235,16 @@ export function kindnessTick(state, healer, target) {
   const k = healer.champ.kindness;
   if (!k || !healer.alive || !target.alive || target.id === healer.id) return;
   if (target.team !== healer.team || dist(healer, target) > k.radius) return;
-  let pct = k.base + k.perLevel * healer.level + k.perAp * healer.ap;
-  if (k.lowHpAt && target.hp / target.maxHp < k.lowHpAt) pct *= k.lowHpMul || 2;
-  if (healer.kindnessBoostUntil && state.t < healer.kindnessBoostUntil) pct *= k.qMul || 2;
-  const pool = k.maxHp ? target.maxHp : Math.max(0, target.maxHp - target.hp);
-  if (pool > 0 && target.hp < target.maxHp) {
-    withSrc(state, tr("พาสซีฟ Cricket's Whisper"), healer, () => healUnit(state, target, pool * pct));
+  // สเปคใหม่: ฮีลเป็นตัวเลขตรงๆ (flat + ต่อเลเวล + ต่อ AP) ไม่ใช่ % Max HP อีกแล้ว
+  // ของเก่าที่คิดเป็น % ยังรองรับอยู่ เผื่อมีตัวอื่นมาใช้ฟิลด์เดิม
+  let amount = k.flat != null
+    ? k.flat + (k.perLevel || 0) * healer.level + (k.perAp || 0) * healer.ap
+    : ((k.base || 0) + (k.perLevel || 0) * healer.level + (k.perAp || 0) * healer.ap)
+      * (k.maxHp ? target.maxHp : Math.max(0, target.maxHp - target.hp));
+  if (k.lowHpAt && target.hp / target.maxHp < k.lowHpAt) amount *= k.lowHpMul || 2;
+  if (healer.kindnessBoostUntil && state.t < healer.kindnessBoostUntil) amount *= k.qMul || 2;
+  if (amount > 0 && target.hp < target.maxHp) {
+    withSrc(state, tr("พาสซีฟ Cricket's Whisper"), healer, () => healUnit(state, target, amount));
   }
 }
 
@@ -240,9 +254,9 @@ export function consumeOnHit(state, u, target) {
   const sk = u.onHit.skill;
   state.dmgSrc = skillLabel(u, sk);
   applyDamage(state, u, target, skillPower(u, sk, target), !!sk.magic);
+  // สเปคใหม่: ตัด "คูลดาวน์ที่เหลืออยู่" ทิ้ง 30% ต่อฮิต ไม่ใช่ตัดตามคูลดาวน์เต็ม (อัลติไม่โดน)
   if (sk.cdCutOnHit) for (const x of activeSkills(u)) if (x.key !== "R" && x.cdLeft > 0) {
-    const full = x.cdByRank ? x.cdByRank[Math.max(0, x.rank - 1)] : x.cd;
-    x.cdLeft = Math.max(0, x.cdLeft - full * sk.cdCutOnHit);
+    x.cdLeft = Math.max(0, x.cdLeft * (1 - sk.cdCutOnHit));
   }
   u.onHit.charges -= 1;
   if (u.onHit.charges <= 0) u.onHit = null;

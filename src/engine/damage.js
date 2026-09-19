@@ -1,12 +1,13 @@
 import { tr } from "../i18n.js";
 import { DMG_MUL } from "../data/tuning.js";
-import { gainIsolde, gainIsoldeOnTaken } from "./on-hit.js";
+import { gainIsolde, gainIsoldeOnTaken, popDagger } from "./on-hit.js";
 import { addBuff, addBuffUnique, buffSum, bump, curState, dist, hasBuff, pushLog, vfx } from "./state-util.js";
 import { cdrFromItemHaste } from "./stats.js";
 import { lifeBondLeech, lifeBondSplit, onHealOrShield } from "./support.js";
 import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
 import { onLauraDamage, onLauraTakedown } from "./laura.js";
 import { onWeaveDamage } from "./klaeder.js";
+import { lastStandCatch } from "./kazem.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -103,6 +104,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     target.mjolnirStacks = Math.min(10, (target.mjolnirStacks || 0) + 1);
     target.mjolnirUntil = state.t + 4;
   }
+  // มีดของ Peter ปักอยู่แล้วโดนสกิลซ้ำจากคนปา — เลือดที่เหลือแตกออกทันที
+  if (source && !isAuto && target.dagger && target.dagger.ownerId === source.id) popDagger(state, source, target);
   if (source && source.pendingSkillHit) {
     source.skillHitThisCast = true;
     if (source.champ.isolde) gainIsolde(state, source, source.champ.isolde.onSkill);
@@ -112,6 +115,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     color: trueDmg ? "#FFFFFF" : magic ? "#B08CFF" : "#FFD08A" });
   target.hp -= dmg;
   target.lastHitAt = state.t;
+  // บันทึกดาเมจที่เพิ่งกินไป — R ของ Luch เอาของ 3 วิล่าสุดมาสะท้อนคืน (ตัดของเก่าทิ้งใน step.js)
+  (target.tookLog = target.tookLog || []).push([state.t, dmg]);
 
   // Swan Maiden's Feathered Cloak: เลือดหลุด 30% แล้วกางโล่ 4 วิ (ทุก 60 วิ)
   if (target.hasItem && target.hasItem("swf") && target.hp > 0
@@ -244,6 +249,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   if (target.hp <= 0) {
     // Freyja's Shroud of Defiance: ดาเมจที่จะฆ่าถูกกันไว้ เลือดล็อกที่ 1 แล้วอมตะสั้นๆ
     if (denyDeath(state, target)) return;
+    // I WILL NOT YIELD — กดเองไม่ได้ ทำงานเองตอนจะตาย: ล้มนิ่ง 2.5 วิ แล้วลุกกลับมาพร้อมบัฟ
+    if (lastStandCatch(state, target)) return;
     // Shroud of Osiris: once per fight, dying instead freezes you invulnerable
     // for 3s before reviving at 50% of your base HP
     if (target.hasItem && target.hasItem("soo") && !target.sooUsed && !target.sooRevive) {

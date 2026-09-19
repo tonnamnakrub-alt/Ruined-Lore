@@ -2,11 +2,12 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREAT_COOLDOWN, RETREAT_TIME, STYLES } from "../data/tuning.js";
 import { castSkills } from "./ai.js";
+import { onKazemCast, tickLastStand } from "./kazem.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
 import { fireSnipe, resolveDash, startGrab, tickDashes, tickGrabs } from "./motion.js";
 import { consumeOnHit, gainIsolde, kindnessTick, onAutoLanded, onSkillLanded } from "./on-hit.js";
-import { HARD_CC, addBuff, addBuffUnique, aliveOf, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx, addFrag, spendFrag, syncFrag, skillLabel } from "./state-util.js";
+import { HARD_CC, addBuff, addBuffUnique, aliveOf, bonusMs, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx, addFrag, spendFrag, syncFrag, skillLabel } from "./state-util.js";
 import { cdrFromItemHaste, effStat, fullCd } from "./stats.js";
 import { tickSupportItems } from "./support.js";
 import { onMageCast, tickMageItems, tickMageZones } from "./mage.js";
@@ -66,6 +67,9 @@ export function step(state) {
       healUnit(state, u, (u.hp5 / 5) * (1 + (u.regenPct || 0)) * dt);
     }
     u.buffs = u.buffs.filter((b) => b.until > state.t);
+    if (u.tookLog && u.tookLog.length) {
+      while (u.tookLog.length && state.t - u.tookLog[0][0] > 4) u.tookLog.shift();
+    }
     if (!hasBuff(u, "shield")) u.shield = 0;
     // โล่จากพาสซีฟ Isolde ไม่ได้หายทีเดียวตอนหมดเวลา แต่บางลงเรื่อยๆ ตลอด 5 วิ
     if (u.isoShield) {
@@ -94,7 +98,9 @@ export function step(state) {
     let apMs = 0;
     if (u.champ.msPerAp) {
       apMs = u.ap / u.champ.msPerAp;
-      const own = state.fields.find((f) => f.ownerId === u.id && Math.hypot(u.x - f.x, u.y - f.y) < f.halfLen && Math.abs((u.x - f.x) * f.ny - (u.y - f.y) * f.nx) < f.halfW);
+      const own = state.fields.find((f) => f.ownerId === u.id && (f.selfBoost || 1) > 1 && (f.r
+        ? Math.hypot(u.x - f.x, u.y - f.y) < f.r
+        : Math.hypot(u.x - f.x, u.y - f.y) < f.halfLen && Math.abs((u.x - f.x) * f.ny - (u.y - f.y) * f.nx) < f.halfW));
       if (own) apMs *= own.selfBoost;
     }
     u.apMs = apMs;
@@ -120,7 +126,7 @@ export function step(state) {
       // Morning Star — ถือพลังร่างแสงอยู่ ทุก 10 หน่วยกันดาเมจได้ 5%
       // ส่วนร่างเงาได้ความเร็วเดินตอนวิ่งเข้าหาศัตรู
       if (u.shadow <= 0 && fg.lightDrPer10) {
-        u.drAll = Math.floor((u.frag || 0) / 10) * fg.lightDrPer10;
+        u.drAll = Math.min(fg.drCap != null ? fg.drCap : 1, Math.floor((u.frag || 0) / 10) * fg.lightDrPer10);
       } else if (u.shadow > 0 && fg.darkChaseMs) {
         const tg = state.units.find((x) => x.id === u.targetId);
         if (tg && tg.alive && tg.team !== u.team && dist(u, tg) > u.range) {
@@ -149,6 +155,7 @@ export function step(state) {
           pushLog(state, tr("{0} {1} ล้มลง", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th))); }
       }
     }
+    tickLastStand(state, u);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
     if (vf) {
@@ -453,8 +460,9 @@ export function step(state) {
             else sk.cdLeft = fullCd(u, sk);
           }
           state.castQueue.push({ u, sk: use, target: tgt, prec: 10 });
+          onKazemCast(state, u);
           let ct = use.cast != null ? use.cast : DEFAULT_CAST;
-          if (use.castByMs) ct = Math.max(use.castByMs.min, use.castByMs.base - (u.apMs || 0) / use.castByMs.per);
+          if (use.castByMs) ct = Math.max(use.castByMs.min, use.castByMs.base - bonusMs(u) / use.castByMs.per);
           u.castLock = ct;
           u.casts += 1;
         }
@@ -737,8 +745,15 @@ export function step(state) {
           startGrab(state, u, u.chasing.skill, ct);
           u.chasing = null;
         } else {
-          u.nvx = ((ct.x - u.x) / cd2) * u.msEff * 2;
-          u.nvy = ((ct.y - u.y) / cd2) * u.msEff * 2;
+          // The Curse of Gold — พุ่งเข้าไปหาด้วยความเร็วของสกิลเอง จนกว่าระยะพุ่งจะหมด
+          const ch = u.chasing;
+          let sp2 = u.msEff * 2;
+          if (ch.lungeSpeed > 0 && ch.lungeLeft > 0) {
+            sp2 = ch.lungeSpeed;
+            ch.lungeLeft -= ch.lungeSpeed * dt;
+          }
+          u.nvx = ((ct.x - u.x) / cd2) * sp2;
+          u.nvy = ((ct.y - u.y) / cd2) * sp2;
           continue;
         }
       }
@@ -828,6 +843,18 @@ export function step(state) {
     u.vy = u.nvy || 0;
     u.x = clamp(u.x + u.vx * dt, u.radius, ARENA_W - u.radius);
     u.y = clamp(u.y + u.vy * dt, u.radius, ARENA_H - u.radius);
+    // Crashing Tide — ว่ายไปถึงจุดที่จะทุบจริงๆ ตลอดช่วงร่าย ไม่ใช่โผล่ที่นั่นทันที
+    // (ทับค่าหลังการเดินปกติ เพราะช่วงนี้เธอไม่ได้เดินเอง)
+    if (u.striding) {
+      const sd = u.striding;
+      if (state.t >= sd.t1) {
+        u.x = sd.x; u.y = sd.y; u.striding = null;
+      } else {
+        const k = (state.t - sd.t0) / Math.max(0.001, sd.t1 - sd.t0);
+        u.x = sd.x0 + (sd.x - sd.x0) * k;
+        u.y = sd.y0 + (sd.y - sd.y0) * k;
+      }
+    }
     // Gleipnir's Binding Shackles: can't stray more than 600 units from whoever tethered you
     const tether = u.buffs.find((b) => b.type === "leash");
     if (tether) {
