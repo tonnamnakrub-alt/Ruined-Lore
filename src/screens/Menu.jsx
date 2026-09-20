@@ -108,7 +108,7 @@ export function PlayMenuScreen(ctx) {
       </div>
 
       <MenuButton title="VERSUS" tone={C.blue} onClick={() => setPhase("ONLINE")}
-        sub={tr("เล่นกับเพื่อนแบบต่อตรง — แลกโค้ดกันครั้งเดียว ไม่ต้องมีเซิร์ฟเวอร์")} />
+        sub={tr("เล่นกับเพื่อนแบบต่อตรง — เลือกปิดตา ดราฟต์ หรือทัวร์นาเมนต์ก็ได้")} />
       <MenuButton title="RANK" disabled sub={tr("ระบบแต้ม/ตีระดับ — เร็วๆ นี้")} />
       {/* Patch 0.3 — ทัวร์นาเมนต์เล่นได้แล้ว: แบนฝั่งละ 3 แล้วดราฟต์แบบ Snake */}
       <MenuButton title="TOURNAMENT" tone={C.red}

@@ -54,3 +54,47 @@ export function draftApply(d, champId, note) {
 
 
 export const draftPicksOf = (d, side) => d.picks.filter((p) => p.side === side).map((p) => p.champId);
+
+
+// ลงตาเดินหนึ่งก้าวถ้าถึงตาของฝั่งนั้นจริง — คืน null เมื่อยังไม่ถึงตา
+// (ตาที่มาก่อนเวลาจะได้เก็บเข้าคิวไว้ลองใหม่ ไม่ใช่ทิ้งไป)
+export function draftMove(d, champId, side, note) {
+  if (!d) return null;
+  const turn = draftTurn(d);
+  if (!turn || turn.side !== side) return null;
+  const after = draftApply(d, champId, note ? note(turn.kind) : "");
+  return after === d ? null : after;
+}
+
+
+// ---------------------------------------------------------------
+// คิวตาเดินสำหรับดราฟต์ข้ามเครื่อง
+//
+// สายเน็ตส่งตาเดินมาถึงเมื่อไหร่ก็ได้ รวมถึงตอนที่อีกฝั่งยังไม่ได้เปิดหน้าดราฟต์
+// ตาที่ยังลงไม่ได้จึงต้องค้างไว้ก่อน แล้วลงให้ครบทันทีที่ลงได้
+// แยกออกมาเป็นก้อนล้วนๆ เพื่อให้เทสได้โดยไม่ต้องมีเบราว์เซอร์
+// ---------------------------------------------------------------
+export function makeDraftQueue() {
+  const q = [];
+  return {
+    push(champId, side) { q.push({ champId, side }); },
+    size: () => q.length,
+    clear() { q.length = 0; },
+    // apply(champId, side) -> true เมื่อลงตานั้นได้จริง · คืนจำนวนตาที่ลงสำเร็จ
+    drain(apply) {
+      let done = 0;
+      let moved = true;
+      while (moved && q.length) {
+        moved = false;
+        for (let i = 0; i < q.length; i++) {
+          if (!apply(q[i].champId, q[i].side)) continue;
+          q.splice(i, 1);
+          moved = true;
+          done += 1;
+          break;
+        }
+      }
+      return done;
+    },
+  };
+}

@@ -2,6 +2,7 @@ import { tr } from "../i18n.js";
 import React from "react";
 import { Shell, btn, card } from "../ui/chrome.jsx";
 import { Label } from "../ui/widgets.jsx";
+import { DRAFT_STYLES } from "../game/draft.js";
 import { C, MONO, SANS } from "../ui/theme.js";
 
 
@@ -14,8 +15,35 @@ export function OnlineScreen(ctx) {
     score, mode, setPhase, net, netStart, netStartWatch, netJoin, netAccept,
     netAcceptSlot, netReset, netBegin, netStartRoom, netJoinRoom, netSetLink,
     netPaste: paste, setNetPaste: setPaste, netPaste2: paste2, setNetPaste2: setPaste2,
-    netBusy: busy,
+    netBusy: busy, draftStyle, setDraftStyle,
   } = ctx;
+
+  // วิธีเลือกตัวของแมตช์นี้ — เจ้าบ้านเป็นคนกำหนด แล้วส่งไปให้อีกฝั่งตอนกดเริ่มแมตช์
+  // ดราฟต์กับทัวร์นาเมนต์ในห้องนี้เป็นการผลัดกันเลือกกับคนจริง ไม่ใช่กับบอท
+  const stylePicker = (
+    <div style={{ ...card(), marginBottom: 10, padding: 11 }}>
+      <Label style={{ marginBottom: 6 }}>{tr("วิธีเลือกตัวละคร")}</Label>
+      <div style={{ display: "flex", gap: 6, marginBottom: 7 }}>
+        {Object.values(DRAFT_STYLES).map((s) => (
+          <button key={s.id} onClick={() => setDraftStyle(s.id)}
+            style={{
+              flex: 1, background: draftStyle === s.id ? C.blue : C.panel2,
+              color: draftStyle === s.id ? "#0B1220" : C.ink, border: `1px solid ${C.line}`,
+              borderRadius: 6, padding: "8px 6px", cursor: "pointer", fontFamily: SANS,
+              fontSize: 12, fontWeight: draftStyle === s.id ? 800 : 400,
+            }}>{tr(s.th)}</button>
+        ))}
+      </div>
+      <div style={{ fontSize: 10.5, color: C.dim, lineHeight: 1.6 }}>
+        {tr(DRAFT_STYLES[draftStyle].desc)}
+      </div>
+      <div style={{ fontSize: 10.5, color: C.gold, marginTop: 6, lineHeight: 1.6 }}>
+        {draftStyle === "BLIND"
+          ? tr("ต่างคนต่างเลือกของตัวเอง ไม่เห็นกัน")
+          : tr("ผลัดกันเลือกกับเพื่อนจริงๆ ห้ามซ้ำกันทั้งสองฝั่ง — เจ้าบ้านได้เลือกก่อน")}
+      </div>
+    </div>
+  );
 
   const st = net.stage;   // idle | hosting | joining | ready
   const copy = (txt) => { try { navigator.clipboard.writeText(txt); } catch { /* ไม่มีคลิปบอร์ดก็เลือกเอาเอง */ } };
@@ -241,6 +269,13 @@ export function OnlineScreen(ctx) {
                   : tr("คุณเป็นผู้เข้าร่วม — รอเจ้าบ้านกดเริ่มแมตช์")}
             </div>
           </div>
+          {net.isHost ? stylePicker : (
+            <div style={{ ...card(), marginBottom: 10, padding: 11 }}>
+              <div style={{ fontSize: 11, color: C.dim, lineHeight: 1.6 }}>
+                {tr("วิธีเลือกตัวละครเจ้าบ้านเป็นคนกำหนด — จะรู้ตอนเขากดเริ่มแมตช์")}
+              </div>
+            </div>
+          )}
           {net.isHost ? (
             <button onClick={netBegin}
               style={{ ...btn(C.gold), color: "#0B1220", fontWeight: 800, fontSize: 14, padding: "13px 0" }}>

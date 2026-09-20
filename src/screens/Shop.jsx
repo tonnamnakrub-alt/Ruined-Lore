@@ -1,7 +1,7 @@
 import { itemName, tr } from "../i18n.js";
 import React from "react";
 import { CHAMPIONS } from "../data/champions.js";
-import { STAT_KEYS } from "../data/constants.js";
+import { LANES, STAT_KEYS } from "../data/constants.js";
 import { ITEM_BY_ID, buyBlockedReason, effectiveCost } from "../data/items.js";
 import { buildRecipeTree } from "../ui/recipe.jsx";
 import { STYLES } from "../data/tuning.js";
@@ -18,7 +18,7 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
 export function ShopPhase(ctx) {
-  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy } = ctx;
+  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy, setDuelLane } = ctx;
 
   // การซื้อล่าสุดที่ยังย้อนได้ (กองย้อนอยู่ที่ App เพราะหน้าจอเป็นฟังก์ชันธรรมดา)
   const lastUndo = (buyUndo && buyUndo.length) ? buyUndo[buyUndo.length - 1] : null;
@@ -28,6 +28,18 @@ export function ShopPhase(ctx) {
   const openLanes = STANCE_LANES.filter((L) => stances[L] === "AGGRO" || stances[L] === "NEUTRAL");
   const crewMax = crewAllowed(round);
   const crewPool = STANCE_LANES.filter((L) => L !== jungle.lane && stances[L] === "SAFE");
+
+  // PUSS — ตัวที่มีตราท้าดวลให้สั่งก่อนไฟต์
+  const duelists = team
+    .map((c, i) => ({ i, c, ch: CHAMPIONS[c.champId] }))
+    .filter((x) => x.ch && x.ch.duel);
+  // ยกแรกของโหมดออนไลน์ยังไม่เคยเห็นทีมจริงของอีกฝั่ง — อย่าเดาชื่อให้ผิด
+  const foeKnown = !(net && net.on && round <= 1);
+  const foeNameAt = (L) => {
+    if (!foeKnown) return null;
+    const f = foe.find((x) => x.lane === L);
+    return f && f.champId ? f.champId : null;
+  };
   const champOf = (lane) => { const c = team.find((x) => x.lane === lane); return (c && c.champId) || lane; };
   const TONE = { SAFE: C.blue, NEUTRAL: C.dim, AGGRO: C.red };
 
@@ -342,6 +354,46 @@ export function ShopPhase(ctx) {
             maxHeight: wide ? "calc(100vh - 24px)" : "none",
             overflowY: wide ? "auto" : "visible",
           }}>
+        {/* PUSS — ตราท้าดวลเป็นคำสั่งก่อนไฟต์ ไม่ใช่ของที่เกมเลือกให้เอง
+            ยกแรกของโหมดออนไลน์ยังไม่รู้ว่าอีกฝั่งเลือกใคร จึงโชว์แค่เลน */}
+        {duelists.length ? (
+          <div style={{ ...card(), padding: 10, marginBottom: 8, borderColor: C.gold }}>
+            {duelists.map(({ i, c, ch }) => (
+              <div key={c.lane}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 5 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, color: C.gold, letterSpacing: 1 }}>
+                    {tr("ท้าดวล")}
+                  </span>
+                  <span style={{ fontSize: 10.5, color: C.dim }}>{c.champId} · {tr(ch.passive.th)}</span>
+                </div>
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                  {LANES.map((L) => {
+                    const on = c.duelLane === L;
+                    const who = foeNameAt(L);
+                    return (
+                      <button key={L} onClick={() => setDuelLane(i, L)}
+                        style={{
+                          flex: "1 1 60px", background: on ? C.gold : C.panel2, color: on ? "#0B1220" : C.dim,
+                          border: `1px solid ${on ? C.gold : C.line}`, borderRadius: 4,
+                          padding: "5px 2px", cursor: "pointer", fontFamily: SANS,
+                          fontSize: 10.5, fontWeight: on ? 800 : 400, lineHeight: 1.35,
+                        }}>
+                        {L}
+                        {who ? <div style={{ fontFamily: MONO, fontSize: 9, opacity: 0.75 }}>{who}</div> : null}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div style={{ fontSize: 10, color: C.dim, marginTop: 6, lineHeight: 1.55 }}>
+                  {c.duelLane
+                    ? tr("ทำดาเมจใส่เป้าที่มีตราแรงขึ้น และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ")
+                    : tr("ไม่ได้สั่ง = เขาจะไปท้าตัวที่อันตรายที่สุดของอีกฝั่งเอง")}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
         {/* นิสัยประจำเลนของยกนี้ — เลือกสั้นๆ ตรงนี้เลย ไม่ต้องข้ามหน้า
             ไม่บอกว่าจะเกิดอะไร เพราะยังไม่รู้ว่าอีกฝั่งสั่งอะไรมา เฉลยหลังดูผล */}
         <div style={{ ...card(), padding: 10, marginBottom: 8 }}>

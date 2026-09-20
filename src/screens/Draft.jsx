@@ -22,7 +22,12 @@ export function DraftScreen(ctx) {
     score, mode, wide, draft, draftAct, draftBack, setPhase,
     inspectId, setInspectId, openSkill,
     pickQuery, setPickQuery, pickLane, setPickLane,
+    draftSide, draftLocked,
   } = ctx;
+
+  // ออนไลน์: เจ้าบ้านเป็นฝั่ง A ผู้เข้าร่วมเป็นฝั่ง B · ออฟไลน์เราเป็น A เสมอ
+  const me = draftSide === "B" ? "B" : "A";
+  const them = me === "A" ? "B" : "A";
 
   if (!draft) return null;
   const turn = draftTurn(draft);
@@ -31,11 +36,11 @@ export function DraftScreen(ctx) {
     ...draft.bans.map((b) => b.champId),
     ...draft.picks.map((p) => p.champId),
   ]);
-  const myPicks = draft.picks.filter((p) => p.side === "A").map((p) => p.champId);
-  const foePicks = draft.picks.filter((p) => p.side === "B").map((p) => p.champId);
-  const myBans = draft.bans.filter((b) => b.side === "A").map((b) => b.champId);
-  const foeBans = draft.bans.filter((b) => b.side === "B").map((b) => b.champId);
-  const myTurn = turn && turn.side === "A";
+  const myPicks = draft.picks.filter((p) => p.side === me).map((p) => p.champId);
+  const foePicks = draft.picks.filter((p) => p.side === them).map((p) => p.champId);
+  const myBans = draft.bans.filter((b) => b.side === me).map((b) => b.champId);
+  const foeBans = draft.bans.filter((b) => b.side === them).map((b) => b.champId);
+  const myTurn = turn && turn.side === me;
   const done = !turn;
 
   const slot = (id, tone, i) => (
@@ -101,7 +106,7 @@ export function DraftScreen(ctx) {
         {order.map((o, i) => (
           <span key={i} style={{
             width: 15, height: 6, borderRadius: 3,
-            background: i < at ? (o.s === "A" ? C.blue : C.red) : i === at ? C.gold : "#1E2A42",
+            background: i < at ? (o.s === me ? C.blue : C.red) : i === at ? C.gold : "#1E2A42",
           }} />
         ))}
       </div>
@@ -213,7 +218,7 @@ export function DraftScreen(ctx) {
   return (
     <Shell round={0} score={score} mode={mode}
       title={draft.style === "TOURNEY" ? tr("ทัวร์นาเมนต์ · แบน 3 เลือก 5") : tr("ดราฟต์พิก")}
-      maxWidth={wide ? 1180 : 620} onBack={draftBack}>
+      maxWidth={wide ? 1180 : 620} onBack={draftLocked ? undefined : draftBack}>
       {/* ฝั่งเราซ้าย · ตารางตัวละครตรงกลาง · ฝั่งเขาขวา ตามสเปค */}
       {wide ? (
         <>

@@ -2204,4 +2204,46 @@ export const DICT = {
    "Crescent Sweep and Grand Finale could therefore never fire at all — Q behaved as though it were a single move",
  "ตอนนี้คูลดาวน์ลงตอนจบคอมโบ ไม่ใช่ตอนเริ่ม · ปล่อยให้หน้าต่าง 5 วินาทีหลุดกลางคัน ท่าก็เข้าคูลดาวน์เต็มเหมือนกัน":
    "The cooldown now starts when the combo ends rather than when it begins · letting the 5-second window lapse mid-combo still puts the skill on its full cooldown",
+ "ท้าดวล":
+   "DUEL",
+ "ทำดาเมจใส่เป้าที่มีตราแรงขึ้น และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ":
+   "He hits the marked target harder, and the two of them lock onto each other first",
+ "ไม่ได้สั่ง = เขาจะไปท้าตัวที่อันตรายที่สุดของอีกฝั่งเอง":
+   "Leave it unset and he challenges the most dangerous enemy on his own",
+ "ต่างคนต่างเลือกของตัวเอง ไม่เห็นกัน":
+   "Each of you picks your own five without seeing the other side",
+ "ผลัดกันเลือกกับเพื่อนจริงๆ ห้ามซ้ำกันทั้งสองฝั่ง — เจ้าบ้านได้เลือกก่อน":
+   "You take turns picking against your friend for real, with no champion shared between the sides — the host picks first",
+ "วิธีเลือกตัวละครเจ้าบ้านเป็นคนกำหนด — จะรู้ตอนเขากดเริ่มแมตช์":
+   "The host decides how champions get picked — you'll find out when they start the match",
+ "เล่นกับเพื่อนแบบต่อตรง — เลือกปิดตา ดราฟต์ หรือทัวร์นาเมนต์ก็ได้":
+   "Play a friend over a direct link — blind pick, draft or tournament, your choice",
+ "เล่นดราฟต์กับทัวร์นาเมนต์กับเพื่อนได้แล้ว":
+   "Draft and tournament now work against a friend",
+ "เดิมห้อง VERSUS เลือกวิธีเลือกตัวไม่ได้เลย ต้องเป็นแบบปิดตาอย่างเดียว ทั้งที่หน้าเมนูปกติเลือกได้สามแบบ":
+   "The VERSUS room offered no way to choose how champions are picked, so it was always blind pick, even though the normal menu offers all three",
+ "ตอนนี้เจ้าบ้านกำหนดวิธีเลือกตัวของแมตช์ได้ในห้อง แล้วส่งให้อีกเครื่องตอนกดเริ่มแมตช์ — สองฝั่งใช้ชุดเดียวกันเสมอ":
+   "The host now sets it in the room and it travels to the other machine when they start the match, so both sides always use the same rules",
+ "ดราฟต์กับทัวร์นาเมนต์ในห้องนี้เป็นการผลัดกันเลือกกับคนจริง ไม่ใช่กับบอท — แบนและตัวที่ถูกหยิบไปแล้วห้ามซ้ำกันทั้งสองฝั่ง":
+   "Draft and tournament here mean taking turns against a real person rather than a bot — bans and picks are shared, so no champion appears on both sides",
+ "เจ้าบ้านได้เลือกก่อน (ฝั่ง A) ลำดับหยิบเป็น Snake 1-2-2-2-2-1 เหมือนเล่นคนเดียว":
+   "The host picks first (side A) and the order is the same 1-2-2-2-2-1 snake as in single player",
+ "ถ้าอีกฝั่งยังไม่ทันกดเข้าหน้าดราฟต์ ตาที่เดินไปแล้วจะค้างคิวไว้แล้วลงให้ครบเองตอนเขาเข้ามา ไม่หายไปไหน":
+   "If your friend has not reached the draft screen yet, the moves already made wait in a queue and land in order the moment they arrive — nothing is lost",
+ "ห้องแบบเจ้าบ้านนั่งดู เจ้าบ้านทำหน้าที่ส่งตาเดินต่อให้ผู้เล่นอีกคน — ผู้เล่นสองคนดราฟต์ใส่กันได้ตามปกติ":
+   "In a spectator room the host passes each move along to the other player, so the two of them draft against each other as normal",
+ "ระหว่างดราฟต์ออนไลน์จะถอยกลับไปเริ่มใหม่คนเดียวไม่ได้ เพราะอีกฝั่งจะค้างรอตาที่ไม่มีวันมา":
+   "You cannot back out and restart an online draft on your own, because the other side would be left waiting for a turn that never comes",
+ "ตราท้าดวลของ PUSS สั่งเองได้แล้ว":
+   "You choose PUSS's duel target now",
+ "พาสซีฟเขียนว่า \"ตราประทับท้าดวลศัตรูหนึ่งตัวตอนเริ่มไฟต์\" แต่ผู้เล่นไม่เคยได้เลือกเลย เกมเลือกตัวที่ค่าอันตรายสูงสุดให้เสมอ":
+   "His passive says he marks one enemy at the start of the fight, but you were never asked — the game always picked the most dangerous enemy for you",
+ "ตอนนี้เลือกได้เองในหน้าร้านค้าก่อนเริ่มไฟต์ — สั่งเป็นเลนของอีกฝั่ง ไม่ต้องสั่งก็ได้ ปล่อยว่างไว้เขาจะไปท้าตัวที่อันตรายที่สุดเหมือนเดิม":
+   "You now choose in the shop before the fight — by enemy lane, and leaving it unset keeps the old behaviour",
+ "คำสั่งเดินทางข้ามสายไปกับทีมในโหมดออนไลน์ด้วย สองเครื่องจึงจับคู่ดวลคู่เดียวกันเป๊ะ ไม่ทำให้ผลสองฝั่งเพี้ยน":
+   "The order travels across the wire with your team in online play, so both machines form the same duel pairing and the two results stay identical",
+ "สั่งเป็นเลนไม่ใช่ตัวยูนิต เพราะเลนเป็นสิ่งเดียวที่สองเครื่องตกลงกันได้ก่อนเห็นทีมจริงของอีกฝั่ง":
+   "It is an order by lane rather than by unit, because the lane is the one thing both machines can agree on before either has seen the other's real team",
+ "ยกแรกของโหมดออนไลน์ยังไม่เคยเห็นทีมของเพื่อน ปุ่มจึงโชว์แค่ชื่อเลน ไม่เดาชื่อตัวละครให้ผิด":
+   "In the first online round neither side has seen the other's team yet, so the buttons show lanes only rather than guessing champion names wrong",
 };

@@ -94,6 +94,7 @@ export function toDef(c) {
     upgrades: c.upgrades || [], char: c.char, athleteName: c.athleteName, athlete: c.athlete,
     style: c.style, level: c.level, items: c.items,
     spot: c.spot || null,   // จุดยืนที่ผู้เล่นวางไว้เอง (null = ใช้ตำแหน่งเริ่มต้นของเลน)
+    duelLane: c.duelLane || null,   // PUSS — เลนของศัตรูที่โค้ชสั่งให้ท้าดวล (null = ให้เลือกเอง)
     bounty: c.items.reduce((s, i) => s + i.cost, 0),
   };
 }

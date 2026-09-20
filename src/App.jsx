@@ -20,7 +20,7 @@ import { LANE_INFO } from "./data/lanes.js";
 import { shopFor } from "./game/shop-ai.js";
 import { nextStreak, streakMods } from "./game/streak.js";
 import { assignLanes, botBan, botPickOne, botSpread, draftFoe } from "./game/bot-draft.js";
-import { draftApply, draftPicksOf, draftTaken, draftTurn, newDraft } from "./game/draft.js";
+import { draftApply, draftMove, draftPicksOf, draftTaken, draftTurn, makeDraftQueue, newDraft } from "./game/draft.js";
 import { STANCE_LANES, LANE_MEMBERS, KILL, ASSIST_SOLO, ASSIST_GROUP, SAFE_STAND_SECONDS, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
 import { DIFFS, diffOf } from "./data/difficulty.js";
 import { buildRoundPlan, foeIncome } from "./game/round-plan.js";
@@ -138,7 +138,11 @@ export function App() {
   const peerRef = useRef(null);
   const peersRef = useRef([]);   // เจ้าบ้านแบบคนดูถือสองสายพร้อมกัน
   const roomRef = useRef(null);  // ห้องแบบรหัสสั้น — ต้องปิด broker ตอนออก
-  const netRef = useRef({ theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null] });
+  const netRef = useRef({ theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], online: false, mySide: "A" });
+  // กระจกของดราฟต์ — ข้อความจากสายมาถึงตอนไหนก็ได้ ต้องตัดสินตาเดินได้ทันทีโดยไม่รอ render
+  const draftRef = useRef(null);
+  // ตาเดินของอีกฝั่งที่มาถึงก่อนเราจะกดเข้าหน้าดราฟต์ — เก็บไว้ลงทีหลังให้ครบ
+  const draftQueueRef = useRef(makeDraftQueue());
   // ค่าสดของยกปัจจุบัน — ตัวจัดการข้อความของสายต้องอ่านจากตรงนี้เท่านั้น
   const liveRef = useRef({});   // หน้าส่องทีมคู่แข่ง
   const [statsOpen, setStatsOpen] = useState(false);   // หน้ากราฟสรุปไฟต์
@@ -242,37 +246,64 @@ export function App() {
     return d;
   }
 
+  // ---- ดราฟต์ข้ามเครื่อง ----
+  // ฝั่ง A = เจ้าบ้าน (First Pick) · ฝั่ง B = ผู้เข้าร่วม
+  // ห้องแบบเจ้าบ้านนั่งดู เจ้าบ้านไม่ได้ดราฟต์เอง แต่ทำหน้าที่ส่งตาเดินต่อให้ผู้เล่นอีกคน
+  const draftOnline = () => !!(netRef.current.online && !netRef.current.watching);
+  const mySide = () => netRef.current.mySide || "A";
+  const foeSide = () => (mySide() === "A" ? "B" : "A");
+
+  function pushDraft(d) { draftRef.current = d; setDraft(d); }
+
+  function draftNote(side, kind, champId) {
+    const mine = side === mySide();
+    if (kind === "ban") {
+      return mine ? tr("🔵 คุณแบน {0}", champId) : tr("🔴 ฝ่ายตรงข้ามแบน {0}", champId);
+    }
+    return mine ? tr("🔵 คุณเลือก {0}", champId) : tr("🔴 ฝ่ายตรงข้ามเลือก {0}", champId);
+  }
+
+  // ลงตาเดินหนึ่งก้าว — คืน false ถ้ายังไม่ถึงตานั้น (ตัวเรียกจะได้เก็บไว้ลองใหม่)
+  function tryDraft(champId, side) {
+    const after = draftMove(draftRef.current, champId, side, (kind) => draftNote(side, kind, champId));
+    if (!after) return false;
+    const next = draftOnline() ? after : botSteps(after);
+    pushDraft(next);
+    // ดราฟต์จบแล้ว — ส่งตัวที่ได้ไปให้หน้าจัดตำแหน่ง
+    if (!draftTurn(next)) {
+      setDraftPool(draftPicksOf(next, mySide()));
+      setFoeDraft(draftPicksOf(next, foeSide()));
+    }
+    return true;
+  }
+
+  const drainDraft = () => draftQueueRef.current.drain(tryDraft);
+
   function startDraft(style) {
     setDraftStyle(style);
     setFoeDraft(null);
-    setDraft(style === "BLIND" ? null : botSteps(newDraft(style)));
+    const online = draftOnline();
+    const d0 = style === "BLIND" ? null : (online ? newDraft(style) : botSteps(newDraft(style)));
+    pushDraft(d0);
     setTeam((t) => t.map((c) => ({ ...c, champId: null, ranks: emptyRanks() })));
     setHeldChamp(null);
     setPhase("DRAFT");
+    // เจ้าบ้านอาจลงมือไปก่อนแล้วตอนเรายังอยู่หน้าสร้างทีม — ลงตาที่ค้างให้ครบ
+    if (online && d0) drainDraft();
   }
 
   function draftAct(champId) {
-    setDraft((d) => {
-      if (!d) return d;
-      const turn = draftTurn(d);
-      if (!turn || turn.side !== "A") return d;
-      const after = draftApply(d, champId, turn.kind === "ban"
-        ? tr("🔵 คุณแบน {0}", champId)
-        : tr("🔵 คุณเลือก {0}", champId));
-      if (after === d) return d;
-      const next = botSteps(after);
-      // ดราฟต์จบแล้ว — ส่งตัวที่ได้ไปให้หน้าจัดตำแหน่ง
-      if (!draftTurn(next)) {
-        setDraftPool(draftPicksOf(next, "A"));
-        setFoeDraft(draftPicksOf(next, "B"));
-      }
-      return next;
-    });
+    if (!tryDraft(champId, mySide())) return;
+    if (!draftOnline()) return;
+    const p = peerRef.current || peersRef.current[0];
+    if (p && p.open) p.send({ k: MSG.DRAFT, champId, side: mySide() });
   }
 
   function draftBack() {
+    // ออนไลน์ถอยคนเดียวไม่ได้ อีกฝั่งจะค้างรอตาที่ไม่มีวันมา
+    if (draftOnline()) return;
     if (draftStyle === "BLIND") { setPhase("SETUP"); return; }
-    setDraft(botSteps(newDraft(draftStyle)));
+    pushDraft(botSteps(newDraft(draftStyle)));
     setFoeDraft(null);
     setDraftPool([]);
   }
@@ -397,6 +428,12 @@ export function App() {
     dropFav(idx, item.id);
   }
 
+  // PUSS — โค้ชสั่งเองว่ายกนี้จะไปท้าดวลเลนไหนของอีกฝั่ง
+  // กดซ้ำเลนเดิม = ยกเลิกคำสั่ง กลับไปให้เขาเลือกเป้าที่อันตรายที่สุดเอง
+  function setDuelLane(idx, lane) {
+    setTeam((t) => t.map((c, i) => (i === idx ? { ...c, duelLane: c.duelLane === lane ? null : lane } : c)));
+  }
+
   function undoBuy() {
     setBuyUndo((u) => {
       if (!u.length) return u;
@@ -473,11 +510,24 @@ export function App() {
             // เดิมมีแต่ทางที่อีกฝั่งพร้อมก่อน ถ้าเจ้าบ้านกดก่อนจะค้างกันทั้งคู่
             hostStartNetFight();
           }
+        } else if (m.k === MSG.DRAFT) {
+          if (netRef.current.watching) {
+            // เจ้าบ้านนั่งดูไม่ได้ดราฟต์เอง — ส่งตาเดินต่อให้ผู้เล่นอีกคน
+            const other = peersRef.current[1 - slot];
+            if (other && other.open) other.send(m);
+          } else {
+            draftQueueRef.current.push(m.champId, m.side || foeSide());
+            drainDraft();
+          }
         } else if (m.k === MSG.START) {
           // ผู้เข้าร่วม: รับคำสั่งเริ่มแล้วรันไฟต์ชุดเดียวกัน
           runNetFight(m.seed, unpackTeam(m.other), m.side, m.stances, m.jungle);
         } else if (m.k === MSG.HELLO) {
           if (m.modeId) setModeId(m.modeId);
+          // วิธีเลือกตัวของแมตช์นี้เจ้าบ้านเป็นคนกำหนด สองเครื่องต้องใช้ชุดเดียวกัน
+          if (m.draftStyle) setDraftStyle(m.draftStyle);
+          netRef.current.online = true;
+          netRef.current.mySide = m.side === "red" ? "B" : "A";
           setNet((n) => ({ ...n, side: m.side || "red" }));
           setPhase("SETUP");
         }
@@ -639,7 +689,8 @@ export function App() {
     roomRef.current = null;
     peersRef.current = [];
     peerRef.current = null;
-    netRef.current = { theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], watching: false, isHost: false, iReadied: false, myReady: null };
+    netRef.current = { theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], watching: false, isHost: false, iReadied: false, myReady: null, online: false, mySide: "A" };
+    draftQueueRef.current.clear();
     setNetPaste("");
     setNetPaste2("");
     if (!quiet) setNet((n) => ({
@@ -652,13 +703,15 @@ export function App() {
   // เจ้าบ้านกดเริ่มแมตช์ — ทั้งสองฝั่งเข้าหน้าเลือกตัวของตัวเอง
   function netBegin() {
     const ps = peersRef.current;
+    netRef.current.online = true;
     if (net.role === "watch") {
-      if (ps[0]) ps[0].send({ k: MSG.HELLO, modeId, side: "blue" });
-      if (ps[1]) ps[1].send({ k: MSG.HELLO, modeId, side: "red" });
+      if (ps[0]) ps[0].send({ k: MSG.HELLO, modeId, side: "blue", draftStyle });
+      if (ps[1]) ps[1].send({ k: MSG.HELLO, modeId, side: "red", draftStyle });
       setPhase("WATCH");   // เจ้าบ้านไม่ได้ลงเล่น รอดูอย่างเดียว
       return;
     }
-    if (ps[0]) ps[0].send({ k: MSG.HELLO, modeId, side: "red" });
+    netRef.current.mySide = "A";
+    if (ps[0]) ps[0].send({ k: MSG.HELLO, modeId, side: "red", draftStyle });
     setPhase("SETUP");
   }
 
@@ -1103,6 +1156,8 @@ export function App() {
     mode, modeId, setModeId, wide, lang, changeLang, inspectId, setInspectId,
     pickQuery, setPickQuery, pickLane, setPickLane, buyUndo, undoBuy,
     draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes, foeIntel, rerollFoe,
+    setDuelLane, draftSide: netRef.current.mySide || "A",
+    draftLocked: !!(netRef.current.online && !netRef.current.watching),
     storeLane, setStoreLane, bookCat, setBookCat, bookItem, setBookItem,
     bookQuery, setBookQuery, shopItem, setShopItem, shopQuery, setShopQuery,
     patchOpen, setPatchOpen, statView, setStatView, openStats,

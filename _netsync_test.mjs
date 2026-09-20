@@ -42,6 +42,8 @@ function makeTeam(rand, style) {
     spot: null,
     char: "P" + (i + 1),
     athleteName: "P" + (i + 1),
+    // PUSS — เลนที่โค้ชสั่งท้าดวล ถ้าหล่นหายตอนส่ง สองเครื่องจะจับคู่ดวลคนละคู่
+    duelLane: rand() < 0.5 ? LANES[Math.floor(rand() * LANES.length)] : null,
     style,
   }));
 }
@@ -70,7 +72,9 @@ if (dupIds.length) {
 }
 console.log("รหัสไอเทมซ้ำ: ไม่มี");
 
-const LANE_SETS = [["TOP"], ["MID"], ["JUNGLE"], ["ADC", "SUPPORT"], ["TOP", "JUNGLE"]];
+// ต้องมีไฟต์รวมห้าคนด้วย ไม่งั้นของที่ต้องเลือก "หนึ่งในห้าเลนของอีกฝั่ง" อย่างตราท้าดวล
+// จะไม่มีทางเลือกให้ต่างกัน ชุดเลนเล็กๆ จึงจับความไม่ตรงกันชนิดนี้ไม่ได้เลย
+const LANE_SETS = [["TOP"], ["MID"], ["JUNGLE"], ["ADC", "SUPPORT"], ["TOP", "JUNGLE"], LANES];
 
 let bad = 0, n = 250;
 for (let i = 0; i < n; i++) {

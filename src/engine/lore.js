@@ -1178,12 +1178,15 @@ export function nineLivesCatch(state, u) {
 }
 
 
-// PUSS — เลือกเป้าท้าดวลตอนเริ่มไฟต์ (แชมเปี้ยนที่ AI Value สูงสุดของฝั่งตรงข้าม)
+// PUSS — เลือกเป้าท้าดวลตอนเริ่มไฟต์
+// โค้ชสั่งเลนไว้ก็เอาตามนั้น ไม่ได้สั่ง (หรือเลนนั้นไม่ได้ลงไฟต์นี้) ค่อยเลือกตัวที่ AI Value สูงสุดให้
+// สั่งเป็น "เลน" ไม่ใช่ตัวยูนิต เพราะสองเครื่องในโหมดออนไลน์ต้องได้เป้าเดียวกันเป๊ะ
 export function pickDuelMark(state, u) {
   if (!u.champ || !u.champ.duel || u.duelMarkId) return;
   const foes = enemiesOf(state, u);
   if (!foes.length) return;
-  const best = foes.reduce((a, b) => (b.champ.value > a.champ.value ? b : a));
+  const asked = u.duelPick ? foes.find((f) => f.lane === u.duelPick) : null;
+  const best = asked || foes.reduce((a, b) => (b.champ.value > a.champ.value ? b : a));
   u.duelMarkId = best.id;
   best.duelBy = u.id;
 }

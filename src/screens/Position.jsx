@@ -10,7 +10,7 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 
 export function PositionScreen(ctx) {
-  const { draftPool, heldChamp, round, score, setFoe, setHeldChamp, setPhase, setTeam, team, mode, foeDraft, assignLanes, startDraft, draftStyle, rerollFoe } = ctx;
+  const { draftPool, heldChamp, round, score, setFoe, setHeldChamp, setPhase, setTeam, team, mode, foeDraft, assignLanes, startDraft, draftStyle, rerollFoe, draftLocked } = ctx;
 
     const roster = draftPool;
     const placed = team.map((c) => c.champId).filter(Boolean);
@@ -101,7 +101,10 @@ export function PositionScreen(ctx) {
           style={{ ...btn(ready ? C.gold : "#243049"), color: ready ? "#0B1220" : C.dim, fontWeight: 800, marginTop: 14 }}>
           {ready ? tr("ไปวางแผนซื้อของ (ข้ามได้)") : tr("วางให้ครบทุกเลนก่อน")}
         </button>
-        <button onClick={() => startDraft(draftStyle)} style={{ ...btn(C.panel2), marginTop: 6, fontSize: 12 }}>{tr("กลับไปดราฟต์ใหม่")}</button>
+        {/* ออนไลน์ดราฟต์ใหม่คนเดียวไม่ได้ อีกฝั่งดราฟต์เสร็จไปแล้ว */}
+        {draftLocked ? null : (
+          <button onClick={() => startDraft(draftStyle)} style={{ ...btn(C.panel2), marginTop: 6, fontSize: 12 }}>{tr("กลับไปดราฟต์ใหม่")}</button>
+        )}
       </Shell>
     );
 }

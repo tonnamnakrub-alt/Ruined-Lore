@@ -20,6 +20,7 @@ export function packTeam(team) {
     b: c.bountyGold || 0,
     s: c.sangHp || 0,
     sp: c.spot || null,
+    dl: c.duelLane || null,   // PUSS — เลนที่สั่งท้าดวล
     ch: c.char,
     an: c.athleteName,
     // ต้องส่งสองอันนี้ด้วย ไม่งั้นสองเครื่องจำลองไฟต์คนละแบบแล้วได้ผลไม่ตรงกัน
@@ -43,6 +44,7 @@ export function unpackTeam(rows) {
     bountyGold: r.b || 0,
     sangHp: r.s || 0,
     spot: r.sp || null,
+    duelLane: r.dl || null,
     char: r.ch,
     athleteName: r.an,
     // เดิมตรงนี้ตั้งเป็น POKE ตายตัว ทั้งที่อีกฝั่งอาจสั่งบุกหรือตั้งรับไว้
@@ -58,6 +60,7 @@ export function unpackTeam(rows) {
 export const MSG = {
   HELLO: "hello",       // แลกชื่อและโหมดตอนต่อติด
   READY: "ready",       // ส่งทีมของยกนี้ + บอกว่าพร้อมสู้แล้ว
+  DRAFT: "draft",       // ตาเดินหนึ่งก้าวของดราฟต์ (แบนหรือเลือก) พร้อมบอกว่าเป็นฝั่งไหน
   START: "start",       // host สั่งเริ่ม: seed + อีเวนต์ + ทีมของ host
   RESULT: "result",     // host ยืนยันผลที่เป็นทางการ
   CHAT: "chat",
