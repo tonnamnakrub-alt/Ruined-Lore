@@ -317,7 +317,19 @@ export function tickNewSystems(state) {
 
 export function tickZonesAndSnipes(state) {
   state.zones = state.zones.filter((z) => {
-    if (state.t < z.at) return true;
+    if (state.t < z.at) {
+      // ไข่ทองคำของ JACK — ระหว่างรอระเบิด ประกายทองสโลว์ศัตรูที่ยืนใกล้ไว้ก่อน
+      const aura = z.skill && z.skill.auraSlow;
+      if (aura) {
+        const av = aura[Math.max(0, (z.skill.rank || 1) - 1)];
+        for (const e of state.units) {
+          if (!e.alive || e.team === z.team) continue;
+          if (Math.hypot(e.x - z.x, e.y - z.y) > z.r + e.radius) continue;
+          addBuff(e, { type: "slow", v: av, until: state.t + 0.25 }, state.t);
+        }
+      }
+      return true;
+    }
     const owner = state.units.find((x) => x.id === z.ownerId);
     // ระเบิดจริงตรงนี้ — ใส่คลื่นกระแทกกับแสงวาบให้เห็นชัดว่าลงตรงไหน
     vfx(state, { kind: "shock", x: z.x, y: z.y, r: z.r, color: z.magic ? "176,140,255" : "232,163,61", dur: 0.65 });
@@ -338,6 +350,17 @@ export function tickZonesAndSnipes(state) {
         const zs = z.skill && (z.skill.slowFlat || (z.skill.slowByRank ? z.skill.slowByRank[Math.max(0, (z.skill.rank || 1) - 1)] : 0));
         if (zs) addBuff(e, { type: "slow", v: zs, until: state.t + z.skill.slowDur }, state.t);
         if (z.skill && z.skill.blindFlat) addBuff(e, { type: "blind", v: 1, until: state.t + z.skill.blindFlat }, state.t);
+        // ห่าฝนธนูของ HOOD — ทุกคนที่โดนติดเลือดไหลต่ออีก 4 วิ ซ้อนกับเลือดไหลจากพาสซีฟได้
+        const zb = z.skill && z.skill.zoneBleed;
+        if (zb && owner) {
+          const zr = Math.max(0, (z.skill.rank || 1) - 1);
+          const per = zb.dmg[zr] + (zb.badRatio || 0) * (owner.bonusAd || 0);
+          state.dots.push({
+            targetId: e.id, ownerId: owner.id,
+            dps: per / (zb.every || 1), until: state.t + zb.dur, magic: false,
+            src: srcOf(z, owner),
+          });
+        }
       }
     }
     // Broadside — เพื่อนที่ยืนอยู่ในวงตอนกระสุนลง ได้ความเร็วเดินที่ค่อยๆ จางไปด้วย

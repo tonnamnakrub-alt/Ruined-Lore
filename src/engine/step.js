@@ -969,11 +969,22 @@ export function step(state) {
         }
         line.sort((a, b) => a.along - b.along);
         let beamDmg = skillPower(u, sk, tg);
+        // ชาร์จนานขึ้นต้องแรงขึ้นด้วย ไม่ใช่แค่ยิงได้ไกลขึ้น (HOOD Q)
+        // ไล่ค่าระหว่าง "ชาร์จขั้นต่ำ" กับ "ชาร์จเต็ม" ตามสัดส่วนเวลาที่ง้างไว้จริง
+        if (sk.fullDmg) {
+          const r3 = Math.max(0, (sk.rank || 1) - 1);
+          const frac3 = Math.min(1, held3 / sk.maxCharge);
+          const lo = sk.dmg[r3] + (sk.badRatio || 0) * u.bonusAd;
+          const hi = sk.fullDmg[r3] + (sk.fullBadRatio != null ? sk.fullBadRatio : (sk.badRatio || 0)) * u.bonusAd;
+          beamDmg = lo + (hi - lo) * frac3;
+        }
         const prevSrc3 = state.dmgSrc;
         state.dmgSrc = skillLabel(u, sk);
+        // ทะลุคนต่อไปแล้วเบาลง แต่ไม่เบาไปกว่าพื้นที่กำหนดไว้
+        const floor3 = sk.falloffFloor != null ? beamDmg * sk.falloffFloor : 0;
         for (const { e } of line) {
           applyDamage(state, u, e, beamDmg, !!sk.magic);
-          if (sk.falloff) beamDmg *= sk.falloff;
+          if (sk.falloff) beamDmg = Math.max(floor3, beamDmg * sk.falloff);
         }
         state.dmgSrc = prevSrc3;
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + Math.cos(ang3) * reach,

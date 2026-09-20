@@ -8,7 +8,7 @@ import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
 import { onLauraDamage, onLauraTakedown } from "./laura.js";
 import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
-import { arthurAegis, debuffAmpOf, duelAmp, ellaStash, jackSeed, nianJolt, nineLivesCatch } from "./lore.js";
+import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { onAliceDamage } from "./alice.js";
 import {
@@ -313,6 +313,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
           // ช่วยคนเดียวได้เต็ม หลายคนได้น้อยลง — เก็บไว้เป็นรายครั้งเพื่อคิดเงินตอนจบยก
           helper.assists += 1;
           if (helpers.length <= 1) helper.soloAssists = (helper.soloAssists || 0) + 1;
+          duelTakedownGold(helper, target, helpers.length <= 1 ? "solo" : "group");
           onMageTakedown(state, helper);
           onAssassinKill(state, helper, false);
           onLauraTakedown(state, helper);
@@ -323,6 +324,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       vfx(state, { kind: "flash", x: target.x, y: target.y, r: 150, color: "255,236,190", dur: 0.5 });
       vfx(state, { kind: "shock", x: target.x, y: target.y, r: 170, color: "255,208,138", dur: 0.6 });
       source.kills += 1;
+      duelTakedownGold(source, target, "kill");
       onMageTakedown(state, source);
       onAssassinKill(state, source, true);
       onLauraTakedown(state, source);

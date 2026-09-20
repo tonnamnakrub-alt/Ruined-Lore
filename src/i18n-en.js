@@ -2068,4 +2068,46 @@ export const DICT = {
    "Those two items were also sharing one cooldown timer — they have their own now",
  "เพิ่มชุดทดสอบที่จำลองมุมมองของทั้งสองเครื่องแล้วเทียบผล — 250 ไฟต์ ตรงกันทุกไฟต์":
    "Added a test that simulates both machines' view of the same fight and compares them — 250 fights, all identical",
+ "ตัวถัดไปรับดาเมจเหลือ {0}% แต่ไม่ต่ำกว่า {1}% ของก้อนแรก":
+   "each target after the first takes {0}%, never dropping below {1}% of the original",
+ "ชาร์จเต็มแล้วดาเมจขึ้นเป็น {0} (จาก {1})":
+   "a full charge raises the damage to {0} (from {1})",
+ "สตันตัวแรกที่ชน {0} วิ":
+   "stuns the first target hit for {0}s",
+ "ลดพลังโจมตีและพลังเวทของเป้า {0}% นาน {1} วิ":
+   "cuts the target's attack damage and ability power by {0}% for {1}s",
+ "ระหว่างรอระเบิด ศัตรูรอบวงติดสโลว์ {0}%":
+   "while it counts down, enemies around it are slowed {0}%",
+ "ทุกตัวที่โดนติดเลือดไหลอีก {0} วิ ทุก {1} วิ":
+   "everything hit bleeds for another {0}s, ticking every {1}s",
+ "ลอยครบ {0} วิแล้วสั่งทุบก่อนหมดเวลาได้":
+   "after {0}s aloft it can slam early instead of riding out the full flight",
+ "ตัวละครทำไม่ตรงกับที่สเปคเขียนไว้":
+   "Champions not doing what the spec says",
+ "ไล่เทียบตัวละครใหม่ทั้ง 10 ตัวกับไฟล์ Patch 0.3 ทีละค่า — ชื่อสกิล ตัวเลขดาเมจไล่แรงก์ และสเตตัสพื้นฐาน 100 ค่า ตรงหมด":
+   "Went through all 10 new champions against the Patch 0.3 file value by value — skill names, per-rank damage numbers and 100 base stats all matched",
+ "แต่มีกลไก 9 อย่างที่เขียนไว้ในข้อมูลแล้วไม่มีโค้ดอ่านเลย ในไฟต์จึงไม่เกิดอะไรขึ้น":
+   "But nine mechanics were written into the data with no code reading them, so nothing happened in an actual fight",
+ "NIAN Q ไม่สตัน — ท่าเปิดไฟต์หลักของแทงค์ไม่มีผลควบคุมเลย ตอนนี้สตัน 1.1-1.5 วิตามแรงก์":
+   "NIAN's Q didn't stun — the tank's main engage had no crowd control at all. It now stuns for 1.1-1.5s by rank",
+ "PIROSKA Q ผงพริกไทยสโลว์อย่างเดียว ไม่ได้ลดพลังโจมตีและพลังเวท 10-20% ตามที่เขียนไว้":
+   "PIROSKA's Q only slowed — it never applied the 10-20% attack damage and ability power cut the spec describes",
+ "HOOD Q ชาร์จนานแล้วยิงได้ไกลขึ้นอย่างเดียว ดาเมจเท่าเดิม · ตอนนี้ไล่ขึ้นถึง 110/170/230/290/350 (+145% Bonus AD) ตอนชาร์จเต็ม":
+   "HOOD's Q only gained range from charging, never damage · a full charge now reaches 110/170/230/290/350 (+145% Bonus AD)",
+ "HOOD Q ยิงทะลุแล้วดาเมจเบาลงเรื่อยๆ ไม่มีพื้น ตอนนี้ไม่ต่ำกว่า 60% ของก้อนแรกตามสเปค":
+   "HOOD's Q pierce falloff had no floor and kept decaying — it now stops at 60% of the original, as specified",
+ "HOOD R ไม่มีเลือดไหลหมู่ 4 วิที่สเปคเขียนไว้ ตอนนี้ติดให้ทุกตัวที่โดน และซ้อนกับเลือดไหลจากพาสซีฟได้":
+   "HOOD's R was missing the 4-second mass bleed from the spec — it now applies to everything hit and stacks alongside the passive's bleed",
+ "JACK W ไข่ทองคำไม่สโลว์ระหว่างรอระเบิด ตอนนี้สโลว์ 35-55% ตลอดช่วงนับถอยหลัง":
+   "JACK's W golden egg didn't slow while counting down — it now slows 35-55% for the whole delay",
+ "PUSS เก็บเป้าที่ตัวเองท้าดวลไม่ได้เงินเพิ่ม ตอนนี้ได้ค่าหัวแพงขึ้น 30% ตามสเปค":
+   "PUSS got no extra gold for taking down their own duel target — that bounty is now 30% richer, as specified",
+ "YODAKA R เหาะแล้วต้องรอครบ 2.5 วิเสมอ ตอนนี้ลอยครบ 0.5 วิแล้วทุบทันทีได้ถ้าศัตรูมารวมกันใต้วง":
+   "YODAKA's R always had to ride out the full 2.5s — it can now slam as early as 0.5s once enemies gather under the ring",
+ "เพิ่มชุดทดสอบที่ไล่ดูว่ากลไกที่ประกาศไว้มีโค้ดอ่านครบไหม และยิงไฟต์จริงเพื่อดูว่ามันทำงาน":
+   "Added a test that checks every declared mechanic has code reading it, then runs real fights to confirm it fires",
+ "ตัวละครทำตามสเปคครบแล้ว · ออนไลน์ผลตรงกันสองฝั่ง":
+   "Champions now do what the spec says · online results match on both sides",
+ "รอบเก็บกวาดหลัง 0.3 — ต่อสายกลไก 9 อย่างที่เขียนไว้แต่ไม่เคยทำงาน แก้ผลออนไลน์ที่ไม่ตรงกัน และเพิ่มช่องค้นหาในหน้าเลือกตัว":
+   "Clean-up pass after 0.3 — wired up nine mechanics that were written down but never ran, fixed online results disagreeing between machines, and added a search box to champion select",
 };

@@ -188,7 +188,9 @@ function fireSkillEffect(state, u, sk, target, prec) {
       u.x += ((target.x - u.x) / dd) * travel;
       u.y += ((target.y - u.y) / dd) * travel;
       applyDamage(state, u, target, power, !!sk.magic);
-      if (sk.landStun) addBuff(target, { type: "stun", v: 1, until: state.t + sk.landStun }, state.t);
+      // สตันตัวแรกที่พุ่งชน — บางตัวเขียนเป็นค่าเดียว บางตัวไล่ตามแรงก์ (NIAN Q)
+      const landStun = sk.landStunByRank ? sk.landStunByRank[Math.max(0, (sk.rank || 1) - 1)] : sk.landStun;
+      if (landStun) addBuff(target, { type: "stun", v: 1, until: state.t + landStun }, state.t);
       if (sk.shredByRank) addBuff(target, { type: "shred", v: sk.shredByRank[Math.max(0, sk.rank - 1)], until: state.t + sk.shredDur }, state.t);
       break;
     }
@@ -282,6 +284,12 @@ function fireSkillEffect(state, u, sk, target, prec) {
         applyDamage(state, u, best, power * mult, !!sk.magic);
         if (sk.slow && hits[best.id] === 1) {
           best.buffs.push({ type: "slow", v: sk.slow[Math.max(0, sk.rank - 1)], until: state.t + sk.dur });
+        }
+        // ผงพริกไทยของ PIROSKA — แสบตาจนตีเบาลงทั้งกายภาพและเวท ไม่ใช่แค่เดินช้า
+        if (sk.atkCut && hits[best.id] === 1) {
+          const cut = sk.atkCut[Math.max(0, sk.rank - 1)];
+          addBuff(best, { type: "ad", v: -cut, until: state.t + sk.dur }, state.t);
+          addBuff(best, { type: "apPct", v: -cut, until: state.t + sk.dur }, state.t);
         }
       }
       break;

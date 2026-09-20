@@ -535,7 +535,20 @@ function extraClause(sk) {
   if (sk.pierce) out.push(tr("ทะลุโดนหลายตัว"));
   if (sk.soloMult) out.push(tr("ถ้าโดนตัวเดียวดาเมจคูณ {0}", sk.soloMult));
   if (sk.edgeMult) out.push(tr("โดนขอบวงดาเมจคูณ {0}", sk.edgeMult));
-  if (sk.falloff) out.push(tr("ตัวถัดไปรับดาเมจเหลือ {0}%", Math.round(sk.falloff * 100)));
+  if (sk.falloff) {
+    out.push(sk.falloffFloor
+      ? tr("ตัวถัดไปรับดาเมจเหลือ {0}% แต่ไม่ต่ำกว่า {1}% ของก้อนแรก",
+        Math.round(sk.falloff * 100), Math.round(sk.falloffFloor * 100))
+      : tr("ตัวถัดไปรับดาเมจเหลือ {0}%", Math.round(sk.falloff * 100)));
+  }
+  if (sk.fullDmg) out.push(tr("ชาร์จเต็มแล้วดาเมจขึ้นเป็น {0} (จาก {1})", sk.fullDmg.join("/"), sk.dmg.join("/")));
+  if (sk.landStunByRank) out.push(tr("สตันตัวแรกที่ชน {0} วิ", sk.landStunByRank.join("/")));
+  if (sk.atkCut) out.push(tr("ลดพลังโจมตีและพลังเวทของเป้า {0}% นาน {1} วิ",
+    sk.atkCut.map((v) => +(v * 100).toFixed(1)).join("/"), sk.dur));
+  if (sk.auraSlow) out.push(tr("ระหว่างรอระเบิด ศัตรูรอบวงติดสโลว์ {0}%",
+    sk.auraSlow.map((v) => Math.round(v * 100)).join("/")));
+  if (sk.zoneBleed) out.push(tr("ทุกตัวที่โดนติดเลือดไหลอีก {0} วิ ทุก {1} วิ", sk.zoneBleed.dur, sk.zoneBleed.every));
+  if (sk.minAir) out.push(tr("ลอยครบ {0} วิแล้วสั่งทุบก่อนหมดเวลาได้", sk.minAir));
   if (sk.field) out.push(tr("ทิ้งพื้นที่ค้างไว้ {0} วิ", sk.field.dur));
   if (sk.shred || sk.shredByRank) out.push(tr("ลดเกราะเป้าหมาย"));
   if (sk.bleedDur) out.push(tr("ทำเลือดไหลต่อเนื่อง {0} วิ", sk.bleedDur));

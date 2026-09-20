@@ -849,7 +849,7 @@ export function App() {
       // ค่าที่ต้องเอาไปบวกเข้ากระเป๋าตอนจบยก เก็บแยกตามเลนของนักแข่ง
       units: st.units.map((u) => ({
         team: u.team, lane: u.lane, alive: u.alive, kills: u.kills, assists: u.assists,
-        wvcGold: u.wvcGold || 0, bountyGold: u.bountyGold || 0, sangGained: u.sangGained || 0,
+        wvcGold: u.wvcGold || 0, duelGold: u.duelGold || 0, bountyGold: u.bountyGold || 0, sangGained: u.sangGained || 0,
       })),
       log: st.log.slice(-6),
     };
@@ -901,9 +901,9 @@ export function App() {
     for (const L of Object.keys(done)) {
       for (const u of done[L].units) {
         const k = u.team + ":" + u.lane;
-        const cur = perUnit[k] || { kills: 0, assists: 0, soloAssists: 0, wvcGold: 0, bountyGold: 0, sangGained: 0, alive: true };
+        const cur = perUnit[k] || { kills: 0, assists: 0, soloAssists: 0, wvcGold: 0, duelGold: 0, bountyGold: 0, sangGained: 0, alive: true };
         cur.kills += u.kills; cur.assists += u.assists; cur.soloAssists += (u.soloAssists || 0);
-        cur.wvcGold += u.wvcGold; cur.bountyGold += u.bountyGold; cur.sangGained += u.sangGained;
+        cur.wvcGold += u.wvcGold; cur.duelGold += u.duelGold || 0; cur.bountyGold += u.bountyGold; cur.sangGained += u.sangGained;
         cur.alive = cur.alive && u.alive;
         perUnit[k] = cur;
       }
@@ -936,6 +936,8 @@ export function App() {
       if (bc) bg += bc.perRound + (u ? u.kills * bc.perKill + u.assists * bc.perAssist + u.bountyGold : 0);
       bg = Math.round(bg * mode.gold);
       gold += Math.round((u && u.wvcGold) || 0);
+      // PUSS — ค่าหัวส่วนเกินจากการเก็บเป้าที่ตัวเองท้าดวลไว้
+      gold += Math.round((u && u.duelGold) || 0);
       const nxp = c.xp + xp;
       const lvl = xpToLevel(nxp, laneMax(c.lane));
       const pri = side === "blue" ? priorityOf(c.champId) : ((CHAMPIONS[c.champId] || {}).skillPriority || ["Q", "W", "E"]);

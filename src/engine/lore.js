@@ -1,5 +1,6 @@
 import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
+import { ASSIST_GROUP, ASSIST_SOLO, KILL } from "../data/behaviour.js";
 import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
 import { addBuff, addBuffUnique, buffSum, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
@@ -777,6 +778,17 @@ export function tickLore(state, dt) {
   lore.slams = lore.slams.filter((s) => {
     if (state.t < s.at) {
       if (s.follow) { const u = owner(s.ownerId); if (u) { s.x = u.x; s.y = u.y; } }
+      // YODAKA R — ลอยครบขั้นต่ำแล้วสั่งทุบทันทีได้ ไม่ต้องรอจนหมดเวลา
+      // ทุบเลยเมื่อมีศัตรูอยู่ใต้วงตั้งแต่สองตัวขึ้นไป ดีกว่าลอยรอจนเขาเดินหนีออกไปหมด
+      if (s.sk && s.sk.minAir && !s.early) {
+        const u = owner(s.ownerId);
+        const flown = state.t - (s.at - s.sk.airTime);
+        if (u && flown >= s.sk.minAir) {
+          let under = 0;
+          for (const e of enemiesOf(state, u)) if (dist({ x: s.x, y: s.y }, e) <= s.radius + e.radius) under++;
+          if (under >= 2) { s.early = true; s.at = state.t; }
+        }
+      }
       return true;
     }
     const u = owner(s.ownerId);
@@ -1049,6 +1061,17 @@ export function ellaStash(state, source, target, dmg) {
 }
 
 // PUSS — ตราประทับท้าดวล ทำดาเมจใส่เป้านั้นแรงขึ้น
+// PUSS — ค่าหัวของเป้าที่ถูกตราท้าดวลแพงกว่าปกติ
+// kind: "kill" | "solo" (ช่วยคนเดียว) | "group" (ช่วยกันหลายคน)
+export function duelTakedownGold(u, target, kind) {
+  const cfg = u && u.champ && u.champ.duel;
+  if (!cfg || !cfg.goldPct) return;
+  if (!u.duelMarkId || u.duelMarkId !== target.id) return;
+  const base = kind === "kill" ? KILL.gold : kind === "solo" ? ASSIST_SOLO.gold : ASSIST_GROUP.gold;
+  u.duelGold = (u.duelGold || 0) + base * cfg.goldPct;
+}
+
+
 export function duelAmp(source, target) {
   const cfg = source && source.champ && source.champ.duel;
   if (!cfg || !source.duelMarkId || source.duelMarkId !== target.id) return 1;
