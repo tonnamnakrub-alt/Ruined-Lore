@@ -18,7 +18,10 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
 export function ShopPhase(ctx) {
-  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel } = ctx;
+  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy } = ctx;
+
+  // การซื้อล่าสุดที่ยังย้อนได้ (กองย้อนอยู่ที่ App เพราะหน้าจอเป็นฟังก์ชันธรรมดา)
+  const lastUndo = (buyUndo && buyUndo.length) ? buyUndo[buyUndo.length - 1] : null;
 
   // สเปคใหม่: ป่าลงแกงค์เลนที่ "ยกนี้" สั่งรุกล้ำหรือปกติไว้ได้เลย
   // เดิมต้องรอให้เลนนั้นสั่งรุกล้ำไว้ตั้งแต่ยกที่แล้ว ซึ่งช้าไปหนึ่งยกเสมอ
@@ -146,8 +149,12 @@ export function ShopPhase(ctx) {
                   if (node.owned) return;
                   // ชิ้นส่วนครบแล้วแต่ยังไม่ได้ประกอบ — เสนอซื้อตัวมันเองเลย ไม่ต้องไล่ลงไปอีก
                   if (node.ready) { missing.push(node.item); return; }
-                  if (node.children) node.children.forEach(walk);
-                  else missing.push(node.item);
+                  if (node.children) {
+                    // เงินถึงราคาเต็มก็ซื้อชิ้นกลางได้เลย ไม่ต้องไล่เก็บของย่อยให้ครบก่อน
+                    // เดิมไล่ลงไปถึงใบล่างสุดอย่างเดียว ชิ้นกลางเลยไม่เคยถูกเสนอให้ซื้อ
+                    if (!buyBlockedReason(c, node.item)) missing.push(node.item);
+                    node.children.forEach(walk);
+                  } else missing.push(node.item);
                 };
                 if (x.parts) x.parts.map((pid) => buildRecipeTree(pool, ITEM_BY_ID[pid])).forEach(walk);
                 const eff = effectiveCost(c.items, x);
@@ -315,6 +322,16 @@ export function ShopPhase(ctx) {
               <button onClick={() => openStats(c)} title={tr("ดูค่าสถานะทั้งหมด")}
                 style={{ ...btn(C.panel2), fontSize: 12, padding: "7px", flex: 1, color: C.blue }}>{tr("ค่าสถานะ")}</button>
             </div>
+            {/* ซื้อผิดชิ้นย้อนคืนได้เต็มราคา ตราบใดที่ยังไม่เริ่มไฟต์ของยกนี้ */}
+            {lastUndo && lastUndo.idx === idx ? (
+              <button onClick={undoBuy} title={tr("คืนเงินเต็มราคาและเอาชิ้นส่วนที่ถูกกลืนไปกลับมา")}
+                style={{
+                  ...btn(C.panel2), fontSize: 11.5, padding: "6px", marginTop: 5,
+                  color: C.gold, borderColor: C.line,
+                }}>
+                {tr("↩ ยกเลิกการซื้อ {0}", itemName({ th: lastUndo.name }))}
+              </button>
+            ) : null}
 
           </div>
         ))}

@@ -519,6 +519,20 @@ export function tickLoreUnit(state, u, dt) {
   const ch = u.champ;
   void dt;
 
+  // HOOD — ตัวนับเลือดไหลบนแผงสแตก อ่านจาก u.bleedStacks ซึ่งไม่เคยมีใครเซ็ตให้เลย
+  // ตัวนับจึงขึ้น 0 ตลอดทั้งที่พาสซีฟทำงานอยู่ ผู้เล่นเลยนึกว่าคริแล้วไม่เกิดอะไรขึ้น
+  // นับจากจำนวนชั้นที่ค้างอยู่บนเป้าตัวที่โดนหนักสุด เพราะเพดาน 5 ชั้นคิดแยกรายเป้า
+  if (ch.critBleed) {
+    const per = {};
+    let most = 0;
+    for (const d of state.dots) {
+      if (!d.hoodBleed || d.ownerId !== u.id || state.t > d.until) continue;
+      per[d.targetId] = (per[d.targetId] || 0) + 1;
+      if (per[d.targetId] > most) most = per[d.targetId];
+    }
+    u.bleedStacks = most;
+  }
+
   // PUSS — เลือกเป้าท้าดวลทันทีที่เข้าไฟต์
   if (ch.duel && !u.duelMarkId && !u.nineUsed) pickDuelMark(state, u);
   // ออกจากการล่องหนเมื่อไหร่ก็ได้ความเร็วโจมตีก้อนใหญ่ทันที

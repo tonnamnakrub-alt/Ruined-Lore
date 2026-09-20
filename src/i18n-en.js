@@ -2158,4 +2158,42 @@ export const DICT = {
    "The ground splits open {0} forward and {1} wide, hitting the whole line at once",
  "ชาร์จค้างแล้วยิงลูกศรทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย":
    "Draws back, then looses a piercing arrow — the longer the draw, the further it flies ({0}–{1} units)",
+ "{0} {1} ราชรถฟักทองถล่มลงกลางวง":
+   "{0} {1}'s pumpkin carriage crashes down",
+ "คืนเงินเต็มราคาและเอาชิ้นส่วนที่ถูกกลืนไปกลับมา":
+   "Refunds the full price and returns any parts the recipe consumed",
+ "↩ ยกเลิกการซื้อ {0}":
+   "↩ Undo buying {0}",
+ "เงินแยกกระเป๋า สะสมข้ามยก ขายคืนไม่ได้ · ยกที่ฟาร์มเฉยๆ ได้ +10 · ยกที่ได้ลงไฟต์ เงินคูณสองขึ้นไปเรื่อยๆ 10 → 20 → 40 → 80 → 160 แล้วคงที่ · สังหารหรือช่วยสังหาร +5 · คริติคอลได้ +1 (ทั้งออโต้และ Q) · อัพเกรดชิ้นละ 150":
+   "A separate purse that carries between rounds and can't be sold back · a farming round pays +10 · a round he actually fights in doubles the payout, 10 → 20 → 40 → 80 → 160, then holds · +5 per kill or assist · +1 per crit (autos and Q alike) · upgrades cost 150 each",
+ "คริของ HOOD ไม่เห็นว่าทำงาน":
+   "HOOD's crits looked like they did nothing",
+ "พาสซีฟ Lacerating Precision ทำงานถูกอยู่แล้ว แต่ตัวนับเลือดไหลบนแผงสแตกอ่านจากตัวแปรที่ไม่มีใครเคยเซ็ตค่าให้ จึงขึ้น 0 ตลอด":
+   "Lacerating Precision was working, but the bleed counter on the stack panel read a variable nothing ever set, so it always showed zero",
+ "บวกกับคริไม่ระเบิดเป็นตัวเลขก้อนใหญ่ตามดีไซน์ ผู้เล่นเลยไม่เห็นอะไรเลยว่าพาสซีฟทำงาน":
+   "Combined with the crit deliberately not bursting into one big number, there was nothing on screen telling you the passive had fired",
+ "และแผนแนะนำของ HOOD มีของสายคริแค่ชิ้นเดียวอยู่ลำดับสุดท้าย ทั้งที่พาสซีฟทั้งอันผูกกับการคริ — เกือบทั้งเกมจึงไม่มีคริให้ใช้":
+   "On top of that his recommended build had a single crit item in the last slot, even though his whole passive hinges on critting — so for most of a match he had no crit at all",
+ "ตอนนี้แผนของตัวที่พาสซีฟผูกกับคริ (HOOD, C.HOOK) ขึ้นของสายคริเป็นชิ้นแรกและรวมได้ราว 75%":
+   "Builds for champions whose passive hinges on crit (HOOD, C.HOOK) now open with a crit item and reach about 75% total",
+ "ซื้อของในร้าน":
+   "Shopping",
+ "ซื้อชิ้นกลางจากแผนออกของได้แล้วถ้าเงินถึงราคาเต็ม ไม่ต้องไล่เก็บชิ้นส่วนย่อยให้ครบก่อน":
+   "You can now buy a mid-tier item straight from the build plan if you can afford its full price, without collecting its smaller parts first",
+ "เดิมแผนไล่ลงไปเสนอแต่ใบล่างสุดของสูตร ชิ้นกลางจึงไม่เคยถูกเสนอให้ซื้อเลย":
+   "The plan used to walk down to the smallest leaves of the recipe, so a mid-tier piece was never offered at all",
+ "เพิ่มปุ่มยกเลิกการซื้อ — คืนเงินเต็มราคาและเอาชิ้นส่วนที่ถูกกลืนเข้าสูตรกลับมาให้ครบ":
+   "Added an undo button — it refunds the full price and brings back any parts the recipe swallowed",
+ "ขายคืนได้แค่บางส่วนและชิ้นส่วนที่ถูกกลืนไปแล้วก็ไม่กลับมา การกดผิดชิ้นเลยเสียหายจริง":
+   "Selling only refunds part of the cost and never returns consumed parts, so clicking the wrong item genuinely hurt",
+ "ย้อนได้เฉพาะก่อนกดเริ่มไฟต์ของยกนั้น พอไฟต์เริ่มแล้วถือว่าตัดสินใจแล้ว":
+   "Undo is only available before you start that round's fight — once it begins, the decision stands",
+ "Black Market ของ C.HOOK":
+   "C.HOOK's Black Market",
+ "ยกที่ได้ลงไฟต์จริง เงินกระเป๋าแยกคูณสองขึ้นไปเรื่อยๆ 10 → 20 → 40 → 80 → 160":
+   "A round he actually fights in doubles the purse payout: 10 → 20 → 40 → 80 → 160",
+ "ยกที่ฟาร์มเฉยๆ ไม่มีไฟต์ ยังได้ฐาน 10 เท่าเดิม และไม่ขยับชั้นคูณ":
+   "A farming round with no fight still pays the base 10 and does not advance the multiplier",
+ "ใส่เพดานไว้ที่ 160 ต่อยก เพราะถ้าคูณไปเรื่อยๆ ไม่จำกัด ยกที่ 20 จะได้เงินหลักล้าน":
+   "Capped at 160 per round — left uncapped, round 20 would pay out in the millions",
 };

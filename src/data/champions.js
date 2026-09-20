@@ -177,8 +177,8 @@ const CORE_CHAMPIONS = {
     th: "กัปตันฮุค", role: "Marksman", lane: "ADC", melee: false,
     hp: 565, hpG: 98, hp5: 5.5, hp5G: 0.4, ad: 61, adG: 3.4, armor: 42, armorG: 4.0, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.03, ms: 330, range: 550,
-    bounty: { perKill: 5, perAssist: 5, perRound: 10, perCrit: 1, price: 150 },
-    passive: { th: "Plunder", desc: "เงินแยกกระเป๋า สะสมข้ามยก ขายคืนไม่ได้ · จบยกได้ +10 (ไม่ต้องลงไฟต์) · สังหารหรือช่วยสังหาร +5 · คริติคอลได้ +1 (ทั้งออโต้และ Q) · อัพเกรดชิ้นละ 150" },
+    bounty: { perKill: 5, perAssist: 5, perRound: 10, perCrit: 1, price: 150, doubleCap: 4 },
+    passive: { th: "Plunder", desc: "เงินแยกกระเป๋า สะสมข้ามยก ขายคืนไม่ได้ · ยกที่ฟาร์มเฉยๆ ได้ +10 · ยกที่ได้ลงไฟต์ เงินคูณสองขึ้นไปเรื่อยๆ 10 → 20 → 40 → 80 → 160 แล้วคงที่ · สังหารหรือช่วยสังหาร +5 · คริติคอลได้ +1 (ทั้งออโต้และ Q) · อัพเกรดชิ้นละ 150" },
     skills: [
       { key: "Q", th: "Flintlock Shot", type: "targeted", range: 575, cast: 0.25,
         cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],

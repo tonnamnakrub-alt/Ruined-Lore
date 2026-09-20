@@ -87,6 +87,9 @@ export function champProfile(champId) {
     cc,
     // แทงค์ไม่ควรไปซื้อกริชเจาะเกราะ ดูจาก role เป็นหลัก
     tanky: /tank|vanguard|warden|juggernaut/.test(role),
+    // ตัวที่พาสซีฟทั้งอันผูกกับการคริ ถ้าไม่มีคริก็เท่ากับไม่มีพาสซีฟ (HOOD)
+    // ต้องดันของสายคริขึ้นมาก่อน ไม่ใช่ปล่อยให้ไปอยู่ชิ้นสุดท้ายของแผน
+    needsCrit: !!(ch.critBleed || (ch.bounty && ch.bounty.perCrit) || (ch.isolde && ch.isolde.onCrit)),
     taste: ROLE_TASTE[role] || null,
   };
 }
@@ -246,8 +249,12 @@ export function shopFor(c, enemies, rand, noise = 10) {
       // ไม่งั้นพอเงินเข้าช้าๆ มันจะเปลี่ยนใจทุกยกจนช่องเต็มไปด้วยชิ้นส่วนคนละสาย
       const commit = ownedParts(cur.items, i).reduce((a, p) => a + p.cost, 0) * 5;
       // taste2 = ความชอบประจำตัวที่คงที่ทั้งแมตช์ · rand() = ความลังเลรายยก
+      // ตัวที่พาสซีฟผูกกับคริ ต้องได้คริมาตั้งแต่ชิ้นแรกๆ ไม่งั้นพาสซีฟตายทั้งเกม
+      // ยิ่งยังไม่มีคริเลยยิ่งดันแรง พอมีพอใช้แล้วค่อยลดความอยากลง
+      const critNow = cur.items.reduce((a, x) => a + (x.crit || 0), 0);
+      const critPull = pf.needsCrit && i.crit ? (critNow < 0.3 ? 70 : critNow < 0.6 ? 34 : 10) : 0;
       return (taste.length - rank) * 10 + i.cost * 0.08
-        + counterScore(i, threat, pf, cur) + boots + fit + commit
+        + counterScore(i, threat, pf, cur) + boots + fit + commit + critPull
         + taste2(i.id) * 26 + rand() * noise;
     };
     goals.sort((a, b) => want(b) - want(a));
@@ -282,17 +289,35 @@ export function recommendedFor(champId, lane, n = 6) {
     .filter((i) => i.tier === 3 || i.kind === "boots")
     .filter((i) => taste.some((k) => i.cat === k || (i.also && i.also.includes(k))))
     .filter((i) => !forbidden(i, pf, base));
-  const score = (i) => {
+  // critHave = คริที่เก็บมาได้แล้วในแผนนี้ ใช้ตัดสินว่ายังควรดันของสายคริอยู่ไหม
+  const score = (i, critHave) => {
     const rank = taste.findIndex((k) => i.cat === k || (i.also && i.also.includes(k)));
     const sp = itemSplit(i);
     const defWant = DEFENSE_TARGET[pf.role] != null ? DEFENSE_TARGET[pf.role] : 0.35;
     // ชิ้นที่สัดส่วนรุก/รับใกล้เป้าหมายของสายนี้ที่สุดได้คะแนนสูงสุด
     const mix = 1 - Math.abs(sp.def / sp.tot - defWant);
-    return (taste.length - rank) * 10 + mix * 30 + i.cost * 0.05;
+    // ตัวที่พาสซีฟผูกกับคริต้องเห็นของสายคริอยู่ต้นแผน ไม่ใช่ชิ้นสุดท้าย
+    // แต่พอคริพอใช้แล้วต้องเลิกดัน ไม่งั้นแผนจะเป็นของคริล้วนจนคริเกิน 100%
+    const critPull = pf.needsCrit && i.crit && critHave < 0.6 ? 40 + i.crit * 60 : 0;
+    return (taste.length - rank) * 10 + mix * 30 + i.cost * 0.05 + critPull;
   };
-  const boots = pool.filter((i) => i.kind === "boots").sort((a, b) => score(b) - score(a))[0];
-  const cores = pool.filter((i) => i.kind !== "boots").sort((a, b) => score(b) - score(a));
-  const out = cores.slice(0, Math.max(1, n - (boots ? 1 : 0)));
+  const boots = pool.filter((i) => i.kind === "boots").sort((a, b) => score(b, 0) - score(a, 0))[0];
+  // เลือกทีละชิ้น เพื่อให้คะแนนของชิ้นถัดไปรู้ว่าเก็บคริมาได้เท่าไหร่แล้ว
+  const cores = pool.filter((i) => i.kind !== "boots");
+  const out = [];
+  let critHave = 0;
+  const room = Math.max(1, n - (boots ? 1 : 0));
+  while (out.length < room && out.length < cores.length) {
+    let best = null, bestS = -Infinity;
+    for (const i of cores) {
+      if (out.includes(i)) continue;
+      const s = score(i, critHave);
+      if (s > bestS) { bestS = s; best = i; }
+    }
+    if (!best) break;
+    out.push(best);
+    critHave += best.crit || 0;
+  }
   // รองเท้าแทรกเป็นชิ้นที่สองเสมอ — ของใหญ่ชิ้นแรกก่อน แล้วค่อยรองเท้า
   if (boots) out.splice(1, 0, boots);
   return { role: pf.role, items: out.slice(0, n) };

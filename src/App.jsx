@@ -109,6 +109,7 @@ export function App() {
   // ข่าวกรองฝ่ายตรงข้าม — ถ่ายภาพไว้ตอนปิดยก แล้วค่อยให้ส่องดูในยกถัดไป
   // ยกแรกจึงยังไม่มีอะไรให้ดู เพราะเขายังไม่ได้เปิดของอะไรเลย
   const [foeIntel, setFoeIntel] = useState(null);
+  const [buyUndo, setBuyUndo] = useState([]);   // ย้อนการซื้อของยกนี้ได้ (ล้างเมื่อเริ่มไฟต์)
   const [inspectId, setInspectId] = useState(null);      // ตัวละครที่กำลังดูข้อมูล
   // ตัวกรองตารางตัวละคร — หน้าจอเป็นฟังก์ชันธรรมดาไม่มีฮุค สเตตเลยต้องอยู่ตรงนี้
   const [pickQuery, setPickQuery] = useState("");
@@ -382,9 +383,28 @@ export function App() {
     });
   }
 
+  // ซื้อผิดชิ้นแล้วขายคืนได้แค่บางส่วน และชิ้นส่วนที่ถูกกลืนเข้าสูตรก็หายไปแล้ว
+  // เลยเก็บภาพก่อนซื้อไว้ให้ย้อนได้เต็มราคา — ใช้ได้เฉพาะก่อนเริ่มไฟต์ของยกนั้น
   function buy(idx, item) {
+    const before = (liveRef.current && liveRef.current.team ? liveRef.current.team : team)[idx];
+    if (before) {
+      setBuyUndo((u) => [
+        ...u.slice(-19),
+        { idx, gold: before.gold, items: [...(before.items || [])], favs: [...(favs[idx] || [])], name: item.th },
+      ]);
+    }
     setTeam((t) => t.map((c, i) => (i === idx ? applyBuy(c, item) : c)));
     dropFav(idx, item.id);
+  }
+
+  function undoBuy() {
+    setBuyUndo((u) => {
+      if (!u.length) return u;
+      const last = u[u.length - 1];
+      setTeam((t) => t.map((c, i) => (i === last.idx ? { ...c, gold: last.gold, items: [...last.items] } : c)));
+      setFavs((f) => ({ ...f, [last.idx]: [...last.favs] }));
+      return u.slice(0, -1);
+    });
   }
 
   function foeShop(list, enemies) {
@@ -714,6 +734,7 @@ export function App() {
   function startFight() {
     setStatsOpen(false);
     setScoutOpen(false);
+    setBuyUndo([]);
     lockStances();
   }
 
@@ -933,7 +954,17 @@ export function App() {
       let bg = c.bountyGold || 0;
       const bc = CHAMPIONS[c.champId] && CHAMPIONS[c.champId].bounty;
       // Plunder — จบยกได้เงินกระเป๋าแยกเสมอ ไม่ต้องลงไฟต์ · สังหาร/ช่วยได้เพิ่ม · คริสะสมมาจากในไฟต์
-      if (bc) bg += bc.perRound + (u ? u.kills * bc.perKill + u.assists * bc.perAssist + u.bountyGold : 0);
+      // สเปคใหม่: ยกที่ได้ลงไฟต์จริง เงินกระเป๋าคูณสองขึ้นไปเรื่อยๆ (10 → 20 → 40 …)
+      // ยกที่ฟาร์มเฉยๆ ไม่มีไฟต์ ได้แค่ฐาน 10 และไม่ขยับชั้นคูณ
+      let bmTier = c.bmTier || 0;
+      if (bc) {
+        const fought = !!u;
+        const perRound = fought
+          ? bc.perRound * Math.pow(2, Math.min(bmTier, bc.doubleCap != null ? bc.doubleCap : 4))
+          : bc.perRound;
+        if (fought) bmTier += 1;
+        bg += perRound + (u ? u.kills * bc.perKill + u.assists * bc.perAssist + u.bountyGold : 0);
+      }
       bg = Math.round(bg * mode.gold);
       gold += Math.round((u && u.wvcGold) || 0);
       // PUSS — ค่าหัวส่วนเกินจากการเก็บเป้าที่ตัวเองท้าดวลไว้
@@ -949,7 +980,7 @@ export function App() {
       return {
         ...c, xp: nxp, gold: c.gold + gold, level: lvl,
         ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
-        bountyGold: bg, sangHp: sang,
+        bountyGold: bg, sangHp: sang, bmTier,
       };
     });
 
@@ -1070,7 +1101,7 @@ export function App() {
     setTeam, setTeamStyle, shopCat, showRanges, slotsUsed, speed,
     scoutOpen, setScoutOpen, startMatch, statsOpen, setStatsOpen, history,
     mode, modeId, setModeId, wide, lang, changeLang, inspectId, setInspectId,
-    pickQuery, setPickQuery, pickLane, setPickLane,
+    pickQuery, setPickQuery, pickLane, setPickLane, buyUndo, undoBuy,
     draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes, foeIntel, rerollFoe,
     storeLane, setStoreLane, bookCat, setBookCat, bookItem, setBookItem,
     bookQuery, setBookQuery, shopItem, setShopItem, shopQuery, setShopQuery,
