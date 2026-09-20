@@ -2196,4 +2196,12 @@ export const DICT = {
    "A farming round with no fight still pays the base 10 and does not advance the multiplier",
  "ใส่เพดานไว้ที่ 160 ต่อยก เพราะถ้าคูณไปเรื่อยๆ ไม่จำกัด ยกที่ 20 จะได้เงินหลักล้าน":
    "Capped at 160 per round — left uncapped, round 20 would pay out in the millions",
+ "Q ของ ELLA ได้ใช้แค่จังหวะเดียว":
+   "ELLA's Q only ever reached its first beat",
+ "Midnight Waltz เป็นคอมโบสามจังหวะ แต่คูลดาวน์ลงตั้งแต่จังหวะแรก 10 วินาที ขณะที่หน้าต่างคอมโบมีแค่ 5 วินาที":
+   "Midnight Waltz is a three-beat combo, but the full 10-second cooldown landed on the very first beat while the combo window lasts only 5 seconds",
+ "จังหวะ Crescent Sweep กับ Grand Finale จึงไม่มีวันได้ใช้เลยสักครั้ง — Q เหมือนมีท่าเดียวมาตลอด":
+   "Crescent Sweep and Grand Finale could therefore never fire at all — Q behaved as though it were a single move",
+ "ตอนนี้คูลดาวน์ลงตอนจบคอมโบ ไม่ใช่ตอนเริ่ม · ปล่อยให้หน้าต่าง 5 วินาทีหลุดกลางคัน ท่าก็เข้าคูลดาวน์เต็มเหมือนกัน":
+   "The cooldown now starts when the combo ends rather than when it begins · letting the 5-second window lapse mid-combo still puts the skill on its full cooldown",
 };

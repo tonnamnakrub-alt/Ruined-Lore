@@ -7,6 +7,14 @@ import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
 
 
+// ELLA Q — คอมโบที่ยังไม่จบ จังหวะถัดไปต้องกดต่อได้ทันที
+// เดิมคูลดาวน์ลงตั้งแต่จังหวะแรก (10 วิ) แต่หน้าต่างคอมโบมีแค่ 5 วิ
+// จังหวะ 2 กับ 3 จึงไม่มีวันได้ใช้ — Q เลยเหมือนมีท่าเดียว
+function midCombo(u, sk) {
+  return sk.type === "combo" && (u.comboStep || 0) + 1 < (sk.steps || []).length;
+}
+
+
 export function castSkills(state, u, target, d, disc, aw, prec) {
   for (const sk of activeSkills(u)) {
     if (sk.rank <= 0 || (sk.ammoMax ? sk.ammo <= 0 : sk.cdLeft > 0)) continue;
@@ -29,6 +37,8 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
         if (sk.ammoMax) { sk.ammo -= 1; if (sk.rechargeAt == null) sk.rechargeAt = state.t + sk.rechargeTime; }
         else sk.cdLeft = fullCd(u, sk);
       }
+      // กดพลาดกลางคอมโบ = คอมโบขาด ต้องเริ่มใหม่ตั้งแต่จังหวะแรก
+      if (sk.type === "combo") { u.comboStep = 0; u.comboUntil = 0; u.comboArmed = false; }
       u.castLock = (use.cast != null ? use.cast : DEFAULT_CAST);
       u.fumbled = (u.fumbled || 0) + 1;
       continue;
@@ -41,7 +51,7 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
       if (sk.ammoMax) {
         sk.ammo -= 1;
         if (sk.rechargeAt == null) sk.rechargeAt = state.t + sk.rechargeTime;
-      } else {
+      } else if (!midCombo(u, sk)) {
         sk.cdLeft = fullCd(u, sk);
       }
     }

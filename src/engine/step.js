@@ -466,7 +466,8 @@ export function step(state) {
             spendFrag(u, u.shadow > 0);
           } else if (!sk.fragCost) {
             if (sk.ammoMax) { sk.ammo -= 1; if (sk.rechargeAt == null) sk.rechargeAt = state.t + sk.rechargeTime; }
-            else sk.cdLeft = fullCd(u, sk);
+            // คอมโบที่ยังไม่จบไม่ลงคูลดาวน์ จังหวะถัดไปถึงจะกดต่อได้
+            else if (!(sk.type === "combo" && (u.comboStep || 0) + 1 < (sk.steps || []).length)) sk.cdLeft = fullCd(u, sk);
           }
           state.castQueue.push({ u, sk: use, target: tgt, prec: 10 });
           onKazemCast(state, u);

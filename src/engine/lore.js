@@ -3,6 +3,7 @@ import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { ASSIST_GROUP, ASSIST_SOLO, KILL } from "../data/behaviour.js";
 import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
 import { addBuff, addBuffUnique, buffSum, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
+import { fullCd } from "./stats.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 
@@ -548,7 +549,12 @@ export function tickLoreUnit(state, u, dt) {
     u.skyLand = null;
   }
   // ELLA Q — หน้าต่างคอมโบหมดอายุ
-  if (u.comboUntil && state.t > u.comboUntil) { u.comboStep = 0; u.comboUntil = 0; u.comboArmed = false; }
+  if (u.comboUntil && state.t > u.comboUntil) {
+    u.comboStep = 0; u.comboUntil = 0; u.comboArmed = false;
+    // ปล่อยให้หน้าต่างหลุดกลางคอมโบ = ท่านั้นเข้าคูลดาวน์เต็ม จะได้ไม่วนกดจังหวะแรกฟรีๆ
+    const q = u.skills.find((s) => s.type === "combo");
+    if (q && q.cdLeft <= 0) q.cdLeft = fullCd(u, q);
+  }
   // ELLA W — ยอดสะสมหมดอายุ
   if (u.chime && state.t > u.chime.until) u.chime = null;
   // ELLA R — ล่องหนหมดเวลาเองก็คืนระยะออโต้
