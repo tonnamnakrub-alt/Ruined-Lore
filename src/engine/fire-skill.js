@@ -259,8 +259,14 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     case "cone": {
-      vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.range, ang: Math.atan2(target.y - u.y, target.x - u.x),
-        half: ((sk.angle || 45) * Math.PI) / 180 / 2, color: "255,208,138" });
+      const coneAng = Math.atan2(target.y - u.y, target.x - u.x);
+      const coneHalf = ((sk.angle || 45) * Math.PI) / 180 / 2;
+      vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.range, ang: coneAng, half: coneHalf, color: "255,208,138" });
+      // ผงเครื่องเทศต้องฟุ้งเป็นกลุ่มควัน ไม่ใช่กรวยทึบก้อนเดียว (PIROSKA Q)
+      if (sk.atkCut) {
+        vfx(state, { kind: "powder", x: u.x, y: u.y, r: sk.range, ang: coneAng, half: coneHalf,
+          color: "232,140,72", dur: 0.9 });
+      }
       // fragments spread over a cone; extra fragments on the same body fall off hard
       const hits = {};
       const baseAng = Math.atan2(target.y - u.y, target.x - u.x);

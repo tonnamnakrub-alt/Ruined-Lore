@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>FX lab — เอฟเฟกต์ใหม่ของ Patch 0.3</title>
+<style>
+  body { margin: 0; background: #0B1220; color: #E6EDF7; font: 13px system-ui, sans-serif; }
+  h1 { font-size: 15px; margin: 12px 16px 4px; letter-spacing: 1px; color: #E8A33D; }
+  p  { margin: 0 16px 10px; color: #8FA3C0; font-size: 11.5px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 300px); gap: 10px; padding: 0 16px 20px; }
+  .cell { background: #101827; border: 1px solid #1E2A42; border-radius: 8px; padding: 6px; }
+  .cell b { display: block; font-size: 11px; color: #8CBEFF; margin-bottom: 4px; font-family: ui-monospace, monospace; }
+  canvas { display: block; background: #0D1526; border-radius: 5px; }
+</style>
+<h1>FX LAB — เอฟเฟกต์ใหม่ของ Patch 0.3</h1>
+<p>วาดจาก drawFx ตัวจริงใน src/ui/draw-fx.js · ไล่เวลาให้เห็นทั้งช่วงเกิดและช่วงจาง</p>
+<div class="grid" id="grid"></div>
+<script type="module">
+import { drawFx } from "./src/ui/draw-fx.js";
+
+// ก้อนเอฟเฟกต์ตัวอย่าง อย่างละหนึ่งชนิด พร้อมสีประจำตัวละครที่เอกสารภาพกำหนดไว้
+const SAMPLES = [
+  ["shards · ELLA เศษแก้ว",      { kind: "shards", r: 150, count: 14, color: "214,190,255", dur: 0.7 }],
+  ["shards · เป้าเลือดต่ำ",       { kind: "shards", r: 150, count: 12, color: "232,90,110", dur: 0.7 }],
+  ["clock · ELLA หน้าปัดสะสม",    { kind: "clock", r: 34, frac: 0.65, color: "232,214,120", dur: 1.4 }],
+  ["slam · ราชรถ / ยักษ์ลงมา",    { kind: "slam", r: 62, color: "122,90,140", dur: 1.2 }],
+  ["powder · PIROSKA ผงพริกไทย",  { kind: "powder", r: 210, ang: -0.35, half: 0.44, color: "232,140,72", dur: 1.1 }],
+  ["tri · YODAKA กลุ่มดาว",        { kind: "tri", side: 190, ang: 0.4, color: "126,199,255", dur: 1.1 }],
+  ["bolt · NIAN สายฟ้า",          { kind: "bolt", h: 210, color: "126,199,255", dur: 0.6 }],
+  ["arrows · HOOD ห่าฝนธนู",       { kind: "arrows", r: 120, color: "229,72,77", dur: 1.1 }],
+  ["slashes · PUSS / ARTHUR",     { kind: "slashes", r: 150, ang: -0.3, half: Math.PI / 2, count: 6, color: "255,236,190", dur: 0.7 }],
+  ["debris · TOTSAKAN เศษหิน",     { kind: "debris", r: 130, color: "214,170,96", dur: 0.9 }],
+];
+
+const W = 288, H = 150, S = 1;      // S = หน่วยเกมต่อพิกเซล
+const grid = document.getElementById("grid");
+
+for (const [name, base] of SAMPLES) {
+  const cell = document.createElement("div");
+  cell.className = "cell";
+  const label = document.createElement("b");
+  label.textContent = name;
+  const cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  cell.append(label, cv);
+  grid.append(cell);
+
+  const ctx = cv.getContext("2d");
+  const born = performance.now() / 1000;
+  const loop = () => {
+    ctx.clearRect(0, 0, W, H);
+    const now = performance.now() / 1000;
+    // วนซ้ำสามจุดเวลาพร้อมกัน จะได้เห็นทั้งตอนเพิ่งเกิดและตอนใกล้จาง
+    const st = { t: now, fx: [] };
+    for (let i = 0; i < 3; i++) {
+      const phase = ((now - born) * 0.6 + i / 3) % 1;
+      st.fx.push({ ...base, x: (W * (i + 0.5)) / 3, y: H * 0.62, t: now - phase * (base.dur || 0.55) });
+    }
+    drawFx(ctx, st, S);
+    requestAnimationFrame(loop);
+  };
+  loop();
+}
+</script>

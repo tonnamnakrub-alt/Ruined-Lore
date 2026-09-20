@@ -5,7 +5,7 @@ import { supportOnHitBonus } from "./support.js";
 import { mageOnHit } from "./mage.js";
 import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
-import { arthurCleave, ellaOnHit, pickDuelMark } from "./lore.js";
+import { arthurCleave, carriageCrash, ellaOnHit, pickDuelMark } from "./lore.js";
 import { loreItemsOnHit } from "./lore-items.js";
 
 
@@ -79,6 +79,8 @@ export function onAutoLanded(state, u, target) {
   // ---- Patch 0.3 ----
   // ELLA — เศษแก้วติดออโต้ และปลดล็อกจังหวะถัดไปของคอมโบ Q
   if (u.champ.glassShards) {
+    // ออโต้ครั้งแรกตอนล่องหนคือจังหวะเปิดตัว ต้องลากราชรถลงมาทุบก่อนที่ล่องหนจะหลุด
+    if (u.carriage) carriageCrash(state, u, target);
     ellaOnHit(state, u, target);
     if (u.comboStep && state.t < (u.comboUntil || 0)) u.comboArmed = true;
   }

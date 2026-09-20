@@ -333,6 +333,8 @@ export function tickZonesAndSnipes(state) {
     const owner = state.units.find((x) => x.id === z.ownerId);
     // ระเบิดจริงตรงนี้ — ใส่คลื่นกระแทกกับแสงวาบให้เห็นชัดว่าลงตรงไหน
     vfx(state, { kind: "shock", x: z.x, y: z.y, r: z.r, color: z.magic ? "176,140,255" : "232,163,61", dur: 0.65 });
+    // ห่าฝนธนูของ HOOD ต้องเห็นลูกศรปักลงจริง ไม่ใช่วงระเบิดเฉยๆ
+    if (z.skill && z.skill.zoneBleed) vfx(state, { kind: "arrows", x: z.x, y: z.y, r: z.r, color: "229,72,77", dur: 0.9 });
     vfx(state, { kind: "flash", x: z.x, y: z.y, r: z.r * 0.7, color: z.magic ? "214,190,255" : "255,236,190", dur: 0.3 });
     let zoneHit = 0;
     for (const e of state.units) {

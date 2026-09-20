@@ -70,17 +70,21 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
         place(u, u.x + ((target.x - u.x) / dd) * Math.min(dd, step.dashRange),
           u.y + ((target.y - u.y) / dd) * Math.min(dd, step.dashRange));
         applyDamage(state, u, target, dmg, true);
+        vfx(state, { kind: "shards", x: target.x, y: target.y, r: 110, color: "214,190,255", dur: 0.55 });
       } else if (step.radius) {
         vfx(state, { kind: "cone", x: u.x, y: u.y, r: step.radius * sc, ang: face, half: Math.PI / 2, color: "214,190,255", dur: 0.5 });
+        vfx(state, { kind: "slashes", x: u.x, y: u.y, r: step.radius * sc, ang: face, half: Math.PI / 2, count: 4, color: "214,190,255", dur: 0.5 });
         for (const e of enemiesOf(state, u)) {
           if (!inCone(u, e, face, Math.PI / 2, step.radius * sc)) continue;
           applyDamage(state, u, e, dmg, true);
+          vfx(state, { kind: "shards", x: e.x, y: e.y, r: 90, color: "214,190,255", dur: 0.5 });
         }
       } else if (target) {
         let hit = dmg;
         if (step.pctMissingHp) hit += Math.max(0, target.maxHp - target.hp) * at(step.pctMissingHp, sk);
         applyDamage(state, u, target, hit, true);
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: target.x, y2: target.y, w: 8, color: "214,190,255" });
+        vfx(state, { kind: "shards", x: target.x, y: target.y, r: 150, count: 14, color: "214,190,255", dur: 0.7 });
         if (step.backstep) {
           const dd = dist(u, target) || 1;
           vfx(state, { kind: "trail", x: u.x, y: u.y, color: "214,190,255", pending: u.id });
@@ -106,7 +110,9 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       if (!tgt) return true;
       const stored = tgt.chime && tgt.chime.ownerId === u.id && state.t < tgt.chime.until ? tgt.chime.amt : 0;
       tgt.chime = null;
+      vfx(state, { kind: "clock", x: tgt.x, y: tgt.y, r: tgt.radius + 54, frac: 1, color: "232,214,120", dur: 0.35 });
       vfx(state, { kind: "ring", x: tgt.x, y: tgt.y, r: tgt.radius + 60, color: "232,214,120", grow: 1.2, dur: 0.6 });
+      vfx(state, { kind: "shards", x: tgt.x, y: tgt.y, r: 170, count: 16, color: "232,214,120", dur: 0.7 });
       applyDamage(state, u, tgt, power + stored, true);
       return true;
     }
@@ -119,6 +125,7 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       addBuff(u, { type: "root", v: 1, until: state.t + air }, state.t);
       u.skyLand = { at: state.t + air, ms: at(sk.msBuff, sk), dur: sk.dur || 2 };
       vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 40, color: "228,235,247", grow: 1, dur: air });
+      vfx(state, { kind: "shards", x: u.x, y: u.y, r: 80, count: 7, color: "228,235,247", dur: 0.5 });
       return true;
     }
 
@@ -205,6 +212,7 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       }
       // ใครที่ยืนในกรอบสามเหลี่ยมแต่ไม่โดนขอบ กินดาเมจเบากว่า
       const cx = (pts[0].x + pts[1].x + pts[2].x) / 3, cy = (pts[0].y + pts[1].y + pts[2].y) / 3;
+      vfx(state, { kind: "tri", x: cx, y: cy, side: side * sc, ang: face, color: "126,199,255", dur: 0.85 });
       for (const e of enemiesOf(state, u)) {
         if (hit.has(e.id)) continue;
         if (Math.hypot(e.x - cx, e.y - cy) > side * 0.58) continue;
@@ -276,7 +284,9 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       const dd = dist(u, target) || 1;
       const cx = u.x + ((target.x - u.x) / dd) * Math.min(dd, sk.range);
       const cy = u.y + ((target.y - u.y) / dd) * Math.min(dd, sk.range);
+      vfx(state, { kind: "slam", x: cx, y: cy, r: sk.radius, color: "110,98,86", dur: 1 });
       vfx(state, { kind: "shock", x: cx, y: cy, r: sk.radius, color: "232,214,120", dur: 0.8 });
+      vfx(state, { kind: "debris", x: cx, y: cy, r: sk.radius * 0.8, color: "214,170,96", dur: 0.85 });
       for (const e of enemiesOf(state, u)) {
         if (Math.hypot(e.x - cx, e.y - cy) > sk.radius + e.radius) continue;
         applyDamage(state, u, e, power, true);
@@ -429,6 +439,8 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       if (wasCc) {
         const whirl = at(sk.whirlDmg, sk) + (sk.whirlBadRatio || 0) * u.bonusAd;
         vfx(state, { kind: "shock", x: u.x, y: u.y, r: sk.whirlRadius, color: "255,208,138", dur: 0.6 });
+        // หมุนฟันสวนรอบตัวเต็ม 360 องศา
+        vfx(state, { kind: "slashes", x: u.x, y: u.y, r: sk.whirlRadius, ang: 0, half: Math.PI, count: 8, color: "255,236,190", dur: 0.5 });
         for (const e of enemiesOf(state, u)) {
           if (dist(u, e) > sk.whirlRadius + e.radius) continue;
           applyDamage(state, u, e, whirl, false);
@@ -459,6 +471,7 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       place(u, u.x + nx * go, u.y + ny * go);
       let dual = false;
       vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.sweepRadius, ang: face, half: Math.PI / 2, color: "255,208,138", dur: 0.5 });
+      vfx(state, { kind: "slashes", x: u.x, y: u.y, r: sk.sweepRadius, ang: face, half: Math.PI / 2, count: 3, color: "255,236,190", dur: 0.45 });
       for (const e of enemiesOf(state, u)) {
         if (!inCone(u, e, face, Math.PI / 2, sk.sweepRadius)) continue;
         applyDamage(state, u, e, sweepDmg, false);
@@ -585,7 +598,7 @@ export function tickLoreUnit(state, u, dt) {
       for (const e of targets) {
         state.dmgSrc = tr("พาสซีฟ Static Discharge");
         applyDamage(state, u, e, dmg, true);
-        vfx(state, { kind: "beam", x: u.x, y: u.y, x2: e.x, y2: e.y, w: 5, color: "126,199,255", dur: 0.25 });
+        vfx(state, { kind: "bolt", x: e.x, y: e.y, h: 300, color: "126,199,255", dur: 0.32 });
         nianJolt(state, u, e);
       }
       state.dmgSrc = null;
@@ -636,8 +649,11 @@ export function tickLoreUnit(state, u, dt) {
       const tg = state.units.find((x) => x.id === u.targetId && x.alive);
       if (c.follow && tg) c.ang = Math.atan2(tg.y - u.y, tg.x - u.x);
       const dmg = at(sk.dmg, { rank: c.rank + 1 }) + (sk.apRatio || 0) * u.ap + (sk.badRatio || 0) * u.bonusAd;
-      vfx(state, { kind: "cone", x: u.x, y: u.y, r: c.range, ang: c.ang, half: c.half,
-        color: sk.magic ? "126,199,255" : "255,208,138", dur: 0.22 });
+      const cCol = sk.magic ? "126,199,255" : "255,208,138";
+      vfx(state, { kind: "cone", x: u.x, y: u.y, r: c.range, ang: c.ang, half: c.half, color: cCol, dur: 0.22 });
+      // PUSS W แทงรัวเป็นลำแสงดาบ · NIAN E เป็นคลื่นเสียงซัดออกไป
+      vfx(state, { kind: "slashes", x: u.x, y: u.y, r: c.range, ang: c.ang, half: c.half,
+        count: sk.magic ? 3 : 6, color: cCol, dur: 0.3 });
       const prev = state.dmgSrc;
       state.dmgSrc = skillLabel(u, sk);
       for (const e of enemiesOf(state, u)) {
@@ -668,6 +684,8 @@ export function tickLoreUnit(state, u, dt) {
         applyDamage(state, u, tg, dmg, false);
         state.dmgSrc = prev;
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: tg.x, y2: tg.y, w: 7, color: "255,208,138", dur: 0.2 });
+        // รอยกรีดกากบาทบนตัวเป้าทุกจังหวะที่ฟัน (PUSS R)
+        vfx(state, { kind: "slashes", x: tg.x, y: tg.y, r: 130, ang: 0, half: Math.PI, count: 2, color: "255,208,138", dur: 0.3 });
         f.left -= 1;
         if (f.left <= 0) u.flourish = null;
         else {
@@ -799,7 +817,9 @@ export function tickLore(state, dt) {
     if (s.kind === "starfall") {
       u.buffs = u.buffs.filter((b) => b.type !== "untargetable" && b.type !== "invuln");
       place(u, s.x, s.y);
+      vfx(state, { kind: "slam", x: u.x, y: u.y, r: s.radius, color: "126,199,255", dur: 0.8 });
       vfx(state, { kind: "shock", x: u.x, y: u.y, r: s.radius, color: "126,199,255", dur: 0.7 });
+      vfx(state, { kind: "debris", x: u.x, y: u.y, r: s.radius * 0.6, color: "126,199,255", dur: 0.7 });
       for (const e of enemiesOf(state, u)) {
         if (dist(u, e) > s.radius + e.radius) continue;
         applyDamage(state, u, e, s.dmg, true);
@@ -810,6 +830,7 @@ export function tickLore(state, dt) {
       const w = s.wave;
       const dmg = w.dmg[s.rank] + (w.badRatio || 0) * u.bonusAd + (w.bonusHp || 0) * (u.bonusHp || 0);
       vfx(state, { kind: "shock", x: u.x, y: u.y, r: s.radius, color: "255,208,138", dur: 0.6 });
+      vfx(state, { kind: "debris", x: u.x, y: u.y, r: s.radius * 0.75, color: "214,170,96", dur: 0.75 });
       for (const e of enemiesOf(state, u)) {
         if (dist(u, e) > s.radius + e.radius) continue;
         applyDamage(state, u, e, dmg, false);
@@ -835,7 +856,7 @@ export function tickLore(state, dt) {
     state.dmgSrc = skillLabel(u, sk);
     for (const e of pool.slice(0, sk.targetsPerStrike)) {
       applyDamage(state, u, e, dmg, true);
-      vfx(state, { kind: "beam", x: e.x, y: e.y - 420, x2: e.x, y2: e.y, w: 10, color: "126,199,255", dur: 0.3 });
+      vfx(state, { kind: "bolt", x: e.x, y: e.y, h: 420, color: "126,199,255", dur: 0.4 });
       nianJolt(state, u, e);
     }
     state.dmgSrc = prev;
@@ -1041,12 +1062,43 @@ export function ellaOnHit(state, u, target) {
   const cfg = u.champ && u.champ.glassShards;
   if (!cfg) return;
   let dmg = byLevel(cfg, u.level) + cfg.apRatio * u.ap;
-  if (target.hp / target.maxHp < cfg.lowHpAt) dmg *= cfg.lowHpMul;
+  const low = target.hp / target.maxHp < cfg.lowHpAt;
+  if (low) dmg *= cfg.lowHpMul;
+  // เลือดต่ำกว่าครึ่ง เศษแก้วเยอะขึ้นและวาบเป็นสีเลือด ตามที่เอกสารภาพเขียนไว้
+  vfx(state, { kind: "shards", x: target.x, y: target.y, r: low ? 120 : 70,
+    count: low ? 12 : 6, color: low ? "232,90,110" : "214,190,255", dur: low ? 0.6 : 0.4 });
   const prev = state.dmgSrc;
   state.dmgSrc = tr("พาสซีฟ Glass Shards");
   applyDamage(state, u, target, dmg, true);
   state.dmgSrc = prev;
 }
+
+// ELLA R — ออโต้ครั้งแรกตอนล่องหน ลากราชรถฟักทองตามมาทุบจุดที่เป้ายืนอยู่
+// เดิมอัลติให้แค่ล่องหนกับระยะออโต้ที่ไกลขึ้น ส่วนตัวรถที่เป็นดาเมจก้อนหลักไม่เคยลงมาเลย
+export function carriageCrash(state, u, target) {
+  if (!u.carriage) return;
+  const sk = u.carriage.sk;
+  const r = Math.max(0, (sk.rank || 1) - 1);
+  const sc = 1 + (u.skillSizeBoost || 0);
+  const rad = sk.radius * sc;
+  u.carriage = null;
+  u.range = u.champ.range;
+  u.buffs = u.buffs.filter((b) => b.type !== "stealth");
+  const dmg = sk.dmg[r] + (sk.apRatio || 0) * u.ap;
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk);
+  for (const e of enemiesOf(state, u)) {
+    if (dist({ x: target.x, y: target.y }, e) > rad + e.radius) continue;
+    applyDamage(state, u, e, dmg, true);
+    addBuff(e, { type: "slow", v: sk.slowByRank[r], until: state.t + sk.slowDur }, state.t);
+  }
+  state.dmgSrc = prev;
+  vfx(state, { kind: "slam", x: target.x, y: target.y, r: rad, color: "122,90,140", dur: 0.9 });
+  vfx(state, { kind: "shock", x: target.x, y: target.y, r: rad, color: "232,163,61", dur: 0.7 });
+  vfx(state, { kind: "debris", x: target.x, y: target.y, r: rad * 0.7, color: "196,140,80", dur: 0.8 });
+  pushLog(state, tr("{0} {1} ราชรถฟักทองถล่มลงกลางวง", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+}
+
 
 // ELLA W — ทุกดาเมจที่เอลล่าทำใส่เป้า ถูกจดไว้บนตัวเป้า
 export function ellaStash(state, source, target, dmg) {
@@ -1058,6 +1110,10 @@ export function ellaStash(state, source, target, dmg) {
   cur.amt += dmg * pct;
   cur.until = state.t + sk.stashDur;
   target.chime = cur;
+  // เข็มเดินเร็วขึ้นตามยอดที่สะสมไว้ — อ่านออกว่าใกล้คุ้มที่จะกด W หรือยัง
+  const full = Math.min(1, cur.amt / Math.max(1, source.maxHp * 0.25));
+  vfx(state, { kind: "clock", x: target.x, y: target.y, r: target.radius + 30,
+    frac: full, color: "232,214,120", dur: 0.3 });
 }
 
 // PUSS — ตราประทับท้าดวล ทำดาเมจใส่เป้านั้นแรงขึ้น

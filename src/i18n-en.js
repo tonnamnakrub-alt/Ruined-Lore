@@ -2110,4 +2110,34 @@ export const DICT = {
    "Champions now do what the spec says · online results match on both sides",
  "รอบเก็บกวาดหลัง 0.3 — ต่อสายกลไก 9 อย่างที่เขียนไว้แต่ไม่เคยทำงาน แก้ผลออนไลน์ที่ไม่ตรงกัน และเพิ่มช่องค้นหาในหน้าเลือกตัว":
    "Clean-up pass after 0.3 — wired up nine mechanics that were written down but never ran, fixed online results disagreeing between machines, and added a search box to champion select",
+ "ท่วงท่าและเอฟเฟกต์ตามเอกสารภาพ":
+   "Animations and effects from the visuals document",
+ "เทียบขนาดพื้นที่ทุกสกิลกับเอกสารภาพแล้ว ตรงหมดทุกค่า — ที่ขาดคือหน้าตาของมัน ทุกท่าใช้เอฟเฟกต์กลางชุดเดียวกันหมด จำไม่ได้ว่าใครเป็นใคร":
+   "Checked every skill's hitbox against the visuals document — all of them matched. What was missing was the look: every ability used the same shared set of effects, so nothing read as a particular champion",
+ "เพิ่มเอฟเฟกต์เฉพาะตัว 9 แบบ: เศษแก้ว · หน้าปัดนาฬิกา · ของหนักดิ่งลงจากฟ้า · ผงเครื่องเทศ · เส้นกลุ่มดาว · สายฟ้า · ห่าฝนธนู · รอยฟันซ้อน · เศษหิน":
+   "Added nine signature effects: glass shards · a clock dial · something heavy falling from the sky · spice powder · constellation lines · lightning · arrow rain · layered slashes · flying rubble",
+ "ELLA — ออโต้ทำเศษแก้วกระเด็น และเปลี่ยนเป็นสีเลือดทันทีที่เป้าเหลือไม่ถึงครึ่ง ตามที่เอกสารเขียนว่าให้รองเท้าแก้วเปื้อนเลือดวาบขึ้น":
+   "ELLA — autos scatter glass shards, turning blood red the moment the target drops below half, as the document's blood-stained glass slipper calls for",
+ "ELLA W — หน้าปัดนาฬิกาใต้เท้าเป้าเดินเร็วขึ้นตามดาเมจที่สะสมไว้จริง ดูออกว่าใกล้คุ้มที่จะกดหรือยัง แล้วหยุดที่เลข 12 ตอนระเบิด":
+   "ELLA W — the clock face under the target runs faster as the stored damage grows, so you can see when it is worth detonating, then stops at twelve when it goes off",
+ "PIROSKA Q — ผงพริกไทยฟุ้งเป็นกลุ่มควันสีส้ม ไม่ใช่กรวยทึบก้อนเดียว":
+   "PIROSKA Q — the pepper billows out as an orange cloud rather than one solid cone",
+ "YODAKA E — เส้นกลุ่มดาวลากเป็นรูปสามเหลี่ยมค้างให้เห็นทั้งรูป พร้อมดาวที่มุมทั้งสาม":
+   "YODAKA E — the constellation lines trace the whole triangle and hold, with a star at each corner",
+ "NIAN — สายฟ้าผ่าลงจากฟ้าใส่หัวศัตรู ทั้งพาสซีฟและอัลติ เดิมเป็นลำแสงยิงออกจากตัวเหนียน":
+   "NIAN — lightning now strikes down onto the enemy's head, on both the passive and the ultimate; it used to be a beam fired out of Nian",
+ "HOOD R — เห็นลูกศรทยอยปักลงในวงจริง":
+   "HOOD R — you can see the arrows actually landing across the circle",
+ "TOTSAKAN R · YODAKA R · JACK R — มีเศษหินกระเด็นลอยตอนทุบพื้น และยักษ์กับดาวตกมีเงาบอกจุดตกก่อนถึงพื้น":
+   "TOTSAKAN R · YODAKA R · JACK R — rubble kicks up on each slam, and the giant and the falling star cast a shadow marking where they will land",
+ "PUSS · ARTHUR — รอยฟันซ้อนกันเป็นชุดตามจำนวนครั้งที่ฟันจริง แทนวงระเบิดวงเดียว":
+   "PUSS · ARTHUR — layered slash marks matching how many times they actually strike, instead of a single burst ring",
+ "ราชรถของ ELLA ไม่เคยลงมาเลย":
+   "ELLA's carriage never actually arrived",
+ "อัลติของเอลล่าให้แค่ล่องหนกับระยะออโต้ที่ไกลขึ้น ส่วนตัวราชรถซึ่งเป็นดาเมจก้อนหลักของท่าไม่เคยถูกเขียนไว้ในเอนจิน":
+   "Her ultimate only granted stealth and a longer auto range — the carriage itself, which is the ability's main damage, was never written into the engine",
+ "ออโต้ครั้งแรกตอนล่องหนตอนนี้ลากราชรถลงมาทุบจริง — รัศมี 325 หน่วย ดาเมจ 200/325/450 (+75% AP) และสโลว์ 60/70/80% นาน 2 วิ ตามสเปค":
+   "The first auto out of stealth now drags the carriage down for real — a 325-unit radius, 200/325/450 (+75% AP) damage and a 60/70/80% slow for 2s, as specified",
+ "ตรวจซ้ำแล้วเลิกล่องหนตอนเปิดตัวถูกต้อง และระยะออโต้กลับมาเป็น 150 หลังทุบ":
+   "Verified that stealth breaks correctly on the opener and that her auto range returns to 150 afterwards",
 };

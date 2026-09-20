@@ -321,6 +321,192 @@ export function drawFx(ctx, st, S) {
           ctx.stroke();
         }
       }
+    } else if (f.kind === "shards") {
+      // เศษแก้วแตกกระเด็น — สามเหลี่ยมบางๆ ที่หมุนออกจากจุดโดน (ELLA)
+      const x = f.x / S, y = f.y / S, r = (f.r || 90) / S;
+      const k = easeOut(age);
+      ctx.fillStyle = `rgba(${col},${(a * a * 0.95).toFixed(3)})`;
+      const n = f.count || 9;
+      for (let i = 0; i < n; i++) {
+        const ang = hash(seed + i * 7.31) * Math.PI * 2;
+        const reach = r * (0.5 + hash(seed + i * 2.13) * 1.1) * k;
+        const sx = x + Math.cos(ang) * reach, sy = y + Math.sin(ang) * reach;
+        const sz = (2.2 + hash(seed + i * 5.77) * 3.4) * (1 - age * 0.55);
+        const spin = ang + age * 6 * (hash(seed + i * 3.3) > 0.5 ? 1 : -1);
+        ctx.beginPath();
+        for (let v = 0; v < 3; v++) {
+          const va = spin + (v * Math.PI * 2) / 3;
+          const vx = sx + Math.cos(va) * sz, vy = sy + Math.sin(va) * sz;
+          if (v === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+    } else if (f.kind === "clock") {
+      // หน้าปัดนาฬิกาใต้เท้าเป้า — เข็มเดินเร็วตามดาเมจที่สะสมไว้ (ELLA W)
+      const x = f.x / S, y = f.y / S, r = (f.r || 46) / S;
+      const frac = Math.min(1, f.frac || 0);
+      ctx.strokeStyle = `rgba(${col},${(a * 0.75).toFixed(3)})`;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
+      for (let i = 0; i < 12; i++) {
+        const ta = (i * Math.PI) / 6;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(ta) * r * 0.82, y + Math.sin(ta) * r * 0.82);
+        ctx.lineTo(x + Math.cos(ta) * r, y + Math.sin(ta) * r);
+        ctx.stroke();
+      }
+      // ส่วนที่สะสมแล้ว ระบายเป็นชิ้นพาย เริ่มจากเลข 12
+      ctx.fillStyle = `rgba(${col},${(a * 0.16).toFixed(3)})`;
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.arc(x, y, r * 0.9, -Math.PI / 2, -Math.PI / 2 + frac * Math.PI * 2);
+      ctx.closePath(); ctx.fill();
+      const ha = -Math.PI / 2 + (st.t * (1.6 + frac * 5)) % (Math.PI * 2);
+      ctx.strokeStyle = `rgba(${col},${a.toFixed(3)})`;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(ha) * r * 0.7, y + Math.sin(ha) * r * 0.7); ctx.stroke();
+    } else if (f.kind === "slam") {
+      // ของหนักดิ่งลงจากฟ้าแล้วกระแทกพื้น (ราชรถของ ELLA · ยักษ์ของ JACK)
+      const x = f.x / S, y = f.y / S, r = (f.r || 300) / S;
+      const drop = Math.max(0, 1 - age * 3.2);           // ช่วงกำลังร่วง
+      if (drop > 0) {
+        // เพดานความสูงไว้ ไม่งั้นของที่วงกว้างๆ จะร่วงมาจากนอกจอ มองไม่เห็นว่ามีอะไรตกลงมา
+        const h = Math.min(r * 1.6, 170) * drop;
+        // เงาบนพื้นหดลงเรื่อยๆ ตามที่ของใกล้ถึง — อ่านออกว่ากำลังจะลงตรงไหน
+        ctx.fillStyle = `rgba(6,10,20,${(a * 0.45).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 0.3 * (1.25 - drop * 0.5), r * 0.14 * (1.25 - drop * 0.5), 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${col},${(a * 0.95).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.ellipse(x, y - h, r * 0.4, r * 0.3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // ริ้วลมตามหลังของที่กำลังดิ่ง
+        ctx.strokeStyle = `rgba(${col},${(a * 0.4).toFixed(3)})`;
+        ctx.lineWidth = 2;
+        for (const dx of [-r * 0.22, 0, r * 0.22]) {
+          ctx.beginPath();
+          ctx.moveTo(x + dx, y - h - r * 0.34);
+          ctx.lineTo(x + dx, y - h - r * 0.34 - 26 * drop);
+          ctx.stroke();
+        }
+      } else {
+        const k = easeOut(Math.min(1, (age - 0.31) * 2.4));
+        ctx.strokeStyle = `rgba(${col},${(a * a).toFixed(3)})`;
+        ctx.lineWidth = 5 * (1 - k) + 1;
+        ctx.beginPath(); ctx.arc(x, y, r * (0.3 + k * 0.8), 0, Math.PI * 2); ctx.stroke();
+        burst(ctx, x, y, r * 0.8, age, a, col, seed, 12);
+      }
+    } else if (f.kind === "powder") {
+      // ผงเครื่องเทศฟุ้งเป็นรูปกรวย (PIROSKA Q)
+      const x = f.x / S, y = f.y / S, r = (f.r || 700) / S;
+      const half = f.half || 0.44;
+      const k = easeOutQuad(age);
+      for (let i = 0; i < 26; i++) {
+        const ang = f.ang - half + hash(seed + i * 6.13) * half * 2;
+        const reach = r * (0.15 + hash(seed + i * 8.9) * 0.9) * (0.35 + k * 0.8);
+        const pr = (3 + hash(seed + i * 4.2) * 7) * (0.5 + k * 0.9);
+        ctx.fillStyle = `rgba(${col},${(a * a * 0.5).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x + Math.cos(ang) * reach, y + Math.sin(ang) * reach, pr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (f.kind === "tri") {
+      // เส้นกลุ่มดาวรูปสามเหลี่ยมที่ปลายปีกลากไว้ (YODAKA E)
+      const side = (f.side || 350) / S;
+      const h = side / Math.sqrt(3);
+      const pts = [];
+      for (let i = 0; i < 3; i++) {
+        const va = (f.ang || 0) + (i * Math.PI * 2) / 3 - Math.PI / 2;
+        pts.push([f.x / S + Math.cos(va) * h, f.y / S + Math.sin(va) * h]);
+      }
+      ctx.strokeStyle = `rgba(${col},${(a * 0.9).toFixed(3)})`;
+      ctx.lineWidth = 2.6;
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i <= 3; i++) ctx.lineTo(pts[i % 3][0], pts[i % 3][1]);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(${col},${a.toFixed(3)})`;
+      for (const [px, py] of pts) {
+        ctx.beginPath(); ctx.arc(px, py, 3.4 + 2 * (1 - age), 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (f.kind === "bolt") {
+      // สายฟ้าผ่าลงจากฟ้า (NIAN)
+      const x = f.x / S, y = f.y / S;
+      const top = y - (f.h || 420) / S;
+      const flash = Math.max(0, 1 - age * 3);
+      ctx.strokeStyle = `rgba(${col},${(a * a).toFixed(3)})`;
+      ctx.lineWidth = 3.2 * flash + 1;
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      const segs = 6;
+      for (let i = 1; i <= segs; i++) {
+        const t2 = i / segs;
+        const jitter = (hash(seed + i * 9.1) - 0.5) * 26 * (1 - t2);
+        ctx.lineTo(x + jitter, top + (y - top) * t2);
+      }
+      ctx.stroke();
+      if (flash > 0) {
+        ctx.fillStyle = `rgba(${col},${(a * flash * 0.5).toFixed(3)})`;
+        ctx.beginPath(); ctx.ellipse(x, y, 26 * flash + 8, 10 * flash + 4, 0, 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (f.kind === "arrows") {
+      // ห่าฝนลูกศรปักลงในวง (HOOD R)
+      const x = f.x / S, y = f.y / S, r = (f.r || 375) / S;
+      ctx.strokeStyle = `rgba(${col},${(a * 0.95).toFixed(3)})`;
+      ctx.lineCap = "round";
+      for (let i = 0; i < 22; i++) {
+        const ang = hash(seed + i * 3.77) * Math.PI * 2;
+        const rad = r * Math.sqrt(hash(seed + i * 6.31));
+        const px = x + Math.cos(ang) * rad, py = y + Math.sin(ang) * rad;
+        // แต่ละดอกปักไม่พร้อมกัน ทยอยลงตลอดช่วงเอฟเฟกต์
+        const off = hash(seed + i * 8.53) * 0.55;
+        const k = Math.min(1, Math.max(0, (age - off) * 4));
+        if (k <= 0) continue;
+        const fall = (1 - k) * 60;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(px, py - fall - 16);
+        ctx.lineTo(px, py - fall);
+        ctx.stroke();
+      }
+      ctx.lineCap = "butt";
+    } else if (f.kind === "slashes") {
+      // รอยฟันซ้อนกันเป็นชุด (PUSS W/R · ARTHUR กวาดดาบ)
+      const x = f.x / S, y = f.y / S, r = (f.r || 300) / S;
+      const half = f.half != null ? f.half : Math.PI;
+      const n = f.count || 5;
+      ctx.strokeStyle = `rgba(${col},${(a * a).toFixed(3)})`;
+      ctx.lineCap = "round";
+      for (let i = 0; i < n; i++) {
+        const off = i / n * 0.5;
+        const k = Math.min(1, Math.max(0, (age - off) * 3.4));
+        if (k <= 0) continue;
+        const ang = (f.ang || 0) - half + (half * 2 * (i + 0.5)) / n;
+        const len = r * (0.55 + 0.45 * hash(seed + i * 5.9));
+        const d0 = r * 0.2 + len * k * 0.5;
+        ctx.lineWidth = 3.6 * (1 - k) + 0.8;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(ang) * d0, y + Math.sin(ang) * d0);
+        ctx.lineTo(x + Math.cos(ang) * (d0 + len * 0.55), y + Math.sin(ang) * (d0 + len * 0.55));
+        ctx.stroke();
+      }
+      ctx.lineCap = "butt";
+    } else if (f.kind === "debris") {
+      // เศษหินกระเด็นลอยขึ้นแล้วตกกลับ (TOTSAKAN R · H.S.B E)
+      const x = f.x / S, y = f.y / S, r = (f.r || 250) / S;
+      ctx.fillStyle = `rgba(${col},${(a * 0.9).toFixed(3)})`;
+      for (let i = 0; i < 14; i++) {
+        const ang = hash(seed + i * 4.19) * Math.PI * 2;
+        const reach = r * (0.3 + hash(seed + i * 7.7) * 0.8) * easeOut(age);
+        const lift = Math.sin(Math.min(1, age * 1.4) * Math.PI) * (12 + hash(seed + i * 2.6) * 26);
+        const sz = 2 + hash(seed + i * 9.4) * 3.6;
+        ctx.beginPath();
+        ctx.rect(x + Math.cos(ang) * reach - sz / 2, y + Math.sin(ang) * reach - lift - sz / 2, sz, sz);
+        ctx.fill();
+      }
     } else if (f.kind === "hit" || f.kind === "magic" || f.kind === "true") {
       const c2 = f.color || (f.kind === "magic" ? "176,140,255" : f.kind === "true" ? "255,255,255" : "255,208,138");
       const x = f.x / S, y = f.y / S;
