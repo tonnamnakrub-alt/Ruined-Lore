@@ -372,7 +372,11 @@ function actionClause(sk) {
   switch (sk.type) {
     case "aoeSelf": return tr("ระเบิดรอบตัวรัศมี {0} หน่วย", rad || 0);
     case "aoeGround": return tr("เล็งลงพื้นในระยะ {0} ระเบิดเป็นวงรัศมี {1} หน่วย", r || 0, rad || 0);
-    case "line": return tr("ยิงเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย", r || 0, w || sk.thickness || 0);
+    case "line":
+      // แยกให้ชัดว่าเป็นของที่ลอยไป (หลบได้ กำแพงกินได้) หรือพื้นที่ที่แยกออกไปทันที
+      return sk.instant
+        ? tr("พื้นแยกเป็นร่องพุ่งไปข้างหน้า {0} กว้าง {1} หน่วย โดนทั้งแนวพร้อมกันทันที", r || 0, w || 0)
+        : tr("ยิงเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย", r || 0, w || sk.thickness || 0);
     case "wave": return tr("ปล่อยคลื่นกว้าง {0} วิ่งไปไกล {1} หน่วย", w || 0, r || 0);
     case "cone": return tr("กวาดเป็นกรวยด้านหน้าไกล {0} หน่วย", r || 0);
     case "targeted": return tr("ล็อกเป้าหมายเดียวในระยะ {0} หน่วย", r || 0);
@@ -426,7 +430,7 @@ function actionClause(sk) {
     case "wonderland": return tr("กางอาณาเขตกระจกลงพื้นในระยะ {0} วงกว้าง {1} หน่วย", r || 0, rad || 0);
     case "guardBurst": return tr("กางโล่ให้ตัวเอง แล้วถ้าโล่ยังไม่แตกจะสะบัดคลื่นรอบตัวรัศมี {0} หน่วย", sk.radius || 0);
     case "dismissal": return tr("จับศัตรูในระยะ {0} แล้วเหวี่ยงทุ่มไปไกลสุด {1} หน่วย ระเบิดที่จุดตกรัศมี {2}", sk.grabRange || 0, sk.throwRange || 0, sk.radius || 0);
-    case "rangeCharge": return tr("ชาร์จค้างแล้วยิงลำแสงทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย", sk.rangeMin || 0, sk.rangeMax || 0);
+    case "rangeCharge": return tr("ชาร์จค้างแล้วยิงลูกศรทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย", sk.rangeMin || 0, sk.rangeMax || 0);
     case "coneKnock": return tr("กระแทกคลื่นเป็นกรวยด้านหน้าไกล {0} หน่วย", r || 0);
     case "meteorStorm": return tr("ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ศัตรูทุกคนบนสนามทีละระลอก");
     case "bloodStorm": return tr("แผ่พายุโลหิตรอบตัวรัศมี {0} หน่วย กัดทุกคนในวงทุก {1} วิ", rad || 0, sk.every || 0.5);

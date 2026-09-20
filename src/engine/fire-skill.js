@@ -57,7 +57,35 @@ function fireSkillEffect(state, u, sk, target, prec) {
 
   switch (sk.type) {
     case "line": {
-      vfx(state, { kind: "flash", x: u.x, y: u.y, r: (sk.width || 100) * 0.6, color: sk.magic ? "176,140,255" : "255,208,138" });
+      const lineCol = sk.magic ? "176,140,255" : "255,208,138";
+      vfx(state, { kind: "flash", x: u.x, y: u.y, r: (sk.width || 100) * 0.6, color: lineCol });
+      // บางท่าไม่ใช่ของที่ลอยไป แต่เป็นพื้นที่แยกออกไปข้างหน้าพร้อมกันทันที (TOTSAKAN Q)
+      // ต้องกินทั้งแนวในเฟรมเดียว และกำแพงกันกระสุนก็กันมันไม่ได้
+      if (sk.instant) {
+        const nx = Math.cos(ang), ny = Math.sin(ang);
+        const reach = sk.range + (u.skillRangeBoost || 0);
+        const halfW = (sk.width || 100) / 2;
+        const prevSrcL = state.dmgSrc;
+        state.dmgSrc = skillLabel(u, sk);
+        for (const e of enemiesOf(state, u)) {
+          const rx = e.x - u.x, ry = e.y - u.y;
+          const along = rx * nx + ry * ny;
+          if (along < -e.radius || along > reach + e.radius) continue;
+          if (Math.abs(rx * -ny + ry * nx) > halfW + e.radius) continue;
+          applyDamage(state, u, e, power, !!sk.magic);
+          const lv = sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow;
+          if (lv) addBuff(e, { type: "slow", v: lv, until: state.t + (sk.dur || 1) }, state.t);
+        }
+        state.dmgSrc = prevSrcL;
+        vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + nx * reach, y2: u.y + ny * reach,
+          w: halfW, color: lineCol, dur: 0.4 });
+        // เศษหินและประกายไฟพุ่งขึ้นมาจากรอยแยกตลอดแนว
+        for (const f of [0.35, 0.7, 1]) {
+          vfx(state, { kind: "debris", x: u.x + nx * reach * f, y: u.y + ny * reach * f,
+            r: halfW * 1.6, color: "214,170,96", dur: 0.7 });
+        }
+        break;
+      }
       state.projectiles.push({
         id: state.nextProjId++, team: u.team, ownerId: u.id, skill: sk,
         x: u.x, y: u.y, dx: Math.cos(ang), dy: Math.sin(ang),

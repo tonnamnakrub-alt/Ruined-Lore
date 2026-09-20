@@ -954,20 +954,6 @@ export function step(state) {
       // ปล่อยทันทีที่ชาร์จพอจะถึงเป้า ไม่ต้องอั้นจนเต็มถ้าเป้าอยู่ใกล้
       if (full || !tg || !tg.alive || (d3 <= reach - 40 && held3 > 0.15)) {
         const ang3 = tg ? Math.atan2(tg.y - u.y, tg.x - u.x) : 0;
-        // ลำแสงโดนทันทีที่ปล่อย (hitscan) ไม่มีกระสุนวิ่ง — เรียงตามระยะแล้วค่อยลดหลั่นทีละตัว
-        const nx3 = Math.cos(ang3), ny3 = Math.sin(ang3);
-        const halfW = sk.width / 2;
-        const line = [];
-        for (const e of state.units) {
-          if (!e.alive || e.team === u.team) continue;
-          if (hasBuff(e, "stealth") || hasBuff(e, "untargetable")) continue;
-          const rx = e.x - u.x, ry = e.y - u.y;
-          const along = rx * nx3 + ry * ny3;
-          if (along < -e.radius || along > reach + e.radius) continue;
-          if (Math.abs(rx * -ny3 + ry * nx3) > halfW + e.radius) continue;
-          line.push({ e, along });
-        }
-        line.sort((a, b) => a.along - b.along);
         let beamDmg = skillPower(u, sk, tg);
         // ชาร์จนานขึ้นต้องแรงขึ้นด้วย ไม่ใช่แค่ยิงได้ไกลขึ้น (HOOD Q)
         // ไล่ค่าระหว่าง "ชาร์จขั้นต่ำ" กับ "ชาร์จเต็ม" ตามสัดส่วนเวลาที่ง้างไว้จริง
@@ -978,17 +964,17 @@ export function step(state) {
           const hi = sk.fullDmg[r3] + (sk.fullBadRatio != null ? sk.fullBadRatio : (sk.badRatio || 0)) * u.bonusAd;
           beamDmg = lo + (hi - lo) * frac3;
         }
-        const prevSrc3 = state.dmgSrc;
-        state.dmgSrc = skillLabel(u, sk);
-        // ทะลุคนต่อไปแล้วเบาลง แต่ไม่เบาไปกว่าพื้นที่กำหนดไว้
-        const floor3 = sk.falloffFloor != null ? beamDmg * sk.falloffFloor : 0;
-        for (const { e } of line) {
-          applyDamage(state, u, e, beamDmg, !!sk.magic);
-          if (sk.falloff) beamDmg = Math.max(floor3, beamDmg * sk.falloff);
-        }
-        state.dmgSrc = prevSrc3;
-        vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + Math.cos(ang3) * reach,
-          y2: u.y + Math.sin(ang3) * reach, w: sk.width / 2, color: "176,140,255", dur: 0.35 });
+        // สเปคระบุความเร็วลูกศรไว้ 1,850 หน่วย/วินาที — มันคือ "ลูกศรที่บินไป" ไม่ใช่ลำแสงที่โดนทันที
+        // ต้องมีเวลาเดินหลบได้จริง และกำแพงกันกระสุนของ H.S.B ต้องกินมันได้ด้วย
+        state.projectiles.push({
+          id: state.nextProjId++, team: u.team, ownerId: u.id, skill: sk,
+          x: u.x, y: u.y, dx: Math.cos(ang3), dy: Math.sin(ang3),
+          speed: sk.projSpeed || 1850, dmg: beamDmg, magic: !!sk.magic,
+          width: sk.width, pierce: !!sk.pierce, falloff: sk.falloff,
+          floor: sk.falloffFloor != null ? beamDmg * sk.falloffFloor : 0,
+          life: reach / (sk.projSpeed || 1850), hitIds: [],
+        });
+        vfx(state, { kind: "flash", x: u.x, y: u.y, r: sk.width * 0.6, color: "126,199,255", dur: 0.25 });
         u.charging = null;
         u.buffs = u.buffs.filter((b) => b.tag !== "qcharge");
       } else {
@@ -1145,7 +1131,8 @@ export function step(state) {
       if (p.skill && p.skill.kindnessBoost && owner && owner.champ.kindness) {
         owner.kindnessBoostUntil = state.t + (owner.champ.kindness.qDur || 4);
       }
-      if (p.pierce) { p.hitIds.push(u.id); if (p.falloff) p.dmg *= p.falloff; }
+      // ทะลุคนต่อไปแล้วเบาลง แต่บางท่ามีพื้นไม่ให้เบาไปกว่านั้น (HOOD Q)
+      if (p.pierce) { p.hitIds.push(u.id); if (p.falloff) p.dmg = Math.max(p.floor || 0, p.dmg * p.falloff); }
       else { consumed = true; break; }
     }
     if (consumed) continue;

@@ -2140,4 +2140,22 @@ export const DICT = {
    "The first auto out of stealth now drags the carriage down for real — a 325-unit radius, 200/325/450 (+75% AP) damage and a 60/70/80% slow for 2s, as specified",
  "ตรวจซ้ำแล้วเลิกล่องหนตอนเปิดตัวถูกต้อง และระยะออโต้กลับมาเป็น 150 หลังทุบ":
    "Verified that stealth breaks correctly on the opener and that her auto range returns to 150 afterwards",
+ "ท่าไหนเป็นกระสุน ท่าไหนไม่ใช่":
+   "Which abilities are projectiles and which are not",
+ "TOTSAKAN Q เป็นกระสุนที่ลอยไปข้างหน้า ทั้งที่เอกสารเขียนว่ากระบองฟาดพื้นแล้วดินแยกเป็นร่อง เศษหินพุ่งขึ้นมา \"พร้อมกันทันที\"":
+   "TOTSAKAN's Q was a projectile flying forward, even though the document describes the club striking the ground, the earth splitting open and rubble erupting \"all at once, instantly\"",
+ "ผลคือศัตรูเดินหลบทันระหว่างที่มันลอยไป และกำแพงกันกระสุนของ H.S.B กินร่องดินหายไปทั้งท่า":
+   "So enemies could walk out of it while it travelled, and H.S.B's projectile-eating wall swallowed the whole fissure",
+ "ตอนนี้โดนทั้งแนว 650×160 พร้อมกันในเฟรมเดียว และกำแพงกันไม่ได้แล้ว":
+   "It now hits the full 650×160 line in a single frame, and a wall no longer stops it",
+ "HOOD Q ผิดกลับด้านกัน — เอกสารระบุความเร็วลูกศร 1,850 หน่วย/วินาที แต่โค้ดยิงเป็นลำแสงที่โดนทันที":
+   "HOOD's Q had the opposite problem — the document gives the arrow a speed of 1,850 units per second, but the code fired an instant beam",
+ "ตอนนี้เป็นลูกศรที่บินไปจริงตามความเร็วนั้น หลบได้ และกำแพงกินได้ตามที่ควรจะเป็น":
+   "It is now a real arrow travelling at that speed — dodgeable, and eaten by a wall as it should be",
+ "ท่าที่เอกสารระบุความเร็วกระสุนไว้จริง (JACK Q 1,900) ยังเป็นกระสุนเหมือนเดิม":
+   "Abilities the document does give a missile speed (JACK's Q at 1,900) are still projectiles",
+ "พื้นแยกเป็นร่องพุ่งไปข้างหน้า {0} กว้าง {1} หน่วย โดนทั้งแนวพร้อมกันทันที":
+   "The ground splits open {0} forward and {1} wide, hitting the whole line at once",
+ "ชาร์จค้างแล้วยิงลูกศรทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย":
+   "Draws back, then looses a piercing arrow — the longer the draw, the further it flies ({0}–{1} units)",
 };

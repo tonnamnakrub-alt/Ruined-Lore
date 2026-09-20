@@ -133,7 +133,8 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Tenfold Mastery",
       desc: "ค่าสถานะที่ได้จากไอเทมทุกชิ้นเพิ่มขึ้น 10% — Bonus AD, Bonus HP, เกราะ, ต้านเวท, เร่งสกิล, ความเร็วโจมตี และ Tenacity" },
     skills: [
-      { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 160, projSpeed: 1600, pierce: true,
+      // กระบองฟาดพื้นแล้วดินแยกเป็นร่องพุ่งไปข้างหน้า — โดนทั้งแนวพร้อมกันทันที ไม่ใช่ของที่ลอยไป
+      { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 160, instant: true, pierce: true,
         cast: 0.3, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
         dmg: [75, 115, 155, 195, 235], adRatio: 0.70, selfBonusHp: 0.05,
         slowByRank: [0.35, 0.40, 0.45, 0.50, 0.55], dur: 1.5 },
