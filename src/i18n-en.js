@@ -2340,4 +2340,150 @@ export const DICT = {
    "Killing the target you chose releases the order immediately with no cooldown — you can pick a new one next round",
  "หน้าร้านบอกว่าเหลือคูลดาวน์อีกกี่ยก และเลนไหนยังติดห้ามอีกกี่ครั้ง · รายการห้ามส่งข้ามสายไปกับทีมด้วย สองเครื่องเลือกเป้าตรงกัน":
    "The shop shows how many rounds of cooldown are left and which lanes are still off-limits, and for how many more kills · the off-limits list travels with your team online so both machines pick the same target",
+ "ไฟต์แตก":
+   "Brawl",
+ "บังคับไฟต์":
+   "Forced fight",
+ "ไม่มีรายได้ฐาน · เหลือแค่ศพ":
+   "no base income · kills only",
+ "ระบบเงิน":
+   "ECONOMY",
+ "เงินและ XP คิดยังไง":
+   "How gold and XP work",
+ "ทุกตัวเลขในหน้านี้อ่านจากข้อมูลจริงของเกม — ปรับตัวเลขในโค้ดแล้วหน้านี้เปลี่ยนตามทันที":
+   "Every number on this page is read from the game's live data — change a value in the code and this page updates with it",
+ "ใครชนะยก":
+   "Who wins the round",
+ "ยกนี้ทีมไหนได้เงินรวมทั้งทีมมากกว่า ทีมนั้นได้แต้ม — ได้เท่ากันคือเสมอ ไม่มีใครได้แต้ม":
+   "Whichever team earns more gold in total this round scores the point — equal gold is a draw and nobody scores",
+ "ชนะเลนไม่ได้แปลว่าชนะยก เลนที่ชนะให้เงินผ่านศพเท่านั้น":
+   "Winning a lane doesn't mean winning the round — a won lane only pays through kills",
+ "ไม่นับกระเป๋าตลาดมืดของ C.HOOK เพราะได้ทุกยกโดยไม่ต้องลงไฟต์":
+   "C.HOOK's Black Market purse doesn't count, because it pays every round without fighting",
+ "นิสัยเลน — เราเจอเขา (ต่อคนในเลน)":
+   "Lane stances — ours vs theirs (per player in the lane)",
+ "เรา \\ เขา":
+   "Us \\ Them",
+ "ฐานของแต่ละนิสัย: {0}":
+   "Base per stance: {0}",
+ "รายได้เลนที่ติดลบปัดเป็นศูนย์ ไม่หักจากเงินศพ":
+   "Negative lane income is floored at zero — it never eats into kill gold",
+ "เลนบอทมีสองคน — ADC ได้ตามตาราง ส่วนซัพไม่ได้ส่วนนี้ (ดูพาสซีฟเลนด้านล่าง)":
+   "Bot lane has two players — the ADC gets the table value, the support doesn't (see lane passives below)",
+ "ฟาร์ม {0}g {1}xp · ไปแกงค์ {2}g {3}xp — ป่าได้รายได้ฐานเสมอ แม้จะไปแกงค์หรือโดนลากเข้าไฟต์":
+   "Farm {0}g {1}xp · gank {2}g {3}xp — the jungler always keeps base income, even when ganking or dragged into a fight",
+ "แกงค์ได้เฉพาะเลนที่ยกนี้สั่งปกติหรือรุกล้ำ · โดนดักหรือโดนสวนก่อนเข้า เสียเลือด {0}% ก่อนเริ่มไฟต์":
+   "Only lanes ordered Standard or Aggressive this round can be ganked · whoever gets caught or countered loses {0}% HP before the fight",
+ "พาเพื่อนไปแกงค์ด้วยได้: {0} — ดึงได้เฉพาะเลนที่สั่งเซฟ และเลนที่ถูกทิ้งไว้ อีกฝั่งกินฟรี +2 เงิน":
+   "Bringing teammates on a gank: {0} — only from lanes ordered Safe, and the lane left empty gives the other side +2 gold",
+ "ยก {0}+ ได้ {1} คน":
+   "round {0}+: {1}",
+ "เลนเขา":
+   "Their lane",
+ "เลนเรา":
+   "Our lane",
+ "ใครเสียเลือด":
+   "Loses HP",
+ "เพื่อนลงช่วย":
+   "Laner joins",
+ "ป่าเรา":
+   "our jungler",
+ "ทั้งสองเลน":
+   "both lanes",
+ "ลง":
+   "yes",
+ "ไม่ลง":
+   "no",
+ "ยืนรับแกงค์แบบเซฟ":
+   "Holding a Safe lane against a gank",
+ "เลนที่สั่งเซฟแล้วโดนป่าอีกฝั่งบุก ไฟต์สั้นแค่ {0} วิ":
+   "A lane ordered Safe that gets ganked fights for only {0}s",
+ "หมดเวลาแล้วฝั่งที่ยืนรับยังเหลือคนรอด = ป่าที่มาแกงค์และเพื่อนที่พามา ไม่ได้เงินและ XP ยกนั้นเลย":
+   "If the defenders still have someone alive when time runs out, the ganking jungler and anyone they brought get no gold or XP that round",
+ "ศพ":
+   "Kills",
+ "สังหาร {0}g {1}xp · ช่วยสังหารคนเดียว {2}g {3}xp · ช่วยกันหลายคน {4}g {5}xp":
+   "Kill {0}g {1}xp · solo assist {2}g {3}xp · shared assist {4}g {5}xp",
+ "เลนที่แตกไฟต์เพราะนิสัย (ปกติเจอปกติ หรือรุกล้ำเจอรุกล้ำ) ไม่มีรายได้ฐาน — เงินยกนั้นมาจากศพอย่างเดียว":
+   "A lane that fights because of stances (Standard vs Standard, or Aggressive vs Aggressive) gets no base income — that round's gold comes only from kills",
+ "พาสซีฟเลน":
+   "Lane passives",
+ "เลเวลสูงสุด {0}":
+   "max level {0}",
+ "เงินพิเศษ":
+   "Extra gold",
+ "กระเป๋าตลาดมืด — ยกที่ได้ลงไฟต์ {0} แล้วคงที่ · ยกที่ฟาร์มเฉยๆ {1} · สังหาร/ช่วย +{2} · คริ +{3}":
+   "Black Market purse — rounds he fights {0}, then holds · farming rounds {1} · kill/assist +{2} · crit +{3}",
+ "เก็บศพหรือช่วยเก็บเป้าที่มีตราท้าดวล ได้เงินจากศพนั้นเพิ่ม {0}%":
+   "A kill or assist on the duel-marked target pays {0}% more",
+ "Wendigo's Voracious Claw — สังหารหรือช่วยสังหารได้ทองพิเศษต่อศพ":
+   "Wendigo's Voracious Claw — extra gold per kill or assist",
+ "ตัวคูณของโหมด":
+   "Mode multipliers",
+ "เงิน ×{0} · XP ×{1}":
+   "gold ×{0} · XP ×{1}",
+ "คูณตอนจ่ายเงินปลายยก แล้วปัดเศษ — ใบเสร็จในหน้าสรุปยกแยกบรรทัดส่วนต่างไว้ให้":
+   "Applied at the end-of-round payout, then rounded — the round receipt shows the difference on its own line",
+ "กระเป๋าตลาดมืด +{0} (ไม่นับตอนตัดสินยก)":
+   "Black Market purse +{0} (not counted for the round)",
+ "ใบเสร็จเงินยกนี้ — เงินแต่ละก้อนมาจากไหน":
+   "This round's gold receipt — where every coin came from",
+ "ดูกติกาเงินทั้งหมด":
+   "See all the gold rules",
+ "รายได้เลน · {0}":
+   "Lane income · {0}",
+ "{0} เจอ {1}":
+   "{0} vs {1}",
+ "อีกฝั่งทิ้งเลนไปช่วยแกงค์":
+   "Other side left the lane to gank",
+ "แตกไฟต์เพราะนิสัย — ไม่มีรายได้ฐาน":
+   "Stance fight — no base income",
+ "แกงค์เลนที่ยืนเซฟแล้วเก็บไม่ลง — เสียยกฟรี":
+   "Ganked a Safe lane and failed — round forfeited",
+ "ป่าฟาร์ม":
+   "Jungle farm",
+ "ป่าไปแกงค์":
+   "Jungle gank",
+ "สังหาร ×{0}":
+   "Kills ×{0}",
+ "ช่วยสังหารคนเดียว ×{0}":
+   "Solo assists ×{0}",
+ "ช่วยสังหารหลายคน ×{0}":
+   "Shared assists ×{0}",
+ "พาสซีฟ ADC +1 ต่อทุกก้อน":
+   "ADC passive +1 per source",
+ "ซัพไม่มีรายได้เลนของตัวเอง":
+   "Support has no lane income of its own",
+ "ครึ่งหนึ่งของเงิน ADC ยกนี้":
+   "Half of the ADC's gold this round",
+ "ยกคู่ ซัพได้เพิ่ม":
+   "Even round support bonus",
+ "รายได้เลนติดลบ ปัดเป็นศูนย์":
+   "Negative lane income floored at zero",
+ "พาสซีฟ TOP +1 XP":
+   "TOP passive +1 XP",
+ "ตัวคูณโหมด ×{0}":
+   "Mode multiplier ×{0}",
+ "ค่าหัวเป้าท้าดวล (PUSS)":
+   "Duel bounty (PUSS)",
+ "เงินและ XP คิดยังไง — นิสัยเลนเจอกัน ป่า ศพ พาสซีฟเลน ทุกตัวเลข":
+   "How gold and XP are worked out — stance matchups, jungle, kills, lane passives, every number",
+ "ผู้เล่นคนที่ {0}":
+   "Player {0}",
+ "ออนไลน์ผลตรงกัน · ดูไฟต์พร้อมกัน · เนิร์ฟ PUSS · ใบเสร็จเงิน":
+   "Online results agree · Watch together · PUSS nerf · Gold receipts",
+ "สองเครื่องเคยเล่นกันคนละยกโดยไม่รู้ตัว — ต้นเหตุคือแก้คำสั่งได้หลังกดพร้อม · และตอนนี้เห็นได้แล้วว่าเงินทุกก้อนมาจากไหน":
+   "The two machines had been quietly playing different rounds because orders could change after Ready · and you can now see where every coin comes from",
+ "ใบเสร็จเงิน และหน้าอธิบายระบบเงิน":
+   "Gold receipts and an economy page",
+ "หน้าสรุปยกมีใบเสร็จของทั้งสองฝั่ง — เงินและ XP ของแต่ละคนแตกเป็นบรรทัดว่ามาจากไหน ทุกบรรทัดรวมกันได้ยอดจริงพอดี":
+   "The round result now has a receipt for both teams — each player's gold and XP broken into lines showing the source, adding up exactly to the real total",
+ "เห็นได้ทันทีว่า รุกล้ำเจอรุกล้ำ ได้แค่เงินศพ, ป่าฟาร์มได้เท่าไหร่, ซัพได้ครึ่งของ ADC เท่าไหร่, ยกคู่ได้เพิ่มอีก 1 ฯลฯ":
+   "You can see at a glance that Aggressive vs Aggressive pays kill gold only, what a farming jungler earns, how much the support's half of the ADC comes to, the even-round +1, and so on",
+ "ใบเสร็จของฝั่งตรงข้ามก็แสดงด้วย เทียบกันได้ว่ายกนี้แพ้เงินกันตรงไหน":
+   "The other team's receipt is shown too, so you can see exactly where the round's gold was won or lost",
+ "เมนูหลักมีหน้า ECONOMY — ตารางนิสัยเลนเจอกันครบ 9 แบบ ตารางป่าบุก ศพ พาสซีฟเลน เงินพิเศษ และตัวคูณของโหมด":
+   "The main menu has an ECONOMY page — all 9 stance matchups, the gank table, kills, lane passives, extra gold sources and mode multipliers",
+ "ทุกตัวเลขในหน้านั้นอ่านจากข้อมูลจริงของเกม ปรับตัวเลขในโค้ดแล้วหน้านี้เปลี่ยนตามเอง ไม่ต้องแก้สองที่":
+   "Every number there is read from the game's live data, so changing a value in the code updates the page too — no second place to edit",
 };

@@ -7,6 +7,7 @@ import { DraftScreen } from "./screens/Draft.jsx";
 import { StoreScreen } from "./screens/Store.jsx";
 import { ItemBookScreen } from "./screens/ItemBook.jsx";
 import { PatchScreen } from "./screens/Patch.jsx";
+import { EconomyScreen } from "./screens/Economy.jsx";
 import { SettingScreen } from "./screens/Setting.jsx";
 import { PositionScreen } from "./screens/Position.jsx";
 import { PlanScreen } from "./screens/Plan.jsx";
@@ -54,6 +55,8 @@ import { Bar, Label, Pip } from "./ui/widgets.jsx";
 // ---------------- App ----------------
 export function App() {
   const [phase, setPhase] = useState("MENU");
+  // หน้าอธิบายระบบเงิน — จำไว้ว่าเปิดมาจากหน้าไหน จะได้กลับไปที่เดิม
+  const [econFrom, setEconFrom] = useState("MENU");
   const [seed] = useState(() => Math.floor(Math.random() * 1e9));
   const rand = useRef(mulberry32(seed)).current;
 
@@ -1071,6 +1074,8 @@ export function App() {
 
     setResult({
       iWon, drawn, laneWins, laneLoss, myGold, foeGold,
+      // ใบเสร็จเงินของยก — แต่ละคนได้เงิน/XP จากอะไรบ้าง ทั้งสองฝั่ง
+      breakdown: settled.breakdown,
       time: Object.values(done).reduce((a, r) => a + r.time, 0),
       byLane: STANCE_LANES.map((L) => ({
         lane: L,
@@ -1136,6 +1141,8 @@ export function App() {
     pickQuery, setPickQuery, pickLane, setPickLane, buyUndo, undoBuy,
     draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes, foeIntel, rerollFoe,
     watchSync, netWatchLane, netWatchReady,
+    openEconomy: (from) => { setEconFrom(from || phase); setPhase("ECONOMY"); },
+    econBack: () => setPhase(econFrom || "MENU"),
     speedLocked: !!(net.on && !net.isHost),
     setDuelLane, draftSide: netRef.current.mySide || "A",
     draftLocked: !!(netRef.current.online && !netRef.current.watching),
@@ -1156,6 +1163,7 @@ export function App() {
     if (phase === "STORE") return StoreScreen(ctx);
     if (phase === "ITEMBOOK") return ItemBookScreen(ctx);
     if (phase === "PATCH") return PatchScreen(ctx);
+    if (phase === "ECONOMY") return EconomyScreen(ctx);
     if (phase === "ONLINE") return OnlineScreen(ctx);
     if (phase === "WATCH") return WatchScreen(ctx);
     if (phase === "SETTING") return SettingScreen(ctx);

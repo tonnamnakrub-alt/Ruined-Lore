@@ -6,9 +6,10 @@ import { StatsPanel } from "../ui/Stats.jsx";
 import { C, MONO } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 import { streakNote } from "../game/streak.js";
+import { RoundReceipt } from "../ui/Receipt.jsx";
 
 export function ResultScreen(ctx) {
-  const { foe, history, nextRound, phase, restartMatch, result, round, score, streak, statsOpen, setStatsOpen, mode } = ctx;
+  const { foe, history, nextRound, phase, restartMatch, result, round, score, streak, statsOpen, setStatsOpen, mode, wide, openEconomy } = ctx;
   // ระบบรั้งคะแนน — บอกให้รู้ว่ายกนี้โดนหักหรือได้ชดเชยเพราะอะไร
   const myNote = result ? streakNote(result.mods) : null;
   const foeNote = result ? streakNote(result.foeMods) : null;
@@ -114,6 +115,14 @@ export function ResultScreen(ctx) {
           ))}
         </div>
       )}
+
+      {/* ใบเสร็จเงิน — เห็นว่าเงินแต่ละก้อนของทั้งสองฝั่งมาจากไหน ใช้ปรับบาลานซ์ได้ */}
+      {result && result.breakdown ? (
+        <RoundReceipt
+          breakdown={result.breakdown} myGold={result.myGold} foeGold={result.foeGold}
+          wide={wide} onRules={() => openEconomy(phase)}
+        />
+      ) : null}
 
       {over ? (
         <div style={{ display: "grid", gap: 6 }}>
