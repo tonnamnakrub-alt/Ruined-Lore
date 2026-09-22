@@ -2246,4 +2246,34 @@ export const DICT = {
    "It is an order by lane rather than by unit, because the lane is the one thing both machines can agree on before either has seen the other's real team",
  "ยกแรกของโหมดออนไลน์ยังไม่เคยเห็นทีมของเพื่อน ปุ่มจึงโชว์แค่ชื่อเลน ไม่เดาชื่อตัวละครให้ผิด":
    "In the first online round neither side has seen the other's team yet, so the buttons show lanes only rather than guessing champion names wrong",
+ "ล็อกทีมแล้ว — ส่งทีมและคำสั่งทุกอย่างให้อีกฝั่งไปแล้ว แก้ไม่ได้จนกว่าไฟต์ยกนี้จะเริ่ม":
+   "Team locked — your team and every order have been sent to the other side, and nothing can change until this round's fight starts",
+ "ออนไลน์เห็นคนชนะตรงกันแล้วจริงๆ":
+   "Online matches finally agree on who won",
+ "สองเครื่องเคยเล่นกันคนละยกโดยไม่รู้ตัว — ต้นเหตุคือแก้คำสั่งได้หลังกดพร้อม":
+   "The two machines had been quietly playing different rounds — because orders could still change after pressing Ready",
+ "โหมดออนไลน์ — สองเครื่องเล่นกันคนละยก":
+   "Online — the two machines played different rounds",
+ "ต้นเหตุ: กดพร้อมแล้วยังเปลี่ยนนิสัยเลน สั่งป่า ซื้อของ หรืออัพสกิลต่อได้ แต่อีกเครื่องได้แค่ชุดตอนกดพร้อม":
+   "The cause: after pressing Ready you could still change lane stances, jungle orders, items or skills, but the other machine only ever received what you had when you pressed it",
+ "เครื่องที่แก้ทีหลังจึงเล่นยกหนึ่ง ส่วนเครื่องเพื่อนเล่นอีกยกหนึ่ง — ลองแล้ว: เจ้าบ้านเห็นไฟต์ 2 เลน ผู้เข้าร่วมเห็น 3 เลนในยกเดียวกัน":
+   "So the machine that changed something played one round while its partner played another — reproduced: the host saw 2 lane fights while the guest saw 3 in the same round",
+ "ตอนนี้ไฟต์ใช้ชุดที่ส่งให้อีกฝั่งตอนกดพร้อมเท่านั้น ทั้งทีม นิสัยเลน คำสั่งป่า และสไตล์ทีม — สองเครื่องได้ยกเดียวกันเสมอ":
+   "The fight now uses exactly what was sent at Ready — team, lane stances, jungle orders and team style — so both machines always play the same round",
+ "กดพร้อมแล้วหน้าร้านจะล็อกทั้งหน้า พร้อมป้ายบอกว่าส่งไปแล้ว จะได้ไม่เข้าใจผิดว่าแก้ทัน":
+   "Once you press Ready the whole shop locks, with a banner saying it has been sent, so nobody thinks a late change made it in",
+ "ห้องแบบเจ้าบ้านนั่งดูก็มีปัญหาคล้ายกัน — คนดูอ่านทีมก่อนที่ state ใหม่จะถึง ตอนนี้ส่งตรงเข้าไปแล้ว":
+   "Spectator rooms had a similar problem — the spectator read the teams before the new state arrived; it is now passed in directly",
+ "ย้ายการสร้างไฟต์ของเลนและการคิดเงินปิดยกออกไปเป็นโค้ดชุดเดียว แล้วเทสจำลองทั้งยกจากมุมของสองเครื่อง: ไม่ตรงกัน 0 จาก 160 ยก":
+   "Lane-fight setup and end-of-round payouts now live in one shared module, and a test replays whole rounds from both machines' point of view: 0 of 160 rounds disagree",
+ "ช่วยสังหารคนเดียวได้เงินไม่ครบ":
+   "Solo assists were underpaid",
+ "กติกาเขียนว่าช่วยสังหารคนเดียวได้ 3 เงิน ช่วยกันหลายคนได้ 1 แต่ตัวนับ \"ช่วยคนเดียว\" หล่นหายระหว่างทางจากไฟต์ไปถึงตอนจ่ายเงิน":
+   "The rules say a solo assist pays 3 gold and a shared one pays 1, but the solo-assist count was dropped between the fight and the payout",
+ "ทุกการช่วยสังหารจึงได้แค่ 1 เงินมาตลอด — ตอนนี้ได้ตามกติกาแล้ว":
+   "So every assist has only ever paid 1 gold — they now pay what the rules say",
+ "ผู้เข้าร่วมในโหมดออนไลน์":
+   "The guest in online play",
+ "ลำดับอัพสกิลที่ตั้งเองถูกใช้แค่กับฝั่งน้ำเงิน ผู้เข้าร่วมซึ่งเป็นฝั่งแดงจึงโดนใช้ลำดับแนะนำของตัวละครแทนหลังจบยก ตอนนี้ใช้ของตัวเองแล้ว":
+   "Your own skill-up order was only applied to the blue side, so the guest (red) got the champion's default order after each round; it now uses their own",
 };

@@ -21,9 +21,11 @@ import { shopFor } from "./game/shop-ai.js";
 import { nextStreak, streakMods } from "./game/streak.js";
 import { assignLanes, botBan, botPickOne, botSpread, draftFoe } from "./game/bot-draft.js";
 import { draftApply, draftMove, draftPicksOf, draftTaken, draftTurn, makeDraftQueue, newDraft } from "./game/draft.js";
-import { STANCE_LANES, LANE_MEMBERS, KILL, ASSIST_SOLO, ASSIST_GROUP, SAFE_STAND_SECONDS, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
+import { STANCE_LANES, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
 import { DIFFS, diffOf } from "./data/difficulty.js";
-import { buildRoundPlan, foeIncome } from "./game/round-plan.js";
+import { buildRoundPlan } from "./game/round-plan.js";
+import { buildLaneFight, recordLaneFight } from "./game/lane-fight.js";
+import { settleRound } from "./game/settle.js";
 import { botJungle, botStances } from "./game/stance-ai.js";
 import { LanesScreen } from "./screens/Lanes.jsx";
 import { createPeer } from "./net/peer.js";
@@ -31,15 +33,14 @@ import { hostRoom, joinRoom, normCode } from "./net/room.js";
 import { MSG, packTeam, unpackTeam } from "./net/protocol.js";
 import { OnlineScreen } from "./screens/Online.jsx";
 import { WatchScreen } from "./screens/Watch.jsx";
-import { DEFAULT_FIGHT, STYLES } from "./data/tuning.js";
+import { STYLES } from "./data/tuning.js";
 import { DEFAULT_MODE, MODES } from "./data/modes.js";
-import { buildFight } from "./engine/build-fight.js";
 import { deriveStats } from "./engine/stats.js";
 import { autoRanks, canRank, emptyRanks, pointsSpent } from "./engine/skill-ranks.js";
 import { step } from "./engine/step.js";
-import { levelProgress, mulberry32, xpToLevel } from "./engine/util.js";
+import { levelProgress, mulberry32 } from "./engine/util.js";
 import { summarizeFight } from "./game/report.js";
-import { CHARS, MAX_ROUNDS, POINTS, STAT_CAP, STAT_DESC, STAT_SHORT, WINS_NEEDED, emptyStats, laneMax, makeRoster, randomSpread, toDef } from "./game/roster.js";
+import { CHARS, MAX_ROUNDS, POINTS, STAT_CAP, STAT_DESC, STAT_SHORT, WINS_NEEDED, emptyStats, makeRoster, randomSpread, toDef } from "./game/roster.js";
 import { Arena } from "./ui/Arena.jsx";
 import { Practice } from "./ui/Practice.jsx";
 import { SkillModal } from "./ui/SkillInfo.jsx";
@@ -555,7 +556,10 @@ export function App() {
     setStances(sa || dflt);
     setJungle(ja || dj);
     setNet((n) => ({ ...n, waiting: false, peerReady: false }));
-    lockStances({ seed, foeTeam: b, foeStances: sb || dflt, foeJungle: jb || dj });
+    lockStances({
+      seed, foeTeam: b, foeStances: sb || dflt, foeJungle: jb || dj,
+      mine: { rows: a, stances: sa || dflt, jungle: ja || dj, teamStyle: (a[0] && a[0].style) || null },
+    });
   }
 
   // ---- จับคู่ด้วยรหัสห้องสั้นๆ ----
@@ -748,7 +752,14 @@ export function App() {
         ranks: c.autoLevel ? autoRanks(c.level, priorityOf(champId), null) : c.ranks,
       };
     });
-    const packed = { team: packTeam(me), stances: live.stances, jungle: live.jungle };
+    // สแนปช็อตนี้คือ "สิ่งที่อีกฝั่งจะเห็น" — ตอนไฟต์เริ่ม เครื่องเราต้องใช้ชุดเดียวกันนี้ด้วย
+    // ไม่ใช่ของที่ผู้เล่นแก้หลังกดพร้อม ไม่งั้นสองเครื่องเล่นกันคนละยก
+    const packed = {
+      team: packTeam(me),
+      stances: { ...live.stances },
+      jungle: { lane: live.jungle.lane, crew: [...(live.jungle.crew || [])] },
+      teamStyle: live.teamStyle,
+    };
     netRef.current.myReady = packed;
     netRef.current.iReadied = true;
     p.send({ k: MSG.READY, ...packed });
@@ -759,6 +770,7 @@ export function App() {
 
   // รันไฟต์ของโหมดออนไลน์ — ทั้งสองเครื่องเรียกด้วย seed และทีมชุดเดียวกัน
   function runNetFight(seed, otherTeam, side, otherStances, otherJungle) {
+    const mine = netRef.current.myReady;
     netRef.current.iReadied = false;
     netRef.current.myReady = null;
     setFoe(otherTeam);
@@ -768,6 +780,7 @@ export function App() {
       seed, foeTeam: otherTeam,
       foeStances: otherStances || { TOP: "NEUTRAL", MID: "NEUTRAL", BOT: "NEUTRAL" },
       foeJungle: otherJungle || { lane: null, crew: [] },
+      mine: mine ? { rows: unpackTeam(mine.team), stances: mine.stances, jungle: mine.jungle, teamStyle: mine.teamStyle } : null,
     });
   }
 
@@ -797,10 +810,14 @@ export function App() {
     // ถ้าอ่าน team/stances จาก closure ตรงๆ จะได้ทีมเปล่าที่แต้มนักแข่งเป็น 0 ทั้งทีม
     // ต้องอ่านจาก liveRef ที่อัปเดตทุก render แทน
     const L = liveRef.current || {};
+    // ออนไลน์: ใช้ชุดที่ส่งให้อีกฝั่งไปแล้วตอนกดพร้อม ไม่ใช่ของสดใน liveRef
+    // เดิมอ่านของสด ผู้เล่นที่กดพร้อมแล้วไปเปลี่ยนนิสัยเลนต่อ เครื่องตัวเองจะเล่นยกหนึ่ง
+    // ส่วนเครื่องเพื่อนเล่นอีกยกหนึ่งตามสแนปช็อต — ไฟต์ไม่ตรงกัน เงินไม่ตรงกัน คนชนะไม่ตรงกัน
+    const snap = netPlan && netPlan.mine;
     const team = L.team || [];
-    const teamStyle = L.teamStyle;
-    const stances = L.stances;
-    const jungle = L.jungle;
+    const teamStyle = (snap && snap.teamStyle) || L.teamStyle;
+    const stances = (snap && snap.stances) || L.stances;
+    const jungle = (snap && snap.jungle) || L.jungle;
     const round = L.round;
     const foe = L.foe || [];
     const diffId = L.diffId;
@@ -808,13 +825,29 @@ export function App() {
     // ranks ของทีมตัวเองต้องผ่านกฎเดียวกับที่ใช้กับฝั่งตรงข้าม
     // เดิมปล่อยไว้ดิบๆ ยกแรกจึงเป็น emptyRanks() คือไม่มีสกิลเลยสักท่า
     // ขณะที่ฝั่งตรงข้ามได้ autoRanks เต็ม — ผู้เล่นเสียเปรียบฟรีทุกเกมในยกแรก
-    const me = team.map((c) => {
+    const fresh = team.map((c) => {
       const champId = c.champId || LANE_CHAMPION[c.lane];
       return {
         ...c, style: teamStyle, champId,
         ranks: c.autoLevel ? autoRanks(c.level, priorityOf(champId), null) : c.ranks,
       };
     });
+    // ทุกค่าที่ไฟต์หรือการแจกเงินอ่าน ต้องมาจากสแนปช็อต — ที่เหลือ (แผนของ รายการโปรด ฯลฯ) เก็บของเดิม
+    const me = snap && snap.rows ? fresh.map((c) => {
+      const s = snap.rows.find((x) => x.lane === c.lane);
+      if (!s) return c;
+      return {
+        ...c,
+        champId: s.champId, ranks: s.ranks, items: s.items, gold: s.gold, xp: s.xp, level: s.level,
+        athlete: s.athlete, upgrades: s.upgrades, bountyGold: s.bountyGold, sangHp: s.sangHp,
+        wvcStacks: s.wvcStacks, spot: s.spot, duelLane: s.duelLane, style: s.style || teamStyle,
+      };
+    }) : fresh;
+    if (snap) {
+      setStances(stances);
+      setJungle(jungle);
+      if (teamStyle) setTeamStyle(teamStyle);
+    }
     const foeSrc = (netPlan && netPlan.foeTeam) || foe;
     const shopped = foeSrc.map((c) => {
       const champId = c.champId || LANE_CHAMPION[c.lane];
@@ -842,38 +875,14 @@ export function App() {
   }
 
   // เริ่มไฟต์ของเลนเดียว — ผู้เล่นกดเลือกเองว่าจะดูอันไหนก่อน
+  // ตัวสร้างสนามอยู่ที่ game/lane-fight.js ที่เดียว ทั้งสองเครื่องและเทสใช้ชุดเดียวกัน
   function startLaneFight(L) {
     if (!plan) return;
     const l = plan.lanes[L];
     if (!l || !l.fight || laneDone[L]) return;
-    // เลนที่ยืนรับแกงค์แบบเซฟได้นาฬิกาสั้น — ยื้อให้พ้นเวลาก็พอ ไม่ต้องชนะ
-    const ev = l.safeStand ? { ...DEFAULT_FIGHT, fixedDuration: SAFE_STAND_SECONDS } : DEFAULT_FIGHT;
-    const side = (roster, keys, tag) => keys
-      .map((k) => roster.find((x) => x.lane === k))
-      .filter(Boolean)
-      .map((c) => ({ def: toDef({ ...c, style: tag === "blue" ? teamStyle : c.style }), hurt: l.hurt[tag + ":" + c.lane] || 0 }));
-    const mine = side(team, l.blue, "blue");
-    const theirs = side(foe, l.red, "red");
-    if (!mine.length || !theirs.length) return;
-    // ออนไลน์: ผู้เข้าร่วมเป็นฝั่งแดงของเอนจิน ต้องเรียงน้ำเงินก่อนเสมอ ผลจึงตรงกันสองเครื่อง
-    const amBlue = !net.on || net.side !== "red";
-    const myTeam = amBlue ? "blue" : "red";
-    // seed ของแต่ละเลนต่างกัน แต่คิดจาก seed เดียวของยก ทั้งสองเครื่องจึงได้ไฟต์เดียวกัน
-    const seed = plan.seed + STANCE_LANES.indexOf(L) * 7919;
-    const st = amBlue
-      ? buildFight(mine.map((b) => b.def), theirs.map((r) => r.def), seed, ev)
-      : buildFight(theirs.map((r) => r.def), mine.map((b) => b.def), seed, ev);
-    // เสียเลือดก่อนเริ่มจากการโดนดัก/ล้ำเกิน
-    for (const b of mine) {
-      if (!b.hurt) continue;
-      const u = st.units.find((x) => x.lane === b.def.lane && x.team === myTeam);
-      if (u) u.hp = Math.max(1, Math.round(u.maxHp * (1 - b.hurt)));
-    }
-    for (const r of theirs) {
-      if (!r.hurt) continue;
-      const u = st.units.find((x) => x.lane === r.def.lane && x.team !== myTeam);
-      if (u) u.hp = Math.max(1, Math.round(u.maxHp * (1 - r.hurt)));
-    }
+    const mySide = net.on && net.side === "red" ? "red" : "blue";
+    const st = buildLaneFight({ plan, lane: L, team, foe, teamStyle, mySide });
+    if (!st) return;
     fightRef.current = st;
     setActiveLane(L);
     setPhase("FIGHT");
@@ -910,23 +919,8 @@ export function App() {
     const st = fightRef.current;
     if (!st || !activeLane) return;
     const mySide = net.on ? (net.side === "red" ? "red" : "blue") : "blue";
-    const iWon = st.winner === mySide;
     const L = activeLane;
-    const rec = {
-      lane: L,
-      iWon,
-      time: st.t,
-      rows: st.units.filter((u) => u.team === mySide).map((u) => ({
-        char: u.char, lane: u.lane, alive: u.alive, kills: u.kills, assists: u.assists,
-        dmg: Math.round(u.damageDealt), hits: u.hits, shots: u.shots, dodged: u.dodged || 0,
-      })),
-      // ค่าที่ต้องเอาไปบวกเข้ากระเป๋าตอนจบยก เก็บแยกตามเลนของนักแข่ง
-      units: st.units.map((u) => ({
-        team: u.team, lane: u.lane, alive: u.alive, kills: u.kills, assists: u.assists,
-        wvcGold: u.wvcGold || 0, duelGold: u.duelGold || 0, bountyGold: u.bountyGold || 0, sangGained: u.sangGained || 0,
-      })),
-      log: st.log.slice(-6),
-    };
+    const rec = recordLaneFight(st, L, mySide);
     setHistory((h) => [summarizeFight(st, round, activeLane, teamStyle), ...h]);
     setLaneDone((d) => ({ ...d, [L]: rec }));
     setActiveLane(null);
@@ -938,135 +932,12 @@ export function App() {
   function closeRound(doneMap) {
     if (!plan) return;
     const done = doneMap || laneDone;
-    const income = {};
-    const foeInc = {};
-    for (const k of Object.keys(plan.income)) income[k] = { ...plan.income[k] };
-    const fi = foeIncome(plan);
-    for (const k of Object.keys(fi)) foeInc[k] = { ...fi[k] };
-
-    // ---- ยืนรับแกงค์แบบเซฟ: ยื้อจนหมดเวลาแล้วยังมีคนรอด = ฝ่ายที่มาแกงค์เสียยกฟรี
-    // ตัดรายได้ของป่าฝั่งนั้นและของคนที่ถูกดึงมาช่วย เพื่อให้การไล่แกงค์ซ้ำมีราคา
-    const myLane = net.on && net.side === "red" ? "red" : "blue";
-    for (const L of STANCE_LANES) {
-      const l = plan.lanes[L];
-      const r = done[L];
-      if (!l || !l.safeStand || !r) continue;
-      const defSide = l.safeStand === "me" ? myLane : (myLane === "blue" ? "red" : "blue");
-      const held = r.units.some((u) => u.team === defSide && LANE_MEMBERS[L].includes(u.lane) && u.alive);
-      if (!held) continue;
-      const atkIsMe = l.safeStand === "foe";
-      const bag = atkIsMe ? income : foeInc;
-      const crew = atkIsMe ? (jungle.crew || []) : (plan.foeJungleCrew || []);
-      bag.JUNGLE = { gold: 0, xp: 0 };
-      for (const c of crew) for (const m of LANE_MEMBERS[c] || []) bag[m] = { gold: 0, xp: 0 };
-    }
-
-    // เลนที่ชนะ/แพ้ยังนับไว้โชว์ในสรุปยก แต่ไม่ใช่ตัวตัดสินแต้มอีกแล้ว
-    // สเปคใหม่: ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ (คิดหลังแจกรายได้เสร็จ ด้านล่าง)
-    let laneWins = 0, laneLoss = 0;
-    for (const L of STANCE_LANES) {
-      const r = done[L];
-      if (!r) continue;
-      if (r.iWon) laneWins++; else laneLoss++;
-    }
-
-    // รวมค่าที่ได้จากทุกไฟต์ของยกนี้ ต่อหนึ่งนักแข่ง
-    const perUnit = {};
-    for (const L of Object.keys(done)) {
-      for (const u of done[L].units) {
-        const k = u.team + ":" + u.lane;
-        const cur = perUnit[k] || { kills: 0, assists: 0, soloAssists: 0, wvcGold: 0, duelGold: 0, bountyGold: 0, sangGained: 0, alive: true };
-        cur.kills += u.kills; cur.assists += u.assists; cur.soloAssists += (u.soloAssists || 0);
-        cur.wvcGold += u.wvcGold; cur.duelGold += u.duelGold || 0; cur.bountyGold += u.bountyGold; cur.sangGained += u.sangGained;
-        cur.alive = cur.alive && u.alive;
-        perUnit[k] = cur;
-      }
-    }
-
-    const award = (list, side, inc) => list.map((c) => {
-      const u = perUnit[side + ":" + c.lane];
-      const src = inc[c.lane] || { gold: 0, xp: 0 };
-      // เงินจากศพ — สังหาร 6g 1xp · ช่วยสังหารคนเดียว 3g 1xp · ช่วยกันหลายคน 1g 1xp
-      const solo = u ? u.soloAssists : 0;
-      const shared = u ? Math.max(0, u.assists - solo) : 0;
-      let kg = u ? u.kills * KILL.gold + solo * ASSIST_SOLO.gold + shared * ASSIST_GROUP.gold : 0;
-      const kx = u ? u.kills * KILL.xp + solo * ASSIST_SOLO.xp + shared * ASSIST_GROUP.xp : 0;
-      // พาสซีฟบอท — เอดีซีได้เงินเพิ่ม 1 ต่อทุกอย่าง ทั้งรายได้เลน สังหาร และช่วยสังหาร
-      let laneBonus = 0;
-      if (c.lane === "ADC") {
-        if (src.gold > 0) laneBonus += 1;
-        if (u) laneBonus += u.kills + u.assists;
-      }
-      kg += laneBonus;
-      // พาสซีฟซัพพอร์ต — ไม่มีรายได้เลนของตัวเอง ไปรับส่วนแบ่งจากเอดีซีแทน (คิดทีหลัง)
-      const laneGold = c.lane === "SUPPORT" ? 0 : Math.max(0, src.gold);
-      // พาสซีฟท็อป — ได้ XP เพิ่มอีก 1 ทุกยก และดันเลเวลได้ถึง 20
-      const laneXp = Math.max(0, src.xp) + (c.lane === "TOP" ? 1 : 0);
-      const xp = Math.max(0, Math.round((laneXp + kx) * mode.xp));
-      let gold = Math.max(0, Math.round((laneGold + kg) * mode.gold));
-      let bg = c.bountyGold || 0;
-      const bc = CHAMPIONS[c.champId] && CHAMPIONS[c.champId].bounty;
-      // Plunder — จบยกได้เงินกระเป๋าแยกเสมอ ไม่ต้องลงไฟต์ · สังหาร/ช่วยได้เพิ่ม · คริสะสมมาจากในไฟต์
-      // สเปคใหม่: ยกที่ได้ลงไฟต์จริง เงินกระเป๋าคูณสองขึ้นไปเรื่อยๆ (10 → 20 → 40 …)
-      // ยกที่ฟาร์มเฉยๆ ไม่มีไฟต์ ได้แค่ฐาน 10 และไม่ขยับชั้นคูณ
-      let bmTier = c.bmTier || 0;
-      if (bc) {
-        const fought = !!u;
-        const perRound = fought
-          ? bc.perRound * Math.pow(2, Math.min(bmTier, bc.doubleCap != null ? bc.doubleCap : 4))
-          : bc.perRound;
-        if (fought) bmTier += 1;
-        bg += perRound + (u ? u.kills * bc.perKill + u.assists * bc.perAssist + u.bountyGold : 0);
-      }
-      bg = Math.round(bg * mode.gold);
-      gold += Math.round((u && u.wvcGold) || 0);
-      // PUSS — ค่าหัวส่วนเกินจากการเก็บเป้าที่ตัวเองท้าดวลไว้
-      gold += Math.round((u && u.duelGold) || 0);
-      const nxp = c.xp + xp;
-      const lvl = xpToLevel(nxp, laneMax(c.lane));
-      const pri = side === "blue" ? priorityOf(c.champId) : ((CHAMPIONS[c.champId] || {}).skillPriority || ["Q", "W", "E"]);
-      // Sanguine Aristocracy — สแตกถาวร จบยกได้อีก 5 เสมอ ไม่ต้องลงไฟต์
-      const sg = (CHAMPIONS[c.champId] || {}).sanguine;
-      const sangCap = (sg && sg.max) || 0;
-      const sangRaw = (c.sangHp || 0) + ((u && u.sangGained) || 0) + (sg ? (sg.perRound || 0) : 0);
-      const sang = sangCap > 0 ? Math.min(sangCap, sangRaw) : sangRaw;
-      return {
-        ...c, xp: nxp, gold: c.gold + gold, level: lvl,
-        ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
-        bountyGold: bg, sangHp: sang, bmTier,
-      };
-    });
-
-    // พาสซีฟซัพพอร์ต — รับครึ่งหนึ่งของเงินที่เอดีซีได้ยกนี้ (ปัดลง) บวกอีก 1 ทุกสองยก
-    // ซัพไม่มีรายได้เลนของตัวเอง เลยผูกกับว่าเลนบอทไปได้ดีแค่ไหน
-    const shareToSupport = (before, after) => {
-      const adcBefore = before.find((c) => c.lane === "ADC");
-      const iAdc = before.findIndex((c) => c.lane === "ADC");
-      const iSup = before.findIndex((c) => c.lane === "SUPPORT");
-      if (!adcBefore || iAdc < 0 || iSup < 0) return after;
-      const adcGain = after[iAdc].gold - adcBefore.gold;
-      const share = Math.floor(Math.max(0, adcGain) / 2) + (round % 2 === 0 ? 1 : 0);
-      const out = after.slice();
-      out[iSup] = { ...out[iSup], gold: out[iSup].gold + share };
-      return out;
-    };
-
     const mySide = net.on ? (net.side === "red" ? "red" : "blue") : "blue";
-    const foeSide = mySide === "blue" ? "red" : "blue";
-    const nextMe = shareToSupport(team, award(team, mySide, income));
-    const nextFoe = shareToSupport(foe, award(foe, foeSide, foeInc));
-    const goldGain = {};
-    team.forEach((c, i) => { goldGain[c.lane] = nextMe[i].gold - c.gold; });
-
-    // ---- ใครได้เงินเยอะกว่าในยกนี้ คนนั้นชนะยก
-    // รวมทุกอย่างที่เข้ากระเป๋ากลางของทั้งทีม — รายได้เลน เงินศพ ส่วนแบ่งของซัพ
-    // ไม่นับกระเป๋าโจรสลัดของ C.HOOK เพราะมันได้ฟรีทุกยกโดยไม่ต้องลงไฟต์
-    // ถ้านับด้วย ฝั่งที่มีฮุคจะชนะยกอัตโนมัติตลอดทั้งแมตช์
-    const sumGain = (before, after) => after.reduce((s, c, i) => s + (c.gold - before[i].gold), 0);
-    const myGold = sumGain(team, nextMe);
-    const foeGold = sumGain(foe, nextFoe);
-    const iWon = myGold > foeGold;
-    const drawn = myGold === foeGold;
+    // คิดเงินทั้งยกที่ game/settle.js — สองเครื่องต้องได้ผลตรงกัน และหน้าสรุปใช้ใบเสร็จจากที่เดียวกัน
+    const settled = settleRound({
+      plan, done, team, foe, mySide, jungle, round, mode, priorityMine: priorityOf,
+    });
+    const { nextMe, nextFoe, myGold, foeGold, iWon, drawn, laneWins, laneLoss, perUnit, goldGain } = settled;
 
     const ns = {
       me: score.me + (iWon ? 1 : 0),

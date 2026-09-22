@@ -20,6 +20,11 @@ import { Bar, Label } from "../ui/widgets.jsx";
 export function ShopPhase(ctx) {
   const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy, setDuelLane } = ctx;
 
+  // ออนไลน์: กดพร้อมแล้ว = ส่งทีมและคำสั่งให้อีกฝั่งไปแล้ว ห้ามแก้อะไรอีกจนกว่าไฟต์จะเริ่ม
+  // เดิมยังกดเปลี่ยนนิสัยเลน ซื้อของ อัพสกิลได้ต่อ แต่อีกเครื่องได้แค่ของตอนกดพร้อม
+  // สองเครื่องเลยเล่นกันคนละยก แล้วเห็นคนชนะไม่ตรงกัน
+  const locked = !!(net && net.on && net.waiting);
+
   // การซื้อล่าสุดที่ยังย้อนได้ (กองย้อนอยู่ที่ App เพราะหน้าจอเป็นฟังก์ชันธรรมดา)
   const lastUndo = (buyUndo && buyUndo.length) ? buyUndo[buyUndo.length - 1] : null;
 
@@ -47,7 +52,18 @@ export function ShopPhase(ctx) {
       <Shell round={round} score={score} mode={mode} streak={streak} maxWidth={wide ? 1060 : 620}>
         {/* แถบวางแผนแยกออกไปอยู่ข้างๆ และไม่เลื่อนตามรายชื่อนักแข่ง
             เมื่อก่อนทุกอย่างต่อกันเป็นคอลัมน์เดียว ซื้อของทีต้องเลื่อนขึ้นลงทั้งหน้า */}
-        <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
+        {locked ? (
+          <div style={{
+            ...card(), marginBottom: 10, padding: "10px 12px", borderColor: C.gold,
+            background: "#1A1608", fontSize: 12, color: C.gold, lineHeight: 1.55,
+          }}>
+            {tr("ล็อกทีมแล้ว — ส่งทีมและคำสั่งทุกอย่างให้อีกฝั่งไปแล้ว แก้ไม่ได้จนกว่าไฟต์ยกนี้จะเริ่ม")}
+          </div>
+        ) : null}
+        <div style={{
+          display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap",
+          pointerEvents: locked ? "none" : "auto", opacity: locked ? 0.6 : 1,
+        }} inert={locked || undefined}>
           <div style={{ flex: "1 1 330px", minWidth: 0, order: wide ? 0 : 1 }}>
         {team.map((c, idx) => (
           <div key={c.lane} style={{ ...card(), marginBottom: 10 }}>
@@ -521,7 +537,7 @@ export function ShopPhase(ctx) {
           </div>
         </div>
 
-        {openShop !== null && (
+        {openShop !== null && !locked && (
           <ShopScreen
             c={team[openShop]}
             cat={shopCat}
