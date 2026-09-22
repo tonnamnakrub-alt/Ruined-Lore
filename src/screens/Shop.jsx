@@ -374,7 +374,10 @@ export function ShopPhase(ctx) {
             ยกแรกของโหมดออนไลน์ยังไม่รู้ว่าอีกฝั่งเลือกใคร จึงโชว์แค่เลน */}
         {duelists.length ? (
           <div style={{ ...card(), padding: 10, marginBottom: 8, borderColor: C.gold }}>
-            {duelists.map(({ i, c, ch }) => (
+            {duelists.map(({ i, c, ch }) => {
+              const lockLeft = Math.max(0, (c.duelLockUntil || 0) - round);
+              const ban = c.duelBan || {};
+              return (
               <div key={c.lane}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 5 }}>
                   <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, color: C.gold, letterSpacing: 1 }}>
@@ -386,16 +389,22 @@ export function ShopPhase(ctx) {
                   {LANES.map((L) => {
                     const on = c.duelLane === L;
                     const who = foeNameAt(L);
+                    const need = ban[L] || 0;
+                    const off = lockLeft > 0 || (need > 0 && !on);
                     return (
-                      <button key={L} onClick={() => setDuelLane(i, L)}
+                      <button key={L} onClick={() => setDuelLane(i, L)} disabled={off}
+                        title={need ? tr("เพิ่งสังหารเป้านี้ไป — ต้องสังหารเป้าที่มีตราตัวอื่นอีก {0} ครั้ง", need) : undefined}
                         style={{
-                          flex: "1 1 60px", background: on ? C.gold : C.panel2, color: on ? "#0B1220" : C.dim,
-                          border: `1px solid ${on ? C.gold : C.line}`, borderRadius: 4,
-                          padding: "5px 2px", cursor: "pointer", fontFamily: SANS,
+                          flex: "1 1 60px", background: on ? C.gold : C.panel2,
+                          color: on ? "#0B1220" : need ? C.red : C.dim,
+                          border: `1px solid ${on ? C.gold : need ? "#4A2226" : C.line}`, borderRadius: 4,
+                          padding: "5px 2px", cursor: off ? "default" : "pointer", fontFamily: SANS,
                           fontSize: 10.5, fontWeight: on ? 800 : 400, lineHeight: 1.35,
+                          opacity: off && !on ? 0.55 : 1,
                         }}>
                         {L}
                         {who ? <div style={{ fontFamily: MONO, fontSize: 9, opacity: 0.75 }}>{who}</div> : null}
+                        {need ? <div style={{ fontFamily: MONO, fontSize: 9 }}>{tr("อีก {0} ครั้ง", need)}</div> : null}
                       </button>
                     );
                   })}
@@ -405,8 +414,19 @@ export function ShopPhase(ctx) {
                     ? tr("ทำดาเมจใส่เป้าที่มีตราแรงขึ้น และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ")
                     : tr("ไม่ได้สั่ง = เขาจะไปท้าตัวที่อันตรายที่สุดของอีกฝั่งเอง")}
                 </div>
+                {lockLeft > 0 ? (
+                  <div style={{ fontSize: 10, color: C.gold, marginTop: 4, lineHeight: 1.55 }}>
+                    {tr("เลือกเป้าไปแล้ว — เปลี่ยนได้อีกครั้งในอีก {0} ยก", lockLeft)}
+                  </div>
+                ) : null}
+                {Object.keys(ban).length ? (
+                  <div style={{ fontSize: 10, color: C.red, marginTop: 4, lineHeight: 1.55 }}>
+                    {tr("เลนสีแดงคือเป้าที่เพิ่งสังหารไป ประทับตราซ้ำไม่ได้จนกว่าจะสังหารเป้าที่มีตราตัวอื่นครบ")}
+                  </div>
+                ) : null}
               </div>
-            ))}
+              );
+            })}
           </div>
         ) : null}
 

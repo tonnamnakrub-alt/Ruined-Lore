@@ -60,6 +60,45 @@ function laneParts(plan, lane, persp, forfeited) {
   return parts;
 }
 
+// PUSS — สถานะตราท้าดวลที่ต้องพกข้ามยก
+//   duelCommitted : เป้าที่ใช้จริงในยกล่าสุด — ถ้ายกนี้ใช้เป้าใหม่ แปลว่าเพิ่งเลือก ติดคูลดาวน์การเลือก
+//   duelLockUntil : เปลี่ยนเป้าได้อีกทีตั้งแต่ยกนี้
+//   duelBan       : { เลน: ต้องเก็บเป้าที่มีตราตัวอื่นอีกกี่ครั้ง } — เก็บเป้าไหนได้ เป้านั้นเข้ารายการ
+export function duelAfterRound(c, u, round) {
+  const cfg = (CHAMPIONS[c.champId] || {}).duel;
+  if (!cfg) return {};
+  let lane = c.duelLane || null;
+  let committed = c.duelCommitted == null ? null : c.duelCommitted;
+  let lockUntil = c.duelLockUntil || 0;
+  if (lane !== committed) {
+    committed = lane;
+    lockUntil = lane ? round + (cfg.pickLockRounds || 0) : 0;
+  }
+  const ban = { ...(c.duelBan || {}) };
+  for (const k of (u && u.duelKills) || []) {
+    // ทุกครั้งที่เก็บเป้าที่มีตราได้ นับให้ทุกเลนที่ถูกห้ามอยู่ ยกเว้นเลนที่เพิ่งเก็บ
+    for (const b of Object.keys(ban)) {
+      if (b === k) continue;
+      ban[b] -= 1;
+      if (ban[b] <= 0) delete ban[b];
+    }
+    ban[k] = cfg.repickAfterKills || 0;
+    if (!ban[k]) delete ban[k];
+  }
+  // เก็บเป้าที่เลือกไว้ได้แล้ว — คำสั่งเดิมใช้ต่อไม่ได้ ปล่อยให้เลือกใหม่ได้ทันที
+  if (lane && ban[lane]) {
+    lane = null;
+    committed = null;
+    lockUntil = 0;
+  }
+  return {
+    duelLane: lane,
+    duelCommitted: committed,
+    duelLockUntil: lockUntil,
+    duelBan: Object.keys(ban).length ? ban : null,
+  };
+}
+
 export function settleRound(opts) {
   const {
     plan, done: doneIn, team, foe, mySide = "blue", jungle, round, mode,
@@ -201,6 +240,7 @@ export function settleRound(opts) {
       ...c, xp: nxp, gold: c.gold + gold, level: lvl,
       ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
       bountyGold: bg, sangHp: sang, bmTier,
+      ...duelAfterRound(c, u, round),
     };
     return { next, row: { lane: c.lane, champId: c.champId, parts, gold, xp, bounty: bmGain ? Math.round(bmGain * gm) : 0, fought: !!u } };
   });

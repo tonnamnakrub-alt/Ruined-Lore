@@ -95,6 +95,7 @@ export function toDef(c) {
     style: c.style, level: c.level, items: c.items,
     spot: c.spot || null,   // จุดยืนที่ผู้เล่นวางไว้เอง (null = ใช้ตำแหน่งเริ่มต้นของเลน)
     duelLane: c.duelLane || null,   // PUSS — เลนของศัตรูที่โค้ชสั่งให้ท้าดวล (null = ให้เลือกเอง)
+    duelBan: c.duelBan || null,     // PUSS — เลนที่เพิ่งเก็บเป้าไป ยังประทับตราซ้ำไม่ได้ { เลน: ต้องเก็บตัวอื่นอีกกี่ครั้ง }
     bounty: c.items.reduce((s, i) => s + i.cost, 0),
   };
 }

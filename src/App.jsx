@@ -438,8 +438,14 @@ export function App() {
 
   // PUSS — โค้ชสั่งเองว่ายกนี้จะไปท้าดวลเลนไหนของอีกฝั่ง
   // กดซ้ำเลนเดิม = ยกเลิกคำสั่ง กลับไปให้เขาเลือกเป้าที่อันตรายที่สุดเอง
+  // เนิร์ฟ: เลือกแล้วติดคูลดาวน์การเลือก 2 ยก · เป้าที่เพิ่งเก็บไปเลือกซ้ำไม่ได้
   function setDuelLane(idx, lane) {
-    setTeam((t) => t.map((c, i) => (i === idx ? { ...c, duelLane: c.duelLane === lane ? null : lane } : c)));
+    setTeam((t) => t.map((c, i) => {
+      if (i !== idx) return c;
+      if (round < (c.duelLockUntil || 0)) return c;
+      if (lane && c.duelLane !== lane && (c.duelBan || {})[lane]) return c;
+      return { ...c, duelLane: c.duelLane === lane ? null : lane };
+    }));
   }
 
   function undoBuy() {

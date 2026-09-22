@@ -2316,4 +2316,28 @@ export const DICT = {
    "In a spectator room the host waits for both players to be ready",
  "ไฟต์เดินตามเวลาจริงแล้ว ไม่ใช่ตามจำนวนเฟรม — เดิมจอ 120Hz เห็นไฟต์เร็วเป็นสองเท่าของจอ 60Hz สองเครื่องจึงดูพร้อมกันไม่ได้ ผลแพ้ชนะไม่เปลี่ยน":
    "Fights now run on real time rather than frame count — a 120Hz screen used to play them twice as fast as a 60Hz one, so two machines could never stay together. Outcomes are unchanged",
+ "ตราประทับท้าดวลศัตรูหนึ่งตัวตอนเริ่มไฟต์ — ทำดาเมจใส่เป้านั้นแรงขึ้น 15% (+1% ต่อ Bonus AD ทุก 20) และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ · เก็บศพหรือช่วยเก็บเป้าที่มีตรา ได้เงินเพิ่ม 30% · ถ้าพุสส์ตายตอนเป้ายังไม่ตาย จะล่องหนแตะไม่ได้ 2 วิ แล้วฟื้นด้วยเลือด 30% (ตราหายไปทันที) · เลือกเป้าแล้วเปลี่ยนไม่ได้อีก 2 ยก · สังหารเป้าที่มีตราได้แล้ว ต้องสังหารเป้าที่มีตราตัวอื่นอีก 2 ครั้งก่อนจึงจะประทับตราตัวเดิมได้อีก":
+   "He marks one enemy for a duel at the start of the fight — he deals 15% more damage to that target (+1% per 20 bonus AD) and the two of them lock onto each other first · a kill or assist on the marked target pays 30% more gold · if Puss dies while the mark is still alive he vanishes untargetable for 2s and comes back at 30% health (the mark is lost) · once chosen, the target can't be changed for 2 rounds · after killing a marked target he must kill 2 other marked targets before he can mark that one again",
+ "เพิ่งสังหารเป้านี้ไป — ต้องสังหารเป้าที่มีตราตัวอื่นอีก {0} ครั้ง":
+   "He just killed this target — {0} more kills of other marked targets first",
+ "อีก {0} ครั้ง":
+   "{0} more",
+ "เลือกเป้าไปแล้ว — เปลี่ยนได้อีกครั้งในอีก {0} ยก":
+   "Target chosen — you can change it again in {0} round(s)",
+ "เลนสีแดงคือเป้าที่เพิ่งสังหารไป ประทับตราซ้ำไม่ได้จนกว่าจะสังหารเป้าที่มีตราตัวอื่นครบ":
+   "Red lanes are targets he just killed — they can't be marked again until he has killed enough other marked targets",
+ "PUSS — ตราท้าดวล":
+   "PUSS — Duel mark",
+ "เลือกเป้าท้าดวลแล้วติดคูลดาวน์การเลือก 2 ยก — เลือกในยกไหน ยกนั้นกับยกถัดไปเปลี่ยนไม่ได้ ยกที่สองหลังจากนั้นถึงเปลี่ยนได้":
+   "Choosing a duel target now has a 2-round cooldown — the round you choose and the next are locked; you can change it again two rounds later",
+ "ไม่เปลี่ยนเป้าก็ใช้ต่อได้เรื่อยๆ ไม่ต่อคูลดาวน์ · การยกเลิกคำสั่งกลับไปให้เลือกเองนับเป็นการเลือกด้วย":
+   "Keeping the same target costs nothing and never restarts the cooldown · switching back to automatic counts as a choice too",
+ "สังหารเป้าที่มีตราได้แล้ว ประทับตราตัวนั้นซ้ำไม่ได้ จนกว่าจะสังหารเป้าที่มีตราตัวอื่นได้อีก 2 ครั้ง — สังหารตัวเดิมซ้ำไม่นับ":
+   "After killing a marked target he can't mark that champion again until he has killed 2 other marked targets — killing the same one again doesn't count",
+ "กฎนี้ใช้กับการเลือกเองของเกมด้วย ไม่ใช่แค่ตอนโค้ชสั่ง ถ้าทุกคนในไฟต์นั้นติดห้ามหมด พุสส์จะลงไฟต์โดยไม่มีตรา":
+   "This also applies when the game picks the target for you; if every enemy in that fight is off-limits, Puss fights without a mark",
+ "สังหารเป้าที่เลือกไว้ได้ คำสั่งจะถูกปล่อยทันที ไม่ต้องรอคูลดาวน์ — เลือกเป้าใหม่ได้ในยกถัดไปเลย":
+   "Killing the target you chose releases the order immediately with no cooldown — you can pick a new one next round",
+ "หน้าร้านบอกว่าเหลือคูลดาวน์อีกกี่ยก และเลนไหนยังติดห้ามอีกกี่ครั้ง · รายการห้ามส่งข้ามสายไปกับทีมด้วย สองเครื่องเลือกเป้าตรงกัน":
+   "The shop shows how many rounds of cooldown are left and which lanes are still off-limits, and for how many more kills · the off-limits list travels with your team online so both machines pick the same target",
 };

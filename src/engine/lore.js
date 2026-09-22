@@ -1141,8 +1141,11 @@ export function ellaStash(state, source, target, dmg) {
 // kind: "kill" | "solo" (ช่วยคนเดียว) | "group" (ช่วยกันหลายคน)
 export function duelTakedownGold(u, target, kind) {
   const cfg = u && u.champ && u.champ.duel;
-  if (!cfg || !cfg.goldPct) return;
+  if (!cfg) return;
   if (!u.duelMarkId || u.duelMarkId !== target.id) return;
+  // สังหารเป้าที่มีตราเอง — จดเลนไว้ ตอนปิดยกจะห้ามประทับตราตัวนี้ซ้ำไปอีกระยะ
+  if (kind === "kill") (u.duelKills = u.duelKills || []).push(target.lane);
+  if (!cfg.goldPct) return;
   const base = kind === "kill" ? KILL.gold : kind === "solo" ? ASSIST_SOLO.gold : ASSIST_GROUP.gold;
   u.duelGold = (u.duelGold || 0) + base * cfg.goldPct;
 }
@@ -1183,7 +1186,9 @@ export function nineLivesCatch(state, u) {
 // สั่งเป็น "เลน" ไม่ใช่ตัวยูนิต เพราะสองเครื่องในโหมดออนไลน์ต้องได้เป้าเดียวกันเป๊ะ
 export function pickDuelMark(state, u) {
   if (!u.champ || !u.champ.duel || u.duelMarkId) return;
-  const foes = enemiesOf(state, u);
+  // เป้าที่เพิ่งถูกเก็บไปยังเลือกซ้ำไม่ได้ ทั้งแบบที่โค้ชสั่งและแบบเลือกเอง
+  const banned = u.duelBanned || [];
+  const foes = enemiesOf(state, u).filter((f) => !banned.includes(f.lane));
   if (!foes.length) return;
   const asked = u.duelPick ? foes.find((f) => f.lane === u.duelPick) : null;
   const best = asked || foes.reduce((a, b) => (b.champ.value > a.champ.value ? b : a));

@@ -69,6 +69,7 @@ export function buildFight(blueDefs, redDefs, seed, event) {
       hasItem: (id) => (def.items || []).some((it) => it.id === id),
       bountyGold: def.bountyGold || 0,
       duelPick: def.duelLane || null,
+      duelBanned: Object.keys(def.duelBan || {}),
       upgrades: def.upgrades || [],
       mark: null,
       dagger: null,
