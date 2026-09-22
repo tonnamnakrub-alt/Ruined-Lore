@@ -2276,4 +2276,44 @@ export const DICT = {
    "The guest in online play",
  "ลำดับอัพสกิลที่ตั้งเองถูกใช้แค่กับฝั่งน้ำเงิน ผู้เข้าร่วมซึ่งเป็นฝั่งแดงจึงโดนใช้ลำดับแนะนำของตัวละครแทนหลังจบยก ตอนนี้ใช้ของตัวเองแล้ว":
    "Your own skill-up order was only applied to the blue side, so the guest (red) got the champion's default order after each round; it now uses their own",
+ "เจ้าบ้านเลือกเลนนี้":
+   "The host picked this lane",
+ "เจ้าบ้านเป็นคนเลือกเลน":
+   "The host picks the lane",
+ "รออีกฝั่งกดพร้อมดู…":
+   "Waiting for the other side to be ready…",
+ "ดูพร้อมกัน":
+   "WATCH TOGETHER",
+ "คุณเป็นเจ้าบ้าน — เลือกเลนที่จะดู แล้วรอให้อีกฝั่งกดพร้อมดู ไฟต์จะเริ่มพร้อมกันทุกเครื่อง":
+   "You're the host — pick a lane to watch, then wait for the other side to be ready; the fight starts on every machine at once",
+ "อีกฝั่ง":
+   "The other side",
+ "พร้อมดูแล้ว":
+   "ready to watch",
+ "ยังไม่กดพร้อมดู":
+   "not ready yet",
+ "เจ้าบ้านเลือกดู {0} — กดพร้อมดูแล้วไฟต์จะเริ่มพร้อมกัน":
+   "The host wants to watch {0} — press Ready and the fight starts for both of you together",
+ "เจ้าบ้านเป็นคนเลือกเลนและคุมความเร็ว — กดพร้อมดูไว้ก่อนได้เลย":
+   "The host picks the lane and controls the speed — you can press Ready now",
+ "พร้อมดูแล้ว — กดอีกครั้งเพื่อยกเลิก":
+   "Ready — press again to cancel",
+ "พร้อมดู":
+   "Ready to watch",
+ "ความเร็วตามเจ้าบ้าน":
+   "Speed follows the host",
+ "ดูไฟต์พร้อมกันในโหมดออนไลน์":
+   "Watch fights together online",
+ "เดิมต่างคนต่างกดดูเลนไหนก่อนก็ได้ ดูคนละเลนคนละจังหวะ คุยกันไม่รู้เรื่อง":
+   "Each player used to watch whichever lane they liked, whenever they liked, so you were never looking at the same thing",
+ "ตอนนี้ต้องกดพร้อมดูทั้งคู่ แล้วไฟต์เริ่มพร้อมกันทุกเครื่อง — เจ้าบ้านเป็นคนเลือกเลน การกดเลือกเลนนับเป็นการกดพร้อมของเจ้าบ้านไปในตัว":
+   "Now both sides press Ready and the fight starts on every machine at once — the host picks the lane, and picking it counts as the host's Ready",
+ "ผู้เข้าร่วมเห็นว่าเจ้าบ้านเลือกเลนไหน กดพร้อมดูไว้ก่อนก็ได้ ยกเลิกได้จนกว่าไฟต์จะเริ่ม":
+   "The guest sees which lane the host picked, can press Ready ahead of time, and can cancel until the fight starts",
+ "ความเร็วไฟต์เจ้าบ้านคุม ผู้เข้าร่วมกดเปลี่ยนเองไม่ได้ และเจ้าบ้านส่งเวลาไฟต์มาเป็นระยะ ใครช้ากว่าจะเร่งตามเอง":
+   "The host controls fight speed; the guest can't change it, and the host sends its fight clock every so often so a lagging machine catches up",
+ "ห้องแบบเจ้าบ้านนั่งดู เจ้าบ้านรอให้ผู้เล่นทั้งสองคนกดพร้อมก่อน":
+   "In a spectator room the host waits for both players to be ready",
+ "ไฟต์เดินตามเวลาจริงแล้ว ไม่ใช่ตามจำนวนเฟรม — เดิมจอ 120Hz เห็นไฟต์เร็วเป็นสองเท่าของจอ 60Hz สองเครื่องจึงดูพร้อมกันไม่ได้ ผลแพ้ชนะไม่เปลี่ยน":
+   "Fights now run on real time rather than frame count — a 120Hz screen used to play them twice as fast as a 60Hz one, so two machines could never stay together. Outcomes are unchanged",
 };

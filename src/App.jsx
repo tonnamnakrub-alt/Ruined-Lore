@@ -84,6 +84,9 @@ export function App() {
   const [planIdx, setPlanIdx] = useState(0);
   const [planCatState, setPlanCatState] = useState({});
   const [speed, setSpeed] = useState(2);
+  // ดูไฟต์พร้อมกัน (ออนไลน์) — lane = เลนที่เจ้าบ้านเลือกไว้ · peers = ผู้เล่นแต่ละช่องกดพร้อมดูแล้วหรือยัง
+  // me = เรา (ผู้เข้าร่วม) กดพร้อมดูแล้วหรือยัง · เก็บคู่กับ ref เพราะตัวรับข้อความจำ state เก่า
+  const [watchSync, setWatchSync] = useState({ lane: null, peers: [false, false], me: false });
   const [tick, setTick] = useState(0);
   const [result, setResult] = useState(null);
   const [openShop, setOpenShop] = useState(null);
@@ -146,6 +149,10 @@ export function App() {
   const draftQueueRef = useRef(makeDraftQueue());
   // ค่าสดของยกปัจจุบัน — ตัวจัดการข้อความของสายต้องอ่านจากตรงนี้เท่านั้น
   const liveRef = useRef({});   // หน้าส่องทีมคู่แข่ง
+  const watchRef = useRef({ lane: null, peers: [false, false], me: false });
+  const speedRef = useRef(2);
+  const fightLaneRef = useRef(null);   // เลนของไฟต์ที่กำลังเล่นอยู่ — ใช้เช็คตอนเจ้าบ้านส่งเวลามาให้ตาม
+  const fnRef = useRef({});             // ฟังก์ชันของ render ล่าสุด ให้ตัวรับข้อความเรียกได้
   const [statsOpen, setStatsOpen] = useState(false);   // หน้ากราฟสรุปไฟต์
   const [history, setHistory] = useState([]);          // สรุปทุกยกในแมตช์นี้ ยกล่าสุดอยู่หน้าสุด
 
@@ -482,6 +489,8 @@ export function App() {
   // เพราะ handler ถูกสร้างตอนต่อสายครั้งเดียว มันเลยจำ state ของ render แรกไว้ตลอด
   // (render แรก = แต้มนักแข่งยังเป็น 0 และยังไม่ได้เลือกตัวละคร)
   liveRef.current = { team, teamStyle, modeId, stances, jungle, foe, round, diffId, foeLastStances };
+  speedRef.current = speed;
+  fnRef.current = { startLaneFight };
 
   // slot = ช่องผู้เล่นที่สายนี้ผูกอยู่ (ใช้เฉพาะห้องแบบเจ้าบ้านเป็นคนดู)
   function netHandlers(slot = 0) {
@@ -520,6 +529,26 @@ export function App() {
             draftQueueRef.current.push(m.champId, m.side || foeSide());
             drainDraft();
           }
+        } else if (m.k === MSG.WATCH_READY) {
+          // เจ้าบ้าน: ผู้เล่นช่องนี้กดพร้อมดูแล้ว
+          const peers = watchRef.current.peers.slice();
+          peers[slot] = !!m.ready;
+          pushWatch({ ...watchRef.current, peers });
+          hostTryGo();
+        } else if (m.k === MSG.WATCH) {
+          // ผู้เข้าร่วม: เจ้าบ้านเลือกเลน หรือสั่งเริ่มดู
+          if (m.go) {
+            resetWatch();
+            if (m.speed) setSpeed(m.speed);
+            fnRef.current.startLaneFight(m.lane);
+          } else {
+            pushWatch({ ...watchRef.current, lane: m.lane });
+          }
+        } else if (m.k === MSG.SPEED) {
+          setSpeed(m.v);
+          catchUpTo(m.lane, m.t || 0);
+        } else if (m.k === MSG.SYNC) {
+          catchUpTo(m.lane, m.t || 0);
         } else if (m.k === MSG.START) {
           // ผู้เข้าร่วม: รับคำสั่งเริ่มแล้วรันไฟต์ชุดเดียวกัน
           runNetFight(m.seed, unpackTeam(m.other), m.side, m.stances, m.jungle);
@@ -695,6 +724,7 @@ export function App() {
     peerRef.current = null;
     netRef.current = { theirTeam: null, pending: null, teams: [null, null], stances: [null, null], jungles: [null, null], watching: false, isHost: false, iReadied: false, myReady: null, online: false, mySide: "A" };
     draftQueueRef.current.clear();
+    watchRef.current = { lane: null, peers: [false, false], me: false };
     setNetPaste("");
     setNetPaste2("");
     if (!quiet) setNet((n) => ({
@@ -871,6 +901,7 @@ export function App() {
     setPlan(p);
     setLaneDone({});
     setActiveLane(null);
+    resetWatch();
     setPhase("LANES");
   }
 
@@ -884,22 +915,93 @@ export function App() {
     const st = buildLaneFight({ plan, lane: L, team, foe, teamStyle, mySide });
     if (!st) return;
     fightRef.current = st;
+    fightLaneRef.current = L;
     setActiveLane(L);
     setPhase("FIGHT");
+  }
+
+  // ---- ดูไฟต์พร้อมกัน (ออนไลน์) ----
+  // สเปคใหม่: ต้องกดพร้อมดูทั้งคู่แล้วค่อยเริ่มพร้อมกัน · มีเจ้าบ้านก็เอาตามเจ้าบ้าน
+  // เจ้าบ้านเลือกเลน (นับเป็นการกดพร้อมของเจ้าบ้านไปในตัว) ผู้เล่นอีกฝั่งกดพร้อมดู
+  // ครบแล้วเจ้าบ้านสั่งเริ่ม ทุกเครื่องเปิดไฟต์เลนเดียวกันในจังหวะเดียวกัน
+  const playerSlots = () => (netRef.current.watching ? [0, 1] : [0]);
+  function netBroadcast(msg) {
+    for (const i of playerSlots()) {
+      const p = peersRef.current[i];
+      if (p && p.open) p.send(msg);
+    }
+  }
+  function pushWatch(w) { watchRef.current = w; setWatchSync(w); }
+  function resetWatch() { pushWatch({ lane: null, peers: [false, false], me: false }); }
+
+  function hostTryGo() {
+    const w = watchRef.current;
+    if (!w.lane) return;
+    if (!playerSlots().every((i) => w.peers[i])) return;
+    const L = w.lane;
+    netBroadcast({ k: MSG.WATCH, lane: L, go: true, speed: speedRef.current });
+    resetWatch();
+    fnRef.current.startLaneFight(L);
+  }
+
+  // เจ้าบ้านกดดูเลน — ถ้าอีกฝั่งพร้อมแล้วก็เริ่มเลย ไม่งั้นรอ
+  function netWatchLane(L) {
+    if (!net.on || !net.isHost) { startLaneFight(L); return; }
+    pushWatch({ ...watchRef.current, lane: L });
+    netBroadcast({ k: MSG.WATCH, lane: L, go: false });
+    hostTryGo();
+  }
+
+  // ผู้เข้าร่วมกดพร้อมดู / ยกเลิก
+  function netWatchReady() {
+    const on = !watchRef.current.me;
+    pushWatch({ ...watchRef.current, me: on });
+    const p = peerRef.current || peersRef.current[0];
+    if (p && p.open) p.send({ k: MSG.WATCH_READY, ready: on });
+  }
+
+  // ผู้เข้าร่วมตามเวลาไฟต์ของเจ้าบ้าน — เร่งได้อย่างเดียว ย้อนไม่ได้
+  function catchUpTo(lane, t) {
+    const st = fightRef.current;
+    if (!st || st.over || fightLaneRef.current !== lane) return;
+    let g = 0;
+    while (!st.over && st.t < t - 0.05 && g++ < 60 * 30) step(st);
+  }
+
+  // ความเร็วไฟต์ — ออนไลน์เจ้าบ้านเป็นคนคุม ผู้เข้าร่วมเปลี่ยนเองไม่ได้
+  function changeSpeed(s) {
+    if (net.on && !net.isHost) return;
+    setSpeed(s);
+    if (net.on && net.isHost) {
+      netBroadcast({ k: MSG.SPEED, v: s, lane: fightLaneRef.current, t: fightRef.current ? fightRef.current.t : 0 });
+    }
   }
 
   useEffect(() => {
     if (phase !== "FIGHT") return;
     let stop = false;
-    const loop = () => {
+    // เดินไฟต์ตามเวลาจริง — เดิมเดินเฟรมละ speed สเต็ป จอ 120Hz เลยเร็วเป็นสองเท่าของจอ 60Hz
+    // ดูพร้อมกันสองเครื่องไม่ได้ถ้าจอสองเครื่องรีเฟรชไม่เท่ากัน
+    let last = null;
+    let lastSync = 0;
+    slowAcc.current = 0;
+    const loop = (ts) => {
       if (stop) return;
       const st = fightRef.current;
       if (st && !st.over) {
-        if (speed < 1) {
-          slowAcc.current += speed;
-          if (slowAcc.current >= 1) { slowAcc.current -= 1; step(st); }
-        } else {
-          for (let i = 0; i < speed; i++) { if (!st.over) step(st); }
+        if (last == null) last = ts;
+        // ตัดไว้ที่ 4 วิต่อเฟรม — สลับแท็บกลับมาจะไม่วิ่งค้างทีเดียวยาวๆ
+        const dt = Math.min(4000, Math.max(0, ts - last));
+        last = ts;
+        slowAcc.current += (dt / 1000) * 60 * speed;
+        let n = Math.floor(slowAcc.current);
+        slowAcc.current -= n;
+        n = Math.min(n, 60 * 16);
+        for (let i = 0; i < n && !st.over; i++) step(st);
+        // เจ้าบ้านบอกเวลาไฟต์ของตัวเองเป็นระยะ ใครช้ากว่าจะได้เร่งตาม
+        if (net.on && net.isHost && ts - lastSync > 1500) {
+          lastSync = ts;
+          netBroadcast({ k: MSG.SYNC, lane: fightLaneRef.current, t: st.t });
         }
         if (arenaDrawRef.current) arenaDrawRef.current();
         const now = Date.now();
@@ -1021,12 +1123,14 @@ export function App() {
     mySide: net.on ? (net.side === "red" ? "red" : "blue") : "blue",
     rollOne, round, score, streak, sell, sellValue, setDraftPool,
     setFocusId, setFoe, setHeldChamp, setOpenRecipe, setOpenShop,
-    setPhase, setPlanCatState, setPlanIdx, setShopCat, setShowRanges, setSpeed,
+    setPhase, setPlanCatState, setPlanIdx, setShopCat, setShowRanges, setSpeed: changeSpeed,
     setTeam, setTeamStyle, shopCat, showRanges, slotsUsed, speed,
     scoutOpen, setScoutOpen, startMatch, statsOpen, setStatsOpen, history,
     mode, modeId, setModeId, wide, lang, changeLang, inspectId, setInspectId,
     pickQuery, setPickQuery, pickLane, setPickLane, buyUndo, undoBuy,
     draftStyle, setDraftStyle, draft, draftAct, draftBack, startDraft, foeDraft, assignLanes, foeIntel, rerollFoe,
+    watchSync, netWatchLane, netWatchReady,
+    speedLocked: !!(net.on && !net.isHost),
     setDuelLane, draftSide: netRef.current.mySide || "A",
     draftLocked: !!(netRef.current.online && !netRef.current.watching),
     storeLane, setStoreLane, bookCat, setBookCat, bookItem, setBookItem,

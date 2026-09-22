@@ -13,7 +13,7 @@ import { Bar, Label } from "../ui/widgets.jsx";
 const rankMap = (u) => Object.fromEntries((u.skills || []).map((s) => [s.key, s.rank]));
 
 export function FightScreen(ctx) {
-  const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide, foeIntel } = ctx;
+  const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide, foeIntel, speedLocked } = ctx;
 
     const st = fightRef.current;
     return (
@@ -21,8 +21,13 @@ export function FightScreen(ctx) {
         <Arena stateRef={fightRef} tick={tick} focusId={focusId} showRanges={showRanges} drawRef={arenaDrawRef} />
         <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
           {[0.5, 1, 2, 4].map((s) => (
-            <button key={s} onClick={() => setSpeed(s)}
-              style={{ ...btn(speed === s ? C.gold : C.panel2), color: speed === s ? "#0B1220" : C.ink, flex: 1, fontSize: 12, padding: "6px 0" }}>
+            <button key={s} onClick={() => setSpeed(s)} disabled={speedLocked}
+              title={speedLocked ? tr("ความเร็วตามเจ้าบ้าน") : undefined}
+              style={{
+                ...btn(speed === s ? C.gold : C.panel2), color: speed === s ? "#0B1220" : C.ink,
+                flex: 1, fontSize: 12, padding: "6px 0",
+                opacity: speedLocked && speed !== s ? 0.45 : 1, cursor: speedLocked ? "default" : "pointer",
+              }}>
               {s}×
             </button>
           ))}

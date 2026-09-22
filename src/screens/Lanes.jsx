@@ -12,8 +12,16 @@ const TONE = { SAFE: C.blue, NEUTRAL: C.dim, AGGRO: C.red };
 // เลนไหนแตกไฟต์ก็กดดูได้ตามลำดับที่อยากดู ไม่ต้องดูเรียงตามเลน
 export function LanesScreen(ctx) {
   const {
-    score, mode, round, streak, plan, laneDone, startLaneFight, closeRound, team, foe,
+    score, mode, round, streak, plan, laneDone, closeRound, team, foe,
+    net, watchSync, netWatchLane, netWatchReady,
   } = ctx;
+
+  // ออนไลน์: ต้องกดพร้อมดูทั้งคู่ แล้วเริ่มพร้อมกัน · เจ้าบ้านเป็นคนเลือกเลน
+  const online = !!(net && net.on);
+  const isHost = online && net.isHost;
+  const ws = watchSync || { lane: null, peers: [false, false], me: false };
+  const slots = online && net.role === "watch" ? [0, 1] : [0];
+  const peersReady = slots.every((i) => ws.peers[i]);
 
   if (!plan) return null;
   const nameOf = (roster, lane) => {
@@ -71,10 +79,24 @@ export function LanesScreen(ctx) {
               {done && Object.keys(l.hurt).length
                 ? <span style={{ color: C.red }}> · {tr("มีคนเสียเลือดก่อนเริ่ม")}</span> : null}
             </div>
-            {done ? null : (
-              <button onClick={() => startLaneFight(L)}
-                style={{ ...btn(C.gold), color: "#0B1220", fontWeight: 800, fontSize: 13, padding: "10px 0" }}>
-                {tr("ดูไฟต์เลนนี้")}
+            {done ? null : online && !isHost ? (
+              <div style={{
+                fontFamily: MONO, fontSize: 11, padding: "9px 0", textAlign: "center", borderRadius: 6,
+                color: ws.lane === L ? C.gold : C.line,
+                border: `1px solid ${ws.lane === L ? C.gold : C.line}`,
+              }}>
+                {ws.lane === L ? tr("เจ้าบ้านเลือกเลนนี้") : tr("เจ้าบ้านเป็นคนเลือกเลน")}
+              </div>
+            ) : (
+              <button
+                disabled={isHost && ws.lane === L && !peersReady}
+                onClick={() => netWatchLane(L)}
+                style={{
+                  ...btn(isHost && ws.lane === L ? C.panel2 : C.gold),
+                  color: isHost && ws.lane === L ? C.gold : "#0B1220",
+                  fontWeight: 800, fontSize: 13, padding: "10px 0",
+                }}>
+                {isHost && ws.lane === L ? tr("รออีกฝั่งกดพร้อมดู…") : tr("ดูไฟต์เลนนี้")}
               </button>
             )}
           </>
@@ -103,6 +125,40 @@ export function LanesScreen(ctx) {
           {tr("ยกนี้ตัดสินที่เงิน — ใครได้เงินรวมทั้งทีมเยอะกว่าในยกนี้ คนนั้นได้แต้ม")}
         </div>
       </div>
+
+      {/* ออนไลน์ — สถานะการดูพร้อมกัน */}
+      {online && !allDone ? (
+        <div style={{ ...card(), padding: 11, marginBottom: 8, borderColor: C.blue, background: "#0E1828" }}>
+          <Label style={{ marginBottom: 6, color: C.blue }}>{tr("ดูพร้อมกัน")}</Label>
+          {isHost ? (
+            <div style={{ fontSize: 11.5, color: C.dim, lineHeight: 1.65 }}>
+              <div>{tr("คุณเป็นเจ้าบ้าน — เลือกเลนที่จะดู แล้วรอให้อีกฝั่งกดพร้อมดู ไฟต์จะเริ่มพร้อมกันทุกเครื่อง")}</div>
+              {slots.map((i) => (
+                <div key={i} style={{ fontFamily: MONO, color: ws.peers[i] ? C.green : C.line }}>
+                  {slots.length > 1 ? tr("ผู้เล่นคนที่ {0}", i + 1) : tr("อีกฝั่ง")}
+                  {" — "}
+                  {ws.peers[i] ? tr("พร้อมดูแล้ว") : tr("ยังไม่กดพร้อมดู")}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div style={{ fontSize: 11.5, color: C.dim, lineHeight: 1.65, marginBottom: 8 }}>
+                {ws.lane
+                  ? tr("เจ้าบ้านเลือกดู {0} — กดพร้อมดูแล้วไฟต์จะเริ่มพร้อมกัน", tr(LANE_TH[ws.lane]))
+                  : tr("เจ้าบ้านเป็นคนเลือกเลนและคุมความเร็ว — กดพร้อมดูไว้ก่อนได้เลย")}
+              </div>
+              <button onClick={netWatchReady}
+                style={{
+                  ...btn(ws.me ? C.panel2 : C.gold), color: ws.me ? C.green : "#0B1220",
+                  fontWeight: 800, fontSize: 13, padding: "10px 0",
+                }}>
+                {ws.me ? tr("พร้อมดูแล้ว — กดอีกครั้งเพื่อยกเลิก") : tr("พร้อมดู")}
+              </button>
+            </>
+          )}
+        </div>
+      ) : null}
 
       {(plan.foeJungleLane || (plan.lanes.TOP.myGank || plan.lanes.MID.myGank || plan.lanes.BOT.myGank)) ? (
         <div style={{ ...card(), padding: 10, marginBottom: 8, background: "#101A2C" }}>
