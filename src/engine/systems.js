@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { applyDamage, edgeDamage, grantShield, healUnit } from "./damage.js";
 import { applyFragmentDamage } from "./on-hit.js";
-import { DOT_EVERY, addBuff, addDot, dist, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
+import { DOT_EVERY, addBuff, addDot, burnDot, dist, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { DT, step } from "./step.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -199,7 +199,12 @@ export function tickNewSystems(state) {
         if (Math.abs(rx * f.nx + ry * f.ny) > f.halfLen) continue;
         if (Math.abs(rx * -f.ny + ry * f.nx) > f.halfW) continue;
       }
-      addBuff(e, { type: "slow", v: f.slow, until: state.t + 0.2 }, state.t);
+      if (f.slow) addBuff(e, { type: "slow", v: f.slow, until: state.t + 0.2 }, state.t);
+      // ร่องเพลิงของ TOTSAKAN Q — ยืนทับเมื่อไหร่ก็ติดไฟต่ออายุไปเรื่อยๆ
+      if (f.burn) {
+        const owner = state.units.find((x) => x.id === f.ownerId);
+        if (owner) burnDot(state, owner, e, f.burn);
+      }
     }
     return true;
   });

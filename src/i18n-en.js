@@ -2616,4 +2616,40 @@ export const DICT = {
    "HOOD's passive ticks every 0.5s exactly as its spec always said — that field was in the data but nothing ever read it",
  "ยอดดาเมจรวมเท่าเดิมทุกกรณี · เวลาที่ไม่ลงตัวกับงวด งวดสุดท้ายจ่ายเศษที่เหลือให้ครบ":
    "Total damage is unchanged in every case · when a duration doesn't divide evenly, the last tick pays the remainder",
+ "Juggernaut":
+   "Juggernaut",
+ "ค่าสถานะที่ได้จากไอเทมทุกชิ้นเพิ่มขึ้น 7% (+0.75% ต่อเลเวล) — Bonus AD, Bonus HP, เกราะ, ต้านเวท, เร่งสกิล, ความเร็วโจมตี และ Tenacity · เลเวล 1 ได้ 7.75% เลเวล 18 ได้ 20.5%":
+   "Every stat his items give him is 7% larger, plus another 0.75% per level — bonus AD, bonus HP, armour, magic resist, ability haste, attack speed and tenacity · 7.75% at level 1, rising to 20.5% at level 18",
+ "{0} {1} แผดโทสะ กดพลังศัตรูรอบตัว":
+   "{0} {1} roars, crushing the strength of everyone around him",
+ "{0} {1} งอกแขนอสูร {2} ข้าง":
+   "{0} {1} sprouts {2} asura arms",
+ "แผ่ออร่ารัศมี {0} หน่วยรอบตัว กดพลังโจมตีและพลังเวทของศัตรูในวง พร้อมเร่งความเร็วของตัวเอง":
+   "Spreads an aura {0} units wide that saps the attack and ability power of enemies inside it, while speeding himself up",
+ "ทุบพื้นทันทีรัศมี {0} หน่วยรอบตัว ยกทุกคนในวงลอยขึ้น แล้วงอกแขนอสูรตามจำนวนคนที่โดน":
+   "Slams the ground instantly {0} units around him, throwing everyone caught into the air, then grows asura arms for each champion hit",
+ "ออร่ากดพลังศัตรู":
+   "Power-sapping aura",
+ "ทุบพื้นยกลอยหมู่":
+   "Ground slam, mass knock-up",
+ "รีเวิร์ค TOTSAKAN — จาก Vanguard เป็น Juggernaut":
+   "TOTSAKAN reworked — from Vanguard to Juggernaut",
+ "สเตตัสพื้นฐานปรับใหม่: เลือด 640 (+108) · AD 66 (+4.0) · เกราะ 38 (+4.2) · ฟื้นเลือด 8.5 (+0.85)":
+   "New base stats: 640 HP (+108) · 66 AD (+4.0) · 38 armour (+4.2) · 8.5 HP regen (+0.85)",
+ "พาสซีฟ Tenfold Mastery — ค่าสถานะจากไอเทมแรงขึ้น 7% (+0.75% ต่อเลเวล) จากเดิมที่คงที่ 10% ทั้งเกม · เลเวล 1 ได้ 7.75% เลเวล 18 ได้ 20.5% เลเวล 20 ได้ 22%":
+   "Tenfold Mastery now gives 7% more item stats plus 0.75% per level, instead of a flat 10% all game — 7.75% at level 1, 20.5% at level 18, 22% at level 20",
+ "Q Asura Cleave — แนวกว้างขึ้นจาก 160 เป็น 260 ถอดสเกล Bonus HP ออก เปลี่ยนเป็น +75% Total AD และร่องที่แยกออกลุกเป็นเพลิงค้างพื้น 3 วิ จ่ายทุก 0.5 วิ ใครเดินทับทีหลังก็ไหม้":
+   "Q Asura Cleave is wider — 260 instead of 160 — drops its bonus-HP scaling for +75% total AD, and the crack it tears open now burns for 3s, ticking every 0.5s, catching anyone who walks across it later",
+ "Q สโลว์ไต่ตามเลเวลแทนขั้นสกิล — 16% ที่เลเวล 1 ขึ้นไปถึง 33% ที่เลเวล 18":
+   "Q's slow now scales with his level rather than the skill rank — 16% at level 1 up to 33% at level 18",
+ "W Wrath of the Asura — ของใหม่ทั้งท่า ออร่ารัศมี 450 กด AD และ AP ของศัตรูในวง 10-20% (ค้างต่ออีก 1.5 วิหลังเดินออก) พร้อมเร่งตัวเอง เดินเร็ว/ตีเร็ว +20-40%":
+   "W Wrath of the Asura is a brand new ability: a 450-wide aura that saps 10-20% of the AD and AP of enemies inside it, lingering 1.5s after they leave, while giving him +20-40% move and attack speed",
+ "E Dreadful Toss & Aegis — ย้ายการพุ่งจับเหวี่ยงจาก W มาไว้ที่ E แล้วรวมกับโล่และการลดดาเมจของท่าเดิม กดทีเดียวได้ทั้งพุ่ง เหวี่ยงข้ามหัว โล่ และลดดาเมจ 15-27% นาน 3.5 วิ":
+   "E Dreadful Toss & Aegis moves the charge-and-fling over from W and folds in the old shield: one button now dashes, flings the first champion over his head, shields him and cuts incoming damage by 15-27% for 3.5s",
+ "R Cataclysmic Wrath — เลิกทุบสามระลอกแบบตรึงขาตัวเอง เปลี่ยนเป็นทุบทันทีรอบตัวรัศมี 550 ยกทุกคนลอย 1.25 วิ":
+   "R Cataclysmic Wrath no longer roots him through three slams — it lands instantly in a 550 radius and throws everyone caught into the air for 1.25s",
+ "R งอกแขนอสูร 2 ข้างต่อศัตรู 1 ตัวที่โดน (สูงสุด 10 แขน) แต่ละข้างดันค่าสถานะจากไอเทมขึ้นอีก 3/4/5% ตามขั้นอัลติ นาน 10 วิ — โดนครบ 5 ตัวคือ +50% ทับพาสซีฟปกติ":
+   "R grows 2 asura arms per champion hit, up to 10, and each one adds another 3/4/5% to his item stats by ult rank for 10 seconds — catching all five is +50% on top of his passive",
+ "แก้พ่วง: บัฟลดดาเมจของสกิล (drAll) เคยใส่บัฟไว้แต่ไม่มีโค้ดไหนอ่านเลย การลดดาเมจของ E เดิมจึงไม่เคยทำงาน ตอนนี้ต่อสายแล้ว":
+   "Side fix: the skill damage-reduction buff was applied but nothing ever read it, so the old E's damage reduction never actually worked. It does now",
 };

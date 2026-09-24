@@ -5,7 +5,7 @@ import { startGrab } from "./motion.js";
 import { applyCharm, startBloodStorm } from "./laura.js";
 import { castDismissal, castGuardBurst } from "./klaeder.js";
 import { castAllyBlink, castTeaGarden, castWonderland } from "./alice.js";
-import { addBuff, addBuffUnique, bonusMs, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
+import { addBuff, addBuffUnique, bonusMs, burnDot, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -67,16 +67,34 @@ function fireSkillEffect(state, u, sk, target, prec) {
         const halfW = (sk.width || 100) / 2;
         const prevSrcL = state.dmgSrc;
         state.dmgSrc = skillLabel(u, sk);
+        // ไฟที่ค้างอยู่บนร่องแยก — ดาเมจต่อเนื่องของใครโดนหรือใครเดินเข้ามาทีหลัง
+        const gb = sk.groundBurn;
+        const burn = gb ? {
+          tag: "burn:" + u.id + ":" + sk.key,
+          dps: (gb.dmg[Math.max(0, sk.rank - 1)] + (gb.badRatio || 0) * (u.bonusAd || 0)) / (gb.every || 0.5),
+          every: gb.every || 0.5, dur: gb.dur, magic: !!sk.magic, src: skillLabel(u, sk),
+        } : null;
         for (const e of enemiesOf(state, u)) {
           const rx = e.x - u.x, ry = e.y - u.y;
           const along = rx * nx + ry * ny;
           if (along < -e.radius || along > reach + e.radius) continue;
           if (Math.abs(rx * -ny + ry * nx) > halfW + e.radius) continue;
           applyDamage(state, u, e, power, !!sk.magic);
-          const lv = sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow;
+          // สโลว์บางท่าไต่ตามเลเวลของเจ้าของท่า ไม่ใช่ตามขั้นสกิล
+          const lv = sk.slowBase != null
+            ? sk.slowBase + (sk.slowPerLevel || 0) * (u.level || 1)
+            : (sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow);
           if (lv) addBuff(e, { type: "slow", v: lv, until: state.t + (sk.dur || 1) }, state.t);
+          if (burn) burnDot(state, u, e, burn);
         }
         state.dmgSrc = prevSrcL;
+        if (burn) {
+          state.fields.push({
+            ownerId: u.id, team: u.team,
+            x: u.x + nx * (reach / 2), y: u.y + ny * (reach / 2), nx, ny,
+            halfLen: reach / 2, halfW, until: state.t + gb.dur, slow: 0, burn,
+          });
+        }
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + nx * reach, y2: u.y + ny * reach,
           w: halfW, color: lineCol, dur: 0.4 });
         // เศษหินและประกายไฟพุ่งขึ้นมาจากรอยแยกตลอดแนว

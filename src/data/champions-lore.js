@@ -121,41 +121,41 @@ export const LORE_CHAMPIONS = {
   },
 
   // =============================================================
-  // 4) TOTSAKAN (ทศกัณฐ์) — Vanguard / AD Tank
+  // 4) TOTSAKAN (ทศกัณฐ์) — Juggernaut / AD Fighter
   // =============================================================
   TOTSAKAN: {
     id: "TOTSAKAN", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.2, value: 0.85,
-    th: "ทศกัณฐ์", role: "Vanguard", lane: "TOP", melee: true, rage: 0.12,
-    hp: 630, hpG: 105, hp5: 8.5, hp5G: 0.8, ad: 64, adG: 3.8, armor: 38, armorG: 4.3, mr: 32, mrG: 2.05,
+    th: "ทศกัณฐ์", role: "Juggernaut", lane: "TOP", melee: true, rage: 0.12,
+    hp: 640, hpG: 108, hp5: 8.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
     as: 0.64, asG: 0.022, ms: 340, range: 175,
-    // ค่าสถานะจากไอเทมทุกอย่างแรงขึ้น 10%
-    itemAmp: 0.10,
+    // ค่าสถานะจากไอเทมแรงขึ้นตามเลเวล — 7% บวกอีก 0.75% ต่อเลเวล (เลเวล 1 = 7.75% · เลเวล 18 = 20.5%)
+    itemAmp: 0.07, itemAmpPerLevel: 0.0075,
     passive: { th: "Tenfold Mastery",
-      desc: "ค่าสถานะที่ได้จากไอเทมทุกชิ้นเพิ่มขึ้น 10% — Bonus AD, Bonus HP, เกราะ, ต้านเวท, เร่งสกิล, ความเร็วโจมตี และ Tenacity" },
+      desc: "ค่าสถานะที่ได้จากไอเทมทุกชิ้นเพิ่มขึ้น 7% (+0.75% ต่อเลเวล) — Bonus AD, Bonus HP, เกราะ, ต้านเวท, เร่งสกิล, ความเร็วโจมตี และ Tenacity · เลเวล 1 ได้ 7.75% เลเวล 18 ได้ 20.5%" },
     skills: [
       // กระบองฟาดพื้นแล้วดินแยกเป็นร่องพุ่งไปข้างหน้า — โดนทั้งแนวพร้อมกันทันที ไม่ใช่ของที่ลอยไป
-      { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 160, instant: true, pierce: true,
+      // ร่องที่แยกออกลุกเป็นเพลิงค้างไว้ ใครยืนทับก็ไหม้ต่อ
+      { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 260, instant: true, pierce: true,
         cast: 0.3, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
-        dmg: [75, 115, 155, 195, 235], adRatio: 0.70, selfBonusHp: 0.05,
-        slowByRank: [0.35, 0.40, 0.45, 0.50, 0.55], dur: 1.5 },
-      // พุ่งชนตัวแรก จับเหวี่ยงข้ามหัว แล้วออโต้ 3 ครั้งถัดไปแรงขึ้น
-      { key: "W", th: "Dreadful Charge", type: "chargeFling", dashRange: 550, dashSpeed: 1200,
-        toss: 275, airborne: 0.5, cast: 0.15, cd: 14, cdByRank: [14, 13, 12, 11, 10],
-        dmg: [60, 95, 130, 165, 200], badRatio: 0.60, selfBonusHp: 0.06,
-        charges: 3, window: 5, asBuff: 0.40,
-        hitDmg: [25, 35, 45, 55, 65], hitAdRatio: 0.30, hitBonusHp: 0.03 },
-      { key: "E", th: "Twenty Arms Ward", type: "selfBuff", cast: 0.15, dur: 3,
-        cd: 13, cdByRank: [13, 12, 11, 10, 9],
-        shield: [70, 110, 150, 190, 230], bonusHpRatio: 0.10,
-        drAll: [0.14, 0.17, 0.20, 0.23, 0.26] },
-      // ทุบพื้น 3 ระลอก วงกว้างขึ้นเรื่อยๆ ระลอกสุดท้ายสตันหมู่
-      { key: "R", th: "Triple Cataclysm", type: "tripleSlam", ult: true, cast: 0.15, selfRoot: true,
-        cd: 60, cdByRank: [60, 50, 40], every: 0.65,
-        waves: [
-          { radius: 400, dmg: [80, 130, 180], badRatio: 0.40, bonusHp: 0.040 },
-          { radius: 550, dmg: [130, 210, 290], badRatio: 0.65, bonusHp: 0.065 },
-          { radius: 700, dmg: [200, 320, 440], badRatio: 0.95, bonusHp: 0.095, stun: [1.25, 1.5, 1.75] },
-        ] },
+        dmg: [75, 110, 145, 180, 215], adRatio: 0.75,
+        groundBurn: { dur: 3, every: 0.5, dmg: [8, 13, 18, 23, 28], badRatio: 0.08 },
+        slowBase: 0.15, slowPerLevel: 0.01, dur: 1.5 },
+      // ออร่าโทสะ — กดพลังโจมตีของศัตรูรอบตัว แล้วเร่งตัวเองให้เดินเร็วขึ้นตีเร็วขึ้น
+      { key: "W", th: "Wrath of the Asura", type: "wrathAura", radius: 450, dur: 5, cast: 0.15,
+        cd: 14, cdByRank: [14, 13, 12, 11, 10],
+        atkCut: [0.10, 0.125, 0.15, 0.175, 0.20], linger: 1.5,
+        msBuff: [0.20, 0.25, 0.30, 0.35, 0.40], asBuff: [0.20, 0.25, 0.30, 0.35, 0.40] },
+      // พุ่งชนตัวแรก จับเหวี่ยงข้ามหัวไปข้างหลัง พร้อมกางแขนยี่สิบกรคุ้มตัว
+      { key: "E", th: "Dreadful Toss & Aegis", type: "chargeFling", dashRange: 550, dashSpeed: 1200,
+        toss: 275, airborne: 0.5, cast: 0.15, cd: 13, cdByRank: [13, 12.5, 12, 11.5, 11],
+        dmg: [70, 110, 150, 190, 230], badRatio: 0.65, selfBonusHp: 0.06,
+        aegis: { dur: 3.5, shield: [80, 125, 170, 215, 260], bonusHpRatio: 0.12,
+          drAll: [0.15, 0.18, 0.21, 0.24, 0.27] } },
+      // ทุบพื้นทันทีรอบตัว ยกทุกคนลอย แล้วงอกแขนอสูรตามจำนวนคนที่โดน
+      { key: "R", th: "Cataclysmic Wrath", type: "asuraSlam", ult: true, cast: 0.15,
+        cd: 100, cdByRank: [100, 85, 70], radius: 550,
+        dmg: [200, 325, 450], badRatio: 0.90, selfBonusHp: 0.10, airborne: 1.25,
+        arms: { per: 2, max: 10, amp: [0.03, 0.04, 0.05], dur: 10 } },
     ],
   },
 

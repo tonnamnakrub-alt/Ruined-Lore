@@ -236,17 +236,65 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       return true;
     }
 
-    // ---- TOTSAKAN W · พุ่งชนตัวแรกแล้วเหวี่ยงข้ามหัว ----
+    // ---- TOTSAKAN W · ออร่าโทสะ กดพลังศัตรูรอบตัว แล้วเร่งตัวเอง ----
+    case "wrathAura": {
+      u.wrath = { sk, rank: r, until: state.t + sk.dur, radius: sk.radius * sc };
+      addBuff(u, { type: "ms", v: at(sk.msBuff, sk), until: state.t + sk.dur }, state.t);
+      addBuff(u, { type: "as", v: at(sk.asBuff, sk), until: state.t + sk.dur }, state.t);
+      vfx(state, { kind: "aura", id: u.id, r: u.radius + 26, color: "232,90,70", dur: sk.dur });
+      vfx(state, { kind: "ring", x: u.x, y: u.y, r: sk.radius * sc, color: "232,90,70", grow: 0.8 });
+      pushLog(state, tr("{0} {1} แผดโทสะ กดพลังศัตรูรอบตัว", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+      return true;
+    }
+
+    // ---- TOTSAKAN E · พุ่งชนตัวแรกแล้วเหวี่ยงข้ามหัว พร้อมกางแขนคุ้มตัว ----
     case "chargeFling": {
       u.dashing = {
         dx: Math.cos(face), dy: Math.sin(face), left: sk.dashRange, sk, frac: 1, hitIds: [],
         fling: { toss: sk.toss, airborne: sk.airborne, dmg: power, sk, rank: r },
       };
+      // โล่กับการลดดาเมจขึ้นตั้งแต่ตอนพุ่ง ไม่ต้องรอว่าจะจับใครได้ไหม
+      const ae = sk.aegis;
+      if (ae) {
+        u.shield = 0;
+        grantShield(u, ae.shield[r] + (ae.bonusHpRatio || 0) * (u.bonusHp || 0));
+        u.buffs.push({ type: "shield", v: 1, until: state.t + ae.dur });
+        addBuff(u, { type: "dr", v: ae.drAll[r], until: state.t + ae.dur }, state.t);
+        vfx(state, { kind: "aura", id: u.id, r: u.radius + 20, color: "255,208,138", dur: ae.dur });
+      }
       vfx(state, { kind: "trail", x: u.x, y: u.y, color: "255,208,138", pending: u.id });
       return true;
     }
 
-    // ---- TOTSAKAN R · ทุบพื้น 3 ระลอก วงกว้างขึ้นเรื่อยๆ ----
+    // ---- TOTSAKAN R · ทุบพื้นทันทีรอบตัว ยกทุกคนลอย แล้วงอกแขนอสูร ----
+    case "asuraSlam": {
+      const rad = sk.radius * sc;
+      let hits = 0;
+      for (const e of enemiesOf(state, u)) {
+        if (dist(u, e) > rad + e.radius) continue;
+        hits += 1;
+        applyDamage(state, u, e, power, false);
+        addBuff(e, { type: "airborne", v: 1, until: state.t + sk.airborne }, state.t);
+      }
+      // แขนอสูรงอกสองข้างต่อศัตรูหนึ่งตัวที่โดน — ยิ่งโดนเยอะ ค่าสถานะจากไอเทมยิ่งพอง
+      const ar = sk.arms;
+      if (ar && hits > 0) {
+        const n = Math.min(ar.max, hits * ar.per);
+        const amp = n * ar.amp[r];
+        // เลือดสูงสุดเพิ่มทีเดียวตอนกด (พร้อมเลือดปัจจุบัน) แล้วคืนตอนแขนหาย
+        const hpAdd = (u.itemPart ? u.itemPart.hp : 0) * amp;
+        u.asuraArms = { n, amp, until: state.t + ar.dur, hpAdd };
+        if (hpAdd > 0) { u.maxHp += hpAdd; u.hp += hpAdd; }
+        vfx(state, { kind: "arms", id: u.id, x: u.x, y: u.y, r: u.radius + 90, count: n, color: "255,208,138", dur: ar.dur });
+        pushLog(state, tr("{0} {1} งอกแขนอสูร {2} ข้าง", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th), n));
+      }
+      vfx(state, { kind: "slam", x: u.x, y: u.y, r: rad, color: "255,208,138", dur: 0.6 });
+      vfx(state, { kind: "shock", x: u.x, y: u.y, r: rad, color: "232,163,61", dur: 0.7 });
+      vfx(state, { kind: "debris", x: u.x, y: u.y, r: rad * 0.8, color: "214,170,96", dur: 0.8 });
+      return true;
+    }
+
+    // ---- TOTSAKAN R เดิม · ทุบพื้น 3 ระลอก วงกว้างขึ้นเรื่อยๆ ----
     case "tripleSlam": {
       if (sk.selfRoot) addBuff(u, { type: "root", v: 1, until: state.t + sk.every * sk.waves.length + 0.1 }, state.t);
       for (let i = 0; i < sk.waves.length; i++) {
@@ -532,6 +580,30 @@ export function tickLoreUnit(state, u, dt) {
       if (per[d.targetId] > most) most = per[d.targetId];
     }
     u.bleedStacks = most;
+  }
+
+  // TOTSAKAN W — ใครอยู่ในวงโดนกดพลังโจมตีและพลังเวท ออกนอกวงแล้วยังค้างอีกพักหนึ่ง
+  if (u.wrath) {
+    if (state.t > u.wrath.until) u.wrath = null;
+    else {
+      const w = u.wrath;
+      const cut = w.sk.atkCut[w.rank];
+      for (const e of enemiesOf(state, u)) {
+        if (dist(u, e) > w.radius + e.radius) continue;
+        const until = state.t + (w.sk.linger || 1.5);
+        addBuffUnique(e, "wrath:" + u.id, { type: "ad", v: -cut, until }, state.t);
+        addBuffUnique(e, "wrathap:" + u.id, { type: "apPct", v: -cut, until }, state.t);
+      }
+    }
+  }
+  // TOTSAKAN R — แขนอสูรหมดเวลา คืนเลือดสูงสุดที่ยืมมา
+  if (u.asuraArms && state.t > u.asuraArms.until) {
+    const add = u.asuraArms.hpAdd || 0;
+    if (add > 0) {
+      u.maxHp = Math.max(1, u.maxHp - add);
+      u.hp = Math.min(u.hp, u.maxHp);
+    }
+    u.asuraArms = null;
   }
 
   // PUSS — เลือกเป้าท้าดวลทันทีที่เข้าไฟต์

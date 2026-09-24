@@ -69,6 +69,17 @@ export function buildFight(blueDefs, redDefs, seed, event) {
       hasItem: (id) => (def.items || []).some((it) => it.id === id),
       bountyGold: def.bountyGold || 0,
       duelPick: def.duelLane || null,
+      // TOTSAKAN R — แขนอสูรคูณ "ค่าสถานะที่มาจากไอเทม" เพิ่มชั่วคราว
+      // ต้องรู้ตั้งแต่ตอนสร้างว่าก้อนไหนเป็นของไอเทม เพราะค่าฐานของตัวละครไม่โดนคูณ
+      itemPart: CHAMPIONS[s.champId].itemAmp ? {
+        ad: Math.max(0, s.ad - (CHAMPIONS[s.champId].ad + CHAMPIONS[s.champId].adG * (def.level - 1))),
+        hp: Math.max(0, s.maxHp - (CHAMPIONS[s.champId].hp + CHAMPIONS[s.champId].hpG * (def.level - 1))),
+        armor: Math.max(0, s.armor - (CHAMPIONS[s.champId].armor + CHAMPIONS[s.champId].armorG * (def.level - 1))),
+        mr: Math.max(0, s.mr - (CHAMPIONS[s.champId].mr + CHAMPIONS[s.champId].mrG * (def.level - 1))),
+        as: Math.max(0, s.atkSpeed - (CHAMPIONS[s.champId].as + CHAMPIONS[s.champId].asG * (def.level - 1))),
+        ah: s.ah || 0,
+        tenacity: s.tenacity || 0,
+      } : null,
       duelBanned: Object.keys(def.duelBan || {}),
       upgrades: def.upgrades || [],
       mark: null,

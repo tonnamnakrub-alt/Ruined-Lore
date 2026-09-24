@@ -192,9 +192,10 @@ export function deriveStats(unitDef) {
   // ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง)
   if (items.some((i) => i.id === "tet")) mrPen += (ap / 100) * 3;
 
-  // TOTSAKAN — พาสซีฟดึงค่าสถานะจากไอเทมออกมาได้มากกว่าคนอื่น 10%
+  // TOTSAKAN — พาสซีฟดึงค่าสถานะจากไอเทมออกมาได้มากกว่าคนอื่น
   // คิดเฉพาะ "ส่วนที่มาจากไอเทม" เท่านั้น ค่าฐานของตัวละครไม่โดนคูณ
-  const iamp = ch.itemAmp || 0;
+  // สเปคใหม่: ไต่ขึ้นทุกเลเวล 7% + 0.75% ต่อเลเวล (เลเวล 1 = 7.75% · 18 = 20.5% · 20 = 22%)
+  const iamp = (ch.itemAmp || 0) + (ch.itemAmpPerLevel || 0) * lvl;
   if (iamp) {
     const bAd = ch.ad + ch.adG * g;
     const bHp = ch.hp + ch.hpG * g;

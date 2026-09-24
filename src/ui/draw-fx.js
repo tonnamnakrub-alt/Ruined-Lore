@@ -299,6 +299,35 @@ export function drawFx(ctx, st, S) {
           f.y / S + Math.sin(ang) * (f.r / S) * (0.6 + age * 0.4));
         ctx.stroke();
       }
+    } else if (f.kind === "arms") {
+      // TOTSAKAN R — แขนอสูรทองคำงอกออกจากแผ่นหลัง กางออกรอบตัวตามจำนวนแขน
+      const u = st.units.find((x) => x.id === f.id);
+      const ax = (u && u.alive ? u.x : f.x) / S;
+      const ay = (u && u.alive ? u.y : f.y) / S;
+      const n = f.count || 4;
+      const rr = (f.r || 80) / S;
+      const puls = 0.55 + 0.45 * Math.abs(Math.sin(st.t * 3.4));
+      ctx.lineCap = "round";
+      for (let i = 0; i < n; i++) {
+        const side = i % 2 ? 1 : -1;
+        const step2 = Math.floor(i / 2);
+        const ang = Math.PI / 2 * side + side * (0.32 + step2 * 0.30);
+        const len = rr * (0.75 + 0.1 * step2) * puls;
+        ctx.globalAlpha = 0.75;
+        ctx.strokeStyle = `rgba(${col},1)`;
+        ctx.lineWidth = 3.2;
+        ctx.beginPath();
+        ctx.moveTo(ax, ay);
+        ctx.quadraticCurveTo(ax + Math.cos(ang) * len * 0.6, ay + Math.sin(ang) * len * 0.35,
+          ax + Math.cos(ang) * len, ay + Math.sin(ang) * len);
+        ctx.stroke();
+        ctx.globalAlpha = 0.9;
+        ctx.fillStyle = `rgba(${col},1)`;
+        ctx.beginPath();
+        ctx.arc(ax + Math.cos(ang) * len, ay + Math.sin(ang) * len, 2.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
     } else if (f.kind === "aura") {
       const u = st.units.find((x) => x.id === f.id);
       if (u && u.alive) {

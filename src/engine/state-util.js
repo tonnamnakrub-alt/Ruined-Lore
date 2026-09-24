@@ -23,6 +23,16 @@ export function addDot(state, d) {
   return dot;
 }
 
+// ติดไฟ/เลือดไหลซ้ำจากแหล่งเดิม — ต่ออายุก้อนเดิมแทนการซ้อนก้อนใหม่
+export function burnDot(state, owner, target, cfg) {
+  const own = state.dots.find((d) => d.targetId === target.id && d.ownerId === owner.id && d.tag === cfg.tag);
+  if (own) return refreshDot(state, own, cfg.dps, state.t + cfg.dur);
+  return addDot(state, {
+    targetId: target.id, ownerId: owner.id, tag: cfg.tag,
+    dps: cfg.dps, until: state.t + cfg.dur, every: cfg.every, magic: !!cfg.magic, src: cfg.src,
+  });
+}
+
 // เลือดไหลก้อนเดิมโดนต่ออายุ — คิดยอดที่เหลือใหม่ทั้งก้อน
 export function refreshDot(state, d, dps, until) {
   d.dps = dps;

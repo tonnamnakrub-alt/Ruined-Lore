@@ -118,7 +118,8 @@ export function step(state) {
     u.silenced = hasBuff(u, "silence");
     u.disarmed = hasBuff(u, "disarm");
     u.rooted = locked || hasBuff(u, "root") || hasBuff(u, "invuln");
-    u.drAll = 0;
+    // บัฟลดดาเมจจากสกิล (type "dr") — เดิมใส่บัฟไว้แต่ไม่มีใครอ่าน การลดดาเมจเลยไม่เคยทำงาน
+    u.drAll = buffSum(u, "dr");
     if (u.champ.fragments) {
       const fg = u.champ.fragments;
       // ออกจากคอมแบตนานพอ = เติมเต็มหลอด · ไม่งั้นค่อยๆ คืนตามเร่งสกิล (AH)
@@ -262,10 +263,22 @@ export function step(state) {
     }
     if (buffSum(u, "ad")) u.ad = Math.round(u.ad * (1 + buffSum(u, "ad")));
     u.ad += buffSum(u, "adFlat");
+    // TOTSAKAN R — แขนอสูรที่งอกอยู่ ดึงค่าสถานะจากไอเทมออกมาได้อีกชั้นหนึ่ง
+    if (u.asuraArms && u.itemPart) {
+      const amp = u.asuraArms.amp;
+      u.ad += u.itemPart.ad * amp;
+      u.ah += u.itemPart.ah * amp;
+      u.asEff = Math.max(0.15, u.asEff + u.itemPart.as * amp * (1 + buffSum(u, "as")));
+      u.tenacity = (u.tenacity || 0) + u.itemPart.tenacity * amp;
+    }
     const mrBurst = buffSum(u, "mrburst");
     // Hel's Nether Domain ลดต้านเวทของคนที่ยืนในวง — คิดทีหลังสุด
     const mrShred = Math.min(0.6, buffSum(u, "mrshred"));
     u.mr = Math.round((u.baseMr * (1 - shred) + mjolnirMr + ironJohnBonus + mrBurst + centaurAr + argus + (u.weaveMr || 0)) * ironJohnMult * (1 - mrShred));
+    if (u.asuraArms && u.itemPart) {
+      u.armor += u.itemPart.armor * u.asuraArms.amp;
+      u.mr += u.itemPart.mr * u.asuraArms.amp;
+    }
 
   }
 

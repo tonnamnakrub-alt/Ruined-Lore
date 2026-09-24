@@ -170,6 +170,8 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "deltaDash") return d <= sk.side * 1.6;
   if (sk.type === "starfall") return nearby >= 1 || d <= 900;
   if (sk.type === "chargeFling") return d <= sk.dashRange;
+  if (sk.type === "wrathAura") return d <= sk.radius || nearby >= 1;
+  if (sk.type === "asuraSlam") return nearby >= 1 || d <= sk.radius * 0.8;
   if (sk.type === "tripleSlam") return nearby >= 1 || d <= 420;
   if (sk.type === "rampBuff") return d <= u.range * 1.1;
   if (sk.type === "sightZone") return enemiesOf(state, u).some((e) => hasBuff(e, "stealth")) || d <= sk.range;
