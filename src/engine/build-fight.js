@@ -1,6 +1,6 @@
 import { CHAMPIONS } from "../data/champions.js";
 import { ARENA_H, ARENA_W, radiusOf } from "../data/constants.js";
-import { EVENTS, RAMP_FRAC, RAMP_SCALE } from "../data/tuning.js";
+import { EVENTS, FIGHT_BASE, FIGHT_PER_BODY, RAMP_FRAC, RAMP_SCALE } from "../data/tuning.js";
 import { skillRank } from "./skill-ranks.js";
 import { deriveStats } from "./stats.js";
 import { hashStr, mulberry32 } from "./util.js";
@@ -175,10 +175,10 @@ export function buildFight(blueDefs, redDefs, seed, event) {
   }
 
   const ev = event || EVENTS.SKIRMISH;
-  // เวลาไฟต์ยืดตามจำนวนคนที่ลงสนาม — 1v1 ได้ 30 วิ ทุกคนที่เพิ่มมาได้อีก 5 วิ
+  // เวลาไฟต์ยืดตามจำนวนคนที่ลงสนาม — 1v1 ได้ 20 วิ ทุกคนที่เพิ่มมาได้อีก 3 วิ
   // ไฟต์ใหญ่ต้องใช้เวลามากกว่า ส่วนไฟต์เลนสองคนไม่ควรยืดเยื้อ
   // fixedDuration ใช้ตอนที่กติกาข้างนอกอยากกำหนดเอง เช่น เลนที่ยืนรับแกงค์แบบเซฟ
-  const duration = ev.fixedDuration || Math.max(20, 30 + 5 * (bodyCount - 2));
+  const duration = ev.fixedDuration || Math.max(FIGHT_BASE, FIGHT_BASE + FIGHT_PER_BODY * (bodyCount - 2));
   return {
     t: 0,
     event: ev,

@@ -59,6 +59,7 @@
 - **รุกล้ำเจอเซฟ** — ฝั่งรุกล้ำล้ำเก้อ **−2 เงิน −1 XP**
 - **ปกติเจอรุกล้ำ** — ฝั่งปกติโดนกด **−1 เงิน −1 XP**
 - **ปกติเจอปกติ / รุกล้ำเจอรุกล้ำ** — แตกไฟต์ **ไม่มีรายได้ฐานทั้งคู่** เงินยกนั้นมาจากศพอย่างเดียว
+  - ⚠️ ตั้งแต่ Patch 0.3C เวลาไฟต์สั้นลง (1v1 เหลือ 20 วิ) ไฟต์จบแบบไม่มีใครตายบ่อยขึ้นมาก — เลนที่แตกไฟต์จึงมีโอกาสได้ **0 เงินทั้งสองฝั่ง** สูงกว่าเดิม
 
 กติกาเพิ่ม:
 
@@ -273,6 +274,7 @@
 | สูตรค่าหัว | `src/game/bounty.js` | `bountyOf()` · `streaksAfterRound()` |
 | รายได้ป่า | `src/data/behaviour.js` | `JUNGLE_FARM` · `JUNGLE_GANK` |
 | ป่าเข้าเลน | `src/data/behaviour.js` | `JUNGLE_TABLE` · `GANK_HURT` |
+| เวลาไฟต์ | `src/data/tuning.js` | `FIGHT_BASE` · `FIGHT_PER_BODY` |
 | พาเพื่อนไปแกงค์ | `src/data/behaviour.js` | `JUNGLE_CREW` |
 | ยืนรับแบบเซฟ | `src/data/behaviour.js` | `SAFE_STAND_SECONDS` |
 | ทิ้งเลน +2 | `src/game/round-plan.js` | `ABANDON_BONUS` |

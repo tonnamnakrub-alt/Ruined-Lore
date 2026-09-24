@@ -2582,4 +2582,16 @@ export const DICT = {
    "Example: an ADC on 7 lane income who also takes a kill and an assist used to give the support 9, and now gives 3",
  "ซัพยังไม่มีรายได้เลนของตัวเองเหมือนเดิม และยกคู่ยังได้เพิ่มอีก 1 เหมือนเดิม":
    "The support still has no lane income of its own, and still gets the extra 1 on even rounds",
+ "เวลาไฟต์สั้นลง":
+   "Fights are shorter",
+ "สูตรใหม่: 20 + 3 × (จำนวนคนที่ลงสนาม − 2) วินาที — 1v1 20 วิ · 2v2 26 วิ · 3v3 32 วิ · ไฟต์รวมห้าคน 44 วิ (เดิม 30 · 40 · 50 · 70)":
+   "New formula: 20 + 3 × (bodies on the field − 2) seconds — 1v1 20s · 2v2 26s · 3v3 32s · a full five-a-side 44s (was 30 · 40 · 50 · 70)",
+ "วัดแล้ว 120 ไฟต์ต่อชุด: 1v1 เลเวล 8 จบด้วยหมดเวลา 13% เป็น 40% · เลเวล 16 จาก 38% เป็น 70% · 2v2 จาก 11% เป็น 45% · 5v5 จาก 3% เป็น 28%":
+   "Measured over 120 fights per set: 1v1 at level 8 now runs out the clock 40% of the time instead of 13% · level 16 went from 38% to 70% · 2v2 from 11% to 45% · 5v5 from 3% to 28%",
+ "ศพต่อไฟต์ลดลงด้วย — 1v1 เลเวล 16 จาก 0.63 เหลือ 0.30 ศพต่อไฟต์":
+   "Kills per fight dropped too — a level 16 1v1 went from 0.63 to 0.30 deaths per fight",
+ "ผลต่อเงิน: เลนที่แตกไฟต์เพราะนิสัยไม่มีรายได้ฐานอยู่แล้ว พอศพน้อยลงก็มีโอกาสได้ศูนย์ทั้งสองฝั่งมากขึ้น":
+   "What that means for gold: a lane that fights because of stances already earns no base income, and with fewer kills it now ends on zero for both sides more often",
+ "ปรับได้ที่ FIGHT_BASE กับ FIGHT_PER_BODY ใน tuning.js":
+   "Tune it with FIGHT_BASE and FIGHT_PER_BODY in tuning.js",
 };

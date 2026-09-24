@@ -25,7 +25,7 @@ seeded RNG ต่อ unit · ระบบ i18n `tr()` · วิธี build เ�
 |---|---|
 | `EVENTS` (SKIRMISH/OBJECTIVE/SIEGE/BLITZ/FARM) | เลิกใช้แล้ว เหลือ `SKIRMISH` ชุดเดียว · ความหลากหลายมาจาก **นิสัยประจำเลน (stance)** ใน [src/data/behaviour.js](src/data/behaviour.js) |
 | ไฟต์รวม 5v5 ยกละครั้ง | **ไฟต์แยกเลน** — ยกหนึ่งมีได้ถึง 3 ไฟต์ ([src/game/round-plan.js](src/game/round-plan.js), [src/screens/Lanes.jsx](src/screens/Lanes.jsx)) |
-| เวลาไฟต์มาจาก `event.duration` | คิดจากจำนวนคนในสนาม — `30 + 5 × (คน − 2)` วิ ใน [build-fight.js](src/engine/build-fight.js) |
+| เวลาไฟต์มาจาก `event.duration` | คิดจากจำนวนคนในสนาม — `20 + 3 × (คน − 2)` วิ (`FIGHT_BASE` / `FIGHT_PER_BODY` ใน [tuning.js](src/data/tuning.js)) |
 | โหมดชื่อ LONG / RUSH · gold ×0.5 | ชื่อ **Normal / Quick Play** · ตัวคูณเป็น 1 ทั้งคู่ |
 | ขนาดสนาม 3300×1850 | **4950×2775** (×1.5) · `RENDER_SCALE` 6.6 · มี `DEPLOY` zone |
 | รายได้จากแพ้/ชนะ | มาจาก **stance ประจำเลน** + kill/assist ชุดใหม่ |

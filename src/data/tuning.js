@@ -15,6 +15,11 @@ export const AUTO_DMG = 0.75;
 // ตัวคูณดาเมจ "ทุกชนิด" ทั้งเกม — ใช้ยืดความยาวไฟต์โดยไม่ต้องไล่แก้ทีละสกิล
 export const DMG_MUL = 0.80;
 
+// เวลาไฟต์ — ฐานเท่านี้วินาที แล้วบวกตามจำนวนคนที่ลงสนามเกินสองคนแรก
+// 1v1 = 20 วิ · 2v2 = 26 วิ · ไฟต์รวมห้าคน = 44 วิ
+export const FIGHT_BASE = 20;
+export const FIGHT_PER_BODY = 3;
+
 export const RAMP_FRAC = 0.4;      // damage starts ramping at this fraction of the event's clock
 
 export const RAMP_SCALE = 0.45;    // ...and doubles over this fraction of the clock
