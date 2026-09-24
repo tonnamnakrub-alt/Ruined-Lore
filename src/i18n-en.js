@@ -2568,4 +2568,18 @@ export const DICT = {
    "The gold receipt still breaks down per player, and the kill line names the bounty of each head taken",
  "นิสัยที่อีกฝั่งสั่งไว้ยกนั้นเปิดให้เห็นตอนปิดยกอยู่แล้ว ทั้งในสรุปยกและในใบเสร็จของฝั่งตรงข้าม":
    "What the other side ordered is revealed once the round closes, both in the summary and in their side of the receipt",
+ "ครึ่งหนึ่งของรายได้เลนของ ADC":
+   "Half of the ADC's lane income",
+ "ไม่มีรายได้เลนของตัวเอง แต่ได้ครึ่งหนึ่งของรายได้เลนของเอดีซี (ปัดลง · ไม่นับเงินศพ) และอีก 1 ทุกสองยก · ขณะยังไม่ตาย เพื่อนร่วมทีมได้ค่าสถานะนักแข่ง +1 ทุกค่า":
+   "No lane income of its own — instead it takes half of the ADC's lane income (rounded down, kill gold not counted), plus 1 more every second round · while it is alive, every teammate gets +1 to all athlete stats",
+ "ส่วนแบ่งของซัพพอร์ต":
+   "The support's share",
+ "ซัพได้ครึ่งหนึ่งของ \"รายได้เลน\" ของ ADC เท่านั้น ไม่ใช่ครึ่งหนึ่งของเงินทั้งหมดที่ ADC ได้ทั้งยก":
+   "The support takes half of the ADC's lane income only, not half of everything the ADC earned that round",
+ "เงินศพและพาสซีฟ +1 ของ ADC ไม่เข้าการหารอีกแล้ว — ยกที่ ADC เก็บศพได้เยอะ ซัพไม่ได้พลอยรวยตาม":
+   "Kill gold and the ADC's own +1 passive no longer go into the split, so a round full of kills for the ADC no longer makes the support rich too",
+ "ตัวอย่าง: ADC รายได้เลน 7 แล้วเก็บศพได้ 1 ช่วยอีก 1 — เดิมซัพได้ 9 ตอนนี้ได้ 3":
+   "Example: an ADC on 7 lane income who also takes a kill and an assist used to give the support 9, and now gives 3",
+ "ซัพยังไม่มีรายได้เลนของตัวเองเหมือนเดิม และยกคู่ยังได้เพิ่มอีก 1 เหมือนเดิม":
+   "The support still has no lane income of its own, and still gets the extra 1 on even rounds",
 };

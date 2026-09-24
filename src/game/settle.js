@@ -256,17 +256,20 @@ export function settleRound(opts) {
       ...duelAfterRound(c, u, round),
       ...streaksAfterRound(c, u),
     };
-    return { next, row: { lane: c.lane, champId: c.champId, parts, gold, xp, bounty: bmGain ? Math.round(bmGain * gm) : 0, fought: !!u } };
+    return {
+      next, laneIncome: laneGold,
+      row: { lane: c.lane, champId: c.champId, parts, gold, xp, bounty: bmGain ? Math.round(bmGain * gm) : 0, fought: !!u },
+    };
   });
 
-  // พาสซีฟซัพพอร์ต — รับครึ่งหนึ่งของเงินที่เอดีซีได้ยกนี้ (ปัดลง) บวกอีก 1 ทุกสองยก
+  // พาสซีฟซัพพอร์ต — รับครึ่งหนึ่งของ "รายได้เลน" ของเอดีซี (ปัดลง) บวกอีก 1 ทุกสองยก
+  // คิดจากรายได้เลนก้อนเดียวเท่านั้น ไม่เอาเงินศพหรือพาสซีฟ +1 ของเอดีซีมาหารด้วย
   const shareToSupport = (before, res) => {
     const after = res.map((r) => r.next);
     const iAdc = before.findIndex((c) => c.lane === "ADC");
     const iSup = before.findIndex((c) => c.lane === "SUPPORT");
     if (iAdc < 0 || iSup < 0) return after;
-    const adcGain = after[iAdc].gold - before[iAdc].gold;
-    const half = Math.floor(Math.max(0, adcGain) / 2);
+    const half = Math.floor(Math.max(0, res[iAdc].laneIncome * gm) / 2);
     const even = round % 2 === 0 ? SUPPORT_EVEN_BONUS : 0;
     const share = half + even;
     const out = after.slice();
@@ -321,7 +324,7 @@ export function partLabel(p) {
     case "groupAssists": return tr("ช่วยสังหารหลายคน ×{0}", p.n);
     case "adcPassive": return tr("พาสซีฟ ADC +1 ต่อทุกก้อน");
     case "supportNoLane": return tr("ซัพไม่มีรายได้เลนของตัวเอง");
-    case "supportShare": return tr("ครึ่งหนึ่งของเงิน ADC ยกนี้");
+    case "supportShare": return tr("ครึ่งหนึ่งของรายได้เลนของ ADC");
     case "supportEven": return tr("ยกคู่ ซัพได้เพิ่ม");
     case "floorZero": return tr("รายได้เลนติดลบ ปัดเป็นศูนย์");
     case "topPassive": return tr("พาสซีฟ TOP +1 XP");
