@@ -70,6 +70,8 @@ export function recordLaneFight(st, L, mySide) {
       sangGained: u.sangGained || 0,
       // PUSS — เลนของเป้าท้าดวลที่เก็บได้เองในไฟต์นี้
       duelKills: (u.duelKills || []).slice(),
+      // ใครโดนเก็บบ้าง — ใช้คิดเงินตามค่าหัวตอนปิดยก
+      victims: (u.victims || []).slice(),
     })),
     log: st.log.slice(-6),
   };

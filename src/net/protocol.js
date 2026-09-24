@@ -22,6 +22,8 @@ export function packTeam(team) {
     sp: c.spot || null,
     dl: c.duelLane || null,   // PUSS — เลนที่สั่งท้าดวล
     db: c.duelBan || null,    // PUSS — เลนที่ยังประทับตราซ้ำไม่ได้ ถ้าหล่นหาย สองเครื่องจะเลือกเป้าคนละตัว
+    ks: c.killStreak || 0,    // ฆ่าติดกันกี่ศพ — มีผลกับค่าหัว
+    ds: c.deathStreak || 0,   // ตายติดกันกี่ครั้ง
     ch: c.char,
     an: c.athleteName,
     // ต้องส่งสองอันนี้ด้วย ไม่งั้นสองเครื่องจำลองไฟต์คนละแบบแล้วได้ผลไม่ตรงกัน
@@ -47,6 +49,8 @@ export function unpackTeam(rows) {
     spot: r.sp || null,
     duelLane: r.dl || null,
     duelBan: r.db || null,
+    killStreak: r.ks || 0,
+    deathStreak: r.ds || 0,
     char: r.ch,
     athleteName: r.an,
     // เดิมตรงนี้ตั้งเป็น POKE ตายตัว ทั้งที่อีกฝั่งอาจสั่งบุกหรือตั้งรับไว้

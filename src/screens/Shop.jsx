@@ -14,6 +14,9 @@ import { FormationPanel } from "../ui/Formation.jsx";
 import { ShopScreen } from "../ui/ShopScreen.jsx";
 import { itemDesc } from "../ui/recipe.jsx";
 import { ItemSlot, Shell, btn, card, mini, slot } from "../ui/chrome.jsx";
+import { StanceHelp } from "../ui/StanceTable.jsx";
+import { BOUNTY } from "../data/behaviour.js";
+import { bountyOf } from "../game/bounty.js";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
@@ -33,6 +36,15 @@ export function ShopPhase(ctx) {
   const openLanes = STANCE_LANES.filter((L) => stances[L] === "AGGRO" || stances[L] === "NEUTRAL");
   const crewMax = crewAllowed(round);
   const crewPool = STANCE_LANES.filter((L) => L !== jungle.lane && stances[L] === "SAFE");
+
+  // ค่าหัว — ใครแพงกว่าปกติ เก็บได้เงินเยอะกว่า และตัวเราเองก็เป็นเป้าเหมือนกัน
+  const headOf = (c, enemy) => bountyOf(c, enemy);
+  const headTone = (n) => (n > BOUNTY.base ? C.gold : n < BOUNTY.base ? C.dim : C.line);
+  const headWhy = (b) => [
+    b.streak ? tr("ฆ่าติดกัน {0} ศพ", b.killStreak) : null,
+    b.lead ? tr("เงินนำ {0}", b.leadGold) : null,
+    b.deathStreak ? tr("ตายติดกัน {0} ครั้ง", b.deathStreak) : null,
+  ].filter(Boolean).join(" · ");
 
   // PUSS — ตัวที่มีตราท้าดวลให้สั่งก่อนไฟต์
   const duelists = team
@@ -73,6 +85,19 @@ export function ShopPhase(ctx) {
               </span>
               <span style={{ color: C.dim, fontSize: 11, letterSpacing: 1 }}>{c.lane}</span>
               <span style={{ fontFamily: MONO, fontSize: 11, color: C.ink }}>Lv{c.level}</span>
+              {(() => {
+                const b = headOf(c, foe);
+                if (b.total === BOUNTY.base) return null;
+                return (
+                  <span title={headWhy(b)}
+                    style={{
+                      fontFamily: MONO, fontSize: 10, fontWeight: 800, color: headTone(b.total),
+                      border: `1px solid ${headTone(b.total)}`, borderRadius: 4, padding: "1px 5px",
+                    }}>
+                    {tr("ค่าหัว {0}", b.total)}
+                  </span>
+                );
+              })()}
               <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 13, color: C.gold }}>{c.gold}g</span>
             </div>
             {(() => {
@@ -370,6 +395,28 @@ export function ShopPhase(ctx) {
             maxHeight: wide ? "calc(100vh - 24px)" : "none",
             overflowY: wide ? "auto" : "visible",
           }}>
+        {/* ค่าหัวของอีกฝั่ง — โชว์เฉพาะตอนมีใครแพงหรือถูกกว่าปกติ */}
+        {(() => {
+          const heads = foe.map((c) => ({ c, b: headOf(c, team) })).filter((x) => x.b.total !== BOUNTY.base);
+          if (!heads.length || !foeKnown) return null;
+          return (
+            <div style={{ ...card(), padding: 10, marginBottom: 8, borderColor: C.red }}>
+              <Label style={{ marginBottom: 6, color: C.red }}>{tr("ค่าหัวฝั่งตรงข้าม")}</Label>
+              {heads.map(({ c, b }) => (
+                <div key={c.lane} style={{ display: "flex", gap: 6, fontSize: 10.5, lineHeight: 1.7, alignItems: "baseline" }}>
+                  <span style={{ fontFamily: MONO, color: C.dim, width: 30 }}>{c.lane.slice(0, 3)}</span>
+                  <span style={{ fontFamily: MONO, color: C.ink, flex: 1, minWidth: 0 }}>{c.champId}</span>
+                  <span style={{ color: C.dim }}>{headWhy(b)}</span>
+                  <span style={{ fontFamily: MONO, fontWeight: 800, color: headTone(b.total) }}>{b.total}g</span>
+                </div>
+              ))}
+              <div style={{ fontSize: 10, color: C.dim, marginTop: 5, lineHeight: 1.55 }}>
+                {tr("เก็บตัวที่ค่าหัวแพงได้เงินก้อนนั้นเต็มๆ แทนที่จะได้ {0}", BOUNTY.base + "g")}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* PUSS — ตราท้าดวลเป็นคำสั่งก่อนไฟต์ ไม่ใช่ของที่เกมเลือกให้เอง
             ยกแรกของโหมดออนไลน์ยังไม่รู้ว่าอีกฝั่งเลือกใคร จึงโชว์แค่เลน */}
         {duelists.length ? (
@@ -484,6 +531,7 @@ export function ShopPhase(ctx) {
               );
             })}
           </div>
+          <StanceHelp />
           {jungle.lane && crewMax > 0 && crewPool.length ? (
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 5 }}>
               <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.dim, width: 66, flexShrink: 0 }}>

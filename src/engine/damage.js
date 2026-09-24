@@ -324,6 +324,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       vfx(state, { kind: "flash", x: target.x, y: target.y, r: 150, color: "255,236,190", dur: 0.5 });
       vfx(state, { kind: "shock", x: target.x, y: target.y, r: 170, color: "255,208,138", dur: 0.6 });
       source.kills += 1;
+      // จดเหยื่อไว้ ตอนปิดยกจะได้จ่ายเงินตามค่าหัวของตัวที่ถูกเก็บจริงๆ
+      (source.victims = source.victims || []).push({ team: target.team, lane: target.lane });
       duelTakedownGold(source, target, "kill");
       onMageTakedown(state, source);
       onAssassinKill(state, source, true);

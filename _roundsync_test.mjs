@@ -37,6 +37,9 @@ function makeTeam(rand, style) {
     upgrades: [], bountyGold: 0, sangHp: 0, wvcStacks: 0, spot: null,
     char: "P" + (i + 1), athleteName: "P" + (i + 1),
     duelLane: rand() < 0.5 ? pick(rand, LANES) : null,
+    // ค่าหัว — สายสังหาร/สายตาย มีผลกับเงินศพ ถ้าหล่นหายตอนส่งจะจ่ายเงินคนละจำนวน
+    killStreak: rand() < 0.35 ? 1 + Math.floor(rand() * 5) : 0,
+    deathStreak: rand() < 0.35 ? 1 + Math.floor(rand() * 4) : 0,
     // PUSS — เลนที่ยังประทับตราซ้ำไม่ได้ ถ้าหล่นหายตอนส่ง สองเครื่องจะเลือกเป้าคนละตัว
     duelBan: rand() < 0.4 ? { [LANES[Math.floor(rand() * LANES.length)]]: 1 + Math.floor(rand() * 2) } : null,
     style, autoLevel: false,

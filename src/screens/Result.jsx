@@ -10,6 +10,10 @@ import { RoundReceipt } from "../ui/Receipt.jsx";
 
 export function ResultScreen(ctx) {
   const { foe, history, nextRound, phase, restartMatch, result, round, score, streak, statsOpen, setStatsOpen, mode, wide, openEconomy } = ctx;
+  // เงินที่แต่ละเลนทำได้ยกนี้ รวมทั้งกลุ่มเลน (บอท = ADC + ซัพ) — ใช้บอกว่าเงินหายไปตรงไหน
+  const laneGold = (rows, L) => (rows || [])
+    .filter((r) => (r.lane === "ADC" || r.lane === "SUPPORT" ? "BOT" : r.lane) === L)
+    .reduce((s, r) => s + r.gold, 0);
   // ระบบรั้งคะแนน — บอกให้รู้ว่ายกนี้โดนหักหรือได้ชดเชยเพราะอะไร
   const myNote = result ? streakNote(result.mods) : null;
   const foeNote = result ? streakNote(result.foeMods) : null;
@@ -39,6 +43,13 @@ export function ResultScreen(ctx) {
                   <span style={{ color: r.fought ? (r.iWon ? C.green : C.red) : C.line, marginLeft: 6 }}>
                     {r.fought ? (r.iWon ? tr("ชนะเลน") : tr("แพ้เลน")) : tr("ไม่มีไฟต์")}
                   </span>
+                  {result.breakdown ? (
+                    <span style={{ marginLeft: 6 }}>
+                      <span style={{ color: C.gold }}>{laneGold(result.breakdown.me, r.lane)}g</span>
+                      <span style={{ color: C.line }}> vs </span>
+                      <span style={{ color: C.dim }}>{laneGold(result.breakdown.foe, r.lane)}g</span>
+                    </span>
+                  ) : null}
                 </div>
                 {(r.notes || []).filter(Boolean).map((n, i) => (
                   <div key={i} style={{ color: C.dim, fontSize: 10.5, paddingLeft: 10 }}>
@@ -47,6 +58,14 @@ export function ResultScreen(ctx) {
                 ))}
               </div>
             ))}
+            {result.breakdown ? (
+              <div style={{ marginTop: 2, color: C.dim }}>
+                {tr("ป่า")}
+                <span style={{ color: C.gold, marginLeft: 6 }}>{laneGold(result.breakdown.me, "JUNGLE")}g</span>
+                <span style={{ color: C.line }}> vs </span>
+                <span>{laneGold(result.breakdown.foe, "JUNGLE")}g</span>
+              </div>
+            ) : null}
           </div>
         ) : null}
         {farm && !over && (

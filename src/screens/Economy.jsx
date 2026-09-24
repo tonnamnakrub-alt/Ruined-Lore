@@ -2,12 +2,13 @@ import { tr } from "../i18n.js";
 import React from "react";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, GANK_HURT, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE,
-  KILL, SAFE_STAND_SECONDS, STANCES, STANCE_LIST, laneOutcome,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, GANK_HURT, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE,
+  KILL, SAFE_STAND_SECONDS, STANCES, STANCE_LIST,
 } from "../data/behaviour.js";
 import { LANE_INFO } from "../data/lanes.js";
 import { MODES } from "../data/modes.js";
 import { Shell, card } from "../ui/chrome.jsx";
+import { StanceMatrix } from "../ui/StanceTable.jsx";
 import { C, MONO } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 
@@ -39,24 +40,6 @@ export function EconomyScreen(ctx) {
     <span style={{ fontFamily: MONO, fontWeight: 800, color: TONE[s] }}>{stTh(s)}</span>
   );
 
-  // ตารางนิสัยเลน — แถว = เรา · คอลัมน์ = เขา
-  const cell = (a, b) => {
-    const o = laneOutcome(a, b);
-    if (o.fight) {
-      return (
-        <div>
-          <div style={{ color: C.red, fontWeight: 800 }}>{o.aggroDuel ? tr("ไฟต์แตก") : tr("บังคับไฟต์")}</div>
-          <div style={{ color: C.dim, fontSize: 10 }}>{tr("ไม่มีรายได้ฐาน · เหลือแค่ศพ")}</div>
-        </div>
-      );
-    }
-    return (
-      <div>
-        <div style={{ color: C.gold }}>{tr("เรา")} {sg(o.me.gold)}g {sg(o.me.xp)}xp</div>
-        <div style={{ color: C.dim }}>{tr("เขา")} {sg(o.foe.gold)}g {sg(o.foe.xp)}xp</div>
-      </div>
-    );
-  };
 
   const hook = CHAMPIONS["C.HOOK"] && CHAMPIONS["C.HOOK"].bounty;
   const puss = CHAMPIONS.PUSS && CHAMPIONS.PUSS.duel;
@@ -80,28 +63,7 @@ export function EconomyScreen(ctx) {
       </Section>
 
       <Section title={tr("นิสัยเลน — เราเจอเขา (ต่อคนในเลน)")}>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ borderCollapse: "collapse", fontFamily: MONO, fontSize: 10.5, minWidth: 420 }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left", padding: "4px 6px", color: C.dim, fontWeight: 400 }}>{tr("เรา \\ เขา")}</th>
-                {STANCE_LIST.map((b) => (
-                  <th key={b} style={{ textAlign: "left", padding: "4px 6px" }}>{chip(b)}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {STANCE_LIST.map((a) => (
-                <tr key={a} style={{ borderTop: `1px solid ${C.line}` }}>
-                  <td style={{ padding: "6px 6px", verticalAlign: "top" }}>{chip(a)}</td>
-                  {STANCE_LIST.map((b) => (
-                    <td key={b} style={{ padding: "6px 6px", verticalAlign: "top", lineHeight: 1.5 }}>{cell(a, b)}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <StanceMatrix />
         <div style={{ marginTop: 8 }}>
           <Line dim>
             {tr("ฐานของแต่ละนิสัย: {0}", STANCE_LIST.map((s) => stTh(s) + " " + STANCES[s].gold + "g " + STANCES[s].xp + "xp").join(" · "))}
@@ -157,6 +119,51 @@ export function EconomyScreen(ctx) {
         <Line>{tr("สังหาร {0}g {1}xp · ช่วยสังหารคนเดียว {2}g {3}xp · ช่วยกันหลายคน {4}g {5}xp",
           KILL.gold, KILL.xp, ASSIST_SOLO.gold, ASSIST_SOLO.xp, ASSIST_GROUP.gold, ASSIST_GROUP.xp)}</Line>
         <Line dim>{tr("เลนที่แตกไฟต์เพราะนิสัย (ปกติเจอปกติ หรือรุกล้ำเจอรุกล้ำ) ไม่มีรายได้ฐาน — เงินยกนั้นมาจากศพอย่างเดียว")}</Line>
+      </Section>
+
+      <Section title={tr("ค่าหัว — ตัวที่นำอยู่แพงกว่า")}>
+        <Line>{tr("เงินที่ได้จากการเก็บศพ ไม่ใช่ {0} เสมอไป — คิดจากค่าหัวของตัวที่ถูกเก็บ", KILL.gold + "g")}</Line>
+        <Line dim>{tr("ค่าหัว = ฐานตามจำนวนครั้งที่ตายติดกัน + โบนัสฆ่าติดกัน + โบนัสเงินนำ · เพดานรวม {0}", BOUNTY.max + "g")}</Line>
+        <div style={{ display: "grid", gap: 10, marginTop: 8, gridTemplateColumns: wide ? "1fr 1fr" : "1fr" }}>
+          <div>
+            <Label style={{ marginBottom: 4 }}>{tr("ฆ่าติดกันโดยไม่ตาย")}</Label>
+            <table style={{ borderCollapse: "collapse", fontFamily: MONO, fontSize: 10.5 }}>
+              <tbody>
+                {BOUNTY.streak.map((s, i) => (
+                  <tr key={i} style={{ borderTop: `1px solid ${C.line}` }}>
+                    <td style={{ padding: "3px 8px 3px 0", color: C.dim }}>
+                      {i === BOUNTY.streak.length - 1 ? tr("{0} ศพขึ้นไป", i) : tr("{0} ศพ", i)}
+                    </td>
+                    <td style={{ padding: "3px 0", color: s ? C.gold : C.dim, fontWeight: s ? 800 : 400 }}>
+                      {BOUNTY.base + s}g
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <Label style={{ marginBottom: 4 }}>{tr("ตายติดกันโดยไม่ได้เก็บใคร")}</Label>
+            <table style={{ borderCollapse: "collapse", fontFamily: MONO, fontSize: 10.5 }}>
+              <tbody>
+                {[...BOUNTY.deathDecay, BOUNTY.deathFloor].map((d, i) => (
+                  <tr key={i} style={{ borderTop: `1px solid ${C.line}` }}>
+                    <td style={{ padding: "3px 8px 3px 0", color: C.dim }}>
+                      {i === BOUNTY.deathDecay.length ? tr("ตายติดกัน {0} ครั้งขึ้นไป", i + 1) : tr("ตายติดกัน {0} ครั้ง", i)}
+                    </td>
+                    <td style={{ padding: "3px 0", color: C.dim }}>{Math.max(1, Math.round(BOUNTY.base * d))}g</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <Line dim>{tr("เงินนำ: เทียบเงินที่หามาได้ทั้งหมด (เงินในกระเป๋า + ค่าของที่ซื้อไปแล้ว) กับค่าเฉลี่ยสี่ตำแหน่งหลักของอีกฝั่ง ไม่รวมซัพ")}</Line>
+          <Line dim>{tr("นำ {0} ขึ้นไปได้ +{1} แล้วได้อีก +{1} ทุกๆ {2} ที่นำเพิ่ม เพดานส่วนนี้ {3}", BOUNTY.leadStart + "g", BOUNTY.leadPer, BOUNTY.leadStep + "g", BOUNTY.leadMax + "g")}</Line>
+          <Line dim>{tr("ช่วยสังหารยังได้เท่าเดิม ค่าหัวตกกับคนที่เก็บได้เท่านั้น")}</Line>
+          <Line dim>{tr("ตัวเลขทั้งหมดแปลงจากตารางของ League of Legends หารห้าสิบ — สังหารปกติ 300 ทอง = {0} ที่นี่", KILL.gold + "g")}</Line>
+        </div>
       </Section>
 
       <Section title={tr("พาสซีฟเลน")}>

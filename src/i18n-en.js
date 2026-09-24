@@ -2486,4 +2486,86 @@ export const DICT = {
    "The main menu has an ECONOMY page — all 9 stance matchups, the gank table, kills, lane passives, extra gold sources and mode multipliers",
  "ทุกตัวเลขในหน้านั้นอ่านจากข้อมูลจริงของเกม ปรับตัวเลขในโค้ดแล้วหน้านี้เปลี่ยนตามเอง ไม่ต้องแก้สองที่":
    "Every number there is read from the game's live data, so changing a value in the code updates the page too — no second place to edit",
+ "เจอ":
+   "vs",
+ "ไฟต์ — ได้ 0 ทั้งคู่ เหลือแต่เงินศพ":
+   "fight — both get 0, kills only",
+ "▸ ตารางนิสัย — อันไหนชนะอันไหน":
+   "▸ Stance table — what beats what",
+ "ตัวเลขคือเงินต่อคนในเลนนั้น · รุกล้ำได้เยอะสุดแต่เจอเซฟแล้วล้ำเก้อ · เซฟได้น้อยสุดแต่ไม่มีทางเสีย":
+   "Numbers are gold per player in that lane · Aggressive earns the most but wastes its time against Safe · Safe earns least but never loses anything",
+ "ฆ่าติดกัน {0} ศพ":
+   "{0}-kill streak",
+ "เงินนำ {0}":
+   "{0} gold ahead",
+ "ตายติดกัน {0} ครั้ง":
+   "died {0} rounds running",
+ "ค่าหัว {0}":
+   "bounty {0}",
+ "ค่าหัวฝั่งตรงข้าม":
+   "ENEMY BOUNTIES",
+ "เก็บตัวที่ค่าหัวแพงได้เงินก้อนนั้นเต็มๆ แทนที่จะได้ {0}":
+   "Killing a high-bounty target pays that whole amount instead of {0}",
+ "ค่าหัว — ตัวที่นำอยู่แพงกว่า":
+   "Bounties — whoever is ahead is worth more",
+ "เงินที่ได้จากการเก็บศพ ไม่ใช่ {0} เสมอไป — คิดจากค่าหัวของตัวที่ถูกเก็บ":
+   "A kill doesn't always pay {0} — it pays the bounty of whoever was killed",
+ "ค่าหัว = ฐานตามจำนวนครั้งที่ตายติดกัน + โบนัสฆ่าติดกัน + โบนัสเงินนำ · เพดานรวม {0}":
+   "Bounty = a base that shrinks with each consecutive death, plus a kill-streak bonus, plus a gold-lead bonus · capped at {0}",
+ "ฆ่าติดกันโดยไม่ตาย":
+   "Kills in a row without dying",
+ "{0} ศพขึ้นไป":
+   "{0} kills or more",
+ "{0} ศพ":
+   "{0} kills",
+ "ตายติดกันโดยไม่ได้เก็บใคร":
+   "Deaths in a row without a kill",
+ "ตายติดกัน {0} ครั้งขึ้นไป":
+   "died {0}+ rounds running",
+ "เงินนำ: เทียบเงินที่หามาได้ทั้งหมด (เงินในกระเป๋า + ค่าของที่ซื้อไปแล้ว) กับค่าเฉลี่ยสี่ตำแหน่งหลักของอีกฝั่ง ไม่รวมซัพ":
+   "Gold lead: total gold earned (purse plus everything already spent on items) compared with the average of the other team's four farming positions, support excluded",
+ "นำ {0} ขึ้นไปได้ +{1} แล้วได้อีก +{1} ทุกๆ {2} ที่นำเพิ่ม เพดานส่วนนี้ {3}":
+   "Being {0} ahead pays +{1}, then another +{1} for every {2} further ahead, capped at {3}",
+ "ช่วยสังหารยังได้เท่าเดิม ค่าหัวตกกับคนที่เก็บได้เท่านั้น":
+   "Assists still pay their flat rate — the bounty goes to whoever lands the kill",
+ "ตัวเลขทั้งหมดแปลงจากตารางของ League of Legends หารห้าสิบ — สังหารปกติ 300 ทอง = {0} ที่นี่":
+   "Every number here is the League of Legends table divided by fifty — a normal kill's 300 gold is {0} here",
+ "สังหาร ×{0} · ค่าหัว {1}":
+   "Kills ×{0} · bounty {1}",
+ "ค่าหัว · ตารางนิสัยในร้านค้า · เงินยกนี้แยกรายคน":
+   "Bounties · Stance table in the shop · Per-player gold",
+ "ตัวที่นำอยู่มีค่าหัวแพงขึ้น เก็บได้เงินก้อนใหญ่ — และดูได้ครบว่าเงินยกนี้ของใครมาจากไหน":
+   "Whoever is ahead carries a bigger bounty, so killing them pays properly — and you can see exactly where this round's gold came from",
+ "เงินจากการเก็บศพไม่ใช่ 6 เสมอไปแล้ว คิดจากค่าหัวของตัวที่ถูกเก็บ":
+   "A kill no longer always pays 6 — it pays the bounty of whoever was killed",
+ "ฆ่าติดกันโดยไม่ตาย ค่าหัวขึ้นเป็นชั้น: 2 ศพ 9 · 3 ศพ 12 · 4 ศพ 14 · 5 ศพ 16 · 6 ศพ 18 · 7 ศพขึ้นไป 20":
+   "Kills in a row without dying raise it in tiers: 2 kills 9 · 3 kills 12 · 4 kills 14 · 5 kills 16 · 6 kills 18 · 7 or more 20",
+ "เงินนำอีกฝั่ง: เทียบเงินที่หามาได้ทั้งหมดกับค่าเฉลี่ยสี่ตำแหน่งหลักของอีกฝั่ง นำ 2 ขึ้นไปได้ +1 แล้ว +1 ทุกๆ 3 ที่นำเพิ่ม สูงสุด +10":
+   "Gold lead: total gold earned compared with the average of the other team's four farming positions — 2 ahead pays +1, then +1 for every 3 further ahead, up to +10",
+ "ตายติดกันโดยไม่ได้เก็บใคร ค่าหัวลดลงเรื่อยๆ จาก 6 ไปถึง 1 แล้วไปหยุดที่ 2":
+   "Deaths in a row without a kill shrink it from 6 down to 1, then it settles at 2",
+ "เพดานรวม 20 ต่อศพ · ช่วยสังหารยังได้เท่าเดิม ค่าหัวตกกับคนที่เก็บได้เท่านั้น":
+   "Capped at 20 per kill · assists still pay their flat rate, and the bounty goes to whoever lands the kill",
+ "ตัวเลขทั้งชุดแปลงจากตารางของ League of Legends หารห้าสิบ (สังหารปกติ 300 ทอง = 6 ที่นี่)":
+   "The whole set is the League of Legends table divided by fifty (a normal kill's 300 gold is 6 here)",
+ "ร้านค้าโชว์ค่าหัวของทีมเราและของอีกฝั่ง พร้อมเหตุผลว่าแพงเพราะอะไร":
+   "The shop shows bounties for both teams, and why each one is high",
+ "ตารางนิสัยอยู่ในร้านค้าแล้ว":
+   "The stance table is in the shop now",
+ "กดดูตารางได้ตรงที่สั่งนิสัยเลย ไม่ต้องจำเองว่าอะไรชนะอะไร":
+   "Open it right where you give the orders — no more remembering what beats what",
+ "อ่านเป็นบรรทัดเดียว เช่น รุกล้ำ เจอ ปกติ — เราได้ 8 เขาได้ 4":
+   "Each matchup reads as one line, e.g. Aggressive vs Standard — you +8, them +4",
+ "ตัวเลขคิดสดจากกติกาจริง ปรับตัวเลขในโค้ดแล้วตารางในเกมเปลี่ยนตาม":
+   "The numbers come straight from the live rules, so changing them in the code updates the table",
+ "สรุปยกบอกที่มาของเงินครบขึ้น":
+   "The round summary accounts for more of the gold",
+ "แต่ละเลนในสรุปยกบอกเงินของทั้งสองฝั่งแล้ว เห็นทันทีว่าเสียเงินให้เขาตรงเลนไหน":
+   "Every lane in the round summary now shows both teams' gold, so you can see which lane lost you the round",
+ "ป่าก็มีบรรทัดของตัวเอง":
+   "The jungle has its own line",
+ "ใบเสร็จเงินยังแตกรายคนเหมือนเดิม และบรรทัดสังหารบอกค่าหัวของแต่ละหัวที่เก็บได้":
+   "The gold receipt still breaks down per player, and the kill line names the bounty of each head taken",
+ "นิสัยที่อีกฝั่งสั่งไว้ยกนั้นเปิดให้เห็นตอนปิดยกอยู่แล้ว ทั้งในสรุปยกและในใบเสร็จของฝั่งตรงข้าม":
+   "What the other side ordered is revealed once the round closes, both in the summary and in their side of the receipt",
 };

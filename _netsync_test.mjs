@@ -44,6 +44,9 @@ function makeTeam(rand, style) {
     athleteName: "P" + (i + 1),
     // PUSS — เลนที่โค้ชสั่งท้าดวล ถ้าหล่นหายตอนส่ง สองเครื่องจะจับคู่ดวลคนละคู่
     duelLane: rand() < 0.5 ? LANES[Math.floor(rand() * LANES.length)] : null,
+    // ค่าหัว — สายสังหาร/สายตาย มีผลกับเงินศพ ถ้าหล่นหายตอนส่งจะจ่ายเงินคนละจำนวน
+    killStreak: rand() < 0.35 ? 1 + Math.floor(rand() * 5) : 0,
+    deathStreak: rand() < 0.35 ? 1 + Math.floor(rand() * 4) : 0,
     // PUSS — เลนที่ยังประทับตราซ้ำไม่ได้ ถ้าหล่นหายตอนส่ง สองเครื่องจะเลือกเป้าคนละตัว
     duelBan: rand() < 0.4 ? { [LANES[Math.floor(rand() * LANES.length)]]: 1 + Math.floor(rand() * 2) } : null,
     style,

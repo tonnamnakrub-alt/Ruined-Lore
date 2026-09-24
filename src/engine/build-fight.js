@@ -143,6 +143,7 @@ export function buildFight(blueDefs, redDefs, seed, event) {
       targetNoise: {},
       damageDealt: 0,
       kills: 0,
+      victims: [],
       assists: 0,
       soloAssists: 0,
       sangStacks: s.sangStacks || 0,

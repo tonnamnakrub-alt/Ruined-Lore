@@ -10,11 +10,12 @@
 import { tr } from "../i18n.js";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_MEMBERS,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_MEMBERS,
   STANCES, STANCE_LANES, laneOutcome,
 } from "../data/behaviour.js";
 import { autoRanks } from "../engine/skill-ranks.js";
 import { xpToLevel } from "../engine/util.js";
+import { bountyOf, streaksAfterRound } from "./bounty.js";
 import { foeIncome } from "./round-plan.js";
 import { laneMax } from "./roster.js";
 
@@ -151,7 +152,7 @@ export function settleRound(opts) {
       const k = u.team + ":" + u.lane;
       const cur = perUnit[k] || {
         kills: 0, assists: 0, soloAssists: 0, wvcGold: 0, duelGold: 0, bountyGold: 0,
-        sangGained: 0, alive: true, duelKills: [],
+        sangGained: 0, alive: true, duelKills: [], victims: [],
       };
       cur.kills += u.kills;
       cur.assists += u.assists;
@@ -162,9 +163,18 @@ export function settleRound(opts) {
       cur.sangGained += u.sangGained || 0;
       cur.alive = cur.alive && u.alive;
       cur.duelKills = cur.duelKills.concat(u.duelKills || []);
+      cur.victims = cur.victims.concat(u.victims || []);
       perUnit[k] = cur;
     }
   }
+
+  // ค่าหัวคิดจากสถานะตอนเริ่มยก — ทั้งสองเครื่องมีข้อมูลชุดเดียวกัน จึงได้ตัวเลขเดียวกัน
+  const rosterOf = (color) => (color === mySide ? team : foe);
+  const enemyOf = (color) => (color === mySide ? foe : team);
+  const bountyAt = (v) => {
+    const row = rosterOf(v.team).find((c) => c.lane === v.lane);
+    return row ? bountyOf(row, enemyOf(v.team)).total : KILL.gold;
+  };
 
   const award = (list, side, inc, persp, lost) => list.map((c) => {
     const u = perUnit[side + ":" + c.lane];
@@ -173,9 +183,12 @@ export function settleRound(opts) {
     // เงินจากศพ — สังหาร 6g 1xp · ช่วยสังหารคนเดียว 3g 1xp · ช่วยกันหลายคน 1g 1xp
     const solo = u ? Math.min(u.soloAssists, u.assists) : 0;
     const shared = u ? Math.max(0, u.assists - solo) : 0;
-    let kg = u ? u.kills * KILL.gold + solo * ASSIST_SOLO.gold + shared * ASSIST_GROUP.gold : 0;
+    // เงินศพ = ค่าหัวของตัวที่เก็บได้จริง (ปกติ 6 แต่ตัวที่เงินนำหรือฆ่ารัวจะแพงกว่า)
+    const heads = u ? (u.victims || []).map(bountyAt) : [];
+    const killGold = heads.length ? heads.reduce((s, x) => s + x, 0) : (u ? u.kills * KILL.gold : 0);
+    let kg = u ? killGold + solo * ASSIST_SOLO.gold + shared * ASSIST_GROUP.gold : 0;
     const kx = u ? u.kills * KILL.xp + solo * ASSIST_SOLO.xp + shared * ASSIST_GROUP.xp : 0;
-    if (u && u.kills) parts.push({ key: "kills", gold: u.kills * KILL.gold, xp: u.kills * KILL.xp, n: u.kills });
+    if (u && u.kills) parts.push({ key: "kills", gold: killGold, xp: u.kills * KILL.xp, n: u.kills, heads });
     if (solo) parts.push({ key: "soloAssists", gold: solo * ASSIST_SOLO.gold, xp: solo * ASSIST_SOLO.xp, n: solo });
     if (shared) parts.push({ key: "groupAssists", gold: shared * ASSIST_GROUP.gold, xp: shared * ASSIST_GROUP.xp, n: shared });
     // พาสซีฟบอท — เอดีซีได้เงินเพิ่ม 1 ต่อทุกอย่าง ทั้งรายได้เลน สังหาร และช่วยสังหาร
@@ -241,6 +254,7 @@ export function settleRound(opts) {
       ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
       bountyGold: bg, sangHp: sang, bmTier,
       ...duelAfterRound(c, u, round),
+      ...streaksAfterRound(c, u),
     };
     return { next, row: { lane: c.lane, champId: c.champId, parts, gold, xp, bounty: bmGain ? Math.round(bmGain * gm) : 0, fought: !!u } };
   });
@@ -298,7 +312,11 @@ export function partLabel(p) {
     case "safeForfeit": return tr("แกงค์เลนที่ยืนเซฟแล้วเก็บไม่ลง — เสียยกฟรี");
     case "jungleFarm": return tr("ป่าฟาร์ม");
     case "jungleGank": return tr("ป่าไปแกงค์");
-    case "kills": return tr("สังหาร ×{0}", p.n);
+    case "kills":
+      // ถ้ามีหัวไหนแพงกว่าปกติ ต้องเห็นว่าแพงเพราะตัวไหน
+      return (p.heads || []).some((h) => h !== BOUNTY.base)
+        ? tr("สังหาร ×{0} · ค่าหัว {1}", p.n, p.heads.join("+"))
+        : tr("สังหาร ×{0}", p.n);
     case "soloAssists": return tr("ช่วยสังหารคนเดียว ×{0}", p.n);
     case "groupAssists": return tr("ช่วยสังหารหลายคน ×{0}", p.n);
     case "adcPassive": return tr("พาสซีฟ ADC +1 ต่อทุกก้อน");
