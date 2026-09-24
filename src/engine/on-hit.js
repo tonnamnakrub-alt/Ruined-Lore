@@ -17,7 +17,8 @@ export function popDagger(state, u, target) {
   const d = state.dots.find((x) => x.targetId === target.id && x.ownerId === u.id && x.dagger);
   target.dagger = null;
   if (!d) return;
-  const left = Math.max(0, d.until - state.t) * d.dps;
+  // ยอดที่ยังไม่ได้จ่ายจริง — เลือดไหลจ่ายเป็นงวดแล้ว คิดจากเวลาที่เหลืออย่างเดียวไม่ตรง
+  const left = d.left != null ? d.left : Math.max(0, d.until - state.t) * d.dps;
   state.dots = state.dots.filter((x) => x !== d);
   if (left <= 0) return;
   popping = true;

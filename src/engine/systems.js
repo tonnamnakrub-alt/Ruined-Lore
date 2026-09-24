@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { applyDamage, edgeDamage, grantShield, healUnit } from "./damage.js";
 import { applyFragmentDamage } from "./on-hit.js";
-import { addBuff, dist, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
+import { DOT_EVERY, addBuff, addDot, dist, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { DT, step } from "./step.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -82,17 +82,33 @@ export function tickNewSystems(state) {
     return true;
   });
 
-  // bleed: total damage spread over its duration, re-hitting just extends it
+  // เลือดไหล: ยอดรวมกระจายตลอดเวลาที่ติด แต่จ่ายเป็นงวด (ปกติงวดละ 1 วิ)
+  // โดนซ้ำ = ต่ออายุแล้วคิดยอดใหม่ · d.left คือดาเมจที่ยังไม่ได้จ่าย
   state.dots = state.dots.filter((d) => {
     const t = state.units.find((x) => x.id === d.targetId);
     const o = state.units.find((x) => x.id === d.ownerId);
-    if (!t || !t.alive || state.t > d.until) return false;
-    state.dmgSrc = srcOf(d, o);
-    const tick = d.dps * DT;
-    applyDamage(state, o, t, tick, d.magic, d.trueDmg);
-    // เลือดไหลของเกราะเซนทอร์นับยอดที่เหลือไว้ เพื่อเอาไปฮีลคืนตอนเก็บศพได้
-    if (d.left != null) d.left = Math.max(0, d.left - tick);
-    return true;
+    if (!t || !t.alive) return false;
+    // เลือดไหลที่สร้างไว้ก่อนระบบงวด (เซฟเก่า) — เติมข้อมูลที่ขาดให้ก่อน
+    if (d.every == null) d.every = DOT_EVERY;
+    if (d.left == null) d.left = d.dps * Math.max(0, d.until - state.t);
+    if (d.next == null) d.next = state.t + d.every;
+    const over = state.t > d.until;
+    let due = 0;
+    if (over) {
+      due = d.left;                       // หมดเวลาแล้ว จ่ายเศษที่เหลือทีเดียว
+    } else {
+      let guard = 0;
+      while (state.t >= d.next && due < d.left && guard++ < 60) {
+        due = Math.min(d.left, due + d.dps * d.every);
+        d.next += d.every;
+      }
+    }
+    if (due > 0) {
+      state.dmgSrc = srcOf(d, o);
+      applyDamage(state, o, t, due, d.magic, d.trueDmg);
+      d.left = Math.max(0, d.left - due);
+    }
+    return !over && d.left > 0;
   });
 
   // Ariel surfacing from the water
@@ -357,10 +373,10 @@ export function tickZonesAndSnipes(state) {
         if (zb && owner) {
           const zr = Math.max(0, (z.skill.rank || 1) - 1);
           const per = zb.dmg[zr] + (zb.badRatio || 0) * (owner.bonusAd || 0);
-          state.dots.push({
+          addDot(state, {
             targetId: e.id, ownerId: owner.id,
-            dps: per / (zb.every || 1), until: state.t + zb.dur, magic: false,
-            src: srcOf(z, owner),
+            dps: per / (zb.every || 1), until: state.t + zb.dur, every: zb.every || 1,
+            magic: false, src: srcOf(z, owner),
           });
         }
       }

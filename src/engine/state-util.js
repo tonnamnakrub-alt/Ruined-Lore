@@ -3,6 +3,36 @@ import { ARENA_H, ARENA_W } from "../data/constants.js";
 
 
 
+// ---------------------------------------------------------------
+// เลือดไหล (DoT) — จ่ายเป็นงวด ไม่ใช่ทุกเฟรม
+//
+// เดิมจ่ายทุกเฟรม (60 ครั้งต่อวินาที) ทีละเศษเล็กๆ ยอดรวมถูก แต่
+// ทุกอย่างที่ผูกกับ "จังหวะที่โดนดาเมจ" ทำงานถี่เกินจริงไป 60 เท่า
+// ตอนนี้จ่ายเป็นงวดละ 1 วินาที หรือตามที่ท่านั้นกำหนดเอง (d.every)
+// เช่นพาสซีฟของ HOOD ที่สเปคเขียนว่าจ่ายทุก 0.5 วิ
+//
+// ยอดรวมยังเท่าเดิม — left คือดาเมจที่ยังไม่ได้จ่าย งวดสุดท้ายจ่ายเศษที่เหลือ
+// ---------------------------------------------------------------
+export const DOT_EVERY = 1;
+
+export function addDot(state, d) {
+  const every = d.every || DOT_EVERY;
+  const left = d.left != null ? d.left : d.dps * Math.max(0, d.until - state.t);
+  const dot = { ...d, every, left, next: state.t + every };
+  state.dots.push(dot);
+  return dot;
+}
+
+// เลือดไหลก้อนเดิมโดนต่ออายุ — คิดยอดที่เหลือใหม่ทั้งก้อน
+export function refreshDot(state, d, dps, until) {
+  d.dps = dps;
+  d.until = until;
+  d.every = d.every || DOT_EVERY;
+  d.left = dps * Math.max(0, until - state.t);
+  if (d.next == null || d.next > until) d.next = state.t + d.every;
+  return d;
+}
+
 // ---------------- helpers ----------------
 export const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 

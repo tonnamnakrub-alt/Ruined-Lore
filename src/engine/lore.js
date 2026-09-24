@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { ASSIST_GROUP, ASSIST_SOLO, KILL } from "../data/behaviour.js";
 import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
-import { addBuff, addBuffUnique, buffSum, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
+import { addBuff, addBuffUnique, addDot, buffSum, dist, hasBuff, pushLog, skillLabel, vfx } from "./state-util.js";
 import { fullCd } from "./stats.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -1070,9 +1070,10 @@ export function hoodBleed(state, source, target, excess) {
     const oldest = mine.reduce((a, b) => (b.until < a.until ? b : a));
     state.dots = state.dots.filter((d) => d !== oldest);
   }
-  state.dots.push({
+  // สเปคเขียนว่าจ่ายทุก 0.5 วิ — ส่งค่านั้นเข้าไปให้ระบบเลือดไหลใช้จริง
+  addDot(state, {
     targetId: target.id, ownerId: source.id, hoodBleed: true,
-    dps: total / cfg.dur, until: state.t + cfg.dur, magic: false,
+    dps: total / cfg.dur, until: state.t + cfg.dur, every: cfg.every, magic: false,
     src: tr("พาสซีฟ Lacerating Precision"),
   });
 }

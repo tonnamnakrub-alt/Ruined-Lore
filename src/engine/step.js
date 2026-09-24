@@ -9,7 +9,7 @@ import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
 import { fireSnipe, resolveDash, startGrab, tickDashes, tickGrabs } from "./motion.js";
 import { consumeOnHit, gainIsolde, kindnessTick, onAutoLanded, onSkillLanded } from "./on-hit.js";
-import { HARD_CC, addBuff, addBuffUnique, aliveOf, bonusMs, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx, addFrag, spendFrag, syncFrag, skillLabel } from "./state-util.js";
+import { HARD_CC, addBuff, addBuffUnique, addDot, aliveOf, bonusMs, buffSum, centroid, dist, hasBuff, pushLog, setCurState, supportAlive, vfx, addFrag, spendFrag, syncFrag, skillLabel } from "./state-util.js";
 import { cdrFromItemHaste, effStat, fullCd } from "./stats.js";
 import { tickSupportItems } from "./support.js";
 import { onMageCast, tickMageItems, tickMageZones } from "./mage.js";
@@ -1113,7 +1113,7 @@ export function step(state) {
       if (p.daggerBleed) {
         u.dagger = { ownerId: p.ownerId };
         state.dots = state.dots.filter((x) => !(x.targetId === u.id && x.ownerId === p.ownerId && x.dagger));
-        state.dots.push({ targetId: u.id, ownerId: p.ownerId, dps: p.dmg / p.daggerBleed,
+        addDot(state, { targetId: u.id, ownerId: p.ownerId, dps: p.dmg / p.daggerBleed,
           until: state.t + p.daggerBleed, magic: false, dagger: true });
         // Lost Boys' Blade: slowed for as long as the bleed is still running
         if (p.skill && p.skill.bleedSlowBase != null) {

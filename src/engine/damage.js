@@ -1,7 +1,7 @@
 import { tr } from "../i18n.js";
 import { DMG_MUL } from "../data/tuning.js";
 import { gainIsolde, gainIsoldeOnTaken, popDagger } from "./on-hit.js";
-import { addBuff, addBuffUnique, buffSum, bump, curState, dist, hasBuff, pushLog, vfx } from "./state-util.js";
+import { addBuff, addBuffUnique, addDot, buffSum, bump, curState, dist, hasBuff, pushLog, refreshDot, vfx } from "./state-util.js";
 import { cdrFromItemHaste } from "./stats.js";
 import { lifeBondLeech, lifeBondSplit, onHealOrShield } from "./support.js";
 import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
@@ -105,7 +105,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   if (!magic && !trueDmg && target.hasItem && target.hasItem("cbc")) {
     const deferred = dmg * 0.3;
     dmg -= deferred;
-    state.dots.push({ targetId: target.id, ownerId: (source && source.id) || target.id, dps: deferred / 3, until: state.t + 3, magic: false, cbc: true, src: tr("ไอเทม Cuirass of the Bleeding Centaur") });
+    addDot(state, { targetId: target.id, ownerId: (source && source.id) || target.id, dps: deferred / 3, until: state.t + 3, magic: false, cbc: true, src: tr("ไอเทม Cuirass of the Bleeding Centaur") });
   }
   // Pauldrons of the Nian Beast: both dealing AND taking damage builds stacks, up to 15
   if (source && source.hasItem && source.hasItem("pnb")) {
@@ -201,7 +201,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   if (target.centaurBleed && !trueDmg && dmg > 0) {
     const cfg = target.centaurBleed;
     state.dots = state.dots.filter((d) => !(d.targetId === target.id && d.cbc));
-    state.dots.push({
+    addDot(state, {
       targetId: target.id, ownerId: target.id, cbc: true, trueDmg: true,
       dps: (dmg * cfg.pct) / cfg.dur, until: state.t + cfg.dur, left: dmg * cfg.pct,
     });
@@ -354,8 +354,8 @@ export function edgeDamage(state, u, e, power, baseR, magic) {
     const total = power * (sk ? sk.edgeMult : 1.25);
     const dur = sk ? sk.bleedDur : 5;
     const old = state.dots.find((d) => d.targetId === e.id && d.ownerId === u.id);
-    if (old) { old.until = state.t + dur; old.dps = Math.max(old.dps, total / dur); }
-    else state.dots.push({ targetId: e.id, ownerId: u.id, dps: total / dur, until: state.t + dur, magic: !!magic, src: state.dmgSrc || (sk ? sk.th : tr("เลือดไหล")) });
+    if (old) refreshDot(state, old, Math.max(old.dps, total / dur), state.t + dur);
+    else addDot(state, { targetId: e.id, ownerId: u.id, dps: total / dur, until: state.t + dur, magic: !!magic, src: state.dmgSrc || (sk ? sk.th : tr("เลือดไหล")) });
     state.fx.push({ x: e.x, y: e.y, t: state.t, kind: "num", text: "bleed", color: "#E5484D" });
     return;
   }

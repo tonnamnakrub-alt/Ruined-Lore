@@ -2594,4 +2594,26 @@ export const DICT = {
    "What that means for gold: a lane that fights because of stances already earns no base income, and with fewer kills it now ends on zero for both sides more often",
  "ปรับได้ที่ FIGHT_BASE กับ FIGHT_PER_BODY ใน tuning.js":
    "Tune it with FIGHT_BASE and FIGHT_PER_BODY in tuning.js",
+ "เพดานเลเวล 18":
+   "Level cap is 18",
+ "ทุกเลนดันเลเวลได้ถึง 18 จากเดิม 16 — เลเวล 18 คือแต้มสกิลเต็มพอดี Q5 W5 E5 R3":
+   "Every lane can now reach level 18 instead of 16 — level 18 is exactly a full skill build, Q5 W5 E5 R3",
+ "ท็อปยังได้ถึง 20 เหมือนเดิม เพราะพาสซีฟให้ XP เพิ่มทุกยก":
+   "TOP still goes to 20, since its passive pays extra XP every round",
+ "XP สะสมที่ต้องใช้: เลเวล 16 = 93 · 18 = 115 · 20 = 139 — อัตราได้ XP เท่าเดิม ไม่ได้ปรับ":
+   "Cumulative XP needed: level 16 = 93 · 18 = 115 · 20 = 139 — XP income itself is unchanged",
+ "โหมด Normal 50 ยกไปถึงเพดานได้ ส่วน Quick Play 20 ยกจบราวเลเวล 12 เหมือนเดิม":
+   "A 50-round Normal match reaches the cap; a 20-round Quick Play still ends around level 12",
+ "เลือดไหลจ่ายเป็นงวด ไม่ใช่ทุกเฟรม":
+   "Bleeds tick on a clock, not every frame",
+ "เลือดไหลทุกแบบเคยจ่ายดาเมจทุกเฟรม คือ 60 ครั้งต่อวินาที ทีละเศษเล็กๆ ยอดรวมถูกแต่จังหวะผิด":
+   "Every bleed used to deal its damage once per frame — 60 slivers a second. The total was right but the timing was wrong",
+ "ทุกอย่างที่ผูกกับ \"จังหวะที่โดนดาเมจ\" จึงทำงานถี่เกินจริงไป 60 เท่า เช่นเกราะเลือดเซนทอร์ที่แปลงดาเมจที่โดนเป็นเลือดไหลต่อ":
+   "Anything hooked to the moment damage lands therefore fired 60× more often than intended — the Centaur cuirass, which turns incoming damage into another bleed, is the clearest case",
+ "ตอนนี้จ่ายเป็นงวดละ 1 วินาที หรือตามจังหวะที่ท่านั้นกำหนดเอง":
+   "Bleeds now pay out once a second, or on whatever cadence the ability itself specifies",
+ "พาสซีฟของ HOOD จ่ายทุก 0.5 วินาที ตามที่สเปคเขียนไว้ตั้งแต่แรก — ฟิลด์นั้นมีในข้อมูลแต่ไม่เคยถูกใช้":
+   "HOOD's passive ticks every 0.5s exactly as its spec always said — that field was in the data but nothing ever read it",
+ "ยอดดาเมจรวมเท่าเดิมทุกกรณี · เวลาที่ไม่ลงตัวกับงวด งวดสุดท้ายจ่ายเศษที่เหลือให้ครบ":
+   "Total damage is unchanged in every case · when a duration doesn't divide evenly, the last tick pays the remainder",
 };

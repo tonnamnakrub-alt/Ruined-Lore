@@ -16,8 +16,8 @@ export function mulberry32(seed) {
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 
-// XP to go from level L to L+1. Tuned so a full 31-round match lands a normal
-// lane on 16 and a TOP (who earns +1 every round) around 19-20.
+// XP to go from level L to L+1. เพดานเลเวลคือ 18 ทุกเลน (สกิลเต็มพอดี Q5 W5 E5 R3)
+// ยกเว้น TOP ที่ได้ +1 XP ทุกยก จึงดันไปได้ถึง 20
 export function levelCost(L) {
   return Math.round(1.8 + 0.55 * L);
 }
