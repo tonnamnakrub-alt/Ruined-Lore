@@ -2652,4 +2652,20 @@ export const DICT = {
    "R grows 2 asura arms per champion hit, up to 10, and each one adds another 3/4/5% to his item stats by ult rank for 10 seconds — catching all five is +50% on top of his passive",
  "แก้พ่วง: บัฟลดดาเมจของสกิล (drAll) เคยใส่บัฟไว้แต่ไม่มีโค้ดไหนอ่านเลย การลดดาเมจของ E เดิมจึงไม่เคยทำงาน ตอนนี้ต่อสายแล้ว":
    "Side fix: the skill damage-reduction buff was applied but nothing ever read it, so the old E's damage reduction never actually worked. It does now",
+ "รอบปรับหลังรีเวิร์ค — TOTSAKAN กับ YODAKA":
+   "Follow-up tuning — TOTSAKAN and YODAKA",
+ "TOTSAKAN W — วงออร่าเคยวาดแค่วงเล็กรอบตัว เห็นแวบเดียวตอนกดแล้วก็ไม่รู้ว่ายังเปิดอยู่ไหม ตอนนี้กางเต็มรัศมี 450 จริงและค้างครบห้าวินาที":
+   "TOTSAKAN W drew only a small circle hugging him, visible for a moment after the cast, so you could never tell the aura was still up. It now spans the real 450 radius and stays for the full five seconds",
+ "TOTSAKAN W — ได้ดูดเลือดจากทุกดาเมจที่ทำระหว่างออร่าเปิด 10/12.5/15/17.5/20%":
+   "TOTSAKAN W now heals him for 10/12.5/15/17.5/20% of all damage he deals while the aura is up",
+ "TOTSAKAN W — ชดเชยด้วยการลดความเร็วเดินจาก 20-40% เหลือ 15-35% ส่วนความเร็วโจมตีคงไว้ที่ 20-40% เท่าเดิม":
+   "To pay for it, W's move speed drops from 20-40% to 15-35%; attack speed stays at 20-40%",
+ "TOTSAKAN R — ตอนแขนอสูรงอกอยู่ ตัวใหญ่ขึ้น 1.35 เท่าจริงในสนาม และระยะออโต้ยืดตามขนาดตัวอีก 35% (175 เป็น 236) ครบสิบวินาทีแล้วคืนค่าเดิม":
+   "While the asura arms are out, TOTSAKAN physically grows 1.35× on the field and his attack range stretches 35% with him, 175 to 236, returning to normal after the ten seconds",
+ "YODAKA E — สามเหลี่ยมใหญ่ขึ้นอีกระดับ ด้านละ 460 จากเดิม 350 และแนวฟันกว้าง 150 จากเดิม 110 พื้นที่ครอบคลุมรวมโตขึ้นราว 1.7 เท่า":
+   "YODAKA E is a size up: 460 per side instead of 350, with a 150-wide sweep instead of 110 — about 1.7× the ground covered",
+ "YODAKA R — เดินเลือกจุดลงได้ระหว่างลอยอยู่บนฟ้า วงที่จะทุบตามตัวไปด้วย จากเดิมที่ลอยแล้วขยับไม่ได้เลย":
+   "YODAKA R lets him move while he is up in the air, with the landing circle following him, where before he was stuck in place",
+ "เหตุที่ขยับไม่ได้คือสถานะอมตะตรึงขาไว้ด้วยเสมอ ตอนนี้แยกให้ท่าที่ตั้งใจให้ขยับได้ไม่โดนตรึง ส่วนท่าอมตะอื่นยังตรึงเหมือนเดิม":
+   "He was stuck because being invulnerable always rooted the unit too; abilities meant to allow movement are now exempt, while every other invulnerability still roots as before",
 };

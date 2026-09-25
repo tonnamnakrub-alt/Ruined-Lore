@@ -73,8 +73,9 @@ const mk = (lane, id, extra) => ({
   t("W คูลดาวน์ 14/13/12/11/10", arr(w.cdByRank) === "14/13/12/11/10", arr(w.cdByRank));
   t("W กด AD/AP ศัตรู 10-20%", arr(w.atkCut) === "0.1/0.125/0.15/0.175/0.2" && w.linger === 1.5,
     w.atkCut.map((x) => x * 100 + "%").join("/") + " · ค้างต่อ " + w.linger + "s");
-  t("W เร่งตัวเอง เดิน/ตี 20-40%", arr(w.msBuff) === "0.2/0.25/0.3/0.35/0.4" && arr(w.asBuff) === arr(w.msBuff),
-    "MS/AS " + w.msBuff.map((x) => x * 100 + "%").join("/"));
+  // ความเร็วเดินโดนลดชดเชยการเพิ่มดูดเลือด (เช็คตัวเลขจริงในหมวดรอบปรับด้านล่าง)
+  t("W เร่งความเร็วโจมตีตัวเอง 20-40%", arr(w.asBuff) === "0.2/0.25/0.3/0.35/0.4",
+    "AS " + w.asBuff.map((x) => x * 100 + "%").join("/") + " · MS " + w.msBuff.map((x) => x * 100 + "%").join("/"));
 }
 
 // ---- E ----
@@ -194,6 +195,55 @@ function fight(extra) {
   let g = 0;
   while (!st.over && g++ < 60 * 90) step(st);
   t("ลงไฟต์จริงได้จนจบ ไม่พัง", st.over || g >= 60 * 90, "จบที่ " + st.t.toFixed(1) + "s");
+}
+
+
+// =================================================================
+// รอบปรับหลังรีเวิร์ค — ออร่าที่มองเห็น · ดูดเลือด · ตัวใหญ่ขึ้น
+// =================================================================
+{
+  const w = sk("W");
+  t("W มีดูดเลือด 10-20% ระหว่างออร่าเปิด", arr(w.vamp) === "0.1/0.125/0.15/0.175/0.2",
+    (w.vamp || []).map((x) => x * 100 + "%").join("/"));
+  t("W ลดความเร็วเดินชดเชยเหลือ 15-35%", arr(w.msBuff) === "0.15/0.2/0.25/0.3/0.35",
+    w.msBuff.map((x) => x * 100 + "%").join("/") + " (เดิม 20-40%)");
+  t("W ความเร็วโจมตียังเท่าเดิม 20-40%", arr(w.asBuff) === "0.2/0.25/0.3/0.35/0.4",
+    w.asBuff.map((x) => x * 100 + "%").join("/"));
+
+  const { st, me, foes } = fight();
+  const foe = foes[0];
+  foe.x = me.x + 150; foe.y = me.y;
+  fireSkill(st, me, me.skills.find((s) => s.key === "W"), foe, 10);
+  const aura = st.fx.find((f) => f.kind === "aura" && f.id === me.id);
+  t("วงออร่ากางเต็มรัศมีจริง ไม่ใช่วงเล็กรอบตัว", aura && aura.r >= w.radius * 0.99,
+    aura ? Math.round(aura.r) + " หน่วย (รัศมีจริง " + w.radius + ")" : "ไม่มีวงออร่า");
+  t("วงออร่าอยู่ครบเท่าเวลาของท่า", aura && aura.dur === w.dur, aura ? aura.dur + "s" : "-");
+  // ดูดเลือดจริงตอนทำดาเมจ
+  me.hp = me.maxHp * 0.5;
+  const before = me.hp;
+  const { applyDamage } = await import("./src/engine/damage.js");
+  applyDamage(st, me, foe, 400, false);
+  t("ทำดาเมจระหว่างออร่าเปิดแล้วดูดเลือดจริง", me.hp > before,
+    Math.round(before) + " -> " + Math.round(me.hp) + " เลือด");
+}
+
+// ---- R ตัวใหญ่ขึ้นและเอื้อมไกลขึ้น ----
+{
+  const r = sk("R");
+  t("R ระบุขนาดตัวและระยะที่เพิ่ม", r.arms.size === 1.35 && r.arms.rangePct === 0.35,
+    "ตัว ×" + r.arms.size + " · ระยะ +" + r.arms.rangePct * 100 + "%");
+  const { st, me, foes } = fight();
+  for (const f of foes) { f.x = me.x + 120; f.y = me.y; }
+  const radius0 = me.radius, range0 = me.range;
+  fireSkill(st, me, me.skills.find((s) => s.key === "R"), foes[0], 10);
+  t("กด R แล้วตัวใหญ่ขึ้นจริง", me.radius > radius0 * 1.3,
+    Math.round(radius0) + " -> " + Math.round(me.radius));
+  t("ระยะโจมตียืดตามขนาดตัว", me.range > range0 * 1.3,
+    Math.round(range0) + " -> " + Math.round(me.range));
+  me.asuraArms.until = st.t - 0.01;
+  step(st);
+  t("แขนหายแล้วตัวกลับเท่าเดิม", Math.abs(me.radius - radius0) < 1e-6 && Math.abs(me.range - range0) < 1e-6,
+    "ตัว " + Math.round(me.radius) + " · ระยะ " + Math.round(me.range));
 }
 
 let fail = 0;

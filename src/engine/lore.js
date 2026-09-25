@@ -228,6 +228,8 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       const air = sk.airTime;
       addBuff(u, { type: "untargetable", v: 1, until: state.t + air }, state.t);
       addBuff(u, { type: "invuln", v: 1, until: state.t + air }, state.t);
+      // ลอยอยู่บนฟ้าแต่ยังเดินเลือกจุดลงได้ — วงที่จะทุบตามตัวไปเอง (follow)
+      if (sk.airMove) u.airFree = state.t + air;
       L(state).slams.push({
         kind: "starfall", ownerId: u.id, team: u.team, at: state.t + air, sk, rank: r,
         radius: sk.radius * sc, dmg: power, follow: true,
@@ -241,7 +243,10 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       u.wrath = { sk, rank: r, until: state.t + sk.dur, radius: sk.radius * sc };
       addBuff(u, { type: "ms", v: at(sk.msBuff, sk), until: state.t + sk.dur }, state.t);
       addBuff(u, { type: "as", v: at(sk.asBuff, sk), until: state.t + sk.dur }, state.t);
-      vfx(state, { kind: "aura", id: u.id, r: u.radius + 26, color: "232,90,70", dur: sk.dur });
+      if (sk.vamp) addBuff(u, { type: "vamp", v: at(sk.vamp, sk), until: state.t + sk.dur }, state.t);
+      // วงออร่าต้องกางเต็มรัศมีจริงและค้างไว้ทั้งห้าวินาที
+      // เดิมวาดแค่วงเล็กรอบตัว (radius + 26) เลยดูไม่ออกว่าออร่ายังเปิดอยู่
+      vfx(state, { kind: "aura", id: u.id, r: sk.radius * sc, color: "232,90,70", dur: sk.dur });
       vfx(state, { kind: "ring", x: u.x, y: u.y, r: sk.radius * sc, color: "232,90,70", grow: 0.8 });
       pushLog(state, tr("{0} {1} แผดโทสะ กดพลังศัตรูรอบตัว", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
       return true;
@@ -283,8 +288,13 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
         const amp = n * ar.amp[r];
         // เลือดสูงสุดเพิ่มทีเดียวตอนกด (พร้อมเลือดปัจจุบัน) แล้วคืนตอนแขนหาย
         const hpAdd = (u.itemPart ? u.itemPart.hp : 0) * amp;
-        u.asuraArms = { n, amp, until: state.t + ar.dur, hpAdd };
+        // ตัวโตขึ้นจริงในสนาม และเอื้อมได้ไกลขึ้นตามขนาดตัว
+        const baseRadius = u.radius;
+        const baseRange = u.range;
+        u.asuraArms = { n, amp, until: state.t + ar.dur, hpAdd, baseRadius, baseRange };
         if (hpAdd > 0) { u.maxHp += hpAdd; u.hp += hpAdd; }
+        if (ar.size) u.radius = baseRadius * ar.size;
+        if (ar.rangePct) u.range = baseRange * (1 + ar.rangePct);
         vfx(state, { kind: "arms", id: u.id, x: u.x, y: u.y, r: u.radius + 90, count: n, color: "255,208,138", dur: ar.dur });
         pushLog(state, tr("{0} {1} งอกแขนอสูร {2} ข้าง", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th), n));
       }
@@ -603,6 +613,8 @@ export function tickLoreUnit(state, u, dt) {
       u.maxHp = Math.max(1, u.maxHp - add);
       u.hp = Math.min(u.hp, u.maxHp);
     }
+    if (u.asuraArms.baseRadius) u.radius = u.asuraArms.baseRadius;
+    if (u.asuraArms.baseRange) u.range = u.asuraArms.baseRange;
     u.asuraArms = null;
   }
 

@@ -117,7 +117,9 @@ export function step(state) {
     u.stunned = locked || !!u.charmed;
     u.silenced = hasBuff(u, "silence");
     u.disarmed = hasBuff(u, "disarm");
-    u.rooted = locked || hasBuff(u, "root") || hasBuff(u, "invuln");
+    // อมตะปกติจะตรึงขาไว้ด้วย ยกเว้นท่าที่ตั้งใจให้ขยับได้ระหว่างลอย (YODAKA R)
+    const airFree = u.airFree != null && state.t < u.airFree;
+    u.rooted = locked || hasBuff(u, "root") || (hasBuff(u, "invuln") && !airFree);
     // บัฟลดดาเมจจากสกิล (type "dr") — เดิมใส่บัฟไว้แต่ไม่มีใครอ่าน การลดดาเมจเลยไม่เคยทำงาน
     u.drAll = buffSum(u, "dr");
     if (u.champ.fragments) {

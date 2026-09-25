@@ -109,12 +109,13 @@ export const LORE_CHAMPIONS = {
         msBuff: [0.25, 0.30, 0.35, 0.40, 0.45], msDur: 2.5, dashFaster: 0.6,
         onHitMagic: [20, 35, 50, 65, 80], onHitApRatio: 0.25 },
       // พุ่งเป็นสามเหลี่ยมแล้วกลับจุดเดิม — ขอบแรง ข้างในเบา
-      { key: "E", th: "Delta Constellation", type: "deltaDash", cast: 0, side: 350, travel: 0.6,
+      { key: "E", th: "Delta Constellation", type: "deltaDash", cast: 0, side: 460, travel: 0.6,
         cd: 14, cdByRank: [14, 13, 12, 11, 10], magic: true, gainStack: 1,
         innerDmg: [40, 65, 90, 115, 140], innerApRatio: 0.30,
-        dmg: [80, 125, 170, 215, 260], apRatio: 0.70, width: 110 },
+        dmg: [80, 125, 170, 215, 260], apRatio: 0.70, width: 150 },
       { key: "R", th: "Ascension of the Blue Star", type: "starfall", ult: true, cast: 0.2,
-        cd: 60, cdByRank: [60, 55, 50], airTime: 2.5, minAir: 0.5, radius: 325,
+        // airMove — ระหว่างลอยอยู่บนฟ้ายังเดินเลือกจุดลงได้ วงที่จะทุบตามตัวไปด้วย
+        cd: 60, cdByRank: [60, 55, 50], airTime: 2.5, minAir: 0.5, radius: 325, airMove: true,
         dmg: [220, 360, 500], apRatio: 0.85, magic: true,
         slowByRank: [0.60, 0.70, 0.80], slowDur: 0.5, refillStacks: true },
     ],
@@ -144,7 +145,9 @@ export const LORE_CHAMPIONS = {
       { key: "W", th: "Wrath of the Asura", type: "wrathAura", radius: 450, dur: 5, cast: 0.15,
         cd: 14, cdByRank: [14, 13, 12, 11, 10],
         atkCut: [0.10, 0.125, 0.15, 0.175, 0.20], linger: 1.5,
-        msBuff: [0.20, 0.25, 0.30, 0.35, 0.40], asBuff: [0.20, 0.25, 0.30, 0.35, 0.40] },
+        // ดูดเลือดจากทุกดาเมจที่ทำระหว่างออร่าเปิด — แลกกับความเร็วเดินที่ลดลงจาก 20-40% เหลือ 15-35%
+        vamp: [0.10, 0.125, 0.15, 0.175, 0.20],
+        msBuff: [0.15, 0.20, 0.25, 0.30, 0.35], asBuff: [0.20, 0.25, 0.30, 0.35, 0.40] },
       // พุ่งชนตัวแรก จับเหวี่ยงข้ามหัวไปข้างหลัง พร้อมกางแขนยี่สิบกรคุ้มตัว
       { key: "E", th: "Dreadful Toss & Aegis", type: "chargeFling", dashRange: 550, dashSpeed: 1200,
         toss: 275, airborne: 0.5, cast: 0.15, cd: 13, cdByRank: [13, 12.5, 12, 11.5, 11],
@@ -155,7 +158,8 @@ export const LORE_CHAMPIONS = {
       { key: "R", th: "Cataclysmic Wrath", type: "asuraSlam", ult: true, cast: 0.15,
         cd: 100, cdByRank: [100, 85, 70], radius: 550,
         dmg: [200, 325, 450], badRatio: 0.90, selfBonusHp: 0.10, airborne: 1.25,
-        arms: { per: 2, max: 10, amp: [0.03, 0.04, 0.05], dur: 10 } },
+        // ตัวโตขึ้นตามจำนวนแขน ระยะออโต้ก็ยืดตามขนาดตัว
+        arms: { per: 2, max: 10, amp: [0.03, 0.04, 0.05], dur: 10, size: 1.35, rangePct: 0.35 } },
     ],
   },
 

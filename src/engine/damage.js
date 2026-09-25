@@ -262,6 +262,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     // Lilith's Sanguine Grimoire: เลือดต่ำกว่าครึ่งได้ดูดเลือดเพิ่มอีกก้อน
     if (source.lowHpVamp && source.hp / source.maxHp <= source.lowHpVamp.hpBelow) ov += source.lowHpVamp.add;
     ov += buffSum(source, "fjdvamp");
+    ov += buffSum(source, "vamp");
     if (ov && source.alive) {
       const want = dmg * ov;
       const room = Math.max(0, source.maxHp - source.hp);
