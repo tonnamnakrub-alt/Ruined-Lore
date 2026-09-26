@@ -63,10 +63,10 @@ const mk = (lane, id, items) => ({
 // ---- ของที่เนิร์ฟ/บัฟ ต้องตรงกับที่ตั้งใจ และร้านต้องโชว์เลขใหม่ ----
 {
   const kff = ITEM_BY_ID.kff;
-  t("kff ดาเมจติดออโต้ลดลงจริง", kff.apOnHit.flat === 10 && kff.apOnHit.apRatio === 0.10,
+  t("kff ดาเมจติดออโต้ลดลงจริง", kff.apOnHit.flat === 8 && kff.apOnHit.apRatio === 0.12,
     kff.apOnHit.flat + " (+" + Math.round(kff.apOnHit.apRatio * 100) + "% AP)");
   t("ร้านโชว์เลขใหม่ของ kff ไม่ใช่เลขเก่าที่ฮาร์ดโค้ดไว้",
-    itemDesc(kff).includes("10 (+10% AP)"), itemDesc(kff).split("·").pop().trim());
+    itemDesc(kff).includes("8 (+12% AP)"), itemDesc(kff).split("·").pop().trim());
 
   t("mub ค่าสถานะลดลง", ITEM_BY_ID.mub.ad === 45 && ITEM_BY_ID.mub.armorPenPct === 0.25,
     ITEM_BY_ID.mub.ad + " AD · เจาะเกราะ " + Math.round(ITEM_BY_ID.mub.armorPenPct * 100) + "%");
@@ -93,17 +93,15 @@ const mk = (lane, id, items) => ({
     bad.length ? bad.map(([id]) => id).join(", ") : "ครบ 8 ชิ้น");
 }
 
-// ---- เลขค่าสถานะของไอเทมต้องหารห้าลงตัวทั้งกระดาน ----
+// ---- ค่าสถานะหลักของไอเทมต้องหารห้าลงตัว ----
+// เฉพาะค่าที่ผู้เล่นอ่านเป็นตัวเลขตรงๆ: HP · เกราะ · ต้านเวท · AD · AP · ความเร็วโจมตี · Ability Haste
+// ส่วนดูดเลือด เจาะเกราะ เจาะต้านเวท ฮีลแรงขึ้น ความเร็วเดิน ลดดาเมจ — ไม่บังคับ
+// พวกนั้นเป็นเปอร์เซ็นต์ที่ปัดทีเดียวแล้วพลังเปลี่ยนเยอะเกินกว่าจะคุ้ม
 {
-  const FLAT = ["ad", "ap", "hp", "armor", "mr", "ah", "ms", "pen", "arPen", "ultAh", "range"];
-  const PCT = ["adPct", "apPct", "asPct", "msPct", "armorPenPct", "mrPenPct", "regenPct",
-    "healAmp", "hors", "omnivampFlat", "tenacity", "ultCdr", "dmgReduceAuto", "dmgAmpHighHp"];
-  // ข้อยกเว้นที่ตั้งใจไว้ — act ให้ดาเมจตาม Max HP ของเป้า 1% ต่อออโต้
-  // ปัดขึ้นเป็น 5% คือแรงขึ้นห้าเท่า ส่วนปัดลงเป็น 0 ก็เท่ากับลบพาสซีฟทิ้ง
-  const SKIP = new Set(["act"]);
+  const FLAT = ["hp", "armor", "mr", "ad", "ap", "ah", "ultAh"];
+  const PCT = ["asPct", "adPct", "apPct"];
   const off = [];
   for (const it of ITEMS) {
-    if (SKIP.has(it.id)) continue;
     for (const k of FLAT) if (typeof it[k] === "number" && it[k] % 5 !== 0) off.push(it.id + "." + k + "=" + it[k]);
     for (const k of PCT) {
       if (typeof it[k] !== "number") continue;
@@ -111,7 +109,7 @@ const mk = (lane, id, items) => ({
       if (p % 50 !== 0) off.push(it.id + "." + k + "=" + (p / 10) + "%");
     }
   }
-  t("ค่าสถานะของไอเทมทุกชิ้นหารห้าลงตัว", off.length === 0,
+  t("ค่าสถานะหลักของไอเทมทุกชิ้นหารห้าลงตัว", off.length === 0,
     off.length ? off.join(" · ") : ITEMS.length + " ชิ้น ผ่านหมด");
 }
 

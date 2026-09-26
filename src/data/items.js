@@ -32,10 +32,10 @@ export function inCat(it, cat) {
 // ตำนานและนิทานที่แต่ละชิ้นอ้างอิงอยู่ใน th ไทย — ราคาและสูตรตรงกับตารางที่ผู้ใช้ส่งมา
 export const ITEMS = [
   // --- ของเริ่มเกม (ถือได้คนละ 1 ชิ้น) — ความโกลาหลก่อนกำเนิดระเบียบจักรวาล
-  { id: "cb", th: "Chaos Blade — ดาบอลวน", cat: "START", tier: 1, cost: 10, ad: 20, hp: 70, omnivampFlat: 0.05 },
+  { id: "cb", th: "Chaos Blade — ดาบอลวน", cat: "START", tier: 1, cost: 10, ad: 20, hp: 70, omnivampFlat: 0.03 },
   { id: "cs", th: "Chaos Scroll — คัมภีร์อลวน", cat: "START", tier: 1, cost: 10, ap: 30, hp: 60, ah: 5 },
   { id: "csh", th: "Chaos Shield — โล่อลวน", cat: "START", tier: 1, cost: 10, hp: 140, armor: 10, mr: 10 },
-  { id: "cbw", th: "Chaos Bow — คันศรอลวน", cat: "START", tier: 1, cost: 10, ad: 15, asPct: 0.10, omnivampFlat: 0.05 },
+  { id: "cbw", th: "Chaos Bow — คันศรอลวน", cat: "START", tier: 1, cost: 10, ad: 15, asPct: 0.10, omnivampFlat: 0.02 },
   { id: "cd", th: "Chaos Dagger — กริชอลวน", cat: "START", tier: 1, cost: 10, ad: 20, arPen: 10 },
   { id: "cch", th: "Chaos Chalice — จอกอลวน", cat: "START", tier: 1, cost: 10, hp: 50, hors: 0.10, ah: 10 },
 
@@ -51,15 +51,15 @@ export const ITEMS = [
   { id: "rf", th: "Robin's Fletching — ขนศรโรบินฮู้ด", cat: "T1", tier: 1, cost: 8, crit: 0.1 },
 
   // --- ชิ้นส่วน Tier 1 ชุดใหม่
-  { id: "sil", th: "Siren's Lure — เหยื่อล่อไซเรน", cat: "T1", tier: 1, cost: 6, omnivampFlat: 0.05 },
+  { id: "sil", th: "Siren's Lure — เหยื่อล่อไซเรน", cat: "T1", tier: 1, cost: 6, omnivampFlat: 0.04 },
   { id: "ftf", th: "Fenrir's Torn Fang — เขี้ยวหักเฟนริร์", cat: "T1", tier: 1, cost: 6, arPen: 5 },
-  { id: "iwf", th: "Icarus' Wax Feather — ขนนกขี้ผึ้งอิคารัส", cat: "T1", tier: 1, cost: 6, msPct: 0.05 },
-    { id: "abc", th: "Ambrosia Crumb — เศษน้ำอมฤต", cat: "T1", tier: 1, cost: 5, healAmp: 0.10 },
+  { id: "iwf", th: "Icarus' Wax Feather — ขนนกขี้ผึ้งอิคารัส", cat: "T1", tier: 1, cost: 6, msPct: 0.04 },
+    { id: "abc", th: "Ambrosia Crumb — เศษน้ำอมฤต", cat: "T1", tier: 1, cost: 5, healAmp: 0.08 },
   { id: "dwh", th: "Dwarf's Whetstone — หินลับคมคนแคระ", cat: "T1", tier: 1, cost: 6, critDmg: 0.10 },
 
   // --- รองเท้า Tier 2 (ADC ใส่ได้โดยไม่กินช่อง)
   { id: "sg", th: "Spartan Greaves — สนับแข้งสปาร์ตัน", cat: "BOOTS", tier: 2, kind: "boots", cost: 25,
-    ms: 45, armor: 25, dmgReduceAuto: 0.10, parts: ["ss", "bc"] },
+    ms: 45, armor: 25, dmgReduceAuto: 0.12, parts: ["ss", "bc"] },
   { id: "at", th: "Asgardian Treads — เกือกแอสการ์ด", cat: "BOOTS", tier: 2, kind: "boots", cost: 25,
     ms: 45, mr: 25, tenacity: 0.3, parts: ["ss", "bcl"] },
   { id: "act", th: "Achilles' Talaria — ปีกอคิลลีส", cat: "BOOTS", tier: 2, kind: "boots", cost: 25,
@@ -68,7 +68,7 @@ export const ITEMS = [
     ms: 45, ah: 15, itemHaste: 30, parts: ["ss", "bsd"] },
   { id: "toh", th: "Talaria of Hermes — ปีกเฮอร์มีส", cat: "BOOTS", tier: 2, kind: "boots", cost: 25, ms: 60, slowResist: 0.40, parts: ["ss"] },
   { id: "cp", th: "Chimera's Prowlers — กรงเล็บไคเมร่า", cat: "BOOTS", tier: 2, kind: "boots", cost: 25,
-    ms: 45, ad: 15, arPen: 10, parts: ["ss", "bt2"] },
+    ms: 45, ad: 15, arPen: 8, parts: ["ss", "bt2"] },
   { id: "sof", th: "Sorcerer's Filigree — รองเท้าอาคม", cat: "BOOTS", tier: 2, kind: "boots", cost: 25,
     ms: 45, ap: 25, mrPen: 8, parts: ["ss", "wt"] },
 
@@ -90,7 +90,7 @@ export const ITEMS = [
   { id: "eoh", th: "Eye of Horus — ดวงตาแห่งฮอรัส", cat: "MAGE", tier: 3, cost: 58,
     ap: 60, ah: 10, mrPenPct: 0.30, parts: ["mwh", "orl"] },
   { id: "kff", th: "Kitsune's Foxfire Fan — พัดเพลิงจิ้งจอกเก้าหาง", cat: "MAGE", also: ["MARKSMAN"], tier: 3, cost: 60,
-    ap: 50, asPct: 0.30, ah: 10, apOnHit: { flat: 10, apRatio: 0.10 }, parts: ["cyw", "cf", "bsd"] },
+    ap: 50, asPct: 0.30, ah: 10, apOnHit: { flat: 8, apRatio: 0.12 }, parts: ["cyw", "cf", "bsd"] },
   { id: "csb", th: "Caliburn's Spellblade — ดาบมนตราแคลิเบิร์น", cat: "MAGE", also: ["ASSASSIN"], uniq: ["autoempower"], tier: 3, cost: 60,
     ap: 60, ah: 15, msPct: 0.05, spellblade: { baseAdRatio: 0.75, apRatio: 0.45, cd: 1.5 }, parts: ["cyw", "ppf"] },
   { id: "stc", th: "Surtr's Twilight Cinder — เถ้าอัคคีสุรเทอร์", cat: "MAGE", tier: 3, cost: 62,
@@ -121,7 +121,7 @@ export const ITEMS = [
   { id: "asc", th: "Artemis' Silver Crescent — จันทราเงินแห่งอาร์เทมิส", cat: "MARKSMAN", tier: 3, cost: 62,
     ad: 60, crit: 0.25, critDmg: 0.25, parts: ["hys", "dvc"] },
   { id: "swf", th: "Swan Maiden's Feathered Cloak — ปีกขนนกหญิงสาวหงส์", cat: "MARKSMAN", uniq: ["lifeline"], also: ["FIGHTER"], tier: 3, cost: 60,
-    ad: 60, crit: 0.25, omnivampFlat: 0.10, parts: ["lbn", "hys"] },
+    ad: 60, crit: 0.25, omnivampFlat: 0.08, parts: ["lbn", "hys"] },
   { id: "slh", th: "Sleipnir's Galloping Horseshoe — เกือกม้าทะยานสเลปนีร์", cat: "MARKSMAN", tier: 3, cost: 58,
     ad: 35, crit: 0.25, asPct: 0.15, msPct: 0.05, parts: ["asf", "cf", "bt2"] },
   { id: "wtc", th: "William Tell's Sovereign Crossbow — หน้าไม้วิลเลียม เทลล์", cat: "MARKSMAN", tier: 3, cost: 60,
@@ -131,7 +131,7 @@ export const ITEMS = [
   { id: "ivd", th: "Indra's Vajra Dart — วัชระอัสนีอินทรา", cat: "MARKSMAN", uniq: ["thirdhit"], tier: 3, cost: 60,
     ad: 55, asPct: 0.25, crit: 0.25, parts: ["asf", "bt2", "bt2"] },
   { id: "boe", th: "Bow of Eurytus — คันศรแห่งยูริทัส", cat: "MARKSMAN", uniq: ["autoempower"], tier: 3, cost: 58,
-    ad: 35, asPct: 0.20, crit: 0.25, msPct: 0.05, parts: ["asf", "iwb"] },
+    ad: 35, asPct: 0.20, crit: 0.25, msPct: 0.07, parts: ["asf", "iwb"] },
   { id: "sst", th: "Shiva's Trishula — ตรีศูลทำลายล้างพระศิวะ", cat: "MARKSMAN", uniq: ["thirdhit", "antiheal"], also: ["FIGHTER"], tier: 3, cost: 60,
     ad: 45, asPct: 0.30, armorPenPct: 0.30, antihealOnDmg: { v: 0.40, dur: 3 }, parts: ["hwt", "exn"] },
   { id: "hth", th: "Hephaestus' Twin Hammers — ค้อนคู่ตีเหล็กเฮเฟสตัส", cat: "MARKSMAN", also: ["FIGHTER"], tier: 3, cost: 62,
@@ -141,9 +141,9 @@ export const ITEMS = [
 
   // --- ซัพพอร์ตสาย Enchanter Tier 3
   { id: "ats", th: "Asclepius' Twin Serpent Staff — คทาอสรพิษคู่แอสคลีเปียส", cat: "SUPPORT", tier: 3, cost: 46,
-    ap: 45, ah: 10, hors: 0.10, chainHors: { pct: 0.25, radius: 750 }, parts: ["isw", "ccr"] },
+    ap: 45, ah: 10, hors: 0.12, chainHors: { pct: 0.25, radius: 750 }, parts: ["isw", "ccr"] },
   { id: "acb", th: "Aceso's Guiding Censer — กระถางกำยานอเคโซ", cat: "SUPPORT", uniq: ["horsbuff"], tier: 3, cost: 46,
-    ap: 50, ms: 25, ah: 10, hors: 0.15, horsBuffAs: { as: 0.15, asPerLvl: 0.005, onHit: 10, onHitPerLvl: 3, apRatio: 0.10, dur: 4 },
+    ap: 50, ms: 25, ah: 10, hors: 0.14, horsBuffAs: { as: 0.15, asPerLvl: 0.005, onHit: 10, onHitPerLvl: 3, apRatio: 0.10, dur: 4 },
     parts: ["isw", "ngv"] },
   { id: "sfv", th: "Saraswati's Flowing Veena — พิณธารปัญญาสรัสวดี", cat: "SUPPORT", uniq: ["horsbuff"], tier: 3, cost: 46,
     ap: 40, ah: 10, hors: 0.10, horsBuffAp: { ap: 13, apPerLvl: 1, ah: 15, ahPerLvl: 0, dur: 4 },
@@ -151,7 +151,7 @@ export const ITEMS = [
   { id: "yrh", th: "Yggdrasil's Radiant Heartwood — แก่นไม้อิกดราซิล", cat: "SUPPORT", tier: 3, cost: 48,
     ap: 35, hp: 150, ah: 10, hors: 0.10, tier3ScalingHors: 0.04, parts: ["isw", "nd"] },
   { id: "esb", th: "Eir's Sanctuary Bell — ระฆังเขตบุญแห่งเออีร์", cat: "SUPPORT", uniq: ["teamsave"], tier: 3, cost: 48,
-    hp: 250, ah: 15, hors: 0.10, parts: ["ccr", "nd"] },
+    hp: 250, ah: 15, hors: 0.12, parts: ["ccr", "nd"] },
   { id: "abw", th: "Aeolus' Bound Winds — ถุงลมกักวายุแอโอลัส", cat: "SUPPORT", tier: 3, cost: 46,
     ap: 40, ah: 10, ms: 20, hors: 0.10, abwSurge: { base: 0.20, max: 0.45 }, parts: ["ngv", "ccr"] },
   { id: "hmb", th: "Hermes' Moly Blossom — ดอกโมลีแห่งเฮอร์มีส", cat: "SUPPORT", uniq: ["cleanse"], tier: 3, cost: 48,
@@ -259,27 +259,27 @@ export const ITEMS = [
 
   // --- ชิ้นส่วนสายซัพพอร์ต (SUPPORT PARTS) — hors = พลังฮีล/โล่ที่ "จ่ายออก"
   { id: "pcp", th: "Panacea's Dried Petal — กลีบดอกไม้แห้งแพนาเซีย", cat: "T1", tier: 1, cost: 5,
-    hors: 0.05 },
+    hors: 0.06 },
   { id: "isw", th: "Idunn's Spring Water — น้ำพุฤดูใบไม้ผลิอิดุนน์", cat: "T2", tier: 2, cost: 13,
-    ap: 15, hors: 0.10, parts: ["pcp", "wt"] },
+    ap: 15, hors: 0.08, parts: ["pcp", "wt"] },
   { id: "ccr", th: "Chiron's Chanted Ribbon — ริบบิ้นสวดมนตร์ไครอน", cat: "T2", tier: 2, cost: 12,
-    ah: 10, hors: 0.10, parts: ["pcp", "bsd"] },
+    ah: 10, hors: 0.08, parts: ["pcp", "bsd"] },
   { id: "ngv", th: "Nymph's Graceful Veil — ม่านลอยลมพรายนิมฟ์", cat: "T2", tier: 2, cost: 13,
-    ms: 20, hors: 0.10, parts: ["pcp", "ss"] },
+    ms: 20, hors: 0.08, parts: ["pcp", "ss"] },
 
   // --- ชิ้นส่วน Tier 2 ชุดใหม่ (ต่อยอดจากชิ้นส่วน Tier 1 ชุดใหม่)
   { id: "slf", th: "Siren's Song-Flask — ขวดเพลงไซเรน", cat: "T2", tier: 2, cost: 15,
-    ad: 15, omnivampFlat: 0.05, parts: ["sil", "bt2"] },
+    ad: 15, omnivampFlat: 0.06, parts: ["sil", "bt2"] },
   { id: "lgf", th: "Lycaon's Gorging Fang — เขี้ยวกลืนกินไลเคออน", cat: "T2", tier: 2, cost: 15,
-    ap: 20, omnivampFlat: 0.05, parts: ["sil", "wt"] },
+    ap: 20, omnivampFlat: 0.06, parts: ["sil", "wt"] },
   { id: "fcl", th: "Fenrir's Chain-Link — ห่วงโซ่เฟนริร์", cat: "T2", tier: 2, cost: 14,
     ad: 10, arPen: 10, parts: ["ftf", "bt2"] },
   { id: "mwh", th: "Mimir's Whispering Head — เศียรกระซิบมิเมียร์", cat: "T2", tier: 2, cost: 16,
-    ap: 25, mrPenPct: 0.10, parts: ["ftf", "wt"] },
+    ap: 25, mrPenPct: 0.08, parts: ["ftf", "wt"] },
   { id: "iwb", th: "Icarus' Wax-Bound Wings — ปีกขี้ผึ้งอิคารัส", cat: "T2", tier: 2, cost: 14,
     ms: 20, asPct: 0.15, parts: ["iwf", "cf"] },
     { id: "afw", th: "Argonaut's Fleece Wrap — ขนแกะอาร์โกนอต", cat: "T2", tier: 2, cost: 15,
-    hp: 150, healAmp: 0.10, parts: ["abc", "nd"] },
+    hp: 150, healAmp: 0.12, parts: ["abc", "nd"] },
   { id: "dvc", th: "Dvalinn's Whetted Chisel — สิ่วลับคมดวาลิน", cat: "T2", tier: 2, cost: 16,
     crit: 0.15, critDmg: 0.15, parts: ["dwh", "rf"] },
   { id: "exn", th: "Executioner's Nettle — ตำแยเพชฌฆาต", cat: "T2", uniq: ["antiheal"], tier: 2, cost: 14,
@@ -346,7 +346,7 @@ export const ITEMS = [
     ad: 40, crit: 0.25, asPct: 0.25,
     takedownReach: { range: 100, ms: 0.08, dur: 6 }, parts: ["hys", "vtp", "dvc"] },
   { id: "sta", th: "Skadi's Triple Arrow — ศรสามดอกสกาดี", cat: "MARKSMAN", tier: 3, cost: 56,
-    asPct: 0.35, crit: 0.25, msPct: 0.05,
+    asPct: 0.35, crit: 0.25, msPct: 0.07,
     splitBolts: { count: 2, ratio: 0.40, range: 500 }, parts: ["vtp", "asf", "iwb"] },
   // รหัสเดิมของชิ้นนี้คือ hwh ซึ่งไปชนกับ Horn of the Wild Hunt ที่มีมาก่อน
   // ITEM_BY_ID เก็บได้รหัสละชิ้น ของที่ส่งข้ามสายด้วยรหัสจึงกลายร่างเป็นอีกชิ้นที่ปลายทาง

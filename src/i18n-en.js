@@ -2878,4 +2878,14 @@ export const DICT = {
    "Kitsune's Foxfire Fan: the magic damage riding every auto drops from 15 (+20% AP) to 10 (+10% AP) — at 250 AP that is 65 down to 35 per hit",
  "Eye of Horus — AP 65 เหลือ 60 · เจาะต้านเวท 35% เหลือ 30% · ค่าสถานะคุ้ม 116%":
    "Eye of Horus: 65 AP down to 60, magic penetration 35% down to 30% — its stats were worth 116% of its price",
+ "ค่าสถานะหลักของไอเทมหารห้าลงตัวหมดแล้ว":
+   "Every core item stat is now a multiple of five",
+ "ไล่ดูค่าสถานะหลักของไอเทมทั้ง 146 ชิ้น — เลือด เกราะ ต้านเวท AD AP ความเร็วโจมตี และ Ability Haste":
+   "Swept the core stats on all 146 items — health, armour, magic resist, AD, AP, attack speed and ability haste",
+ "เจอสองชิ้นที่หารห้าไม่ลงตัว แก้แล้ว: Eye of Horus พลังเวท 58 เป็น 60 · Crown of Care ลดคูลดาวน์ 8 เป็น 10 · ที่เหลืออีก 144 ชิ้นลงตัวอยู่แล้ว":
+   "Two were off and are now fixed: Eye of Horus gives 60 AP instead of 58, and Crown of Care gives 10 ability haste instead of 8. The other 144 were already clean",
+ "ส่วนดูดเลือด เจาะเกราะ เจาะต้านเวท ฮีลแรงขึ้น ความเร็วเดิน และลดดาเมจ ไม่ได้แตะ — พวกนั้นเป็นเปอร์เซ็นต์ที่ขยับทีเดียวแล้วพลังเปลี่ยนเยอะเกินกว่าจะคุ้มกับความสวยของตัวเลข":
+   "Omnivamp, armour and magic penetration, healing power, move speed and damage reduction were left alone — those are percentages where a single step changes far more power than a tidy number is worth",
+ "มีเทสล็อกไว้แล้ว ใครเติมไอเทมใหม่ด้วยค่าสถานะหลักที่หารห้าไม่ลงตัวจะไม่ผ่าน":
+   "A test locks it in: a new item with a core stat that is not a multiple of five will fail the suite",
 };
