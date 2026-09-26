@@ -2772,4 +2772,28 @@ export const DICT = {
    "Reads the matchup — picks whoever you actually kill fastest once their armour and magic resist are accounted for",
  "ตีเป้าเดียวกับเพื่อน และไม่ไปสมทบเป้าที่เพื่อนเก็บอยู่แล้ว ย้ายไปตัวถัดไปแทน":
    "Attacks alongside the team, and leaves a target the others are already finishing, moving to the next one instead",
+ "ลดความเร็วพุ่งและความเร็วลูกของตัวที่อัตราชนะสูง":
+   "Dash and projectile speed cut on the high win-rate champions",
+ "วัดอัตราชนะด้วยการให้ทุกตัวพบกันหมดแบบตัวต่อตัว เลเวล 13 ของเท่ากัน ค่าสถานะนักแข่งเท่ากัน สลับสีครึ่งหนึ่ง ตัวละ 126 ไฟต์":
+   "Win rates measured with every champion facing every other one on one at level 13, identical items and athlete stats, sides swapped half the time, 126 fights each",
+ "NIAN Q — ความเร็วพุ่งลดจาก 1300 เหลือ 1000":
+   "NIAN Q: charge speed down from 1300 to 1000",
+ "ARTHUR E — ความเร็วพุ่งลดจาก 1400 เหลือ 1100 (เร็วที่สุดในเกมเดิม)":
+   "ARTHUR E: dash speed down from 1400 to 1100 — it was the fastest in the game",
+ "ELLA Q จังหวะแรก — ระยะพุ่งเข้าหาเป้าลดจาก 450 เหลือ 350":
+   "ELLA Q's first beat closes 350 units instead of 450",
+ "YODAKA พาสซีฟ — ออโต้ที่มีสแตกพุ่งทะลวงไปโผล่เลยหลังเป้า 200 หน่วย จากเดิม 300":
+   "YODAKA's passive pierce now stops 200 units past the target instead of 300",
+ "YODAKA E — ช่วงที่แตะไม่ได้ระหว่างร่ายลดจาก 0.6 เหลือ 0.45 วินาที":
+   "YODAKA E is untargetable for 0.45s instead of 0.6s",
+ "YODAKA Q — ความเร็วพายุลดจาก 900 เหลือ 750 · JACK Q 1900 เหลือ 1600 · LAURA E 1500 เหลือ 1250":
+   "Projectile speeds: YODAKA Q 900 to 750 · JACK Q 1900 to 1600 · LAURA E 1500 to 1250",
+ "ที่ต้องบอกตรงๆ: ลดแล้ววัดใหม่ ตัวบนสุดแทบไม่ขยับเลย NIAN กับ ARTHUR ลงคนละ 0.8 · YODAKA เท่าเดิม · มีแต่ ELLA ที่ลง 3.1":
+   "Stated plainly: re-measured after the cuts, the top of the table barely moved. NIAN and ARTHUR each lost 0.8 points, YODAKA was unchanged, and only ELLA dropped meaningfully at 3.1",
+ "แปลว่าความเร็วพุ่งไม่ใช่เหตุผลที่ตัวพวกนี้แรง — ตัวที่แรงที่สุดอย่าง PIROSKA ไม่มีท่าพุ่งและไม่มีลูกสกิลสักอย่าง":
+   "So dash speed is not why these champions are strong — the strongest of the lot, PIROSKA, has no dash and no projectile at all",
+ "เคยลองลดความเร็วลูกทั้งกระดานด้วย แต่ถอยกลับแล้ว เพราะไม่ได้ทำให้ตัวบนอ่อนลง ไม่ได้ทำให้หลบได้บ่อยขึ้น (12.6 เทียบกับ 12.5 ครั้งต่อไฟต์) และไปทุบสายเวทที่อ่อนอยู่แล้ว FAUSTUS ร่วงจาก 35.7 เหลือ 30.2":
+   "A board-wide projectile slowdown was tried and reverted: it did not weaken the top, it did not raise how often anything was dodged (12.6 against 12.5 per fight), and it punished mages who were already weak — FAUSTUS fell from 35.7 to 30.2",
+ "ตอนนี้ลดความเร็วลูกเฉพาะตัวที่อัตราชนะสูงจริงสามตัวเท่านั้น":
+   "Only the three genuinely high win-rate champions keep the projectile cut",
 };

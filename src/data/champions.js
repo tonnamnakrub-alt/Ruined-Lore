@@ -240,7 +240,7 @@ const CORE_CHAMPIONS = {
         cd: 14, cdByRank: [14, 13, 12, 11, 10],
         msBuff: [0.45, 0.50, 0.55, 0.60, 0.65], dur: 2.5, ghost: true,
         blinkRange: 450, blinkName: "Phantom Blink" },
-      { key: "E", th: "Carmilla's Thrall", type: "line", range: 850, width: 90, projSpeed: 1500,
+      { key: "E", th: "Carmilla's Thrall", type: "line", range: 850, width: 90, projSpeed: 1250,
         cast: 0.25, cd: 13, cdByRank: [13, 12, 11, 10, 9],
         dmg: [80, 120, 160, 200, 240], apRatio: 0.6, selfStacks: 0.35, magic: true,
         charm: [1.25, 1.5, 1.75, 2.0, 2.25], charmSlow: 0.35 },

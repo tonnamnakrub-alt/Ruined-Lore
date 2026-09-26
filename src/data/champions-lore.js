@@ -27,7 +27,7 @@ export const LORE_CHAMPIONS = {
       { key: "Q", th: "Midnight Waltz", type: "combo", cast: 0.2, window: 5,
         cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8], magic: true,
         steps: [
-          { th: "Dash & Pierce", dashRange: 450, dmg: [40, 65, 90, 115, 140], apRatio: 0.35, needAuto: true },
+          { th: "Dash & Pierce", dashRange: 350, dmg: [40, 65, 90, 115, 140], apRatio: 0.35, needAuto: true },
           { th: "Crescent Sweep", radius: 325, halfCircle: true, dmg: [60, 95, 130, 165, 200], apRatio: 0.55, needAuto: true },
           { th: "Grand Finale & Rebound", range: 250, backstep: 375,
             dmg: [50, 80, 110, 140, 170], apRatio: 0.45, pctMissingHp: [0.08, 0.09, 0.10, 0.11, 0.12] },
@@ -91,13 +91,13 @@ export const LORE_CHAMPIONS = {
     hp: 580, hpG: 95, hp5: 7.0, hp5G: 0.7, ad: 56, adG: 3.1, armor: 32, armorG: 3.8, mr: 32, mrG: 2.05,
     as: 0.67, asG: 0.027, ms: 345, range: 150,
     // สะสมสแตกจากการร่ายสกิล แล้วใช้สแตกพุ่งทะลวงตอนออโต้
-    starlight: { max: 3, dur: 6, range: 400, through: 300, width: 120,
+    starlight: { max: 3, dur: 6, range: 400, through: 200, width: 120,
       base: 25, perLevel: (140 - 25) / 17, apRatio: 0.40 },
     passive: { th: "Starlight Piercing",
       desc: "ร่ายสกิล Q/W/E/R หรือเดินตัดพายุ Q ได้ 1 สแตก สูงสุด 3 สแตก อยู่ได้ 6 วิ · มีสแตกแล้วออโต้จะล็อกเป้าได้ไกลถึง 400 และพุ่งทะลวงไปหยุดหลังเป้า 300 หน่วย · ศัตรูทุกตัวในแนวพุ่ง (กว้าง 120) กินดาเมจเวท 25 ที่เลเวล 1 ไล่ถึง 140 ที่เลเวล 18 (+40% AP)" },
     skills: [
       // พายุลอยช้า -> ค้างเป็นวังวน -> เดินตัดผ่านแล้วระเบิด
-      { key: "Q", th: "Astral Squall", type: "vortex", range: 750, projSpeed: 900, width: 150,
+      { key: "Q", th: "Astral Squall", type: "vortex", range: 750, projSpeed: 750, width: 150,
         cast: 0.25, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true, gainStack: 1,
         dmg: [50, 80, 110, 140, 170], apRatio: 0.40,
         slowByRank: [0.30, 0.35, 0.40, 0.45, 0.50], slowDur: 1.5,
@@ -109,7 +109,7 @@ export const LORE_CHAMPIONS = {
         msBuff: [0.25, 0.30, 0.35, 0.40, 0.45], msDur: 2.5, dashFaster: 0.6,
         onHitMagic: [20, 35, 50, 65, 80], onHitApRatio: 0.25 },
       // พุ่งเป็นสามเหลี่ยมแล้วกลับจุดเดิม — ขอบแรง ข้างในเบา
-      { key: "E", th: "Delta Constellation", type: "deltaDash", cast: 0, side: 460, travel: 0.6,
+      { key: "E", th: "Delta Constellation", type: "deltaDash", cast: 0, side: 460, travel: 0.45,
         cd: 14, cdByRank: [14, 13, 12, 11, 10], magic: true, gainStack: 1,
         innerDmg: [40, 65, 90, 115, 140], innerApRatio: 0.30,
         dmg: [80, 125, 170, 215, 260], apRatio: 0.70, width: 150 },
@@ -210,7 +210,7 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Beanstalk Guile",
       desc: "สกิลของแจ็คหรือการโจมตีของยักษ์ที่โดนศัตรู แปะเมล็ดถั่ว 1 สแตก อยู่ได้ 5 วิ · ครบ 3 สแตก รากงอกตรึงเท้า 1.25/1.5/1.75 วิ (ตามเลเวล 1/7/13) พร้อมดาเมจเวท 40 ที่เลเวล 1 ไล่ถึง 180 ที่เลเวล 18 (+30% AP) · โดนตรึงแล้วกันติดซ้ำ 8 วิ" },
     skills: [
-      { key: "Q", th: "Magic Bean Sling", type: "line", range: 875, width: 100, projSpeed: 1900,
+      { key: "Q", th: "Magic Bean Sling", type: "line", range: 875, width: 100, projSpeed: 1600,
         cast: 0.25, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
         dmg: [80, 115, 150, 185, 220], apRatio: 0.55, magic: true },
       // ไข่ทองคำ — สโลว์รอบตัวระหว่างรอ แล้วค่อยระเบิด
@@ -290,7 +290,7 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Static Discharge",
       desc: "ออร่าไฟฟ้ารัศมี 375 รอบตัว · ทุก 2 วิ ประจุฟาดศัตรู 1 ตัวในระยะ (เล็งแชมเปี้ยนก่อน) ดาเมจเวท 20 ที่เลเวล 1 ไล่ถึง 90 ที่เลเวล 18 (+15% AP) (+3% Bonus HP)" },
     skills: [
-      { key: "Q", th: "Thunder Horn Charge", type: "dash", range: 600, dashSpeed: 1300, engageRange: 0,
+      { key: "Q", th: "Thunder Horn Charge", type: "dash", range: 600, dashSpeed: 1000, engageRange: 0,
         cast: 0.15, cd: 11, cdByRank: [11, 10, 9, 8, 7], magic: true,
         dmg: [70, 110, 150, 190, 230], apRatio: 0.55, selfBonusHp: 0.05,
         landStunByRank: [1.1, 1.2, 1.3, 1.4, 1.5] },
@@ -382,7 +382,7 @@ export const LORE_CHAMPIONS = {
         stunByRank: [1.0, 1.1, 1.2, 1.3, 1.4],
         whirlRadius: 325, whirlDmg: [60, 100, 140, 180, 220], whirlBadRatio: 0.65, ccCut: 0.5 },
       // พุ่งเส้นตรงแล้วฟันครึ่งวง โดนทั้งสองจังหวะได้ตีเร็วและโล่
-      { key: "E", th: "Knight's Lunge", type: "lungeSweep", dashRange: 500, dashSpeed: 1400,
+      { key: "E", th: "Knight's Lunge", type: "lungeSweep", dashRange: 500, dashSpeed: 1100,
         sweepRadius: 300, cast: 0.1, cd: 12, cdByRank: [12, 11, 10, 9, 8],
         dmg: [40, 65, 90, 115, 140], badRatio: 0.40,
         sweepDmg: [60, 95, 130, 165, 200], sweepBadRatio: 0.60,
