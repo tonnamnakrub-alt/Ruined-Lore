@@ -2746,4 +2746,30 @@ export const DICT = {
    "It is now a slope: 1.2 seconds of patience per point before settling for a worse moment — measured holds of 1.5s at 0, 6s at 5 and 12s at 10",
  "ปุ่มปรับทั้งหมดอยู่รวมกันที่ data/tuning.js ก้อน 'ค่าสถานะของนักแข่ง'":
    "Every knob for this sits together in data/tuning.js under the athlete-stats block",
+ "ค่าสถานะนักแข่ง — เปลี่ยนเป็นความคิดของบอท ไม่ใช่ตัวเลขลับหลัง":
+   "Athlete stats are the bot's judgement now, not hidden numbers",
+ "ทุกค่าตอนนี้เปลี่ยนแค่ 'สิ่งที่บอทตัดสินใจทำ' ไม่มีค่าไหนบวกลบดาเมจให้เบื้องหลังอีกแล้ว ดูไฟต์แล้วเห็นความต่างได้ด้วยตา":
+   "Every stat now changes only what the bot decides to do. None of them quietly adds or removes damage any more, so you can watch a fight and see the difference",
+ "ความรู้ — อ่านแมตช์อัพจริง เลือกเป้าที่ 'เรา' กินได้เร็วที่สุดหลังหักเกราะและต้านเวทของเขาแล้ว แต้มสูงจะข้ามตัวถังเกราะหนาไปเก็บตัวเปราะที่ยืนไกลกว่า แต้มต่ำจิ้มตัวที่อยู่ใกล้ที่สุด":
+   "Knowledge reads the matchup for real: it picks whoever YOU kill fastest once their armour and magic resist are accounted for. A high score walks past the armoured tank to reach the squishy standing further away; a low one just hits whatever is closest",
+ "ทีมเวิร์ค — ไม่ไปตีศพ ถ้าเพื่อนจ่อดาเมจใส่เป้านั้นพอฆ่าอยู่แล้วในหนึ่งวินาทีครึ่งข้างหน้า แต้มสูงจะปล่อยให้เพื่อนเก็บแล้วย้ายไปตัวถัดไป แต้มต่ำยังไปสมทบซ้ำจนดาเมจล้นทิ้ง":
+   "Teamwork stops the overkill: if teammates already have enough damage committed to finish a target within the next second and a half, a high score leaves them to it and moves to the next one, while a low score piles on and wastes the damage",
+ "สายตา — อ่านออกว่าใครกำลังเล่นงานเราหรือกำลังจ่ออยู่บนตัวเปราะของเรา แล้วหันไปจัดการคนนั้นก่อน แต้มต่ำตีอะไรก็ได้ที่อยู่ใกล้ ปล่อยให้คนที่กระโดดใส่ตัวเองยืนตีฟรี":
+   "Game sense reads who is actually coming for you, or sitting on one of your squishies, and turns to deal with them first. A low score hits whatever is nearby and lets the champion diving it attack for free",
+ "การตัดสินใจ — ความอดใจรออัลติเคยเป็นหน้าผาที่แต้ม 3.5 ต่ำกว่านั้นกดทิ้งทุกครั้ง สูงกว่านั้นอดใจเสมอ ค่านี้จึงเป็นแค่ 'ต้องมีอย่างน้อย 4' ตอนนี้เป็นลาดเอียง รอได้ 1.2 วินาทีต่อหนึ่งแต้ม (แต้ม 0 รอ 1.5 วิ · แต้ม 5 รอ 6 วิ · แต้ม 10 รอ 12 วิ)":
+   "Decision's ultimate patience was a cliff at 3.5 — below it you threw the ult away every time, above it you always waited — so the stat was really just \"get at least 4\". It is now a slope of 1.2 seconds per point: 1.5s of patience at 0, 6s at 5, 12s at 10",
+ "ฝีมือ — เหมือนเดิม เล็งสกิลแม่น หลบทัน และออโต้เสียเปล่าน้อยลง":
+   "Mechanics is unchanged: landing skillshots, dodging them, and wasting fewer basic attacks",
+ "ของที่เคยเป็นปัญหา: ทีมเวิร์คเดิมสั่งให้รุมเป้าเดียวกันอย่างเดียวโดยไม่มีอะไรกันดาเมจล้น ใส่แต้มแล้วแพ้บ่อยกว่าไม่ใส่ · สายตาเดิมแทบไม่ได้คุมอะไรที่มีน้ำหนักเลย":
+   "What was broken: teamwork used to do nothing but tell everyone to pile onto one target, with no guard against overkill, so spending points on it actually lost you games; and game sense controlled almost nothing that mattered",
+ "หมายเหตุจากการวัด: ในเอนจินนี้มีแค่สองการตัดสินใจที่เปลี่ยนผลไฟต์ได้จริง คือเลือกตีใครกับกดอัลติตอนไหน ส่วนการยืน การหลบ การหนีโซนบนพื้น และระยะไล่ ลองแล้ววัดได้ราวศูนย์ถึงติดลบ เพราะดาเมจเกือบทั้งหมดหลบไม่ได้อยู่แล้ว":
+   "A note from the measurements: only two decisions actually swing a fight in this engine — who to attack and when to ult. Spacing, dodging, walking out of ground hazards and chase range all measured at roughly zero or worse, because almost no damage here can be avoided in the first place",
+ "ผลที่วัดได้ตอนนี้ (ดันค่านั้นเป็น 10 เจอทีมที่ทุกค่า 5): การตัดสินใจนำขาดที่ราว 54 แต้ม ฝีมือ 23 ความรู้ 18 ทีมเวิร์ค 6 สายตา 4":
+   "Where they land now, pushing one stat to 10 against a team at 5 across the board: decision leads by about 54 points of win rate, mechanics 23, knowledge 18, teamwork 6, game sense 4",
+ "อ่านออกว่าใครกำลังเล่นงานเราหรือตัวเปราะของเรา แล้วหันไปจัดการคนนั้นก่อน · ถอยเป็น ยืนถูกระยะ":
+   "Spots who is actually coming for you, or for one of your squishies, and deals with them first · retreats in time and holds its spacing",
+ "อ่านแมตช์อัพ — เลือกเป้าที่เรากินได้เร็วจริง หลังหักเกราะและต้านเวทของเขาแล้ว":
+   "Reads the matchup — picks whoever you actually kill fastest once their armour and magic resist are accounted for",
+ "ตีเป้าเดียวกับเพื่อน และไม่ไปสมทบเป้าที่เพื่อนเก็บอยู่แล้ว ย้ายไปตัวถัดไปแทน":
+   "Attacks alongside the team, and leaves a target the others are already finishing, moving to the next one instead",
 };

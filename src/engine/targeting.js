@@ -1,6 +1,36 @@
+import { KNOW_MATCHUP, SENSE_PEEL, TEAM_LOOKAHEAD, TEAM_OVERKILL } from "../data/tuning.js";
 import { skillPower } from "./damage.js";
 import { aliveOf, dist, hasBuff } from "./state-util.js";
 import { effStat } from "./stats.js";
+
+
+// ดาเมจต่อวินาทีคร่าวๆ ของยูนิตหนึ่ง ใช้ตัดสินใจ ไม่ได้เอาไปคิดดาเมจจริง
+const roughDps = (a) => (a.ad || 0) * (a.asEff || a.atkSpeed || 0.6);
+
+// เป้านี้จะตายจากดาเมจที่เพื่อนจ่อไว้อยู่แล้วหรือยัง ภายใน TEAM_LOOKAHEAD วินาที
+// ใช้ตอบคำถามว่า "ไปสมทบตัวนี้ = ตีศพเปล่าๆ ไหม"
+function alreadyDoomed(state, u, e) {
+  let committed = 0;
+  for (const a of state.units) {
+    if (!a.alive || a.team !== u.team || a.id === u.id) continue;
+    if (a.targetId !== e.id) continue;
+    if (dist(a, e) > a.range * 1.3) continue;      // ยังตีไม่ถึงก็ยังไม่นับ
+    committed += roughDps(a) * TEAM_LOOKAHEAD;
+  }
+  const res = 100 / (100 + Math.min(e.armor, e.mr));
+  return committed * res > e.hp + (e.shield || 0);
+}
+
+// เรากินตัวนี้ได้เร็วแค่ไหนจริงๆ หลังหักเกราะ/ต้านเวทของเขา แล้วหารด้วยเลือดที่เหลือ
+// นี่คือ "การอ่านแมตช์อัพ" — ตัวถังหนาที่เกราะสูงไม่ใช่เป้าของสายกายภาพ
+// และตัวเปราะที่ต้านเวทต่ำคือเป้าของสายเวท
+function killSpeed(u, e) {
+  const magic = (u.ap || 0) > (u.ad || 0);
+  const res = magic ? e.mr : e.armor;
+  const mine = magic ? Math.max(u.ap || 0, 1) * 0.6 : roughDps(u);
+  const eff = mine * (100 / (100 + res));
+  return eff / Math.max(1, e.hp + (e.shield || 0));
+}
 
 
 // ---------------- targeting ----------------
@@ -9,8 +39,10 @@ export function pickTarget(state, u, supAlive) {
   if (!enemies.length) return null;
   const know = effStat(u, "knowledge", supAlive);   // reads the matchup: who actually matters
   const team = effStat(u, "teamwork", supAlive);    // calls the target the rest of the team is on
+  const sense = effStat(u, "gameSense", supAlive);  // reads who is actually coming for us
   const w = know / 10;
   const tw = team / 10;
+  const sw = sense / 10;
 
   const counts = {};
   for (const a of state.units) {
@@ -26,12 +58,20 @@ export function pickTarget(state, u, supAlive) {
     score += w * (1 - e.hp / e.maxHp) * 3.4;               // knowledge: finish the wounded
     score += tw * Math.min(counts[e.id] || 0, 3) * 0.6;    // teamwork: converge on one target
     score += w * (e.champ.value - 1) * 1.1;                // knowledge: kill the carry, not the tank
-    // peel: an enemy sitting on top of one of our squishies jumps the queue
-    if (e.champ.melee) {
-      for (const a of state.units) {
-        if (!a.alive || a.team !== u.team || a.id === u.id || a.champ.value < 1.2) continue;
-        if (dist(e, a) < 400) { score += w * 1.1; break; }
-      }
+    // knowledge — อ่านแมตช์อัพจริง: ดาเมจของ "เรา" หลังหักเกราะ/ต้านเวทของ "เขา" เทียบกับเลือดที่เขาเหลือ
+    // คนที่รู้แมตช์อัพจะไม่ไปจิ้มตัวถังที่เกราะหนา ทั้งที่มีตัวเปราะยืนอยู่ห่างกันแค่นิดเดียว
+    score += w * Math.min(killSpeed(u, e) * 14, 1) * KNOW_MATCHUP;
+    // teamwork — ไม่ตีศพ เป้าที่เพื่อนจ่อดาเมจพอฆ่าอยู่แล้ว ปล่อยให้เขาเก็บ แล้วไปกดตัวถัดไป
+    // เดิมทีมเวิร์คสั่งให้รุมเป้าเดียวกันอย่างเดียว ดาเมจส่วนเกินทิ้งเปล่า ใส่แต้มแล้วแพ้บ่อยกว่าไม่ใส่
+    if (alreadyDoomed(state, u, e)) score -= tw * TEAM_OVERKILL;
+    // สายตา — อ่านออกว่าใครกำลังเล่นงานเราอยู่ แล้วหันไปจัดการคนนั้นก่อน
+    // คนที่อ่านเกมไม่ออกจะตีอะไรก็ได้ที่อยู่ใกล้ ปล่อยให้คนที่กระโดดใส่ตัวเองยืนตีฟรี
+    if (e.targetId === u.id) score += sw * SENSE_PEEL;
+    // peel: ศัตรูที่ไปจ่ออยู่บนตัวเปราะของเรา ต้องถูกดึงออกมาก่อน
+    for (const a of state.units) {
+      if (!a.alive || a.team !== u.team || a.id === u.id) continue;
+      if (e.targetId !== a.id || a.champ.value < 1.2) continue;
+      if (dist(e, a) < 500) { score += sw * SENSE_PEEL * 0.6; break; }
     }
     score += w * (e.bounty || 0) * 0.05;                   // knowledge: notice the fed target
     // cover: a well-positioned champion puts bodies between itself and the shooter

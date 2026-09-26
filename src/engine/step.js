@@ -89,13 +89,6 @@ export function step(state) {
 
   const supB = supportAlive(state, "blue");
   const supR = supportAlive(state, "red");
-  // ค่าสถานะที่ระบบดาเมจต้องอ่าน — คิดทีเดียวต่อเฟรม ไม่ต้องไปเรียก effStat ทุกครั้งที่ตีโดน
-  for (const u of state.units) {
-    const sa = u.team === "blue" ? supB : supR;
-    u.statKnow = effStat(u, "knowledge", sa);
-    u.statTeam = effStat(u, "teamwork", sa);
-    u.statSense = effStat(u, "gameSense", sa);
-  }
   const cen = { blue: centroid(state, "blue"), red: centroid(state, "red") };
 
   // support auras only count while the wearer is still alive

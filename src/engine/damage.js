@@ -1,8 +1,5 @@
 import { tr } from "../i18n.js";
-import {
-  DMG_MUL, KNOW_DEAL, KNOW_TAKE, SENSE_GUARD, SENSE_GUARD_MAX, SENSE_GUARD_RANGE,
-  TEAM_FOCUS, TEAM_FOCUS_MAX, TEAM_FOCUS_RANGE,
-} from "../data/tuning.js";
+import { DMG_MUL } from "../data/tuning.js";
 import { gainIsolde, gainIsoldeOnTaken, popDagger } from "./on-hit.js";
 import { addBuff, addBuffUnique, addDot, buffSum, bump, curState, dist, hasBuff, pushLog, refreshDot, vfx } from "./state-util.js";
 import { cdrFromItemHaste } from "./stats.js";
@@ -22,42 +19,6 @@ import {
 // กันดาเมจพ่วงของ Faustus วนเรียกตัวเอง
 let faustEcho = false;
 
-
-// ความรู้แมตช์อัพ — คนที่รู้ว่าอะไรกินอะไร ตีเข้าเนื้อกว่าและโดนเต็มๆ น้อยกว่า
-// นับจากระยะห่างจากกลางตาราง (5) ทั้งสองทาง แต้มต่ำก็เสียเปรียบจริง
-function knowAmp(source, target) {
-  const s = source && source.statKnow != null ? source.statKnow : 5;
-  const t = target && target.statKnow != null ? target.statKnow : 5;
-  return (1 + (s - 5) * KNOW_DEAL) * (1 - (t - 5) * KNOW_TAKE);
-}
-
-// ทีมเวิร์ค — เพื่อนกี่คนที่กำลังจ่อเป้าเดียวกันอยู่ตอนนี้
-// เดิมทีมเวิร์คสั่งให้ทุกคนรุมเป้าเดียวกันก็จริง แต่ไม่มีรางวัลอะไรตอบแทน
-// ดาเมจส่วนเกินเลยทิ้งเปล่า ใส่แต้มทีมเวิร์คแล้วแพ้บ่อยกว่าไม่ใส่
-function focusAmp(state, source, target) {
-  if (!state || !source || !target || !source.statTeam) return 1;
-  let n = 0;
-  for (const a of state.units) {
-    if (!a.alive || a.team !== source.team || a.id === source.id) continue;
-    if (a.targetId !== target.id) continue;
-    if (dist(a, target) > TEAM_FOCUS_RANGE) continue;
-    if (++n >= TEAM_FOCUS_MAX) break;
-  }
-  return 1 + n * TEAM_FOCUS * (source.statTeam / 10);
-}
-
-// สายตาอ่านเกม — รู้ตัวว่ากำลังโดนรุม เลยไม่ยืนให้โดนเต็มๆ
-// นับจากศัตรูที่ประชิดเข้ามาจริง ไม่ใช่คนที่เล็งอยู่เฉยๆ
-function awareGuard(state, target) {
-  if (!state || !target || !target.statSense) return 1;
-  let n = 0;
-  for (const e of state.units) {
-    if (!e.alive || e.team === target.team) continue;
-    if (dist(e, target) > SENSE_GUARD_RANGE) continue;
-    if (++n >= SENSE_GUARD_MAX) break;
-  }
-  return 1 - n * SENSE_GUARD * (target.statSense / 10);
-}
 
 // เกราะเลือดเซนทอร์ — เก็บศพหรือช่วยเก็บ จะล้างเลือดไหลของตัวเอง
 // แล้วฮีลคืน 150% ของดาเมจที่ยังไม่ทันไหลออก
@@ -106,11 +67,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   const frail = 1 + (target.pigFrail || 0);
   // ตราขยายดาเมจของ Ariadne และตราเวทของ Mímir
   const itemAmp = loreItemAmp(state, source, target, magic);
-  // ค่าสถานะนักแข่ง — ความรู้แมตช์อัพ และการรุมเป้าเดียวกันพร้อมเพื่อน
-  const know = knowAmp(source, target);
-  const sync = focusAmp(state, source, target);
-  const aware = awareGuard(state, target);
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp * know * sync * aware
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
