@@ -73,6 +73,12 @@ export function stackChips(u, now) {
     const n = (u.bleedStacks != null ? u.bleedStacks : 0);
     if (n > 0) add("BLEED", n + "/" + ch.critBleed.maxStacks, C.red, n / ch.critBleed.maxStacks);
   }
+  // --- ตัวนับของ Patch 0.4 ---
+  if (ch.daggers) {
+    const names = { TRAGEDY: "โศกนาฏกรรม", COMEDY: "สุขนาฏกรรม", DEATH: "มรณะ" };
+    const cols = { TRAGEDY: "#7EACFF", COMEDY: "#E8BE60", DEATH: "#E85C6C" };
+    add("MASK", u.mask ? tr(names[u.mask]) : tr("ยังไม่สวม"), u.mask ? cols[u.mask] : C.dim, null);
+  }
   if (u.jolt > 0) add("JOLT", u.jolt + "/3", "#7EC7FF", u.jolt / 3);
   if (u.truthAura) add("TRUTH", "+" + Math.round(u.truthAura.amp * 100) + "%", "#E3B75F", null);
 

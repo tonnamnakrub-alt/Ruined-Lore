@@ -10,6 +10,7 @@ import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
+import { stickDagger } from "./lore-p4.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -222,6 +223,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (source.champ.glassShards) ellaStash(state, source, target, dmg);
     // JACK — สกิลโดนแล้วแปะเมล็ดถั่ว (ออโต้ไม่นับ)
     if (!isAuto && source.champ.beanstalk && /^[QWER] /.test(String(state.dmgSrc || ""))) jackSeed(state, source, target);
+    // PHANTOM Q — มีดที่บินไปโดนแต่ละเล่มปักคาไว้หนึ่งเล่ม (E ไม่ปักเพิ่ม R ปักเองสามเล่ม)
+    if (!isAuto && source.champ.daggers && /^Q /.test(String(state.dmgSrc || ""))) stickDagger(state, source, target, 1);
     // NIAN — ทุกดาเมจจากสกิลของเหนียนสะสมประจุกระตุกสตัน
     if (!isAuto && source.champ.staticAura && /^[QWER] /.test(String(state.dmgSrc || ""))) nianJolt(state, source, target);
     // เอฟเฟกต์ของไอเทมชุด Patch 0.3 ที่ผูกกับการทำดาเมจ

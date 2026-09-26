@@ -10,6 +10,7 @@ import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 import { fireLoreSkill, gainStar } from "./lore.js";
+import { fireP4Skill } from "./lore-p4.js";
 
 
 // ครอบ fireSkillEffect ไว้ เพื่อติดป้าย "ดาเมจนี้มาจากสกิลไหน" ให้ทุกอย่างที่สกิลนี้ปล่อยออกไป
@@ -727,8 +728,10 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     default: {
-      // ท่าของตัวละคร Patch 0.3 อยู่ใน engine/lore.js
-      fireLoreSkill(state, u, sk, target, prec, { missX, missY, ang });
+      // ท่าของตัวละคร Patch 0.3 อยู่ใน engine/lore.js · Patch 0.4 อยู่ใน engine/lore-p4.js
+      if (!fireLoreSkill(state, u, sk, target, prec, { missX, missY, ang })) {
+        fireP4Skill(state, u, sk, target, prec, { missX, missY, ang });
+      }
       break;
     }
   }

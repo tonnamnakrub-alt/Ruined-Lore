@@ -6,6 +6,7 @@ import { addBuff, addBuffUnique, addDot, buffSum, dist, hasBuff, pushLog, skillL
 import { fullCd } from "./stats.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
+import { tempestLand } from "./lore-p4.js";
 import { AUTO_DMG } from "../data/tuning.js";
 
 // ดาเมจออโต้ที่ศัตรูฟาดใส่ยักษ์ คิดตัวคูณเดียวกับที่ลงแชมเปี้ยน
@@ -942,7 +943,10 @@ export function tickLore(state, dt) {
     const sk = s.sk;
     const prev = state.dmgSrc;
     state.dmgSrc = skillLabel(u, sk);
-    if (s.kind === "starfall") {
+    if (s.kind === "spiral") {
+      // PHANTOM R — ลอยครบเวลาแล้วสาดมีดรอบตัว (อยู่ใน engine/lore-p4.js)
+      tempestLand(state, u, s);
+    } else if (s.kind === "starfall") {
       u.buffs = u.buffs.filter((b) => b.type !== "untargetable" && b.type !== "invuln");
       place(u, s.x, s.y);
       vfx(state, { kind: "slam", x: u.x, y: u.y, r: s.radius, color: "126,199,255", dur: 0.8 });

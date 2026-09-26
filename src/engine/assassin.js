@@ -164,10 +164,8 @@ export function tickAssassin(state, u, dt) {
   const cdr = cdrFromItemHaste(u.itemHaste || 0);
 
   // Sekhmet's Massacre Claws — ช่วงต้นไฟต์เจาะเกราะเพิ่ม
-  if (u.ragePen) {
-    if (u.penBase == null) u.penBase = u.arPen || 0;
-    u.arPen = u.penBase + (t < u.ragePen.dur ? u.ragePen.arPen : 0);
-  }
+  // เขียนทับ u.arPen ตรงๆ ไม่ได้แล้ว เพราะ step.js คิด arPenBase + หน้ากากให้ก่อนหน้านี้
+  if (u.ragePen && t < u.ragePen.dur) u.arPen = (u.arPen || 0) + u.ragePen.arPen;
 
   // Carnwennan's Shadowblade — จบการพุ่งเมื่อไหร่ ชาร์จหมัดถัดไป
   if (u.dashStrike) {

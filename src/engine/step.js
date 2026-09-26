@@ -321,6 +321,11 @@ export function step(state) {
     }
     if (buffSum(u, "ad")) u.ad = Math.round(u.ad * (1 + buffSum(u, "ad")));
     u.ad += buffSum(u, "adFlat");
+    // PHANTOM — หน้ากากโศกนาฏกรรมให้ Bonus AD จริง ไม่ใช่แค่เลข AD บนหน้าจอ
+    // (สกิลที่สเกลด้วย Bonus AD ต้องเห็นก้อนนี้ด้วย) ส่วนหน้ากากมรณะให้เจาะเกราะ
+    if (u.bonusAdBase != null) u.bonusAd = u.bonusAdBase + (u.maskAd || 0);
+    if (u.arPenBase != null) u.arPen = u.arPenBase + (u.maskPen || 0);
+    if (u.maskAd) u.ad += u.maskAd;
     // TOTSAKAN R — แขนอสูรที่งอกอยู่ ดึงค่าสถานะจากไอเทมออกมาได้อีกชั้นหนึ่ง
     if (u.asuraArms && u.itemPart) {
       const amp = u.asuraArms.amp;

@@ -75,3 +75,15 @@ export const STYLES = {
   POKE: { key: "POKE", th: "คุมระยะ", rangeMul: 0.74, standoff: 0.86, leashBonus: 0, retreatAt: 0.3, beats: "HOLD" },
   HOLD: { key: "HOLD", th: "ตั้งรับ", rangeMul: 0.60, standoff: 0.78, leashBonus: -190, retreatAt: 0.38, beats: "ENGAGE" },
 };
+
+// หน้ากากของ PHANTOM (W) — บอทต้องเลือกเองว่าจะใส่ใบไหน ไม่ใช่สุ่ม
+// มองไปข้างหน้ากี่วินาทีตอนตีราคาว่าหน้ากากใบไหนคุ้มกว่า
+export const MASK_WINDOW = 4.0;
+// ต้องดีกว่าใบที่ใส่อยู่กี่ % ถึงจะยอมเสียจังหวะ 0.25 วิเปลี่ยนใบ
+export const MASK_MARGIN = 0.08;
+// เส้นตัดสินของคนที่ decision ต่ำจะเลื่อนไปมาได้แค่ไหน (แต้ม 10 ไม่เลื่อนเลย)
+export const MASK_JITTER = 0.30;
+// อ่านเกราะศัตรูคลาดเคลื่อนได้แค่ไหนเมื่อ knowledge เป็นศูนย์
+export const MASK_MISREAD = 1.2;
+// อ่านใหม่ทุกกี่วินาที — ไม่ใช่ทุกเฟรม ไม่งั้นทอยไปเรื่อยๆ เดี๋ยวก็เจอเลขที่ถูกใจ
+export const MASK_RETHINK = 3.0;

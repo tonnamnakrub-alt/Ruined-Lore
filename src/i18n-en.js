@@ -2984,4 +2984,84 @@ export const DICT = {
    "ARTHUR's passive converts 10% of his damage into shield plus 0.5% per level, instead of a flat 15%, and the shield caps at 25% of his max health instead of 30%",
  "ARTHUR E — ความเร็วพุ่ง 1100 เหลือ 900 · ระยะพุ่ง 500 เหลือ 450":
    "ARTHUR E: dash speed 900 instead of 1100, over 450 units instead of 500",
+ "แฟนทอม":
+   "Phantom",
+ "โศกนาฏกรรม":
+   "Tragedy",
+ "สุขนาฏกรรม":
+   "Comedy",
+ "มรณะ":
+   "Red Death",
+ "ยังไม่สวม":
+   "none yet",
+ "พาสซีฟ Stitched Melodrama":
+   "Passive Stitched Melodrama",
+ "{0} {1} สลับเป็นหน้ากาก{2}":
+   "{0} {1} switches to the Mask of {2}",
+ "ออโต้ทุกครั้งปักมีดสั้นคาไว้บนตัวเป้า 1 เล่ม อยู่ได้ 6 วิ (ปักซ้ำต่ออายุใหม่ทั้งกอง) · ครบ 5 เล่มเมื่อไหร่ มีดทั้งกองระเบิดพร้อมกัน ดาเมจกายภาพ 45 ที่เลเวล 1 ไล่ถึง 190 ที่เลเวล 18 (+65% Bonus AD) พร้อมสโลว์ 20-30% นาน 1.25 วิ แล้วสแตกรีเซ็ตเป็นศูนย์ทันที":
+   "Every basic attack leaves one dagger buried in the target for 6s, and each new dagger refreshes the whole set. On the fifth, every dagger bursts at once for 45 physical damage at level 1 rising to 190 at level 18 (+65% Bonus AD), slowing by 20-30% for 1.25s, and the count resets to zero",
+ "เลือกสวมหน้ากากหนึ่งในสามใบ อยู่ถาวรจนกว่าจะเปลี่ยนใบ — โศกนาฏกรรมเพิ่มพลังโจมตี สุขนาฏกรรมเพิ่มความเร็วโจมตี มรณะเพิ่มเจาะเกราะ":
+   "Wears one of three masks, kept until swapped — Tragedy grants attack damage, Comedy attack speed, Red Death armor penetration",
+ "กระชากมีดที่ปักอยู่บนศัตรูทุกตัวในระยะ {0} หน่วยกลับมา ยิ่งปักเยอะยิ่งแรง และใครขวางวิถีบินกลับก็โดนด้วย":
+   "Rips back every dagger buried in enemies within {0} units — the more buried, the harder it hits — and anyone standing in a returning dagger's path is cut too",
+ "กระโดดลอยตัวแตะไม่ได้ {0} วิ แล้วสาดมีดรอบตัวรัศมี {1} หน่วย พร้อมปักมีดให้ทุกคนในวงทันที {2} เล่ม":
+   "Leaps up untargetable for {0}s, then sprays daggers in a {1} unit radius, burying {2} daggers in everyone caught",
+ "ตัวละครใหม่ และรอบปรับตัวละครใหญ่ — ยกหกตัว กดหกตัว":
+   "A new champion, and a big balance pass — six lifted, six pushed down",
+ "แฟนทอมเข้าสนาม · ตัวที่จมอยู่ท้ายตารางได้ของใหม่และตัวเลขที่ใช้ได้จริง ส่วนตัวที่กินขาดโดนกดลงมา":
+   "Phantom joins the roster. The champions stuck at the bottom get new tools and numbers that actually work, and the ones running away with games come back down",
+ "PHANTOM (แฟนทอม) — ภูตละครเวทีแห่งรัตติกาล · Marksman · ADC":
+   "PHANTOM (The Opera's Specter) — Marksman · ADC",
+ "แครี่ระยะไกลสาย AD ที่ทุกอย่างหมุนรอบกองมีดที่ปักค้างอยู่บนตัวศัตรู — ปักให้ครบแล้วมันระเบิดเอง หรือจะกระชากทั้งกองกลับมาเป็นดาเมจก็ได้":
+   "An AD ranged carry built entirely around the daggers left buried in his target — fill the set and it detonates on its own, or rip the whole set back out as damage",
+ "พาสซีฟ Stitched Melodrama — ออโต้ทุกครั้งปักมีดสั้น 1 เล่มคาไว้บนตัวเป้า อยู่ได้ 6 วิ ปักซ้ำต่ออายุใหม่ทั้งกอง · ครบ 5 เล่มเมื่อไหร่ มีดทั้งกองระเบิดพร้อมกัน ดาเมจกายภาพ 45 ที่เลเวล 1 ไล่ถึง 190 ที่เลเวล 18 (+65% Bonus AD) พร้อมสโลว์ 20-30% นาน 1.25 วิ แล้วกองมีดรีเซ็ตเป็นศูนย์":
+   "Passive Stitched Melodrama: every basic attack buries one dagger in the target for 6s, and each new dagger refreshes the whole set. On the fifth, every dagger bursts at once for 45 physical damage at level 1 rising to 190 at level 18 (+65% Bonus AD), slowing by 20-30% for 1.25s, and the set resets to zero",
+ "Q Tri-Blade Fan — ปามีด 3 เล่มเป็นรูปพัดกาง 35 องศา ไกล 800 หน่วย · ดาเมจกายภาพต่อเล่ม 50/80/110/140/170 + 55% Bonus AD · เล่มที่ซ้ำตัวเดิมเหลือ 35% แต่ปักมีดครบทุกเล่มที่โดน (ยืนประชิดแล้วโดนครบสามเล่มคือ 3 สแตกรวด) · คูลดาวน์ 8/7.25/6.5/5.75/5 วิ":
+   "Q Tri-Blade Fan: throws 3 daggers in a 35 degree fan out to 800 units, each for 50/80/110/140/170 physical damage + 55% Bonus AD. Extra blades on the same body deal 35%, but every blade that lands still buries its own dagger — stand close enough to land all three and that is 3 stacks at once. Cooldown 8/7.25/6.5/5.75/5s",
+ "W The Phantom's Persona — สวมหน้ากากหนึ่งในสามใบ อยู่ถาวรจนกว่าจะเปลี่ยน คูลดาวน์การเปลี่ยน 6 วิ · โศกนาฏกรรมให้พลังโจมตี 12/18/24/30/36 (นับเป็น Bonus AD จริง สกิลทุกท่าแรงขึ้นตาม) · สุขนาฏกรรมให้ความเร็วโจมตี 15/20/25/30/35% · มรณะให้เจาะเกราะ 10/15/20/25/30":
+   "W The Phantom's Persona: wears one of three masks, kept until swapped, 6s swap cooldown. Tragedy grants 12/18/24/30/36 attack damage that counts as real Bonus AD, so every ability scales with it. Comedy grants 15/20/25/30/35% attack speed. Red Death grants 10/15/20/25/30 armor penetration",
+ "E Maestro's Rebound — กระชากมีดที่ปักอยู่บนศัตรูทุกตัวในระยะ 1100 กลับมาพร้อมกัน · ดาเมจกายภาพ 20/30/40/50/60 + 25% Bonus AD ต่อมีดหนึ่งเล่ม (ยิ่งปักเยอะยิ่งทวีคูณ) · ใครยืนขวางวิถีบินกลับกิน 40/65/90/115/140 + 40% Bonus AD อีกก้อน · มีดที่บินกลับไม่ปักสแตกเพิ่ม · คูลดาวน์ 13/12/11/10/9 วิ":
+   "E Maestro's Rebound: rips back every dagger buried in enemies within 1100 units at once, for 20/30/40/50/60 physical damage + 25% Bonus AD per dagger, so a full set hits several times over. Anyone standing in a returning dagger's path takes another 40/65/90/115/140 + 40% Bonus AD. Returning daggers bury nothing new. Cooldown 13/12/11/10/9s",
+ "R The Grand Masquerade — กระโดดลอยตัวแตะไม่ได้ 0.75 วิ แล้วสาดมีดเป็นวงก้นหอยรัศมี 500 · ดาเมจกายภาพ 180/280/380 + 85% Bonus AD และปักมีดให้ทุกคนในวงทันที 3 เล่ม (มีเดิมอยู่ 2 เล่มก็ระเบิดทันที) · คูลดาวน์ 75/65/55 วิ":
+   "R The Grand Masquerade: leaps up untargetable for 0.75s, then sprays daggers in a spiral out to 500 units for 180/280/380 physical damage + 85% Bonus AD, burying 3 daggers in everyone caught — anyone already holding 2 detonates on the spot. Cooldown 75/65/55s",
+ "หน้ากากของแฟนทอมเป็นการตัดสินใจของบอท ไม่ใช่การสุ่ม":
+   "Phantom's mask is a decision the bot makes, not a dice roll",
+ "ทุกครั้งที่คูลดาวน์ W ลง บอทจะตีราคาทั้งสามใบจริงๆ ว่าอีก 4 วินาทีข้างหน้าใบไหนทำดาเมจได้มากกว่ากัน โดยนับทั้งออโต้ มีดที่กำลังจะระเบิด Q ที่ใกล้พร้อม และกองมีดที่ E รออยู่":
+   "Every time W comes off cooldown the bot actually prices all three masks against the next 4 seconds, counting basic attacks, the detonation it is about to reach, a Q that is nearly up, and the set of daggers E is waiting on",
+ "ความรู้ (knowledge) คือความแม่นในการอ่านเกราะของคู่ต่อสู้ — แต้มต่ำอ่านพลาดแล้วหยิบใบผิด แต้มเต็มอ่านตรงทุกครั้ง":
+   "Knowledge is how accurately the athlete reads the opponent's armor — a low score misreads it and picks the wrong mask, a full score reads it right every time",
+ "การตัดสินใจ (decision) คือความนิ่งของเส้นที่ใช้ตัดสินว่า \"ดีกว่าพอที่จะยอมเสียจังหวะ 0.25 วิ\" — แต้มต่ำเส้นเลื่อนไปมา บางทีสลับมั่วจนเสียดาเมจ บางทีดื้อไม่ยอมสลับทั้งที่ควรสลับ":
+   "Decision is how steady the bar is for \"better enough to be worth losing 0.25s\" — a low score lets the bar wander, sometimes swapping for nothing and losing damage, sometimes stubbornly refusing a swap it should make",
+ "ผลที่วัดได้: เกราะบางและมีมีดปักอยู่แล้วมักได้หน้ากากมรณะ · เกราะหนามากจนเจาะไม่คุ้มมักได้โศกนาฏกรรม · ช่วงที่ต้องรีบสะสมมีดมักได้สุขนาฏกรรม":
+   "What that looks like in practice: thin armor with daggers already buried usually gets Red Death, armor so thick that penetration stops paying usually gets Tragedy, and stretches where he needs daggers fast usually get Comedy",
+ "ตรงไหนที่ปรับตัวเลขจากเอกสารต้นฉบับ":
+   "Where the numbers differ from the source document",
+ "Q ระยะ 850 เหลือ 800 และดาเมจต่อเล่ม 60-200 เหลือ 50-170 — ท่ารูปกรวยในเกมนี้กวาดทันทีไม่ใช่กระสุนบิน 850 แบบกวาดทันทีคือโพคฟรีเกินไปสำหรับตัวที่มีระยะออโต้ 550 อยู่แล้ว":
+   "Q range 800 instead of 850, and 50-170 per blade instead of 60-200 — cone abilities in this game sweep instantly rather than flying as projectiles, and an instant 850 sweep is too much free poke for a champion who already attacks from 550",
+ "W สุขนาฏกรรม 20-50% เหลือ 15-35% และมรณะ 7-19 ขึ้นเป็น 10-30 — ตัวเลขเดิมทำให้สุขนาฏกรรมชนะ 86% ของสถานการณ์และมรณะไม่มีวันถูกเลือกเลย ปรับแล้วทั้งสามใบมีที่ยืนจริง (25% / 52% / 23%)":
+   "W: Comedy 15-35% instead of 20-50%, and Red Death 10-30 instead of 7-19 — with the original numbers Comedy won 86% of situations and Red Death was never worth picking at all. Now all three have a real place (25% / 52% / 23%)",
+ "R คูลดาวน์ 100/85/70 เหลือ 75/65/55 — ของเดิมยาวกว่าอัลติทุกตัวในเกมนี้มาก (ส่วนใหญ่ 50-60) ไฟต์ยกหนึ่งสั้นเกินกว่าจะได้กดสองครั้ง":
+   "R cooldown 75/65/55 instead of 100/85/70 — the original is far longer than every other ultimate in this game (most sit at 50-60), and a single round is too short to ever cast it twice",
+ "ความเร็วโจมตีที่เอกสารเขียนเป็น +3.1% ต่อเลเวล แปลงเป็น +0.02 ต่อเลเวลตามที่เกมนี้เก็บค่า":
+   "The document's +3.1% attack speed per level is stored as +0.02 per level, which is how this game holds the value",
+ "สลับหน้ากากเปลี่ยนสไตล์":
+   "Swaps masks to change style",
+ "กระชากมีดที่ปักอยู่กลับ":
+   "Rips the buried daggers back",
+ "กระโดดหลบแล้วสาดมีดรอบตัว":
+   "Evasive leap, then a spray of daggers",
+ "หน้ากากโศกนาฏกรรม — เพิ่ม AD":
+   "Mask of Tragedy — bonus AD",
+ "หน้ากากสุขนาฏกรรม — เพิ่มความเร็วโจมตี":
+   "Mask of Comedy — attack speed",
+ "หน้ากากมรณะ — เจาะเกราะ":
+   "Mask of the Red Death — armor penetration",
+ "ดาเมจต่อมีดที่ปักอยู่หนึ่งเล่ม":
+   "Damage per buried dagger",
+ "Bonus AD (ต่อมีดหนึ่งเล่ม)":
+   "Bonus AD (per dagger)",
+ "ลอยแตะไม่ได้":
+   "Untargetable leap",
+ "ปักมีดทันที":
+   "Daggers buried on hit",
 };

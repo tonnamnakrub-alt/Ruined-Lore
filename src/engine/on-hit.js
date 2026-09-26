@@ -7,6 +7,7 @@ import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
 import { arthurCleave, carriageCrash, ellaOnHit, hoodBleed, pickDuelMark } from "./lore.js";
 import { loreItemsOnHit } from "./lore-items.js";
+import { stickDagger } from "./lore-p4.js";
 
 
 // Lost Boys' Blade — มีดยังปักอยู่ แล้วโดนอะไรก็ตามจากคนปาซ้ำ (ออโต้ "หรือสกิล")
@@ -91,6 +92,9 @@ export function onAutoLanded(state, u, target) {
   }
   // ARTHUR — ออโต้ฟันกวาดรอบเป้า
   if (u.champ.aegis) arthurCleave(state, u, target);
+  // ---- Patch 0.4 ----
+  // PHANTOM — ออโต้ทุกครั้งปักมีดสั้นคาไว้บนตัวเป้า
+  if (u.champ.daggers) stickDagger(state, u, target, 1);
   if (u.champ.fragments && u.shadow <= 0) addFrag(u, u.champ.fragments.onAuto);
   if (u.champ.fragments) applyFragmentDamage(state, u, target);
   if (u.champ.doubleTrouble) {

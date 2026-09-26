@@ -5,6 +5,7 @@ import { onUltCastItems } from "./lore-items.js";
 import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
 import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
+import { daggerCount, maskPlan } from "./lore-p4.js";
 
 
 // ELLA Q — คอมโบที่ยังไม่จบ จังหวะถัดไปต้องกดต่อได้ทันที
@@ -128,6 +129,8 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     if (sk.type === "bunker") return nearby >= 1 || hpFrac < 0.6;
     if (sk.type === "judgment") return d <= sk.range;
     if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
+    // ---- อัลติของ Patch 0.4 ----
+    if (sk.type === "bladeTempest") return nearby >= 1 && d <= sk.radius * 0.9;
   if (sk.type === "markNext") return d <= sk.range;
   if (sk.type === "barrage") return d <= sk.range && nearby >= 1;
   if (sk.type === "globalStrike") return true;
@@ -154,6 +157,27 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
     return d <= (sk.range || 900);
   }
+  // ---- ท่าของตัวละคร Patch 0.4 ----
+  // หน้ากากไม่ใช่ท่าที่ "ยิงใส่ใคร" แต่เป็นการตัดสินใจว่าจะเปลี่ยนสไตล์ไหม
+  // ถ้าใบที่ใส่อยู่ดีพอแล้ว ก็ไม่ควรเสียจังหวะไปสลับเล่นๆ
+  if (sk.type === "mask") {
+    const pick = maskPlan(state, u, sk, target);
+    if (!pick) return false;
+    u.maskPlan = pick;
+    return true;
+  }
+  // กระชากมีดกลับต้องมีของให้กระชากก่อน ยิ่งรอให้ปักเยอะยิ่งคุ้ม
+  if (sk.type === "rebound") {
+    let best = 0, total = 0;
+    for (const e of enemiesOf(state, u)) {
+      if (dist(u, e) > sk.range) continue;
+      const n = daggerCount(state, u, e);
+      total += n;
+      if (n > best) best = n;
+    }
+    return best >= 3 || total >= 4;
+  }
+  if (sk.type === "bladeTempest") return nearby >= 1 && d <= sk.radius * 0.9;
   // ---- ท่าของตัวละคร Patch 0.3 ----
   if (sk.type === "combo") {
     // จังหวะถัดไปของคอมโบต้องรอให้ออโต้โดนก่อน (comboArmed)
