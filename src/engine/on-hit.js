@@ -5,7 +5,7 @@ import { supportOnHitBonus } from "./support.js";
 import { mageOnHit } from "./mage.js";
 import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
-import { arthurCleave, carriageCrash, ellaOnHit, pickDuelMark } from "./lore.js";
+import { arthurCleave, carriageCrash, ellaOnHit, hoodBleed, pickDuelMark } from "./lore.js";
 import { loreItemsOnHit } from "./lore-items.js";
 
 
@@ -77,6 +77,10 @@ export function onAutoLanded(state, u, target) {
   // Another Eye: (mark now detonates centrally in applyDamage on any damage source)
   for (const x of activeSkills(u)) if (x.cdPerAuto && x.cdLeft > 0) x.cdLeft = Math.max(0, x.cdLeft - x.cdPerAuto);
   popDagger(state, u, target);
+  // HOOD — ออโต้ที่ไม่คริก็ทิ้งเลือดไหลไว้ (คริจัดการแยกตอนทอยคริใน step.js)
+  if (u.champ.critBleed && u.champ.critBleed.nonCritPct && !state.critThisHit) {
+    hoodBleed(state, u, target, state.lastAutoDmg || 0, true);
+  }
   // ---- Patch 0.3 ----
   // ELLA — เศษแก้วติดออโต้ และปลดล็อกจังหวะถัดไปของคอมโบ Q
   if (u.champ.glassShards) {

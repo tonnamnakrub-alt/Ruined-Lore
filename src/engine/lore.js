@@ -6,6 +6,10 @@ import { addBuff, addBuffUnique, addDot, buffSum, dist, hasBuff, pushLog, skillL
 import { fullCd } from "./stats.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
+import { AUTO_DMG } from "../data/tuning.js";
+
+// ดาเมจออโต้ที่ศัตรูฟาดใส่ยักษ์ คิดตัวคูณเดียวกับที่ลงแชมเปี้ยน
+const GIANT_AUTO_CUT = AUTO_DMG;
 
 
 // ---------------------------------------------------------------
@@ -422,8 +426,11 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
       const mine = [...lore.walls, ...lore.bunkers].filter((w) => w.ownerId === u.id && w.hp < w.maxHp);
       if (mine.length) {
         const w = mine.reduce((a, b) => (b.hp / b.maxHp < a.hp / a.maxHp ? b : a));
-        const heal = at(sk.repair, sk) + sk.repairBonusHp * (u.bonusHp || 0)
-          + sk.repairRes * ((u.armor || 0) + (u.mr || 0));
+        // ซ่อมเป็นสัดส่วนของเลือดสูงสุดของสิ่งก่อสร้างชิ้นนั้น ไม่ใช่ค่าคงที่
+        const heal = sk.repairPct
+          ? w.maxHp * at(sk.repairPct, sk)
+          : at(sk.repair, sk) + (sk.repairBonusHp || 0) * (u.bonusHp || 0)
+            + sk.repairRes * ((u.armor || 0) + (u.mr || 0));
         w.hp = Math.min(w.maxHp, w.hp + heal);
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: w.x, y2: w.y, w: 8, color: "232,163,61" });
         vfx(state, { kind: "ring", x: w.x, y: w.y, r: 90, color: "232,163,61", grow: 0.8 });
@@ -460,6 +467,13 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
 
     // ---- H.S.B E · พุ่งทะลุ ชนกำแพงแล้วระเบิด ----
     case "steerDash": {
+      // กดแล้วได้โล่ทันที ไม่ต้องรอว่าจะชนใคร
+      if (sk.castShield) {
+        const amt = at(sk.castShield, sk) + (sk.castShieldBonusHp || 0) * (u.bonusHp || 0);
+        u.shield = 0;
+        grantShield(u, amt);
+        u.buffs.push({ type: "shield", v: 1, until: state.t + (sk.castShieldDur || 4) });
+      }
       u.dashing = {
         dx: Math.cos(face), dy: Math.sin(face), left: sk.dashRange, sk, frac: 1, hitIds: [],
         boar: { radius: sk.hitRadius * sc, rank: r },
@@ -1052,6 +1066,28 @@ export function tickLore(state, dt) {
     if (!u || state.t > g.until) return false;
     if (g.hp <= 0) return false;
     const foes = state.units.filter((e) => e.alive && e.team !== g.team && !hasBuff(e, "untargetable"));
+
+    // ---- ยักษ์โดนตีได้ ----
+    // ศัตรูที่ยืนประชิดตัวมันฟาดใส่มันไปด้วย คิดจากดาเมจออโต้ต่อวินาทีของคนนั้น
+    for (const e of state.units) {
+      if (!e.alive || e.team === g.team || e.stunned || e.disarmed) continue;
+      if (Math.hypot(e.x - g.x, e.y - g.y) > g.radius + e.radius + 60) continue;
+      g.hp -= (e.ad || 0) * (e.asEff || 0.6) * GIANT_AUTO_CUT * dt;
+    }
+    // ลูกสกิลของศัตรูที่พาดผ่านตัวมันก็ลงดาเมจ แต่ลูกยังวิ่งต่อ ไม่ได้ถูกกินทิ้ง
+    for (const p of state.projectiles) {
+      if (p.team === g.team || p.homing || p.giantHit) continue;
+      if (Math.hypot(p.x - g.x, p.y - g.y) > g.radius) continue;
+      p.giantHit = true;
+      g.hp -= p.dmg;
+      vfx(state, { kind: "flash", x: p.x, y: p.y, r: 50, color: "232,214,120", dur: 0.25 });
+    }
+    if (g.hp <= 0) {
+      vfx(state, { kind: "debris", x: g.x, y: g.y, r: g.radius * 1.2, color: "214,170,96", dur: 0.9 });
+      pushLog(state, tr("{0} ยักษ์สวรรค์ถูกทุบจนล้ม", g.team === "blue" ? "🔵" : "🔴"));
+      return false;
+    }
+
     if (!foes.length) return true;
     const tgt = foes.reduce((a, b) => (Math.hypot(b.x - g.x, b.y - g.y) < Math.hypot(a.x - g.x, a.y - g.y) ? b : a));
     const d = Math.hypot(tgt.x - g.x, tgt.y - g.y) || 1;
@@ -1142,7 +1178,9 @@ export function nianJolt(state, source, target) {
 export function arthurAegis(state, source, dmg, magic, trueDmg) {
   const cfg = source.champ && source.champ.aegis;
   if (!cfg || magic || !(dmg > 0)) return;
-  const pct = source.hp / source.maxHp < cfg.hpBelow ? cfg.lowPct : cfg.pct;
+  // อัตราแปลงไต่ตามเลเวลแทนที่จะคงที่ทั้งเกม
+  const base = cfg.pct + (cfg.pctPerLevel || 0) * ((source.level || 1) - 1);
+  const pct = source.hp / source.maxHp < cfg.hpBelow ? cfg.lowPct : base;
   const cap = source.maxHp * cfg.cap;
   const add = dmg * pct;
   source.aegisShield = Math.min(cap, (source.aegisShield || 0) + add);
@@ -1155,10 +1193,12 @@ export function arthurAegis(state, source, dmg, magic, trueDmg) {
 }
 
 // HOOD — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหล
-export function hoodBleed(state, source, target, excess) {
+export function hoodBleed(state, source, target, excess, nonCrit) {
   const cfg = source.champ && source.champ.critBleed;
   if (!cfg || !(excess > 0)) return;
-  const total = excess * cfg.pct;
+  // ออโต้ธรรมดาก็ทิ้งเลือดไหลไว้เหมือนกัน แค่คิดจากดาเมจที่ลงจริงด้วยอัตราคนละตัว
+  const total = excess * (nonCrit ? (cfg.nonCritPct || 0) : cfg.pct);
+  if (!(total > 0)) return;
   const mine = state.dots.filter((d) => d.targetId === target.id && d.ownerId === source.id && d.hoodBleed);
   if (mine.length >= cfg.maxStacks) {
     const oldest = mine.reduce((a, b) => (b.until < a.until ? b : a));
@@ -1272,6 +1312,23 @@ export function nineLivesCatch(state, u) {
   addBuff(u, { type: "stealth", v: 1, until: state.t + cfg.hideDur }, state.t);
   vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 60, color: "232,163,61", grow: 1.3, dur: cfg.hideDur });
   pushLog(state, tr("{0} {1} สลายตัวหนีไปในเงา", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+  return true;
+}
+
+
+// ALUCARD R — ตายครั้งแรกระหว่างร่างค้างคาว ลุกกลับมาเองด้วยเลือดบางส่วน
+export function vampReviveCatch(state, u) {
+  if (u.vampReviveUsed) return false;
+  const form = u.buffs.find((b) => b.type === "vampform");
+  if (!form) return false;
+  const sk = u.vampSkill;
+  const pct = sk && sk.reviveOnce;
+  if (!pct) return false;
+  u.vampReviveUsed = true;
+  u.hp = Math.max(1, Math.round(u.maxHp * pct));
+  vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 70, color: "214,60,90", grow: 1.4, dur: 0.9 });
+  vfx(state, { kind: "shards", x: u.x, y: u.y, r: 120, count: 10, color: "214,60,90", dur: 0.6 });
+  pushLog(state, tr("{0} {1} ลุกขึ้นจากความตายในร่างค้างคาว", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
   return true;
 }
 

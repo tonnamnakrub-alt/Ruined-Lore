@@ -133,13 +133,23 @@ function arena(mineStats, foeStats) {
 
 // ---- 4) ฝีมือ — ออโต้เสียเปล่าน้อยลง ----
 {
+  // ต้องยิงให้ได้เยอะพอถึงจะวัดอัตราพลาดได้ — เดิมวัดในไฟต์ 4v3
+  // ที่ตัวเองตายตั้งแต่ยิงได้ไม่กี่นัด ตัวเลขเลยแกว่งจนอ่านอะไรไม่ได้
   const whiffs = (m) => {
     const a = arena({ ...flat(5), mechanics: m }, flat(5));
     for (const u of a.mine.slice(1)) { u.x = -9000; u.y = -9000; }
-    for (const e of a.foes) { e.maxHp = 1e9; e.hp = 1e9; }
+    for (const e of a.foes.slice(1)) { e.x = -9000; e.y = -9000; }
+    const me = a.mine[0], dummy = a.foes[0];
+    a.st.timeLimit = 1e9;
+    me.maxHp = 1e9; me.hp = 1e9;
+    dummy.maxHp = 1e9; dummy.hp = 1e9;
+    dummy.x = me.x + 120; dummy.y = me.y;
     let g = 0;
-    while (g++ < 60 * 60) step(a.st);
-    const me = a.mine[0];
+    while (g++ < 60 * 120 && me.shots < 120) {
+      dummy.hp = dummy.maxHp;
+      me.hp = me.maxHp;
+      step(a.st);
+    }
     return (me.wasted || 0) / Math.max(1, me.shots);
   };
   const rHi = whiffs(10), rLo = whiffs(0);

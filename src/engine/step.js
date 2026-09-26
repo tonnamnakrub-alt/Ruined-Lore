@@ -68,13 +68,13 @@ function landAuto(state, u, target) {
   }
   atkDmg *= AUTO_DMG;
   if (!u.champ.missile) {
-    state.hitQueue.push({ ownerId: u.id, targetId: target.id, dmg: atkDmg, magic: false });
+    state.hitQueue.push({ ownerId: u.id, targetId: target.id, dmg: atkDmg, magic: false, crit: didCrit });
   } else {
     state.spawnQueue.push({
       id: state.nextProjId++, team: u.team, ownerId: u.id,
       homing: true, targetId: target.id,
       x: u.x, y: u.y, dx: 0, dy: 0,
-      speed: u.champ.missile, dmg: atkDmg, life: 2.5,
+      speed: u.champ.missile, dmg: atkDmg, life: 2.5, crit: didCrit,
     });
   }
 }
@@ -942,10 +942,14 @@ export function step(state) {
     const t = state.units.find((x) => x.id === h.targetId);
     if (o && o.alive && t && t.alive) {
       state.dmgSrc = h.src || tr("ออโต้");
+      // พาสซีฟที่ดูว่าออโต้ก้อนนี้คริหรือเปล่า ต้องรู้ก่อนที่ onAutoLanded จะถูกเรียก
+      state.critThisHit = !!h.crit;
+      state.lastAutoDmg = h.dmg;
       applyDamage(state, o, t, h.dmg, h.magic, false, true);
       state.dmgSrc = null;
       o.hits += 1;
       onAutoLanded(state, o, t);
+      state.critThisHit = false;
       consumeOnHit(state, o, t);
     }
   }

@@ -8,7 +8,7 @@ import { giantSlayerAmp, onMageDamageHook, onMageTakedown } from "./mage.js";
 import { onLauraDamage, onLauraTakedown } from "./laura.js";
 import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
-import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch } from "./lore.js";
+import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { onAliceDamage } from "./alice.js";
 import {
@@ -283,6 +283,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (lastStandCatch(state, target)) return;
     // PUSS — ชีวิตที่เก้า: ตายตอนเป้าที่มีตรายังอยู่ = ล่องหนหนี 2 วิ แล้วฟื้นด้วยเลือด 30%
     if (nineLivesCatch(state, target)) return;
+    // ALUCARD R — ตายครั้งแรกระหว่างร่างค้างคาว ลุกกลับมาเองด้วยเลือดบางส่วน
+    if (vampReviveCatch(state, target)) return;
     // Shroud of Osiris: once per fight, dying instead freezes you invulnerable
     // for 3s before reviving at 50% of your base HP
     if (target.hasItem && target.hasItem("soo") && !target.sooUsed && !target.sooRevive) {

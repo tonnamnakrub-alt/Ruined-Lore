@@ -104,7 +104,7 @@ function practice(champId, level = 18) {
   const on = p.range;
   p.starStacks = 0;
   step(st);
-  t("มีสแตกแล้วระยะออโต้ยืดเป็น 400", on === 400, on + " หน่วย");
+  t("มีสแตกแล้วระยะออโต้ยืดเป็น 300", on === 300, on + " หน่วย");
   t("หมดสแตกแล้วระยะกลับเป็นเดิม", p.range === CHAMPIONS.YODAKA.range, p.range + " หน่วย");
 }
 

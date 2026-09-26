@@ -79,7 +79,7 @@ t("สั่งท้าดวลเลนไหนก็ได้เลนน�
 // เนิร์ฟ: เลือกแล้วติดคูลดาวน์การเลือก 2 ยก · เก็บเป้าได้แล้ว ต้องเก็บตัวอื่นอีก 2 ครั้ง
 // =================================================================
 const cfg = CHAMPIONS.PUSS.duel;
-t("ข้อมูลเนิร์ฟอยู่ในตัวละคร", cfg.pickLockRounds === 2 && cfg.repickAfterKills === 2,
+t("ข้อมูลเนิร์ฟอยู่ในตัวละคร", cfg.pickLockRounds === 1 && cfg.repickAfterKills === 2,
   "คูลดาวน์เลือก " + cfg.pickLockRounds + " ยก · ต้องเก็บตัวอื่น " + cfg.repickAfterKills + " ครั้ง");
 
 // ---- เอนจิน: เลนที่ถูกห้าม ข้ามทั้งแบบสั่งเองและแบบเลือกเอง ----
@@ -118,9 +118,9 @@ t("ข้อมูลเนิร์ฟอยู่ในตัวละคร",
   let c = { champId: "PUSS", lane: "JUNGLE", duelLane: "MID" };
   const next = (row, round, kills) => ({ ...row, ...duelAfterRound(row, kills ? { duelKills: kills } : null, round) });
   c = next(c, 3, null);
-  t("เลือกยก 3 — ล็อกถึงก่อนยก 5", c.duelLockUntil === 5 && c.duelCommitted === "MID", "lockUntil " + c.duelLockUntil);
+  t("เลือกยก 3 — ล็อกถึงก่อนยก 4", c.duelLockUntil === 4 && c.duelCommitted === "MID", "lockUntil " + c.duelLockUntil);
   const c4 = next(c, 4, null);
-  t("ไม่เปลี่ยนเป้า — ไม่ต่อคูลดาวน์", c4.duelLockUntil === 5, "lockUntil " + c4.duelLockUntil);
+  t("ไม่เปลี่ยนเป้า — ไม่ต่อคูลดาวน์", c4.duelLockUntil === 4, "lockUntil " + c4.duelLockUntil);
   c = next(c4, 4, ["MID"]);
   t("เก็บเป้าที่เลือกได้ — ห้ามตัวนั้น 2 ครั้ง", c.duelBan && c.duelBan.MID === 2, JSON.stringify(c.duelBan));
   t("เก็บเป้าที่เลือกได้ — คำสั่งถูกปล่อย เลือกใหม่ได้เลย", c.duelLane === null && c.duelLockUntil === 0,

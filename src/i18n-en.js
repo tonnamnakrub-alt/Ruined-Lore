@@ -2888,4 +2888,100 @@ export const DICT = {
    "Omnivamp, armour and magic penetration, healing power, move speed and damage reduction were left alone — those are percentages where a single step changes far more power than a tidy number is worth",
  "มีเทสล็อกไว้แล้ว ใครเติมไอเทมใหม่ด้วยค่าสถานะหลักที่หารห้าไม่ลงตัวจะไม่ผ่าน":
    "A test locks it in: a new item with a core stat that is not a multiple of five will fail the suite",
+ "รอบปรับตัวละครใหญ่ — ยกหกตัว กดหกตัว":
+   "A big champion pass — six lifted, six brought down",
+ "ตัวที่จมอยู่ท้ายตารางได้ของใหม่และตัวเลขที่ใช้ได้จริง ส่วนตัวที่กินขาดโดนกดลงมา":
+   "The champions stuck at the bottom get new tools and numbers that actually work, and the ones running away with games come down",
+ "H.S.B — รื้อทั้งชุด":
+   "H.S.B — the whole kit reworked",
+ "พาสซีฟ Three Little Pigs — ลดดาเมจขั้นบ้านฟาง 15% เหลือ 10% และขั้นบ้านอิฐกินดาเมจเพิ่ม 15% เหลือ 10%":
+   "Three Little Pigs: the straw-house tier cuts 10% of incoming damage instead of 15%, and the brick-house tier takes 10% extra instead of 15%",
+ "Q Sledge Toss — ดาเมจ 75-215 + 60% Bonus AD + 5% Bonus HP เปลี่ยนเป็น 50/75/100/125/150 + 15% Bonus HP + 10% ของเลือดสูงสุดศัตรู":
+   "Q Sledge Toss: 75-215 + 60% bonus AD + 5% bonus HP becomes 50/75/100/125/150 + 15% bonus HP + 10% of the target's max health",
+ "Q — สโลว์คงที่ 40% ทุกขั้น จากเดิม 40-60% · เวลาสโลว์ 1.75 เหลือ 1.5 วิ":
+   "Q slows a flat 40% at every rank instead of 40-60%, and the slow lasts 1.5s instead of 1.75s",
+ "Q — ซ่อมสิ่งก่อสร้างเป็นสัดส่วนของเลือดสูงสุดแทนค่าคงที่ 30/40/50/60/70% ขว้างทีเดียวเกือบเต็ม":
+   "Q repairs your structures for 30/40/50/60/70% of their max health instead of a flat amount — one throw nearly refills them",
+ "W Brick Bastion — เลือด 300-900 + 45% Bonus HP เปลี่ยนเป็น 500/600/700/800/900 + 50% Bonus HP · เกราะจาก 100% เหลือ 75% ของของตัวเอง":
+   "W Brick Bastion: 300-900 + 45% bonus HP becomes 500/600/700/800/900 + 50% bonus HP, and it inherits 75% of your resistances instead of 100%",
+ "W — อยู่นาน 5 เป็น 10 วิ · คูลดาวน์ 16-12 เหลือ 12-10 · กว้าง 450 เป็น 500":
+   "W lasts 10s instead of 5, its cooldown drops from 16-12 to 12-10, and it spans 500 instead of 450",
+ "E Boarhead Breaker — ดาเมจ 60-200 + 50% Bonus AD + 4% Bonus HP เปลี่ยนเป็น 75/125/175/225/275 + 7.5% Bonus HP":
+   "E Boarhead Breaker: 60-200 + 50% bonus AD + 4% bonus HP becomes 75/125/175/225/275 + 7.5% bonus HP",
+ "E — ดาเมจตอนชนกำแพง 9% เป็น 15% Bonus HP · ความเร็วพุ่ง 1250 เหลือ 1000":
+   "E's impact damage goes from 9% to 15% bonus HP, and the charge speed drops from 1250 to 1000",
+ "E — ของใหม่: กดแล้วได้โล่ 200/250/300/350/400 + 15% Bonus HP ทันที นาน 4 วิ ไม่ต้องรอว่าจะชนใคร":
+   "New on E: casting it immediately grants a 200/250/300/350/400 + 15% bonus HP shield for 4s, whether or not you hit anything",
+ "R The Wolf-Proof Bunker — รัศมี 350 เป็น 750 · อยู่นาน 5 เป็น 15 วิ":
+   "R The Wolf-Proof Bunker: 750 radius instead of 350, lasting 15s instead of 5",
+ "R — เลือด 850/1450/2050 เปลี่ยนเป็น 1500/2500/3500 · เกราะจาก 100% เหลือ 75% ของของตัวเอง":
+   "R's health goes from 850/1450/2050 to 1500/2500/3500, and it inherits 75% of your resistances instead of 100%",
+ "ALUCARD · HOOD · PUSS · KLAEDER · FAUSTUS":
+   "ALUCARD · HOOD · PUSS · KLAEDER · FAUSTUS",
+ "ALUCARD Q Crimson Reap — ของใหม่: ฮีลตามดาเมจที่ท่านี้ทำได้ 10/12.5/15/17.5/20%":
+   "New on ALUCARD's Q Crimson Reap: it heals him for 10/12.5/15/17.5/20% of the damage it deals",
+ "ALUCARD W — คูลดาวน์ 14-10 เหลือ 12-10":
+   "ALUCARD W: cooldown 12-10 instead of 14-10",
+ "ALUCARD E — ดาเมจ 90-290 + 90% Bonus AD เปลี่ยนเป็น 150/200/250/300/350 + 80% Bonus AD · คูลดาวน์คงที่ 7 วิ · เวลาลอย 0.25 เป็น 0.35 วิ":
+   "ALUCARD E: 90-290 + 90% bonus AD becomes 150/200/250/300/350 + 80% bonus AD, on a flat 7s cooldown, with a 0.35s knock-up instead of 0.25s",
+ "ALUCARD R — ของใหม่: ตายครั้งแรกระหว่างร่างค้างคาว ลุกกลับมาเองด้วยเลือด 30%":
+   "New on ALUCARD's R: the first time he dies while in bat form, he gets back up at 30% health",
+ "HOOD — ระยะโจมตี 550 เป็น 575":
+   "HOOD: 575 attack range instead of 550",
+ "HOOD พาสซีฟ — ของใหม่: ออโต้ที่ไม่ติดคริก็ทิ้งเลือดไหล 150% ของดาเมจที่ลง จ่ายตลอด 3 วิ · ออโต้ที่ติดคริเปลี่ยนจาก 150% เป็น 175%":
+   "New on HOOD's passive: even his non-critical attacks now leave a bleed worth 150% of the damage dealt over 3s, while crits bleed for 175% instead of 150%",
+ "HOOD Q — ดาเมจชาร์จต่ำสุด 60-200 เปลี่ยนเป็น 150/200/250/300/350 · ชาร์จเต็ม 110-350 เปลี่ยนเป็น 225/325/425/525/625 + 150% Bonus AD":
+   "HOOD Q: the uncharged shot goes from 60-200 to 150/200/250/300/350, and a full charge from 110-350 to 225/325/425/525/625 + 150% bonus AD",
+ "HOOD Q — คูลดาวน์ 9-7 เป็น 15-11 · เวลาชาร์จเต็ม 1.5 เป็น 2.5 วิ · ระยะ 750-1450 เป็น 600-1500":
+   "HOOD Q: cooldown 15-11 instead of 9-7, a full charge takes 2.5s instead of 1.5s, and the range band shifts from 750-1450 to 600-1500",
+ "HOOD W — คูลดาวน์ 15-11 เป็น 20/18.5/16/14.5/13 · ของใหม่: ออโต้ทุกครั้งตัดคูลดาวน์ท่านี้ลง 1.5 วิ":
+   "HOOD W: cooldown 20/18.5/16/14.5/13 instead of 15-11, and every basic attack now shaves 1.5s off it",
+ "HOOD E — ระยะ 900 เป็น 1500 · คูลดาวน์ 18-12 เป็น 20/18.5/16/14.5/13":
+   "HOOD E: 1500 range instead of 900, cooldown 20/18.5/16/14.5/13 instead of 18-12",
+ "HOOD R — รัศมี 375 เป็น 450":
+   "HOOD R: 450 radius instead of 375",
+ "PUSS พาสซีฟ — สเกล Bonus AD จาก 1% ต่อ 20 เป็น 2.5% ต่อ 100 · เปลี่ยนเป้าท้าดวลได้ทุกยก จากเดิมต้องรอ 2 ยก":
+   "PUSS's passive scales at 2.5% per 100 bonus AD instead of 1% per 20, and he can pick a new duel mark every round instead of waiting two",
+ "PUSS W Rapier Flurry — ระยะ 450 เป็น 550 · กรวย 50 เหลือ 45 องศา · ดาเมจต่อระลอก 15-55 + 20% Bonus AD เปลี่ยนเป็น 20/35/50/65/80 + 25% Bonus AD · คูลดาวน์คงที่ 7 วิ":
+   "PUSS W Rapier Flurry: 550 range instead of 450, a 45° cone instead of 50°, 20/35/50/65/80 + 25% bonus AD per tick instead of 15-55 + 20%, on a flat 7s cooldown",
+ "KLAEDER Q — ดาเมจ 70-210 + 4% Bonus HP + 65% AD เปลี่ยนเป็น 50/80/110/140/170 + 6/7/8/9/10% Bonus HP + 60% AD · คูลดาวน์คงที่ 7 วิ":
+   "KLAEDER Q: 70-210 + 4% bonus HP + 65% AD becomes 50/80/110/140/170 + 6/7/8/9/10% bonus HP + 60% AD, on a flat 7s cooldown",
+ "KLAEDER W — สโลว์ 40-60% เหลือคงที่ 30% · โล่ 60-220 + 50% Bonus AD + 12% Bonus HP เปลี่ยนเป็น 100/150/200/250/300 + 15% Bonus HP":
+   "KLAEDER W slows a flat 30% instead of 40-60%, and shields 100/150/200/250/300 + 15% bonus HP instead of 60-220 + 50% bonus AD + 12% bonus HP",
+ "KLAEDER E — ดาเมจ 75-215 + 55% Bonus AD + 6% Bonus HP เปลี่ยนเป็น 75/125/175/225/275 + 10% Bonus HP":
+   "KLAEDER E: 75-215 + 55% bonus AD + 6% bonus HP becomes 75/125/175/225/275 + 10% bonus HP",
+ "FAUSTUS W — ดาเมจ 80-280 + 50% AP เปลี่ยนเป็น 100/145/190/235/280 + 75% AP":
+   "FAUSTUS W: 80-280 + 50% AP becomes 100/145/190/235/280 + 75% AP",
+ "FAUSTUS R — คูลดาวน์ 65/58/50 เป็น 60/55/50 · ดาเมจ 95/145/195 + 14% AP เปลี่ยนเป็น 125/175/225 + 20% AP":
+   "FAUSTUS R: cooldown 60/55/50 instead of 65/58/50, damage 125/175/225 + 20% AP instead of 95/145/195 + 14% AP",
+ "PIROSKA · YODAKA · NIAN · JACK · ELLA · ARTHUR":
+   "PIROSKA · YODAKA · NIAN · JACK · ELLA · ARTHUR",
+ "PIROSKA Q Wolfsbane Powder — ลูกที่ซ้ำตัวเดิมเคยทำดาเมจเต็ม 100% ซึ่งเป็นท่าเดียวในเกมที่เป็นแบบนั้น ตอนนี้เหลือ 50% เท่าท่าอื่น · ศัตรูตัวเดียวที่กินครบเจ็ดลูกจึงรับ 4 เท่าแทนที่จะเป็น 7 เท่า":
+   "PIROSKA Q Wolfsbane Powder: extra pellets hitting the same target used to deal full damage — the only ability in the game that did — and now deal 50% like everything else, so one enemy catching all seven takes 4× instead of 7×",
+ "PIROSKA Q — ดาเมจ 70-230 + 55% AP เปลี่ยนเป็น 50/80/110/140/170 + 40% AP · สโลว์ 25-45% เหลือคงที่ 30% · ลดพลังโจมตีและพลังเวท 10-20% เหลือ 5/7.5/10/12.5/15%":
+   "PIROSKA Q: 70-230 + 55% AP becomes 50/80/110/140/170 + 40% AP, it slows a flat 30% instead of 25-45%, and saps 5/7.5/10/12.5/15% attack and ability power instead of 10-20%",
+ "PIROSKA พาสซีฟ — วิ่งหนี 3 เหลือ 2 วิ":
+   "PIROSKA's passive sprint lasts 2s instead of 3",
+ "PIROSKA W — ชดเชยกลับ: ฮีล 30-90 เป็น 100/125/150/175/200 · เพิ่ม AD 8-24 เป็น 10/15/20/25/30 · ของใหม่: เพิ่ม AP 16/22/28/34/40 · บัฟอยู่ 2.5 เป็น 5 วิ":
+   "PIROSKA W pays some of it back: healing 100/125/150/175/200 instead of 30-90, +10/15/20/25/30 AD instead of 8-24, a new +16/22/28/34/40 AP, and the buff lasts 5s instead of 2.5s",
+ "YODAKA พาสซีฟ — ระยะออโต้ตอนมีสแตก 400 เหลือ 300":
+   "YODAKA's passive extends his attack range to 300 instead of 400 while he holds a stack",
+ "NIAN พาสซีฟ — ดาเมจ 20-90 ตามเลเวล + 3% Bonus HP เปลี่ยนเป็น 15 (+4 ต่อเลเวล) + 2% Bonus HP · รัศมี 375 เป็น 400":
+   "NIAN's passive deals 15 (+4 per level) + 2% bonus HP instead of 20-90 by level + 3% bonus HP, over a 400 radius instead of 375",
+ "NIAN Q — ความเร็วพุ่ง 1000 เหลือ 800 · คูลดาวน์ 11-7 เป็น 14-12 · สตัน 1.1-1.5 เปลี่ยนเป็น 0.8/1/1.2/1.4/1.6 วิ":
+   "NIAN Q: charge speed 800 instead of 1000, cooldown 14-12 instead of 11-7, and a 0.8/1/1.2/1.4/1.6s stun instead of 1.1-1.5s",
+ "JACK Q — ดาเมจ 80-220 + 55% AP เปลี่ยนเป็น 70/110/150/190/230 + 60% AP · คูลดาวน์ 7-5 เป็น 8-6":
+   "JACK Q: 80-220 + 55% AP becomes 70/110/150/190/230 + 60% AP, cooldown 8-6 instead of 7-5",
+ "JACK W — ดาเมจ 90-290 เปลี่ยนเป็น 125/175/225/275/325 · หน่วงก่อนระเบิด 1.5 เป็น 2.5 วิ · คูลดาวน์ 12-8 เป็น 14-12 · สโลว์ 35-55% เปลี่ยนเป็น 40/42.5/45/47.5/50%":
+   "JACK W: 125/175/225/275/325 damage instead of 90-290, a 2.5s fuse instead of 1.5s, cooldown 14-12 instead of 12-8, and a 40/42.5/45/47.5/50% slow instead of 35-55%",
+ "JACK E — โล่ 60-200 เปลี่ยนเป็น 75/110/145/180/215 · คูลดาวน์ 14-10 เป็น 14-12 · อยู่นาน 3.5 เป็น 4 วิ":
+   "JACK E: shields 75/110/145/180/215 instead of 60-200, cooldown 14-12 instead of 14-10, lasting 4s instead of 3.5s",
+ "JACK R — ยักษ์มีเลือดเขียนไว้ในข้อมูลตั้งแต่แรก แต่ไม่มีโค้ดไหนทำดาเมจใส่มันเลย มันจึงอยู่จนหมดเวลาเสมอ · ตอนนี้ศัตรูที่ยืนประชิดทุบมันได้ และลูกสกิลที่พาดผ่านตัวมันก็ลงดาเมจ ทุบให้ล้มก่อนหมดเวลาได้แล้ว":
+   "JACK R: the giant has always had health written into its data, but nothing in the code ever damaged it, so it stayed for its full duration every time. Enemies standing next to it can now beat it down, and skillshots passing through it land, so it can be killed early",
+ "ELLA พาสซีฟ — เศษแก้วแรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่า 50% เปลี่ยนเป็นต่ำกว่า 30%":
+   "ELLA's glass shards double against a target below 30% health instead of 50%",
+ "ARTHUR พาสซีฟ — แปลงดาเมจเป็นโล่จาก 15% คงที่ เปลี่ยนเป็น 10% แล้วไต่ขึ้น 0.5% ต่อเลเวล · เพดานโล่ 30% เหลือ 25% ของเลือดสูงสุด":
+   "ARTHUR's passive converts 10% of his damage into shield plus 0.5% per level, instead of a flat 15%, and the shield caps at 25% of his max health instead of 30%",
+ "ARTHUR E — ความเร็วพุ่ง 1100 เหลือ 900 · ระยะพุ่ง 500 เหลือ 450":
+   "ARTHUR E: dash speed 900 instead of 1100, over 450 units instead of 500",
 };

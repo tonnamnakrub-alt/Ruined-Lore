@@ -143,6 +143,8 @@ function fireSkillEffect(state, u, sk, target, prec) {
         if (sk.blind) addBuff(e, { type: "blind", v: 1, until: state.t + sk.blind[rr] }, state.t);
         if (sk.stunByRank) addBuff(e, { type: "stun", v: 1, until: state.t + sk.stunByRank[rr] }, state.t);
         if (u.champ.doubleTrouble) applyDamage(state, u, e, 20 + 0.3 * u.bonusAd, false);
+        // ALUCARD Q — ฮีลตามดาเมจที่ท่านี้ทำได้จริง
+        if (sk.healPctDealt) healUnit(state, u, power * sk.healPctDealt[rr]);
       }
       break;
     }
