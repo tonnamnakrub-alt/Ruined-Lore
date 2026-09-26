@@ -16,7 +16,7 @@ const out = [];
 const t = (n, ok, d) => out.push([n, ok, d || ""]);
 
 // ---- ตาราง ----
-t("รุกล้ำได้ 6 เงิน", STANCES.AGGRO.gold === 6, STANCES.AGGRO.gold + "g");
+t("รุกล้ำได้ 7 เงิน", STANCES.AGGRO.gold === 7, STANCES.AGGRO.gold + "g");
 t("เซฟกับปกติเท่าเดิม", STANCES.SAFE.gold === 3 && STANCES.NEUTRAL.gold === 5,
   STANCES.SAFE.gold + "g / " + STANCES.NEUTRAL.gold + "g");
 t("ไปแกงค์ไม่ได้รายได้ฐานเลย", JUNGLE_GANK.gold === 0 && JUNGLE_GANK.xp === 0,
@@ -39,9 +39,11 @@ t("ไปแกงค์ไม่ได้รายได้ฐานเลย",
   }
   const best = Math.max(...Object.values(ev));
   const worst = Math.min(...Object.values(ev));
-  t("ค่าคาดหวังของสามนิสัยใกล้กัน ไม่มีตัวไหนกินขาด", best - worst < 1,
+  // รุกล้ำ 7 ทำให้ค่าคาดหวังกลับมาสูงสุดอีกครั้ง (4.00 เทียบกับปกติ 3.67)
+  // ที่ยังต้องคุมคือช่องว่างไม่ให้ถ่างเหมือนตอนรุกล้ำ 8 (4.67 เทียบกับ 3.00)
+  t("ช่องว่างระหว่างนิสัยไม่ถ่างเกินหนึ่งเงิน", best - worst <= 1,
     STANCE_LIST.map((s) => s + " " + ev[s].toFixed(2) + "g").join(" · "));
-  t("รุกล้ำไม่ใช่ตัวเลือกที่ดีที่สุดเสมอไปแล้ว", ev.AGGRO <= ev.NEUTRAL,
+  t("รุกล้ำยังนำปกติอยู่แต่ไม่ขาดเหมือนเดิม", ev.AGGRO - ev.NEUTRAL < 0.5,
     "รุกล้ำ " + ev.AGGRO.toFixed(2) + "g · ปกติ " + ev.NEUTRAL.toFixed(2) + "g");
 }
 

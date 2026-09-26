@@ -2682,8 +2682,8 @@ export const DICT = {
    "YODAKA R: the passive is paused while he is up in the air — no extended range, no pierce — because the landing circle follows him, and piercing away from it wastes the ult",
  "YODAKA R — บอทเดินเข้าหากองศัตรูระหว่างลอย แทนที่จะลอยค้างอยู่กับที่เฉยๆ":
    "YODAKA R: the bot now walks toward the enemy group while airborne instead of hovering in place",
- "ป่าไปแกงค์ไม่ได้รายได้ฐานแล้ว · รุกล้ำ 8 เป็น 6":
-   "Ganking pays no base income · Aggressive 8 to 6",
+ "ป่าไปแกงค์ไม่ได้รายได้ฐานแล้ว · รุกล้ำ 8 เป็น 7":
+   "Ganking pays no base income · Aggressive 8 to 7",
  "ไปแกงค์ = ทิ้งแคมป์ทั้งยก ได้ 0 เงิน 0 XP จากเดิมที่ได้ 5g 3xp เท่ากับฟาร์มอยู่ดี ยกนั้นเงินมาจากศพอย่างเดียว":
    "Ganking means abandoning the camps for the whole round: 0 gold and 0 XP, down from the 5g 3xp it used to pay — the same as farming. That round's gold now comes from kills alone",
  "ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้พร้อมกัน รายได้ฟาร์มคูณ 1.5 เป็น 8g 5xp":
@@ -2694,10 +2694,10 @@ export const DICT = {
    "Over two rounds, gank-then-farm pays 8g 5xp against 10g 6xp for farming twice — a gank still costs you something, where before it was free",
  "บอทคิดราคาของการทิ้งแคมป์ด้วยแล้ว อัตราการแกงค์ในสิบยกแรกลดจาก 71% ของยกเหลือ 53%":
    "The bot now prices in the abandoned camps: its gank rate over the first ten rounds falls from 71% of rounds to 53%",
- "นิสัยรุกล้ำ รายได้ฐานลดจาก 8 เป็น 6 เงิน — XP เท่าเดิมที่ 3":
-   "The Aggressive stance's base income drops from 8 gold to 6 — XP stays at 3",
- "ก่อนหน้านี้รุกล้ำให้ค่าคาดหวัง 4.67g สูงกว่าเซฟ 3.00g และปกติ 3.67g จนแทบไม่มีเหตุผลสั่งอย่างอื่น ตอนนี้เป็น 3.33g ไล่เลี่ยกันทั้งสามทาง":
-   "Aggressive used to average 4.67g against Safe's 3.00g and Neutral's 3.67g, leaving little reason to pick anything else. It now averages 3.33g, and all three are close",
+ "นิสัยรุกล้ำ รายได้ฐานลดจาก 8 เป็น 7 เงิน — XP เท่าเดิมที่ 3":
+   "The Aggressive stance's base income drops from 8 gold to 7 — XP stays at 3",
+ "ค่าคาดหวังถ้าอีกฝั่งสุ่มเท่าๆ กัน: เซฟ 3.00g · ปกติ 3.67g · รุกล้ำ 4.00g — เดิมรุกล้ำได้ 4.67g":
+   "Against a random opponent the three stances now average: Safe 3.00g · Standard 3.67g · Aggressive 4.00g — Aggressive used to average 4.67g",
  "ผลรวมในสิบยกแรก: ป่าได้เงินต่อยกลดจาก 8.3 เหลือ 6.0 และจบยกสิบที่เลเวล 7.1 จากเดิม 8.9 · เงินเฉลี่ยทั้งทีมลดจาก 6.1 เหลือ 4.9 ต่อคนต่อยก":
    "Across the first ten rounds: the jungler's gold per round falls from 8.3 to 6.0 and they finish round ten at level 7.1 instead of 8.9 · team-wide average gold drops from 6.1 to 4.9 per champion per round",
  "ป่าไปแกงค์ — ทิ้งแคมป์ ไม่มีรายได้ฐาน":

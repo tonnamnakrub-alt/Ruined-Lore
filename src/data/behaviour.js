@@ -10,7 +10,7 @@
 export const STANCES = {
   SAFE:    { id: "SAFE",    th: "เซฟ",   gold: 3, xp: 2, desc: "ยืนเก็บของ ไม่เสี่ยง" },
   NEUTRAL: { id: "NEUTRAL", th: "ปกติ",  gold: 5, xp: 3, desc: "เล่นตามน้ำ แลกหมัดได้" },
-  AGGRO:   { id: "AGGRO",   th: "รุกล้ำ", gold: 6, xp: 3, desc: "กดดันหนัก ได้เยอะแต่เสี่ยง" },
+  AGGRO:   { id: "AGGRO",   th: "รุกล้ำ", gold: 7, xp: 3, desc: "กดดันหนัก ได้เยอะแต่เสี่ยง" },
 };
 
 export const STANCE_LIST = ["SAFE", "NEUTRAL", "AGGRO"];
