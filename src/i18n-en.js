@@ -2814,4 +2814,44 @@ export const DICT = {
    "ALICE Q is placed from 650 units instead of 825 — it used to outrange her own auto attack at 550 and every other ability she has short of the ultimate",
  "วางตะกร้าลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ แจกฮีลและบัฟทุก {3} วิ ให้ครั้งละ {4} คนที่เลือดพร่องที่สุด":
    "Drops a basket up to {0} away, {1} wide, lasting {2}s, handing out healing and buffs every {3}s to the {4} most wounded allies each time",
+ "Horn of the Wild Hunt มีพาสซีฟอยู่แล้ว แค่ไม่เคยมีใครเห็น":
+   "Horn of the Wild Hunt always had a passive — nobody could see it",
+ "ไอเทมชิ้นนี้มีพาสซีฟเขียนไว้ในเอนจินตั้งแต่แรก — กดท่าไม้ตายแล้วได้ AD และความเร็วชั่วคราว":
+   "This item has had a passive written into the engine all along: firing your ultimate grants AD and a burst of speed",
+ "แต่ไม่เคยมีคำอธิบายในร้านค้าเลย ผู้เล่นจึงไม่มีทางรู้ว่ามันมี และไม่มีทางรู้ว่าตัวเลขเท่าไหร่":
+   "But it never had a shop description, so there was no way to know it existed, let alone what the numbers were",
+ "ตอนนี้ร้านโชว์แล้ว: กดท่าไม้ตายได้ AD +20 · ความเร็วโจมตี +30% · ความเร็วเดิน +15%":
+   "The shop now shows it: firing your ultimate gives +20 AD, +30% attack speed and +15% move speed",
+ "ยืดเวลาจาก 8 วิเป็น 10 วิ · คูลดาวน์ 30 วิเท่าเดิม":
+   "The duration goes from 8s to 10s; the 30s cooldown is unchanged",
+ "ย้ายตัวเลขทั้งชุดจากที่ฮาร์ดโค้ดในเอนจิน ไปไว้ในข้อมูลไอเทม แก้ที่เดียวแล้วทั้งร้านและสนามเปลี่ยนตาม":
+   "All of those numbers moved out of the engine and into the item data, so one edit now updates both the shop text and the fight",
+ "แก้พ่วง: คำอธิบายของ Kitsune's Foxfire Fan ก็ฮาร์ดโค้ดตัวเลขไว้เหมือนกัน ปรับบาลานซ์แล้วร้านจะโชว์เลขเก่า ตอนนี้อ่านจากข้อมูลแล้ว":
+   "Side fix: Kitsune's Foxfire Fan had its numbers hard-coded into the shop text too, so a balance change would leave the shop showing the old values. It reads from the data now",
+ "รอบปรับไอเทม — กดของที่แรงเกิน ยกของที่สายอ่อนใช้":
+   "Item pass — the overtuned come down, the ones weak classes rely on go up",
+ "Kitsune's Foxfire Fan — ดาเมจเวทที่ติดออโต้ลดจาก 15 (+20% AP) เหลือ 8 (+12% AP) · ที่ AP 250 คือจาก 65 เหลือ 38 ต่อออโต้หนึ่งครั้ง":
+   "Kitsune's Foxfire Fan: the magic damage riding every auto drops from 15 (+20% AP) to 8 (+12% AP) — at 250 AP that is 65 down to 38 per hit",
+ "ชิ้นนี้โผล่ในสามอันดับดาเมจแรกของ 17 จาก 22 ตัว สูงสุดคือ HOOD ที่ 36% ของดาเมจทั้งตัวมาจากไอเทมชิ้นเดียว · ไอเทมควรเสริมตัวละคร ไม่ใช่มาเป็นแหล่งดาเมจหลักแทน":
+   "It appeared in the top three damage sources of 17 of the 22 champions, peaking at HOOD where 36% of everything he dealt came from this one item. An item should support a champion, not replace them as the main source of damage",
+ "Mordred's Usurping Blade — AD 50 เหลือ 45 · เจาะเกราะ 30% เหลือ 25% · ค่าสถานะคุ้ม 124% เป็นของสายแอสซาซินซึ่งอยู่อันดับ 2 กับ 5 ของเกมอยู่แล้ว":
+   "Mordred's Usurping Blade: 50 AD down to 45, armour penetration 30% down to 25% — its stats were worth 124% of its price, on the assassin line that already holds 2nd and 5th place",
+ "Eye of Horus — AP 65 เหลือ 58 · เจาะต้านเวท 35% เหลือ 30% · ค่าสถานะคุ้ม 116%":
+   "Eye of Horus: 65 AP down to 58, magic penetration 35% down to 30% — its stats were worth 116% of its price",
+ "Argus' Hundred Eyes — เกราะกับต้านเวทอย่างละ 40 เหลือ 35 · ค่าสถานะคุ้ม 109% และยังมีออร่าที่ไม่ได้ถูกตีราคาอีก":
+   "Argus' Hundred Eyes: 40 armour and 40 magic resist down to 35 each — worth 109% on stats alone, before counting an aura that was never priced at all",
+ "Atalanta's Swift Quiver — จังหวะเร่งความเร็วตอนเข้าปะทะ อยู่นานจาก 2.5 เป็น 3.5 วิ · คูลดาวน์ 15 เหลือ 12 วิ":
+   "Atalanta's Swift Quiver: the opening burst of speed lasts 3.5s instead of 2.5s, on a 12s cooldown instead of 15s",
+ "Sleipnir's Galloping Horseshoe — ความเร็วเดินติดตัว 5% เป็น 9%":
+   "Sleipnir's Galloping Horseshoe: its flat move speed goes from 5% to 9%",
+ "สองชิ้นบนเป็นของสายมาร์คแมนซึ่งรอดจบไฟต์แค่ 23/35/50% ต่ำสุดสามอันดับของเกม ปัญหาคือหนีไม่ได้ ไม่ใช่ตีไม่แรง จึงยกของหนีแทนที่จะยกดาเมจ":
+   "Both are marksman items, and marksmen survive only 23/35/50% of their fights — the three worst figures in the game. Their problem is escaping, not damage, so the escape tools went up instead of the numbers",
+ "Heimdall's Warding Horn — เลือด 250 เป็น 300 · เกราะกับต้านเวทอย่างละ 30 เป็น 35 · ของซัพสายตั้งรับที่ถูกที่สุดแต่คุ้มแค่ 83% ทั้งที่ซัพสามในสี่ตัวอยู่ครึ่งล่างของตาราง":
+   "Heimdall's Warding Horn: 250 HP to 300, and 30 armour and magic resist to 35 each — the cheapest defensive support item, worth only 83% of its price, while three of the four supports sit in the bottom half of the table",
+ "ทุกชิ้นราคาเท่าเดิม รอบนี้ปรับพลัง ไม่ได้ปรับราคา":
+   "Every price is unchanged: this pass moves power, not cost",
+ "กดท่าไม้ตายแล้วได้ AD +{0} · ความเร็วโจมตี +{1}% · ความเร็วเดิน +{2}% นาน {3} วิ (ทุก {4} วิ)":
+   "Firing your ultimate grants +{0} AD, +{1}% attack speed and +{2}% move speed for {3}s (every {4}s)",
+ "ออโต้แถมดาเมจเวท {0} (+{1}% AP) ทุกครั้งที่ตีโดน":
+   "Every basic attack that lands carries an extra {0} (+{1}% AP) magic damage",
 };

@@ -1,5 +1,6 @@
 import { tr } from "../i18n.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
+import { ITEM_BY_ID } from "../data/items.js";
 import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREAT_COOLDOWN, RETREAT_TIME, STYLES } from "../data/tuning.js";
 import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
@@ -1079,13 +1080,15 @@ export function step(state) {
       q.u.bdcEmpower = 1.75 * baseAd;
       addBuff(q.u, { type: "ms", v: 0.06, until: state.t + 2 }, state.t);
     }
-    // Horn of the Wild Hunt: firing the ultimate specifically grants a big burst, CD 30s
+    // Horn of the Wild Hunt: กดอัลติแล้วเร่งตัวเอง
+    // ตัวเลขอ่านจาก data/items.js (ultRush) ไม่ฮาร์ดโค้ดไว้ตรงนี้ จะได้แก้ที่เดียว
     if (q.u.hasItem("hwh") && q.sk.ult && (q.u.hwhReadyAt == null || state.t >= q.u.hwhReadyAt)) {
+      const r = (ITEM_BY_ID.hwh && ITEM_BY_ID.hwh.ultRush) || { ad: 20, as: 0.30, ms: 0.15, dur: 8, cd: 30 };
       const cdr = cdrFromItemHaste(q.u.itemHaste || 0);
-      q.u.hwhReadyAt = state.t + 30 * (1 - cdr);
-      addBuff(q.u, { type: "adFlat", v: 20, until: state.t + 8 }, state.t);
-      addBuff(q.u, { type: "as", v: 0.3, until: state.t + 8 }, state.t);
-      addBuff(q.u, { type: "ms", v: 0.15, until: state.t + 8 }, state.t);
+      q.u.hwhReadyAt = state.t + r.cd * (1 - cdr);
+      addBuff(q.u, { type: "adFlat", v: r.ad, until: state.t + r.dur }, state.t);
+      addBuff(q.u, { type: "as", v: r.as, until: state.t + r.dur }, state.t);
+      addBuff(q.u, { type: "ms", v: r.ms, until: state.t + r.dur }, state.t);
     }
   }
   state.castQueue.length = 0;

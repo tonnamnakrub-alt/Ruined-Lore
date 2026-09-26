@@ -19,10 +19,10 @@
 
 | สาย | ความคุ้มเฉลี่ย | จำนวนชิ้น | ราคาเฉลี่ย |
 |---|---:|---:|---:|
-| TANK | 94% | 4 | 55g |
+| TANK | 96% | 4 | 55g |
 | FIGHTER | 104% | 1 | 64g |
-| ASSASSIN | 79% | 11 | 61g |
-| MAGE | 83% | 17 | 61g |
+| ASSASSIN | 78% | 11 | 61g |
+| MAGE | 82% | 17 | 61g |
 | MARKSMAN | 105% | 5 | 59g |
 | SUPPORT | 105% | 1 | 48g |
 
@@ -59,31 +59,31 @@
 | # | ไอเทม | สาย | ราคา | ความคุ้ม | ค่าสถานะ |
 |---:|---|---|---:|---:|---|
 | 1 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | **135%** | +55 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD |
-| 2 | Mordred's Usurping Blade `mub` | ASSASSIN/FIGHTER | 62g | **124%** | +50 AD · +15 Ability Haste · เจาะเกราะ 30% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม |
-| 3 | Eye of Horus `eoh` | MAGE | 58g | **116%** | +65 AP · +10 Ability Haste · เจาะต้านเวท 35% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที |
-| 4 | Argus' Hundred Eyes `ahe` | TANK/SUPPORT | 58g | **109%** | +400 HP · +40 เกราะ · +40 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) |
-| 5 | Sleeping Beauty's Spindle `sbs` | MAGE/ASSASSIN | 62g | **108%** | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) |
-| 6 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | **106%** | +45 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) |
-| 7 | Ariadne's Guiding Thread `agt` | SUPPORT/MAGE | 48g | **105%** | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) |
-| 8 | Amrita's Nectar Goblet `ang` | MAGE/SUPPORT | 60g | **104%** ⚠️ | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP |
-| 9 | The Legendary Excalibur `lex` | FIGHTER/ASSASSIN/TANK | 64g | **104%** ⚠️ | +55 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) |
-| 10 | Morgana's Unravelling Thread `mut` | MAGE | 60g | **104%** ⚠️ | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) |
+| 2 | Mordred's Usurping Blade `mub` | ASSASSIN/FIGHTER | 62g | **111%** | +45 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม |
+| 3 | Sleeping Beauty's Spindle `sbs` | MAGE/ASSASSIN | 62g | **108%** | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) |
+| 4 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | **106%** | +45 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) |
+| 5 | Ariadne's Guiding Thread `agt` | SUPPORT/MAGE | 48g | **105%** | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) |
+| 6 | Eye of Horus `eoh` | MAGE | 58g | **104%** | +58 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที |
+| 7 | Amrita's Nectar Goblet `ang` | MAGE/SUPPORT | 60g | **104%** ⚠️ | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP |
+| 8 | The Legendary Excalibur `lex` | FIGHTER/ASSASSIN/TANK | 64g | **104%** ⚠️ | +55 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) |
+| 9 | Morgana's Unravelling Thread `mut` | MAGE | 60g | **104%** ⚠️ | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) |
+| 10 | Argus' Hundred Eyes `ahe` | TANK/SUPPORT | 58g | **102%** | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) |
 | 11 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | **101%** | +40 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ |
 | 12 | Mímir's Whispering Well `mww` | TANK/MAGE/SUPPORT | 58g | **100%** ⚠️ | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ |
 | 13 | Fafnir's Devouring Maw `fdm` | MARKSMAN/FIGHTER/ASSASSIN | 63g | **99%** ⚠️ | +50 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) |
-| 14 | Zephyrus' Gale Cloak `zgc` | MAGE | 60g | **97%** | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) |
-| 15 | Thoth's Emerald Tablet `tet` | MAGE | 65g | **94%** | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) |
-| 16 | Hel's Nether Domain `hnd` | MAGE/SUPPORT | 62g | **94%** ⚠️ | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% |
-| 17 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | **86%** | +55 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) |
-| 18 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | **86%** | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD |
-| 19 | Baba Yaga's Iron Cauldron `byc` | TANK/FIGHTER | 58g | **85%** ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ |
-| 20 | Heimdall's Warding Horn `hwg` | TANK/SUPPORT | 45g | **83%** | +250 HP · +30 เกราะ · +30 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) |
+| 14 | Heimdall's Warding Horn `hwg` | TANK/SUPPORT | 45g | **98%** | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) |
+| 15 | Zephyrus' Gale Cloak `zgc` | MAGE | 60g | **97%** | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) |
+| 16 | Thoth's Emerald Tablet `tet` | MAGE | 65g | **94%** | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) |
+| 17 | Hel's Nether Domain `hnd` | MAGE/SUPPORT | 62g | **94%** ⚠️ | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% |
+| 18 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | **86%** | +55 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) |
+| 19 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | **86%** | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD |
+| 20 | Baba Yaga's Iron Cauldron `byc` | TANK/FIGHTER | 58g | **85%** ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ |
 | 21 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | **81%** | +55 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) |
 | 22 | Lilith's Sanguine Grimoire `lbg` | MAGE/ASSASSIN | 62g | **79%** | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) |
 | 23 | Caliburn's Spellblade `csb` | MAGE/ASSASSIN | 60g | **78%** ⚠️ | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) |
 | 24 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | **78%** | +50 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) |
 | 25 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | **78%** | +50 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) |
-| 26 | Kitsune's Foxfire Fan `kff` | MAGE/MARKSMAN | 60g | **75%** ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 15 (+20% AP) ทุกครั้งที่ตีโดน |
+| 26 | Kitsune's Foxfire Fan `kff` | MAGE/MARKSMAN | 60g | **75%** ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน |
 | 27 | Sekhmet's Massacre Claws `smc` | ASSASSIN/FIGHTER | 62g | **75%** | +60 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 |
 | 28 | Yuki-onna's Frozen Scepter `yfs` | MAGE/SUPPORT | 60g | **74%** ⚠️ | +65 AP · +350 HP · สกิลที่โดนศัตรู สโลว์ 30% นาน 2 วิ |
 | 29 | Raijin's Thunder Drum `rsd` | MAGE | 62g | **73%** ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · สายฟ้ากระโดด 3 ต่อ ระยะ 500 — ตัวแรก 80 + 25% AP · ตัวถัดไป 40 + 15% AP (คูลดาวน์ 10 วิ) · สกิลเวทถัดไปแรงขึ้น 80 (+25% AP) และชิ่งไปหาศัตรูข้างเคียง 3 ตัว 40 (+15% AP) (ทุก 12 วิ) |
@@ -204,8 +204,8 @@
 | **Baba Yaga's Iron Cauldron** `byc`<br>หม้อเหล็กบาบายากา | 58g | 85% ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Baba Yaga's Bone Thorn (14g) + Golem's Plated Rib (16g) |
 | **Mirror of Truth** `mot`<br>กระจกสลายภาพลวงตา | 58g | `พาสซีฟเขียนมือ` | +450 HP · +80 เกราะ · +10 Ability Haste · ลดดาเมจออโต้ที่โดน 12 + 3.5 ต่อ Max HP ทุก 1000 ของตัวเอง (คริของศัตรูโดนลดผลอีก 30%) | Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) + Boiled Cuirass (6g) |
 | **Mímir's Whispering Well** `mww`<br>บ่อน้ำกระซิบมิเมียร์ | 58g | 100% ⚠️ | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ | Red Riding Cloak (16g) + Veil of the Silver Bough (14g) + Pendulum of Neverland (15g) |
-| **Argus' Hundred Eyes** `ahe`<br>ร้อยดวงตาอาร์กัส | 58g | 109% | +400 HP · +40 เกราะ · +40 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) | Gargoyle's Bastion (15g) + Giant's Heartstone (19g) + Clockwork Carapace (14g) |
-| **Heimdall's Warding Horn** `hwg`<br>แตรเฝ้าสะพานไฮม์ดัล | 45g | 83% | +250 HP · +30 เกราะ · +30 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) |
+| **Argus' Hundred Eyes** `ahe`<br>ร้อยดวงตาอาร์กัส | 58g | 102% | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) | Gargoyle's Bastion (15g) + Giant's Heartstone (19g) + Clockwork Carapace (14g) |
+| **Heimdall's Warding Horn** `hwg`<br>แตรเฝ้าสะพานไฮม์ดัล | 45g | 98% | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) |
 
 ### ไฟท์เตอร์ (FIGHTER) — 11 ชิ้น
 
@@ -217,7 +217,7 @@
 | **Balmung's Dragon-Cleaver** `bdc`<br>ดาบบาลมุงก์ | 60g | `พาสซีฟเขียนมือ` | +40 AD · +300 HP · +15 Ability Haste · ใช้สกิลแล้วออโต้ครั้งถัดไปเพิ่ม 175% Base AD และวิ่งไว 2 วิ (ทุก 1.5 วิ) | Cauldron Churner (15g) + Woodcutter's Hewing Axe (16g) |
 | **Cleaver of the Gorgon's Bane** `cbg`<br>ขวานกอร์กอน | 62g | `พาสซีฟเขียนมือ` | +45 AD · +350 HP · +15 Ability Haste · ออโต้ลดเกราะศัตรู 5% สะสมสูงสุด 5 ชั้น (25%) และเพิ่มความเร็วเดินตามจำนวนชั้น | Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) + Boar Tusk (7g) |
 | **Pauldrons of the Nian Beast** `pnb`<br>เกราะไหล่เหนียน | 60g | `พาสซีฟเขียนมือ` | +40 AD · +350 HP · +30 เกราะ · ตี/โดนตีสะสมสูงสุด 15 ชั้น ได้เกราะและ Tenacity ตามชั้น ครบ 15 ได้ Slow Resist และวิ่งไวอีก 10 วิ | Woodcutter's Hewing Axe (16g) + Gilgamesh's Vambrace (15g) + Boiled Cuirass (6g) |
-| **Horn of the Wild Hunt** `hwh`<br>เขาศึกไวลด์ฮันต์ | 60g | `พาสซีฟเขียนมือ` | +40 AD · +300 HP · +20% ความเร็วโจมตี · +25 Ability Haste เฉพาะท่าไม้ตาย | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) |
+| **Horn of the Wild Hunt** `hwh`<br>เขาศึกไวลด์ฮันต์ | 60g | `พาสซีฟเขียนมือ` | +40 AD · +300 HP · +20% ความเร็วโจมตี · +25 Ability Haste เฉพาะท่าไม้ตาย · กดท่าไม้ตายแล้วได้ AD +20 · ความเร็วโจมตี +30% · ความเร็วเดิน +15% นาน 10 วิ (ทุก 30 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) |
 | **Colossal Club of the Oni** `cco`<br>กระบองโอนิ | 62g | `พาสซีฟเขียนมือ` | +35 AD · +550 HP · ได้ AD เพิ่มตาม Bonus HP · ออโต้กวาดโคนด้านหลังเป้า | Woodcutter's Hewing Axe (16g) + Giant's Heartstone (19g) + Boar Tusk (7g) |
 | **Girdle of Hippolyta** `goh`<br>เข็มขัดฮิปโปลิตา | 60g | `พาสซีฟเขียนมือ` | +40 AD · +350 HP · +20% ความเร็วโจมตี · +10 Ability Haste · สโลว์ศัตรูรอบตัว 35% พร้อมวิ่งไวตัวเอง 30% นาน 2 วิ (ทุก 20 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Pendulum of Neverland (15g) |
 | **Draupnir's Sovereign Signet** `dss`<br>แหวนดราวป์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +50 AD · +30 เกราะ · +30 ต้านเวท · ติด CC แล้วล้าง CC ทันที + กัน CC 0.5 วิ + วิ่งไว 30% นาน 1.5 วิ (ทุก 45 วิ) · ดูดเลือดทุกชนิด 10% | Durandal's Whetted Edge (16g) + Rowan Wand Dagger (15g) + Boiled Cuirass (6g) |
@@ -237,15 +237,15 @@
 | **Anubis' Death Mark** `adm`<br>มีดชี้ชะตาอนูบิส | 62g | 73% ⚠️ | +50 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) | Huntsman's Skinning Dirk (15g) + Executioner's Nettle (14g) |
 | **Freyja's Shroud of Defiance** `fsd`<br>ผ้าคลุมท้าความตายเฟรยา | 64g | 78% | +50 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Nymph's Dewdrop (8g) |
 | **Wendigo's Voracious Claw** `wvc`<br>กรงเล็บตะกละเวนดิโก | 60g | 64% | +55 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
-| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 124% | +50 AD · +15 Ability Haste · เจาะเกราะ 30% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 111% | +45 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
 
 ### เวท (MAGE) — 17 ชิ้น
 
 | ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
 |---|---:|---:|---|---|
 | **Thoth's Emerald Tablet** `tet`<br>ศิลาจารึกมรกตธอธ | 65g | 94% | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) | Circe's Yew Wand (15g) + Circe's Yew Wand (15g) |
-| **Eye of Horus** `eoh`<br>ดวงตาแห่งฮอรัส | 58g | 116% | +65 AP · +10 Ability Haste · เจาะต้านเวท 35% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที | Mimir's Whispering Head (16g) + Orpheus' Resonant Lyre (15g) |
-| **Kitsune's Foxfire Fan** `kff`<br>พัดเพลิงจิ้งจอกเก้าหาง | 60g | 75% ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 15 (+20% AP) ทุกครั้งที่ตีโดน | Circe's Yew Wand (15g) + Crow Feather (5g) + Broken Sundial (5g) |
+| **Eye of Horus** `eoh`<br>ดวงตาแห่งฮอรัส | 58g | 104% | +58 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที | Mimir's Whispering Head (16g) + Orpheus' Resonant Lyre (15g) |
+| **Kitsune's Foxfire Fan** `kff`<br>พัดเพลิงจิ้งจอกเก้าหาง | 60g | 75% ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน | Circe's Yew Wand (15g) + Crow Feather (5g) + Broken Sundial (5g) |
 | **Caliburn's Spellblade** `csb`<br>ดาบมนตราแคลิเบิร์น | 60g | 78% ⚠️ | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
 | **Surtr's Twilight Cinder** `stc`<br>เถ้าอัคคีสุรเทอร์ | 62g | 65% ⚠️ | +60 AP · +300 HP · ดาเมจเวทจุดไฟเผาเป้า 2% Max HP ต่อวินาที นาน 3 วิ | Cerridwen's Brewing Ladle (15g) + Witch's Banebloom (14g) |
 | **Lilith's Sanguine Grimoire** `lbg`<br>คัมภีร์โลหิตลิลิธ | 62g | 79% | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) | Cerridwen's Brewing Ladle (15g) + Lycaon's Gorging Fang (15g) |

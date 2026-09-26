@@ -18,6 +18,8 @@ import { buildFight } from "./src/engine/build-fight.js";
 import { autoRanks } from "./src/engine/skill-ranks.js";
 import { step } from "./src/engine/step.js";
 import { toDef } from "./src/game/roster.js";
+import { shopFor } from "./src/game/shop-ai.js";
+import { mulberry32 } from "./src/engine/util.js";
 
 const SEEDS = Number(process.argv[2] || 6);
 const LVL = Number(process.argv[3] || 13);
@@ -25,16 +27,26 @@ const big = ITEMS.filter((i) => i.cost >= 50);
 const flat = (v) => Object.fromEntries(STAT_KEYS.map((k) => [k, v]));
 const IDS = Object.keys(CHAMPIONS);
 
-const mk = (id) => {
+// งบเท่ากันทุกตัว แล้วปล่อยให้บอทเลือกของตามสายของตัวเองเหมือนในเกมจริง
+// เดิมแจกของชุดเดียวกันให้ทุกตัว ซึ่งบังเอิญเป็นของสายเวททั้งสามชิ้น
+// มาร์คแมนกับยักษ์เลยถูกวัดด้วยของที่ไม่มีวันซื้อ ตารางที่ได้จึงเอียงทั้งใบ
+const GOLD = 400;
+const bare = (id) => {
   const ch = CHAMPIONS[id];
   return {
-    lane: ch.lane, champId: id, level: LVL, xp: 0, gold: 0,
-    items: [big[2], big[5], big[9]],
+    lane: ch.lane, champId: id, level: LVL, xp: 0, gold: GOLD, items: [],
     ranks: autoRanks(LVL, ch.skillPriority, null),
     athlete: flat(5),
     upgrades: [], bountyGold: 0, sangHp: 0, wvcStacks: 0, spot: null,
     char: "P", athleteName: "P", style: "POKE",
   };
+};
+// ซื้อครั้งเดียวต่อคู่ แล้วจำไว้ใช้ซ้ำ ไม่ต้องคิดใหม่ทุกไฟต์
+const shopped = new Map();
+const mk = (id, vsId) => {
+  const key = id + "|" + vsId;
+  if (!shopped.has(key)) shopped.set(key, shopFor(bare(id), [bare(vsId)], mulberry32(4242), 0));
+  return shopped.get(key);
 };
 
 const S = {};
@@ -49,7 +61,7 @@ for (let i = 0; i < IDS.length; i++) {
       const swap = s % 2 === 1;                       // สลับสีครึ่งหนึ่ง กันข้อได้เปรียบของฝั่งน้ำเงิน
       const blueId = swap ? b : a;
       const redId = swap ? a : b;
-      const st = buildFight([mk(blueId)].map(toDef), [mk(redId)].map(toDef),
+      const st = buildFight([mk(blueId, redId)].map(toDef), [mk(redId, blueId)].map(toDef),
         s * 7919 + i * 131 + j, DEFAULT_FIGHT);
       let g = 0;
       while (!st.over && g++ < 60 * 200) step(st);
@@ -87,6 +99,7 @@ const pad = (s, n) => String(s).padStart(n);
 const padr = (s, n) => String(s).padEnd(n);
 
 console.log(`=== ตัวต่อตัวพบกันหมด · เลเวล ${LVL} · ${SEEDS} seed ต่อคู่ · ${S[IDS[0]].games} ไฟต์ต่อตัว ===`);
+console.log(`(บอทซื้อของให้แต่ละตัวเองจากงบ ${GOLD}g เท่ากัน — ไม่ได้แจกของชุดเดียวกันให้ทุกตัว)`);
 // ค่าคลาดเคลื่อนคร่าวๆ ของสัดส่วน ที่ p=0.5
 const se = 100 * Math.sqrt(0.25 / S[IDS[0]].games);
 console.log(`(ค่าคลาดเคลื่อนราว ±${(1.96 * se).toFixed(1)} แต้ม — ความต่างที่น้อยกว่านี้อ่านว่าเท่ากัน)\n`);
