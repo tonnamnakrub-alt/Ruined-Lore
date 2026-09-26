@@ -113,6 +113,7 @@ function fireSkillEffect(state, u, sk, target, prec) {
         x: u.x, y: u.y, dx: Math.cos(ang), dy: Math.sin(ang),
         speed: sk.projSpeed || BASE.projSpeed * 1.15, dmg: power, magic: !!sk.magic,
         width: sk.width, pierce: !!sk.pierce, falloff: sk.falloff, root: sk.root, daggerBleed: sk.daggerBleed,
+        pullHalf: sk.pullHalf,
         slow: sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow, dur: sk.dur,
         charm: sk.charm ? sk.charm[Math.max(0, sk.rank - 1)] : 0, charmSlow: sk.charmSlow,
         polymorph: sk.polymorph ? sk.polymorph[Math.max(0, sk.rank - 1)] : 0, polySlow: sk.polySlow,

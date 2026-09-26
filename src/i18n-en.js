@@ -3064,4 +3064,72 @@ export const DICT = {
    "Untargetable leap",
  "ปักมีดทันที":
    "Daggers buried on hit",
+ "สไตน์":
+   "Stein",
+ "พาสซีฟ Sap of Compassion":
+   "Passive Sap of Compassion",
+ "{0} {1} แบ่งร่มเงาให้ {2}":
+   "{0} {1} shares the canopy with {2}",
+ "{0} {1} หยั่งรากลงกลางสมรภูมิ":
+   "{0} {1} takes root in the middle of the battle",
+ "รับแทน":
+   "taking",
+ "สาดเมล็ดพันธุ์เป็นกรวยกว้าง {0} องศา ไกล {1} หน่วย หน่วง {2} วิ แล้วหนามแทงขึ้นพร้อมกัน ตรึงเท้าทุกคนในวง":
+   "Scatters seeds across a {0} degree cone reaching {1} units; after {2}s the thorns erupt at once and root everyone caught",
+ "กางโล่ให้ตัวเองและเพื่อนหนึ่งคนในระยะ {0} หน่วยเท่ากัน · ตราบใดที่โล่ทั้งคู่ยังอยู่ ดาเมจที่เพื่อนกิน {1}% จะไปหักที่โล่ของเราแทน":
+   "Shields both you and one ally within {0} units for the same amount. While both shields hold, {1}% of the damage that ally takes is deducted from your shield instead",
+ "หยั่งรากตรึงตัวเองอยู่กับที่ แล้วปล่อยคลื่นฮีลรัศมี {0} หน่วยให้เพื่อนทั้งทีม {1} ระลอก ห่างกัน {2} วิ":
+   "Takes root and cannot move, then sends out {1} healing waves across a {0} unit radius, {2}s apart",
+ "ทุก 12/10/8 วิ (ที่เลเวล 1/7/13) ออโต้ครั้งถัดไปหลั่งน้ำเลี้ยง ฟื้นเลือดให้ตัวเองและเพื่อนที่มีสัดส่วนเลือดน้อยที่สุดในระยะ 650 คนละ 30 ที่เลเวล 1 ไล่ถึง 150 ที่เลเวล 18 (+25% AP +5% Bonus HP ของสไตน์) · ร่ายสกิล Q/W/E หรือทุกระลอกของ R ตัดคูลดาวน์พาสซีฟลงทันที 2 วิ":
+   "Every 12/10/8s (at levels 1/7/13) his next basic attack runs with sap, healing himself and the ally with the lowest health fraction within 650 units for 30 each at level 1 rising to 150 at level 18 (+25% AP, +5% of Stein's Bonus HP). Casting Q/W/E, or each wave of R, immediately cuts 2s off this cooldown",
+ "STEIN (สไตน์) — พฤกษาผู้ค้ำจุนแห่งพงไพร · Warden · SUPPORT/TOP":
+   "STEIN (The Giving Tree) — Warden · SUPPORT/TOP",
+ "แทงค์พิทักษ์สายเวทที่ไม่ได้อยู่เพื่อฆ่าใคร ทุกท่าคือการซื้อเวลาให้เพื่อน — กระชากคนที่กำลังจะกระโดดใส่แครี่กลับมา ตรึงเท้าทั้งกรวย แบ่งโล่และแบ่งดาเมจ แล้วปิดท้ายด้วยการหยั่งรากฮีลทั้งทีม":
+   "An AP tank who is not here to kill anyone — every ability buys time for someone else. He drags back whoever is about to jump the carry, roots a whole cone, splits both his shield and the damage with an ally, and finishes by taking root to heal the team",
+ "พาสซีฟ Sap of Compassion — ทุก 12/10/8 วิ (ที่เลเวล 1/7/13) ออโต้ครั้งถัดไปหลั่งน้ำเลี้ยง ฟื้นเลือดให้ตัวเองและเพื่อนที่มีสัดส่วนเลือดน้อยที่สุดในระยะ 650 คนละ 30 ที่เลเวล 1 ไล่ถึง 150 ที่เลเวล 18 (+25% AP +5% Bonus HP) · ร่ายสกิล Q/W/E หรือทุกระลอกของ R ตัดคูลดาวน์พาสซีฟลงทันที 2 วิ":
+   "Passive Sap of Compassion: every 12/10/8s (at levels 1/7/13) his next basic attack runs with sap, healing himself and the ally with the lowest health fraction within 650 units for 30 each at level 1 rising to 150 at level 18 (+25% AP, +5% Bonus HP). Casting Q/W/E, or each wave of R, immediately cuts 2s off this cooldown",
+ "Q Grasping Roots — ส่งรากพุ่งใต้ดินเป็นแนวตรงไกล 800 หน่วย กว้าง 125 · ดาเมจเวท 70/105/140/175/210 (+50% AP +6% Bonus HP) · ศัตรูตัวแรกที่โดนถูกกระชากเข้ามา 50% ของระยะห่าง ณ เสี้ยววินาทีที่โดน โดนไกลก็ลากไกล โดนใกล้ก็ลากน้อย · คูลดาวน์ 9/8.5/8/7.5/7 วิ":
+   "Q Grasping Roots: sends roots under the ground in a straight line 800 units long and 125 wide for 70/105/140/175/210 magic damage (+50% AP, +6% Bonus HP). The first enemy hit is dragged 50% of whatever the gap was at the instant of the hit — hit them far away and they travel far, hit them close and they barely move. Cooldown 9/8.5/8/7.5/7s",
+ "W Bramble Overgrowth — สาดเมล็ดพันธุ์เป็นกรวย 60 องศา ไกล 625 หน่วย หน่วง 0.4 วิ แล้วหนามแทงขึ้นพร้อมกันทั้งวง · ดาเมจเวท 80/120/160/200/240 (+60% AP) · ตรึงเท้าทุกคนในวง 1.25/1.4/1.55/1.7/1.85 วิ · คูลดาวน์ 13/12/11/10/9 วิ":
+   "W Bramble Overgrowth: scatters seeds across a 60 degree cone reaching 625 units; 0.4s later the thorns erupt all at once for 80/120/160/200/240 magic damage (+60% AP) and root everyone caught for 1.25/1.4/1.55/1.7/1.85s. Cooldown 13/12/11/10/9s",
+ "E Canopy of Shared Life — กางโล่ให้ตัวเองและเพื่อนหนึ่งคนในระยะ 700 เท่ากัน 60/90/120/150/180 (+30% AP +10% Bonus HP +40% Bonus Armor +40% Bonus MR) นาน 4 วิ · ตราบใดที่โล่ทั้งคู่ยังอยู่ ดาเมจที่เพื่อนกิน 30% จะไปหักที่โล่ของสไตน์แทน · คูลดาวน์ 15/14/13/12/11 วิ":
+   "E Canopy of Shared Life: shields both himself and one ally within 700 units for the same 60/90/120/150/180 (+30% AP, +10% Bonus HP, +40% Bonus Armor, +40% Bonus MR) over 4s. While both shields hold, 30% of the damage that ally takes is deducted from Stein's shield instead. Cooldown 15/14/13/12/11s",
+ "R Arbor's Sanctuary — หยั่งรากตรึงตัวเองอยู่กับที่ 4 วิ ลดดาเมจที่รับ 20/25/30% แล้วปล่อยคลื่นฮีลรัศมี 650 ให้เพื่อนทั้งทีม 5 ระลอก ห่างกัน 0.8 วิ ระลอกละ 40/65/90 (+15% AP +3% Bonus HP) · ยืนรับครบทั้งห้าระลอกคือ 200/325/450 (+75% AP +15% Bonus HP) · คูลดาวน์ 90/80/70 วิ":
+   "R Arbor's Sanctuary: takes root for 4s, unable to move, taking 20/25/30% less damage, and sends out 5 healing waves across a 650 unit radius 0.8s apart for 40/65/90 each (+15% AP, +3% Bonus HP). An ally who stands through all five receives 200/325/450 (+75% AP, +15% Bonus HP). Cooldown 90/80/70s",
+ "สไตน์เลือกเองว่าจะกางโล่ให้ใคร และจะหยั่งรากตอนไหน":
+   "Stein decides who gets the shield, and when to take root",
+ "E ไม่ได้หยิบคนเลือดน้อยที่สุดเสมอ แต่ชั่งน้ำหนักระหว่างเลือดที่พร่อง จำนวนศัตรูที่กำลังเล็งคนนั้นอยู่ และความบางของเขา":
+   "E does not simply grab whoever is lowest. It weighs missing health against how many enemies are currently aiming at that ally, and how squishy they are",
+ "สายตาอ่านเกม (gameSense) คือความสามารถในการเห็นว่าใครกำลังจะโดนรุม ก่อนที่ดาเมจจะลง — แต้มสูงกางให้แครี่ที่เลือดยังเต็มแต่โดนเล็งสองคน แต้มต่ำมองเห็นแค่หลอดเลือด เลยไปกางให้แทงค์ที่เลือดพร่องแต่ไม่มีใครสนใจ":
+   "Game sense is the ability to see who is about to get jumped, before the damage lands. A high score shields the full-health carry that two enemies are aiming at; a low score sees only health bars and shields the hurt tank nobody is looking at",
+ "ทีมเวิร์ค (teamwork) คือความยอมเสียของตัวเองเพื่อทีม — แต้มสูงยอมหยั่งราก (ยืนนิ่ง 4 วินาทีกลางไฟต์) เพื่อเพื่อนแค่คนเดียวที่เลือดพร่อง แต้มต่ำอั้นไว้จนกว่าจะมีคนเจ็บสามคน หรือจนกว่าตัวเองจะใกล้ตาย":
+   "Teamwork is the willingness to give something up for the team. A high score will take root — four seconds standing still in the middle of a fight — for a single hurt ally; a low score holds it until three teammates are hurt, or until his own life is on the line",
+ "STEIN E — โล่ 70-230 + 12% Bonus HP + 60% Bonus Armor + 60% Bonus MR เหลือ 60-180 + 10% + 40% + 40% · ของเดิมวัดจริงได้ 562 ต่อคน คูณสองคนคือ 1124 ต่อการกดหนึ่งครั้ง ซึ่งเป็นโล่ก้อนใหญ่ที่สุดในเกม แถมยังมีการแบ่งดาเมจซ้อนอยู่อีกชั้น":
+   "STEIN E: shield 60-180 + 10% Bonus HP + 40% Bonus Armor + 40% Bonus MR, down from 70-230 + 12% + 60% + 60%. Measured in a real fight the original came to 562 per person, so 1124 per cast — the largest shield in the game, with the damage split stacked on top of it",
+ "STEIN R — คูลดาวน์ 110/95/80 เหลือ 90/80/70 ด้วยเหตุผลเดียวกับ R ของแฟนทอม":
+   "STEIN R: cooldown 90/80/70 instead of 110/95/80, for the same reason as Phantom's R",
+ "STEIN — เอกสารไม่ได้ระบุความเร็วโจมตี ตั้งไว้ที่ 0.62 (+0.02 ต่อเลเวล) เท่ากับ H.S.B ซึ่งเป็นวอร์เดนอีกตัวในเกม":
+   "STEIN: the document gives no attack speed, so it is set to 0.62 (+0.02 per level), matching H.S.B, the game's other Warden",
+ "แก้บั๊ก W ของ PUSS ที่ออกได้ระลอกเดียวมาตลอด":
+   "Fixed: PUSS's W has only ever landed one of its six waves",
+ "ตัวจัดการท่าร่ายค้างใน engine/step.js เขียนไว้สำหรับอุกกาบาตของ FAUSTUS แต่มันกวาดท่าร่ายค้างของทุกคน แล้วยกเลิกทิ้งทันทีที่เจอสถานะตรึงเท้า":
+   "The channel handler in engine/step.js was written for FAUSTUS's meteor storm, but it swept up every channel in the game and cancelled it the moment it saw a root",
+ "ปัญหาคือท่าแบบนี้ตรึงเท้าตัวเองอยู่แล้วเพื่อยืนนิ่ง มันจึงเห็นสถานะที่ตัวเองใส่ไว้เป็นการโดนขัดจังหวะ แล้วยกเลิกท่าของตัวเอง":
+   "The problem is that these abilities root the caster on purpose so they stand still — so the handler read the ability's own root as an interrupt and cancelled the ability",
+ "W Rapier Flurry ของ PUSS ที่ควรแทงรัว 6 ระลอก จึงออกได้แค่ระลอกเดียวมาตั้งแต่ Patch 0.3 · ตอนนี้ออกครบหกระลอกแล้ว และยังถูกขัดจังหวะด้วยสตัน กลัว หรือมนตร์สะกดจากศัตรูได้ตามเดิม":
+   "PUSS's W Rapier Flurry, which should thrust six times, has landed exactly one wave since Patch 0.3. It now lands all six, and is still interrupted by a stun, fear or charm from an enemy as intended",
+ "ตรึงเท้า":
+   "Root duration",
+ "ลดดาเมจที่รับ":
+   "Damage reduction",
+ "แบ่งดาเมจของเพื่อนมารับแทน":
+   "Ally damage taken for them",
+ "Bonus HP (โล่)":
+   "Bonus HP (shield)",
+ "Bonus Armor (โล่)":
+   "Bonus Armor (shield)",
+ "Bonus MR (โล่)":
+   "Bonus MR (shield)",
+ "Bonus HP (ฮีล)":
+   "Bonus HP (heal)",
 };

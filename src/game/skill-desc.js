@@ -55,6 +55,9 @@ const SHAPES = {
   tripleSlam: "ทุบพื้นสามระลอก",
   rangeCharge: "ชาร์จเพิ่มระยะ",
   mask: "สลับหน้ากากเปลี่ยนสไตล์",
+  thornCone: "กรวยหนามหน่วงเวลา ตรึงเท้าหมู่",
+  canopy: "โล่คู่ที่แบ่งดาเมจกัน",
+  arbor: "หยั่งรากนิ่ง ฮีลทีมเป็นระลอก",
   rebound: "กระชากมีดที่ปักอยู่กลับ",
   bladeTempest: "กระโดดหลบแล้วสาดมีดรอบตัว",
   rampBuff: "เร่งความเร็วโจมตีสองจังหวะ",
@@ -111,6 +114,9 @@ const RANKED = [
   ["asPct", "หน้ากากสุขนาฏกรรม — เพิ่มความเร็วโจมตี", "pct"],
   ["arPen", "หน้ากากมรณะ — เจาะเกราะ", "n"],
   ["ripDmg", "ดาเมจต่อมีดที่ปักอยู่หนึ่งเล่ม", "n"],
+  // STEIN — เวลาตรึงเท้าของ W · ฮีลต่อระลอกและลดดาเมจของ R
+  ["root", "ตรึงเท้า", "sec"],
+  ["dr", "ลดดาเมจที่รับ", "pct"],
   ["cdByRank", "คูลดาวน์", "sec"],
 ];
 
@@ -146,6 +152,7 @@ const FLAT = [
   ["airborne", "ลอยกลางอากาศ", "sec"],
   ["airTime", "เวลาบิน", "sec"],
   ["air", "ลอยแตะไม่ได้", "sec"],
+  ["share", "แบ่งดาเมจของเพื่อนมารับแทน", "pct"],
   ["stacks", "ปักมีดทันที", "n"],
   ["knockup", "เวลาลอย", "sec"],
   ["knockback", "ผลักไกล", "n"],
@@ -240,6 +247,9 @@ const RATIOS = [
   ["bonusHpRatio", "Bonus HP"],
   ["armAdRatio", "AD (ต่อแขน)"],
   ["pctPerBad", "% Max HP ต่อ Bonus AD 100"],
+  ["shieldBonusArmor", "Bonus Armor (โล่)"],
+  ["shieldBonusMr", "Bonus MR (โล่)"],
+  ["healBonusHp", "Bonus HP (ฮีล)"],
   ["ripBadRatio", "Bonus AD (ต่อมีดหนึ่งเล่ม)"],
 ];
 
@@ -445,6 +455,9 @@ function actionClause(sk) {
     case "dismissal": return tr("จับศัตรูในระยะ {0} แล้วเหวี่ยงทุ่มไปไกลสุด {1} หน่วย ระเบิดที่จุดตกรัศมี {2}", sk.grabRange || 0, sk.throwRange || 0, sk.radius || 0);
     case "rangeCharge": return tr("ชาร์จค้างแล้วยิงลูกศรทะลุแถว ยิ่งชาร์จยิ่งไกล {0}–{1} หน่วย", sk.rangeMin || 0, sk.rangeMax || 0);
     // ---- ท่าของตัวละคร Patch 0.4 ----
+    case "thornCone": return tr("สาดเมล็ดพันธุ์เป็นกรวยกว้าง {0} องศา ไกล {1} หน่วย หน่วง {2} วิ แล้วหนามแทงขึ้นพร้อมกัน ตรึงเท้าทุกคนในวง", sk.angle || 60, r || 0, sk.delay || 0.4);
+    case "canopy": return tr("กางโล่ให้ตัวเองและเพื่อนหนึ่งคนในระยะ {0} หน่วยเท่ากัน · ตราบใดที่โล่ทั้งคู่ยังอยู่ ดาเมจที่เพื่อนกิน {1}% จะไปหักที่โล่ของเราแทน", r || 0, Math.round((sk.share || 0) * 100));
+    case "arbor": return tr("หยั่งรากตรึงตัวเองอยู่กับที่ แล้วปล่อยคลื่นฮีลรัศมี {0} หน่วยให้เพื่อนทั้งทีม {1} ระลอก ห่างกัน {2} วิ", rad || 0, sk.waves || 5, sk.every || 0.8);
     case "mask": return tr("เลือกสวมหน้ากากหนึ่งในสามใบ อยู่ถาวรจนกว่าจะเปลี่ยนใบ — โศกนาฏกรรมเพิ่มพลังโจมตี สุขนาฏกรรมเพิ่มความเร็วโจมตี มรณะเพิ่มเจาะเกราะ");
     case "rebound": return tr("กระชากมีดที่ปักอยู่บนศัตรูทุกตัวในระยะ {0} หน่วยกลับมา ยิ่งปักเยอะยิ่งแรง และใครขวางวิถีบินกลับก็โดนด้วย", r || 0);
     case "bladeTempest": return tr("กระโดดลอยตัวแตะไม่ได้ {0} วิ แล้วสาดมีดรอบตัวรัศมี {1} หน่วย พร้อมปักมีดให้ทุกคนในวงทันที {2} เล่ม", sk.air || 0.75, rad || 0, sk.stacks || 3);
@@ -505,7 +518,7 @@ function timingClause(sk) {
   if (sk.maxCharge) out.push(tr("ชาร์จได้ถึง {0} วิ", sk.maxCharge));
   if (sk.waves) {
     // waves มีสองแบบ — ตัวเลขจำนวนระลอกไล่ตามแรงก์ กับตารางบรรยายแต่ละระลอกทีละก้อน
-    const w = sk.waves[Math.max(0, (sk.rank || 1) - 1)];
+    const w = Array.isArray(sk.waves) ? sk.waves[Math.max(0, (sk.rank || 1) - 1)] : sk.waves;
     const n = typeof w === "number" ? w : sk.waves.length;
     out.push(tr("ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ", n, sk.every));
   }

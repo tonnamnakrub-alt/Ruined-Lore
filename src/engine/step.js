@@ -5,6 +5,7 @@ import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREA
 import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
+import { steinCastCut, steinPull, tickP4Unit } from "./lore-p4.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -218,6 +219,7 @@ export function step(state) {
     }
     tickLastStand(state, u);
     tickLoreUnit(state, u, dt);
+    tickP4Unit(state, u, dt);
     tickLoreItems(state, u, dt);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
@@ -1047,11 +1049,17 @@ export function step(state) {
     if (!ch) continue;
     // ตายหรือโดน Hard CC = ยกเลิกทันที
     // root ที่ตัวเองใส่ไว้เพื่อยืนนิ่งไม่นับเป็นการขัดจังหวะ — ดูเฉพาะ CC ที่มาจากคนอื่น
-    const outsideRoot = u.buffs.some((b) => b.type === "root" && b.tag !== "channel" && b.until > state.t);
+    // root ที่ท่านั้นใส่ให้ตัวเองเพื่อยืนนิ่ง ไม่ใช่การขัดจังหวะ — แท็กไว้ทั้งสองแบบ
+    const SELF = ["channel", "selfchannel", "arbor", "arbordr"];
+    const outsideRoot = u.buffs.some((b) => b.type === "root" && !SELF.includes(b.tag) && b.until > state.t);
     if (!u.alive || hasBuff(u, "stun") || hasBuff(u, "fear") || outsideRoot || u.charmed) {
       u.channeling = null;
+      u.buffs = u.buffs.filter((b) => !SELF.includes(b.tag));
       continue;
     }
+    // แชนแนลของตัวละครชุด Patch 0.3/0.4 มีคนเดินจังหวะให้เองใน lore.js / lore-p4.js
+    // ตรงนี้ดูแลแค่เรื่อง "โดน CC แล้วขาด" ให้ทุกคนเท่านั้น
+    if (ch.lore || ch.p4) continue;
     addBuffUnique(u, "channel", { type: "root", v: 1, until: state.t + 0.15 }, state.t);
     if (state.t < ch.next) continue;
     const sk = ch.skill;
@@ -1081,6 +1089,9 @@ export function step(state) {
     q.u.pendingSkillHit = false;
     if (q.u.skillHitThisCast) onSkillLanded(state, q.u, q.sk);
     onMageCast(state, q.u, q.sk);
+    // STEIN — ร่ายสกิลทีไรก็เร่งการสังเคราะห์น้ำเลี้ยงของพาสซีฟ
+    // อยู่ตรงคิวนี้เพราะเป็นจุดเดียวที่ทั้งทางของบอทและทางของห้องซ้อมมาบรรจบกัน
+    if (q.u.champ.sap) steinCastCut(state, q.u);
     // Balmung's Dragon-Cleaver: casting a skill empowers the next basic attack
     // with 175% Base AD and a 2s speed kick, capped every 1.5s
     if (q.u.hasItem("bdc") && (q.u.bdcReadyAt == null || state.t >= q.u.bdcReadyAt)) {
@@ -1154,6 +1165,8 @@ export function step(state) {
       state.dmgSrc = null;
       if (owner && !p.skill) owner.hits += 1;
       if (p.root) u.buffs.push({ type: "root", v: 1, until: state.t + p.root });
+      // STEIN Q — รากกระชากเป้าเข้ามาครึ่งหนึ่งของระยะห่าง ณ ตอนที่โดน
+      if (p.pullHalf && owner) steinPull(state, owner, u, p.pullHalf);
       if (p.daggerBleed) {
         u.dagger = { ownerId: p.ownerId };
         state.dots = state.dots.filter((x) => !(x.targetId === u.id && x.ownerId === p.ownerId && x.dagger));

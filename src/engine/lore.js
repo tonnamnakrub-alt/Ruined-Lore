@@ -380,7 +380,7 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
         skill: sk, left: sk.ticks, next: state.t, range: sk.range * sc, lore: "cone",
         ang: face, half: ((sk.angle || 50) * Math.PI) / 180 / 2, rank: r,
       };
-      if (sk.selfRoot) addBuff(u, { type: "root", v: 1, until: state.t + sk.ticks * sk.every + 0.05 }, state.t);
+      if (sk.selfRoot) addBuffUnique(u, "selfchannel", { type: "root", v: 1, until: state.t + sk.ticks * sk.every + 0.05 }, state.t);
       return true;
     }
 
@@ -786,7 +786,7 @@ export function tickLoreUnit(state, u, dt) {
         if (ch.staticAura) nianJolt(state, u, e);
       }
       state.dmgSrc = prev;
-      if (c.left <= 0) u.channeling = null;
+      if (c.left <= 0) { u.channeling = null; u.buffs = u.buffs.filter((b) => b.tag !== "selfchannel"); }
     }
   }
 

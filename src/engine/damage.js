@@ -10,7 +10,7 @@ import { onWeaveDamage } from "./klaeder.js";
 import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
-import { stickDagger } from "./lore-p4.js";
+import { canopyShare, stickDagger } from "./lore-p4.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -83,6 +83,9 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       finally { state.oodSplitting = false; state.dmgSrc = ps; }
     }
   }
+  // STEIN E — ตราบใดที่โล่คู่ยังอยู่ ดาเมจของเพื่อนส่วนหนึ่งไปหักที่โล่ของสไตน์แทน
+  // ต้องคิดก่อนโล่ของเป้าเอง ไม่งั้นโล่แครี่จะแตกก่อนสายเชื่อมได้ทำงาน
+  if (dmg > 0 && target.canopy) dmg -= canopyShare(state, target, dmg);
   // H.S.B R — ใครยืนในบ้านอิฐ ดาเมจจากข้างนอกไปลงที่ตัวบ้านแทน
   if (target.inBunker && source && source.team !== target.team) {
     const b = target.inBunker;

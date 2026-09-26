@@ -79,6 +79,11 @@ export function stackChips(u, now) {
     const cols = { TRAGEDY: "#7EACFF", COMEDY: "#E8BE60", DEATH: "#E85C6C" };
     add("MASK", u.mask ? tr(names[u.mask]) : tr("ยังไม่สวม"), u.mask ? cols[u.mask] : C.dim, null);
   }
+  if (ch.sap) {
+    const left = u.sapReadyAt == null || now == null ? 0 : Math.max(0, u.sapReadyAt - now);
+    add("SAP", left > 0 ? left.toFixed(1) + "s" : tr("พร้อม"), left > 0 ? C.dim : "#63C77F", null);
+  }
+  if (u.canopy) add("CANOPY", tr("รับแทน") + " " + Math.round(u.canopy.share * 100) + "%", "#63C77F", null);
   if (u.jolt > 0) add("JOLT", u.jolt + "/3", "#7EC7FF", u.jolt / 3);
   if (u.truthAura) add("TRUTH", "+" + Math.round(u.truthAura.amp * 100) + "%", "#E3B75F", null);
 

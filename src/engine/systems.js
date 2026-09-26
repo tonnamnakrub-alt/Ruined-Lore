@@ -7,6 +7,7 @@ import { DT, step } from "./step.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 import { tickLore } from "./lore.js";
+import { tickP4 } from "./lore-p4.js";
 
 // ป้ายบอกที่มาของดาเมจสำหรับของที่ทำงานทีหลัง (โซน พิษ กลไกตัวละคร)
 const srcOf = (o, u) => (o && o.src) || (o && o.skill ? skillLabel(u, o.skill) : tr("กลไกตัวละคร"));
@@ -15,6 +16,7 @@ const srcOf = (o, u) => (o && o.src) || (o && o.skill ? skillLabel(u, o.skill) :
 export function tickNewSystems(state) {
   // กลไกของตัวละคร Patch 0.3 (พายุ ยักษ์ กำแพง บ้าน ฯลฯ)
   tickLore(state, DT);
+  tickP4(state, DT);
   // the four-way slash that lands after Cross Slash stops
   state.crosses = state.crosses.filter((c) => {
     if (state.t < c.at) return true;

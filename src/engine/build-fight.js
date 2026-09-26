@@ -88,6 +88,8 @@ export function buildFight(blueDefs, redDefs, seed, event) {
       mark: null,
       dagger: null,
       pdag: null,
+      canopy: null,
+      sapReadyAt: null,
       mask: null,
       maskAd: 0,
       maskAs: 0,

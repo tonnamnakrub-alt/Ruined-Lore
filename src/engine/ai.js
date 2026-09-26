@@ -5,7 +5,7 @@ import { onUltCastItems } from "./lore-items.js";
 import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
 import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
-import { daggerCount, maskPlan } from "./lore-p4.js";
+import { canopyPick, daggerCount, maskPlan } from "./lore-p4.js";
 
 
 // ELLA Q — คอมโบที่ยังไม่จบ จังหวะถัดไปต้องกดต่อได้ทันที
@@ -131,6 +131,14 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
     // ---- อัลติของ Patch 0.4 ----
     if (sk.type === "bladeTempest") return nearby >= 1 && d <= sk.radius * 0.9;
+    // หยั่งรากคือการยืนนิ่งสี่วินาทีกลางไฟต์ ต้องคุ้มจริงถึงจะกด
+    // คนที่ teamwork สูงกดเพื่อทีม คนที่ต่ำกดตอนตัวเองจะตาย
+    if (sk.type === "arbor") {
+      const tw = (u.athlete && u.athlete.teamwork) || 0;
+      const hurt = alliesOf(state, u).filter((a) => dist(u, a) <= sk.radius && a.hp / a.maxHp < 0.8).length;
+      const needAllies = tw >= 7 ? 1 : tw >= 4 ? 2 : 3;
+      return hurt >= needAllies || hpFrac < 0.45;
+    }
   if (sk.type === "markNext") return d <= sk.range;
   if (sk.type === "barrage") return d <= sk.range && nearby >= 1;
   if (sk.type === "globalStrike") return true;
@@ -158,6 +166,15 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     return d <= (sk.range || 900);
   }
   // ---- ท่าของตัวละคร Patch 0.4 ----
+  if (sk.type === "thornCone") return d <= sk.range;
+  // โล่คู่ — ต้องมีคนที่คุ้มจะยกให้ ไม่ใช่กดทิ้งทุกครั้งที่คูลดาวน์ลง
+  if (sk.type === "canopy") {
+    const mate = canopyPick(state, u, sk);
+    if (mate) { u.canopyPick = mate; return true; }
+    u.canopyPick = null;
+    return hpFrac < 0.7 || d <= u.range * 2;
+  }
+  if (sk.type === "arbor") return alliesOf(state, u).some((a) => dist(u, a) <= sk.radius && a.hp / a.maxHp < 0.8) || hpFrac < 0.5;
   // หน้ากากไม่ใช่ท่าที่ "ยิงใส่ใคร" แต่เป็นการตัดสินใจว่าจะเปลี่ยนสไตล์ไหม
   // ถ้าใบที่ใส่อยู่ดีพอแล้ว ก็ไม่ควรเสียจังหวะไปสลับเล่นๆ
   if (sk.type === "mask") {
