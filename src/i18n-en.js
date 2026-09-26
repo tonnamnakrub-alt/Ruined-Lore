@@ -3138,4 +3138,74 @@ export const DICT = {
    "Paired shield that splits damage",
  "หยั่งรากนิ่ง ฮีลทีมเป็นระลอก":
    "Roots in place, heals the team in waves",
+ "คามาจิ":
+   "Kamachi",
+ "พาสซีฟ Sickle-Wind Siblings":
+   "Passive Sickle-Wind Siblings",
+ " (น้อง)":
+   " (sibling)",
+ "{0} {1} สลายร่างกลืนไปกับสายลม":
+   "{0} {1} dissolves into the wind",
+ "{0} {1} ออกจากสายลมมาลงมือเอง":
+   "{0} {1} steps out of the wind to strike",
+ "{0} {1} ปักเคียวเปิดอาณาเขตพายุ":
+   "{0} {1} plants the sickles and opens the storm domain",
+ "พร้อมพุ่ง":
+   "dash ready",
+ "ยืนนิ่ง":
+   "holding still",
+ "ออกมาสู้":
+   "fighting",
+ "ฟันครึ่งวงกลมด้านหน้ารัศมี {0} หน่วยสองจังหวะติด ห่างกัน {1} วิ · โดนครบทั้งสองจังหวะถึงจะติดสโลว์":
+   "Cleaves a {0} unit half-circle in front of you twice in a row, {1}s apart. Only enemies caught by both swings are slowed",
+ "ล่องหน {0} วิพร้อมเร่งฝีเท้า · ระหว่างล่องหนกดซ้ำได้อีกครั้งเพื่อพุ่งทะลวงเป็นเส้นตรง {1} หน่วย · คูลดาวน์เริ่มนับหลังพุ่งจบ":
+   "Goes invisible for {0}s with a burst of move speed. While invisible it can be recast to dash {1} units straight through everything. The cooldown starts once the dash ends",
+ "เปิดโดมพายุลงพื้นในระยะ {0} รัศมี {1} หน่วย นาน {2} วิ · ระหว่างนั้นตัวเองแตะไม่ได้ ตีไม่เข้า และมองไม่เห็น จนกว่าจะลงมือเอง · โดมเฉือนทุกคนในวง {3} ระลอก":
+   "Opens a storm dome within {0} units, {1} units across, lasting {2}s. While it holds you are untargetable, invulnerable and unseen — until you strike. The dome cuts everyone inside {3} times",
+ "น้องพังพอนลมสองตัววิ่งขนาบข้างห่าง 100 หน่วย · ร่าย Q/W/E ทีไร น้องลอกท่าตามทันทีจากจุดที่ตัวเองยืน ดาเมจตัวละ 25% ของท่าหลัก พื้นที่ 60% (โดนครบทั้งสองตัวคือดาเมจรวม +50%) · ออโต้ของคามาจิพ่วงดาเมจจากน้องที่ยังไม่ตายอีกตัวละ 4 ที่เลเวล 1 ไล่ถึง 20 ที่เลเวล 18 (+5% Bonus AD) · น้องมีเลือดของตัวเอง 120 ที่เลเวล 1 ไล่ถึง 480 ที่เลเวล 18 (+20% Bonus HP ของคามาจิ) เกราะและต้านเวทครึ่งหนึ่งของพี่ · ศัตรูทุบให้ตายได้ ตายแล้วเกิดใหม่ทีละตัวใน 12/10/8 วิ (ที่เลเวล 1/7/13)":
+   "Two lesser wind weasels run 100 units to either side of him. Whenever he casts Q/W/E they copy it immediately from wherever they are standing, each for 25% of the damage across 60% of the area — landing both is +50% damage in total. His basic attacks also carry 4 damage per living weasel at level 1, rising to 20 at level 18 (+5% Bonus AD). Each weasel has its own health, 120 at level 1 rising to 480 at level 18 (+20% of Kamachi's Bonus HP), with half his armor and magic resist. Enemies can beat them down, and a dead weasel returns on its own after 12/10/8s (at levels 1/7/13)",
+ "KAMACHI (คามาจิ) — สามภูตพายุมรณะ · Assassin · JUNGLE/TOP":
+   "KAMACHI (The Sickle-Wind Trio) — Assassin · JUNGLE/TOP",
+ "มือสังหารกายภาพที่ไม่ได้สู้คนเดียว มีน้องพังพอนลมสองตัววิ่งขนาบข้างและลอกท่าตามทุกครั้ง ดาเมจครึ่งหนึ่งของเขาจึงออกมาจากคนละจุดกับตัวเขาเอง":
+   "An AD assassin who does not fight alone. Two wind weasels flank him and copy every ability he casts, so half his damage comes from somewhere other than where he is standing",
+ "พาสซีฟ Sickle-Wind Siblings — น้องสองตัววิ่งขนาบข้างห่าง 100 หน่วย · ร่าย Q/W/E ทีไร น้องลอกท่าตามทันทีจากจุดที่ตัวเองยืน ดาเมจตัวละ 25% ของท่าหลัก พื้นที่ 60% (โดนครบทั้งสองตัวคือดาเมจรวม +50%) · ออโต้ของพี่พ่วงดาเมจจากน้องที่ยังไม่ตายอีกตัวละ 4 ที่เลเวล 1 ไล่ถึง 20 ที่เลเวล 18 (+5% Bonus AD)":
+   "Passive Sickle-Wind Siblings: two weasels run 100 units to either side. Whenever he casts Q/W/E they copy it immediately from wherever they are standing, each for 25% of the damage across 60% of the area — landing both is +50% damage in total. His basic attacks also carry 4 damage per living weasel at level 1, rising to 20 at level 18 (+5% Bonus AD)",
+ "พาสซีฟ — น้องมีเลือดของตัวเอง 120 ที่เลเวล 1 ไล่ถึง 480 ที่เลเวล 18 (+20% Bonus HP ของพี่) เกราะและต้านเวทครึ่งหนึ่งของพี่ · ศัตรูที่ยืนประชิดทุบมันได้ และลูกสกิลที่พาดผ่านก็ลงดาเมจ · ตายแล้วเกิดใหม่ทีละตัวใน 12/10/8 วิ (ที่เลเวล 1/7/13)":
+   "Passive: each weasel has its own health, 120 at level 1 rising to 480 at level 18 (+20% of his Bonus HP), with half his armor and magic resist. Enemies standing next to one can beat it down, and abilities that pass through it deal damage too. A dead weasel returns on its own after 12/10/8s (at levels 1/7/13)",
+ "Q Crescent Gale-Scar — คลื่นเคียวลมทะลุแถวไกล 800 หน่วย กว้าง 140 · ดาเมจกายภาพ 70/105/140/175/210 (+75% Bonus AD) · น้องยิงคลื่นขนานขนาบข้างกว้าง 80 ตัวละ 25% · คูลดาวน์ 6/5.5/5/4.5/4 วิ":
+   "Q Crescent Gale-Scar: a wind crescent that pierces everything in a line 800 units long and 140 wide for 70/105/140/175/210 physical damage (+75% Bonus AD). The weasels fire parallel crescents 80 wide on either side for 25% each. Cooldown 6/5.5/5/4.5/4s",
+ "W Twin Whirl-Scythes — ฟันครึ่งวงกลมด้านหน้ารัศมี 325 หน่วยสองจังหวะติด ห่างกัน 0.2 วิ · ดาเมจกายภาพจังหวะละ 45/70/95/120/145 (+50% Bonus AD) · ศัตรูที่โดนครบทั้งสองจังหวะติดสโลว์ 35% นาน 1.5 วิ (จังหวะเดียวไม่นับ) · คูลดาวน์ 9/8.5/8/7.5/7 วิ":
+   "W Twin Whirl-Scythes: cleaves a 325 unit half-circle in front of him twice in a row, 0.2s apart, for 45/70/95/120/145 physical damage per swing (+50% Bonus AD). Only enemies caught by both swings are slowed by 35% for 1.5s — one swing does not count. Cooldown 9/8.5/8/7.5/7s",
+ "E Zephyr Camouflage — กดครั้งแรกล่องหน 2.5 วิ พร้อมเร่งฝีเท้า 30/35/40/45/50% · ระหว่างล่องหนกดซ้ำได้เพื่อพุ่งทะลวงเป็นเส้นตรง 550 หน่วย กว้าง 150 ดาเมจกายภาพ 60/95/130/165/200 (+65% Bonus AD) · คูลดาวน์ 14/13/12/11/10 วิ เริ่มนับหลังพุ่งจบ ไม่ใช่ตอนกดครั้งแรก":
+   "E Zephyr Camouflage: the first cast turns him invisible for 2.5s with 30/35/40/45/50% move speed. While invisible it can be recast to dash 550 units straight through everything, 150 wide, for 60/95/130/165/200 physical damage (+65% Bonus AD). Cooldown 14/13/12/11/10s, counted from the end of the dash rather than the first cast",
+ "R Kamaitachi's Domain — ปักเคียวเปิดโดมพายุลงพื้นในระยะ 500 รัศมี 400 หน่วย นาน 3 วิ · ระหว่างนั้นคามาจิแตะไม่ได้ ตีไม่เข้า และมองไม่เห็น · โดมเฉือนทุกคนในวง 6 ระลอก ระลอกละ 30/50/70 (+25% Bonus AD) · ถ้าเขาตีหรือร่ายสกิลเมื่อไหร่ ความอมตะหลุดทันที แต่โดมยังหมุนต่อจนครบเวลา · คูลดาวน์ 75/65/55 วิ":
+   "R Kamaitachi's Domain: plants his sickles and opens a storm dome within 500 units, 400 units across, for 3s. While it holds Kamachi is untargetable, invulnerable and unseen. The dome cuts everyone inside 6 times for 30/50/70 each (+25% Bonus AD). The moment he attacks or casts, the invulnerability ends — but the dome keeps turning for its full duration. Cooldown 75/65/55s",
+ "อยู่ในสายลมแล้วจะยืนนิ่งหรือออกมาสู้ คามาจิตัดสินใจเอง":
+   "Kamachi decides for himself whether to hold still in the wind or step out and fight",
+ "R ให้ความอมตะที่แลกมาด้วยการไม่ลงมือ — ยืนนิ่งก็รอดแน่แต่เสียดาเมจไปสามวินาที ออกมาสู้ก็ได้ดาเมจแต่กลับมาโดนสอยได้ทันที":
+   "R offers invulnerability at the price of doing nothing. Hold still and you certainly survive, but you give up three seconds of damage; step out and you deal damage, but you can be killed again immediately",
+ "บอทตีราคาความอันตรายตอนนั้นจริงๆ จากเลือดที่เหลือและจำนวนศัตรูที่จ่อรอบวง แล้วตัดสินใจครั้งเดียวตอนกด":
+   "The bot actually prices the danger it is in from its remaining health and how many enemies are closing on the dome, and commits to one answer at the moment of the cast",
+ "การตัดสินใจ (decision) คือความแม่นในการอ่านว่าอันตรายจริงแค่ไหน — แต้มต่ำประเมินต่ำกว่าความจริงเหลือราว 40% เห็นแต่ดาเมจตรงหน้า เลยสวนออกมาทั้งที่ควรหลบ แต้มเต็มอ่านได้ครบ":
+   "Decision is how accurately he reads how much danger he is actually in. A low score sees only about 40% of it — the damage in front of him is all that registers, so he steps out when he should have stayed hidden. A full score reads it completely",
+ "สายตาอ่านเกม (gameSense) คือความนิ่งของการอ่าน แต้มต่ำอ่านเพี้ยนไปคนละทางในแต่ละครั้ง":
+   "Game sense is how steady that reading is. A low score misreads it differently every time",
+ "KAMACHI R — คูลดาวน์ 100/85/70 เหลือ 75/65/55 ด้วยเหตุผลเดียวกับ R ของอีกสองตัว · ตัวเลขอื่นของคามาจิใช้ตามเอกสารทั้งหมด ไม่ได้ปรับเลย":
+   "KAMACHI R: cooldown 75/65/55 instead of 100/85/70, for the same reason as the other two ultimates. Every other number of his is used exactly as the document gives it",
+ "KAMACHI — ดาเมจของน้องในเอกสารเป็นตาราง 25% ของท่าหลักเป๊ะทุกช่อง เก็บเป็นสัดส่วนแทนตารางแยก จะได้ไม่มีวันหลุดกันเวลาปรับตัวเลขท่าหลัก":
+   "KAMACHI: the weasels' damage in the document is a table that is exactly 25% of the parent ability in every cell, so it is stored as a ratio rather than its own table — that way the two can never drift apart when the parent numbers change",
+ "อีกจุด: ท่าที่ยิงเป็นระลอกเคยนัดเวลาระลอกถัดไปจาก \"เวลาปัจจุบัน\" ทำให้ความคลาดเคลื่อนสะสมไปเรื่อยๆ จนระลอกสุดท้ายเลยเวลาที่ท่านั้นหมดอายุ แล้วหายไปหนึ่งระลอก · ตอนนี้นัดจากเวลาที่ตั้งไว้แทน":
+   "Also: abilities that fire in waves used to schedule the next wave from \"right now\" rather than from the time it was due, so the error accumulated until the last wave fell past the ability's own expiry and was simply lost. They now schedule from the time that was set",
+ "ฟันครึ่งวงกลมสองจังหวะ":
+   "Two half-circle cleaves",
+ "ล่องหนก่อน กดซ้ำถึงจะพุ่ง":
+   "Vanish first, recast to dash",
+ "โดมพายุ ลบตัวตนตัวเอง":
+   "Storm dome that erases you",
+ "ห่างกันสองจังหวะ":
+   "Gap between swings",
+ "สโลว์เมื่อโดนครบสองจังหวะ":
+   "Slow when both swings land",
+ "ล่องหนนาน":
+   "Invisible for",
 };

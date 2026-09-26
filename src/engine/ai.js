@@ -5,20 +5,23 @@ import { onUltCastItems } from "./lore-items.js";
 import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
 import { fullCd } from "./stats.js";
 import { activeSkills, alliesOf, bestSkillTarget, enemiesOf, estimate } from "./targeting.js";
-import { canopyPick, daggerCount, maskPlan } from "./lore-p4.js";
+import { canopyPick, daggerCount, domainHoldPlan, maskPlan } from "./lore-p4.js";
 
 
 // ELLA Q — คอมโบที่ยังไม่จบ จังหวะถัดไปต้องกดต่อได้ทันที
 // เดิมคูลดาวน์ลงตั้งแต่จังหวะแรก (10 วิ) แต่หน้าต่างคอมโบมีแค่ 5 วิ
 // จังหวะ 2 กับ 3 จึงไม่มีวันได้ใช้ — Q เลยเหมือนมีท่าเดียว
 function midCombo(u, sk) {
+  if (sk.type === "zephyr") return !u.zephyr;
   return sk.type === "combo" && (u.comboStep || 0) + 1 < (sk.steps || []).length;
 }
 
 
 export function castSkills(state, u, target, d, disc, aw, prec) {
   for (const sk of activeSkills(u)) {
-    if (sk.rank <= 0 || (sk.ammoMax ? sk.ammo <= 0 : sk.cdLeft > 0)) continue;
+    // ท่าที่ล่องหนรออยู่ กดซ้ำได้เลยแม้คูลดาวน์จะยังไม่ลง
+    const recast = sk.type === "zephyr" && u.zephyr && state.t <= u.zephyr.until;
+    if (!recast && (sk.rank <= 0 || (sk.ammoMax ? sk.ammo <= 0 : sk.cdLeft > 0))) continue;
     let use = sk;
     if (sk.type === "dual") {
       if (u.shadow <= 0 && u.light <= 0) continue;
@@ -131,6 +134,12 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
     // ---- อัลติของ Patch 0.4 ----
     if (sk.type === "bladeTempest") return nearby >= 1 && d <= sk.radius * 0.9;
+    if (sk.type === "domain") {
+      if (d > sk.range) return false;
+      // ตัดสินใจตั้งแต่ตอนนี้ว่าจะยืนนิ่งในสายลมหรือออกมาสู้ ตอนร่ายจะได้ใช้คำตอบเดิม
+      u.domainPlan = domainHoldPlan(state, u, sk);
+      return nearby >= 1 || hpFrac < 0.5;
+    }
     // หยั่งรากคือการยืนนิ่งสี่วินาทีกลางไฟต์ ต้องคุ้มจริงถึงจะกด
     // คนที่ teamwork สูงกดเพื่อทีม คนที่ต่ำกดตอนตัวเองจะตาย
     if (sk.type === "arbor") {
@@ -166,6 +175,14 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
     return d <= (sk.range || 900);
   }
   // ---- ท่าของตัวละคร Patch 0.4 ----
+  if (sk.type === "twinCleave") return d <= sk.radius * 0.85;
+  if (sk.type === "zephyr") {
+    // ล่องหนรออยู่แล้ว = กดซ้ำเพื่อพุ่ง รอให้เข้าระยะก่อน หรือใกล้หมดเวลาก็พุ่งทิ้ง
+    if (u.zephyr) return d <= sk.dashRange * 1.15 || state.t > u.zephyr.until - 0.4;
+    // ยังไม่ล่องหน = ใช้เข้าหาเป้าที่อยู่ไกล หรือใช้หนีตอนเลือดต่ำ
+    return d > u.range * 1.4 || hpFrac < 0.45;
+  }
+  if (sk.type === "domain") return d <= sk.range && (nearby >= 1 || hpFrac < 0.5);
   if (sk.type === "thornCone") return d <= sk.range;
   // โล่คู่ — ต้องมีคนที่คุ้มจะยกให้ ไม่ใช่กดทิ้งทุกครั้งที่คูลดาวน์ลง
   if (sk.type === "canopy") {

@@ -1,228 +1,228 @@
 {
  "seeds": 15,
  "level": 13,
- "fightsEach": 345,
- "margin": 5.3,
+ "fightsEach": 360,
+ "margin": 5.2,
  "rows": [
   {
    "id": "PETER",
-   "wr": 88.1,
-   "dmg": 2603,
-   "took": 1114,
-   "heal": 257,
-   "lived": 88,
+   "wr": 88.6,
+   "dmg": 2570,
+   "took": 1097,
+   "heal": 255,
+   "lived": 89,
    "src": [
     [
      "Auto attack",
-     1091
+     1083
     ],
     [
      "Q Fairy Bolt",
-     478
+     470
     ],
     [
      "Item Fafnir's Devouring Maw",
-     327
+     321
     ],
     [
      "Item Shiva's Trishula",
-     267
-    ]
-   ]
-  },
-  {
-   "id": "HOOD",
-   "wr": 87,
-   "dmg": 2562,
-   "took": 862,
-   "heal": 54,
-   "lived": 87,
-   "src": [
-    [
-     "Auto attack",
-     1242
-    ],
-    [
-     "Passive Lacerating Precision",
-     675
-    ],
-    [
-     "Skills",
-     358
-    ],
-    [
-     "Item Shiva's Trishula",
-     141
-    ]
-   ]
-  },
-  {
-   "id": "PHANTOM",
-   "wr": 85.5,
-   "dmg": 2578,
-   "took": 1121,
-   "heal": 272,
-   "lived": 85,
-   "src": [
-    [
-     "Auto attack",
-     1201
-    ],
-    [
-     "Item Fafnir's Devouring Maw",
-     360
-    ],
-    [
-     "Q Tri-Blade Fan",
-     337
-    ],
-    [
-     "Item Shiva's Trishula",
-     296
-    ]
-   ]
-  },
-  {
-   "id": "KAZEM",
-   "wr": 83.2,
-   "dmg": 2528,
-   "took": 1239,
-   "heal": 984,
-   "lived": 83,
-   "src": [
-    [
-     "Auto attack",
-     731
-    ],
-    [
-     "Q Gilded Fist",
-     650
-    ],
-    [
-     "Item Fafnir's Devouring Maw",
-     477
-    ],
-    [
-     "R The Curse of Gold",
      263
     ]
    ]
   },
   {
-   "id": "TOTSAKAN",
-   "wr": 83.2,
-   "dmg": 2529,
-   "took": 1406,
-   "heal": 629,
-   "lived": 85,
+   "id": "HOOD",
+   "wr": 87.5,
+   "dmg": 2533,
+   "took": 858,
+   "heal": 54,
+   "lived": 88,
    "src": [
     [
      "Auto attack",
-     838
+     1226
     ],
     [
-     "Q Asura Cleave",
-     765
+     "Passive Lacerating Precision",
+     669
     ],
     [
-     "Item Fafnir's Devouring Maw",
-     544
+     "Skills",
+     357
     ],
     [
      "Item Shiva's Trishula",
-     237
+     135
+    ]
+   ]
+  },
+  {
+   "id": "PHANTOM",
+   "wr": 86.1,
+   "dmg": 2546,
+   "took": 1106,
+   "heal": 269,
+   "lived": 86,
+   "src": [
+    [
+     "Auto attack",
+     1188
+    ],
+    [
+     "Item Fafnir's Devouring Maw",
+     352
+    ],
+    [
+     "Q Tri-Blade Fan",
+     334
+    ],
+    [
+     "Item Shiva's Trishula",
+     292
+    ]
+   ]
+  },
+  {
+   "id": "KAZEM",
+   "wr": 83.9,
+   "dmg": 2500,
+   "took": 1238,
+   "heal": 976,
+   "lived": 84,
+   "src": [
+    [
+     "Auto attack",
+     734
+    ],
+    [
+     "Q Gilded Fist",
+     638
+    ],
+    [
+     "Item Fafnir's Devouring Maw",
+     468
+    ],
+    [
+     "R The Curse of Gold",
+     252
+    ]
+   ]
+  },
+  {
+   "id": "TOTSAKAN",
+   "wr": 83.9,
+   "dmg": 2500,
+   "took": 1392,
+   "heal": 626,
+   "lived": 86,
+   "src": [
+    [
+     "Auto attack",
+     835
+    ],
+    [
+     "Q Asura Cleave",
+     754
+    ],
+    [
+     "Item Fafnir's Devouring Maw",
+     533
+    ],
+    [
+     "Item Shiva's Trishula",
+     235
     ]
    ]
   },
   {
    "id": "TRISTAN",
-   "wr": 82,
-   "dmg": 2388,
-   "took": 1388,
-   "heal": 589,
-   "lived": 83,
+   "wr": 82.8,
+   "dmg": 2368,
+   "took": 1393,
+   "heal": 588,
+   "lived": 84,
    "src": [
     [
      "Auto attack",
-     1064
+     1058
     ],
     [
      "Q Knight of Cornwall",
-     637
+     629
     ],
     [
      "W Iron Vow",
-     364
+     361
     ],
     [
      "Item Shiva's Trishula",
-     196
+     188
     ]
    ]
   },
   {
    "id": "ARTHUR",
-   "wr": 81.7,
-   "dmg": 2542,
-   "took": 888,
+   "wr": 82.5,
+   "dmg": 2512,
+   "took": 891,
    "heal": 774,
-   "lived": 83,
+   "lived": 84,
    "src": [
     [
      "Auto attack",
-     892
+     888
     ],
     [
      "Item Fafnir's Devouring Maw",
-     543
+     530
     ],
     [
      "R Judgment of the Round Table",
-     340
+     328
     ],
     [
      "E Knight's Lunge",
-     304
+     303
     ]
    ]
   },
   {
    "id": "C.HOOK",
-   "wr": 76.8,
-   "dmg": 2572,
-   "took": 1128,
+   "wr": 77.8,
+   "dmg": 2541,
+   "took": 1108,
    "heal": 59,
-   "lived": 77,
+   "lived": 78,
    "src": [
     [
      "Auto attack",
-     1121
+     1111
     ],
     [
      "Q Flintlock Shot",
-     670
+     661
     ],
     [
      "Mark detonation Smee's Watch",
-     433
+     427
     ],
     [
      "Item Shiva's Trishula",
-     146
+     140
     ]
    ]
   },
   {
    "id": "LUCH",
-   "wr": 73.6,
-   "dmg": 2398,
-   "took": 1336,
-   "heal": 698,
-   "lived": 74,
+   "wr": 74.7,
+   "dmg": 2373,
+   "took": 1324,
+   "heal": 691,
+   "lived": 75,
    "src": [
     [
      "Q Radiant Edge",
-     854
+     845
     ],
     [
      "Auto attack",
@@ -230,21 +230,47 @@
     ],
     [
      "Item Fafnir's Devouring Maw",
-     443
+     434
     ],
     [
      "Passive Light form",
-     252
+     247
     ]
    ]
   },
   {
    "id": "PUSS",
-   "wr": 55.4,
-   "dmg": 2298,
-   "took": 1626,
+   "wr": 56.7,
+   "dmg": 2282,
+   "took": 1632,
    "heal": 217,
-   "lived": 60,
+   "lived": 61,
+   "src": [
+    [
+     "Auto attack",
+     740
+    ],
+    [
+     "Item Fafnir's Devouring Maw",
+     449
+    ],
+    [
+     "Q Shadow Lunge",
+     448
+    ],
+    [
+     "W Rapier Flurry",
+     428
+    ]
+   ]
+  },
+  {
+   "id": "ALUCARD",
+   "wr": 55.8,
+   "dmg": 1974,
+   "took": 2094,
+   "heal": 544,
+   "lived": 59,
    "src": [
     [
      "Auto attack",
@@ -252,33 +278,7 @@
     ],
     [
      "Item Fafnir's Devouring Maw",
-     455
-    ],
-    [
-     "Q Shadow Lunge",
-     451
-    ],
-    [
-     "W Rapier Flurry",
-     435
-    ]
-   ]
-  },
-  {
-   "id": "ALUCARD",
-   "wr": 54.8,
-   "dmg": 1974,
-   "took": 2065,
-   "heal": 540,
-   "lived": 58,
-   "src": [
-    [
-     "Auto attack",
-     734
-    ],
-    [
-     "Item Fafnir's Devouring Maw",
-     494
+     484
     ],
     [
      "Q Crimson Reap",
@@ -286,155 +286,181 @@
     ],
     [
      "Champion mechanic",
-     163
+     164
     ]
    ]
   },
   {
-   "id": "YODAKA",
-   "wr": 42,
-   "dmg": 1847,
-   "took": 2021,
-   "heal": 164,
-   "lived": 43,
+   "id": "KAMACHI",
+   "wr": 50.3,
+   "dmg": 2062,
+   "took": 1402,
+   "heal": 183,
+   "lived": 52,
    "src": [
     [
-     "Passive Starlight Piercing",
-     501
+     "Auto attack",
+     542
     ],
     [
-     "Q Astral Squall",
-     380
+     "Q Crescent Gale-Scar",
+     442
     ],
     [
-     "E Delta Constellation",
-     210
+     "Item Fafnir's Devouring Maw",
+     330
     ],
     [
-     "Item Kitsune's Foxfire Fan",
-     171
+     "W Twin Whirl-Scythes",
+     159
     ]
    ]
   },
   {
    "id": "ARIEL",
-   "wr": 41.4,
-   "dmg": 1750,
-   "took": 2449,
-   "heal": 142,
-   "lived": 48,
+   "wr": 40.6,
+   "dmg": 1747,
+   "took": 2479,
+   "heal": 145,
+   "lived": 46,
    "src": [
     [
      "W Crashing Tide",
-     657
+     653
     ],
     [
      "Q Fin Lash",
-     449
+     447
     ],
     [
      "Auto attack",
-     202
+     204
     ],
     [
      "R Storm of the Deep",
-     160
+     162
+    ]
+   ]
+  },
+  {
+   "id": "YODAKA",
+   "wr": 40.3,
+   "dmg": 1808,
+   "took": 2043,
+   "heal": 162,
+   "lived": 41,
+   "src": [
+    [
+     "Passive Starlight Piercing",
+     496
+    ],
+    [
+     "Q Astral Squall",
+     370
+    ],
+    [
+     "E Delta Constellation",
+     201
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     169
     ]
    ]
   },
   {
    "id": "KLAEDER",
-   "wr": 40.9,
-   "dmg": 1424,
-   "took": 2245,
-   "heal": 579,
-   "lived": 77,
+   "wr": 40,
+   "dmg": 1434,
+   "took": 2274,
+   "heal": 583,
+   "lived": 78,
    "src": [
     [
      "Auto attack",
-     487
+     493
     ],
     [
      "Q Royal Gust",
-     354
+     356
     ],
     [
      "E Imperial Tremor",
-     323
+     325
     ],
     [
      "R Sovereign Dismissal",
-     182
+     184
     ]
    ]
   },
   {
    "id": "NIAN",
-   "wr": 36.5,
-   "dmg": 1762,
-   "took": 2407,
-   "heal": 449,
-   "lived": 48,
+   "wr": 35.3,
+   "dmg": 1749,
+   "took": 2435,
+   "heal": 448,
+   "lived": 46,
    "src": [
     [
      "E Crackling Roar",
-     389
+     385
     ],
     [
      "Passive Static Discharge",
-     310
+     308
     ],
     [
      "Q Thunder Horn Charge",
-     274
+     273
     ],
     [
      "R Calamitous Tempest",
-     272
+     268
     ]
    ]
   },
   {
    "id": "ELLA",
-   "wr": 35.9,
-   "dmg": 1721,
-   "took": 2119,
-   "heal": 157,
-   "lived": 40,
+   "wr": 34.4,
+   "dmg": 1695,
+   "took": 2134,
+   "heal": 156,
+   "lived": 38,
    "src": [
     [
      "Passive Glass Shards",
-     450
+     447
     ],
     [
      "Q Midnight Waltz",
-     440
+     434
     ],
     [
      "W Chimes of Fate",
-     282
+     274
     ],
     [
      "R Midnight Carriage",
-     145
+     139
     ]
    ]
   },
   {
    "id": "PIROSKA",
-   "wr": 31.9,
-   "dmg": 1432,
-   "took": 2530,
-   "heal": 530,
+   "wr": 32.2,
+   "dmg": 1431,
+   "took": 2549,
+   "heal": 533,
    "lived": 43,
    "src": [
     [
      "Q Wolfsbane Powder",
-     1111
+     1108
     ],
     [
      "Auto attack",
-     265
+     267
     ],
     [
      "Item Nemesis' Vengeful Scales",
@@ -444,19 +470,19 @@
   },
   {
    "id": "LAURA",
-   "wr": 28.1,
-   "dmg": 1543,
-   "took": 2547,
+   "wr": 27.2,
+   "dmg": 1524,
+   "took": 2571,
    "heal": 215,
-   "lived": 43,
+   "lived": 42,
    "src": [
     [
      "Q Sanguine Wave",
-     551
+     542
     ],
     [
      "E Carmilla's Thrall",
-     306
+     299
     ],
     [
      "Auto attack",
@@ -464,29 +490,29 @@
     ],
     [
      "Item Kitsune's Foxfire Fan",
-     187
+     186
     ]
    ]
   },
   {
    "id": "H.S.B",
-   "wr": 25.8,
-   "dmg": 979,
-   "took": 1853,
-   "heal": 754,
-   "lived": 85,
+   "wr": 26.1,
+   "dmg": 991,
+   "took": 1867,
+   "heal": 757,
+   "lived": 86,
    "src": [
     [
      "Q Sledge Toss",
-     472
+     475
     ],
     [
      "Auto attack",
-     428
+     439
     ],
     [
      "E Boarhead Breaker",
-     75
+     73
     ],
     [
      "Champion mechanic",
@@ -496,23 +522,23 @@
   },
   {
    "id": "JACK",
-   "wr": 24.6,
-   "dmg": 1422,
-   "took": 2097,
-   "heal": 353,
-   "lived": 33,
+   "wr": 23.6,
+   "dmg": 1383,
+   "took": 2107,
+   "heal": 348,
+   "lived": 32,
    "src": [
     [
      "Q Magic Bean Sling",
-     440
+     429
     ],
     [
      "W Golden Egg Trap",
-     244
+     235
     ],
     [
      "Item Kitsune's Foxfire Fan",
-     162
+     160
     ],
     [
      "Auto attack",
@@ -522,93 +548,93 @@
   },
   {
    "id": "STEIN",
-   "wr": 21.7,
-   "dmg": 677,
-   "took": 2080,
-   "heal": 1309,
-   "lived": 79,
+   "wr": 20.8,
+   "dmg": 669,
+   "took": 2110,
+   "heal": 1323,
+   "lived": 80,
    "src": [
     [
      "W Bramble Overgrowth",
-     258
+     249
     ],
     [
      "Auto attack",
-     218
+     222
     ],
     [
      "Q Grasping Roots",
-     202
+     199
     ]
    ]
   },
   {
    "id": "FAUSTUS",
-   "wr": 8.7,
-   "dmg": 1089,
-   "took": 2377,
-   "heal": 90,
-   "lived": 23,
+   "wr": 8.3,
+   "dmg": 1066,
+   "took": 2385,
+   "heal": 89,
+   "lived": 22,
    "src": [
     [
      "Skills",
-     406
+     399
     ],
     [
      "W Sigil of Ruination",
-     172
+     165
     ],
     [
      "Item Kitsune's Foxfire Fan",
-     143
+     141
     ],
     [
      "Auto attack",
-     132
+     131
     ]
    ]
   },
   {
    "id": "ALICE",
-   "wr": 8.4,
-   "dmg": 804,
-   "took": 2333,
-   "heal": 660,
-   "lived": 39,
+   "wr": 8.1,
+   "dmg": 795,
+   "took": 2351,
+   "heal": 656,
+   "lived": 37,
    "src": [
     [
      "Q Mad Tea Garden",
-     303
+     297
     ],
     [
      "Auto attack",
-     192
+     193
     ],
     [
      "R Realm of Wonderland",
-     146
+     144
     ],
     [
      "E March Hare's Hex",
-     112
+     110
     ]
    ]
   },
   {
    "id": "PINO",
-   "wr": 2.6,
-   "dmg": 523,
-   "took": 2713,
-   "heal": 687,
-   "lived": 48,
+   "wr": 2.5,
+   "dmg": 525,
+   "took": 2739,
+   "heal": 690,
+   "lived": 47,
    "src": [
     [
      "Q Liar's Reach",
-     281
+     279
     ],
     [
      "Auto attack",
-     197
+     201
     ],
     [
      "Item Nemesis' Vengeful Scales",

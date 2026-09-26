@@ -1,9 +1,11 @@
 import { tr } from "../i18n.js";
 import { MASK_JITTER, MASK_MARGIN, MASK_MISREAD, MASK_RETHINK, MASK_WINDOW } from "../data/tuning.js";
 import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
+import { AUTO_DMG } from "../data/tuning.js";
 import { addBuff, addBuffUnique, dist, pushLog, skillLabel, vfx } from "./state-util.js";
-import { SENSE_PEEL, TEAM_SHARE } from "../data/tuning.js";
+import { DOMAIN_GREED, DOMAIN_RISK, SENSE_PEEL, TEAM_SHARE } from "../data/tuning.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
+import { fullCd } from "./stats.js";
 import { clamp } from "./util.js";
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 
@@ -19,7 +21,7 @@ const at = (arr, sk) => (Array.isArray(arr) ? arr[R(sk)] : arr);
 const byLevel = (cfg, level) => (cfg.base || 0) + (cfg.perLevel || 0) * ((level || 1) - 1);
 const skillOf = (u, key) => (u.skills || []).find((s) => s.key === key);
 // พื้นที่เก็บของกลไกชุดนี้ — ผูกกับ state ก้อนเดียว สร้างตอนใช้ครั้งแรก
-const P = (state) => (state.p4 || (state.p4 = { thorns: [] }));
+const P = (state) => (state.p4 || (state.p4 = { thorns: [], domains: [], swipes: [] }));
 const place = (u, x, y) => {
   u.x = clamp(x, u.radius, ARENA_W - u.radius);
   u.y = clamp(y, u.radius, ARENA_H - u.radius);
@@ -356,6 +358,184 @@ export function canopyPick(state, u, sk) {
 }
 
 
+// =================================================================
+// KAMACHI
+// =================================================================
+
+// ---- พาสซีฟ · น้องพังพอนสองตัว --------------------------------
+// เก็บไว้บนตัวคามาจิ ไม่ใช่ในลิสต์กลางเหมือนยักษ์ของ JACK
+// เพราะน้องไม่ได้เดินเอง มันเกาะตำแหน่งพี่ตลอดเวลา
+function weaselHp(u, cfg) {
+  return cfg.hp + cfg.hpPerLevel * ((u.level || 1) - 1) + cfg.hpBonusHp * (u.bonusHp || 0);
+}
+
+function initWeasels(state, u) {
+  const cfg = u.champ.weasels;
+  const max = weaselHp(u, cfg);
+  u.weasels = [];
+  for (let i = 0; i < cfg.count; i++) {
+    // ตัวแรกอยู่ซ้าย ตัวที่สองอยู่ขวา (สลับเครื่องหมายไปเรื่อยๆ ถ้ามีมากกว่าสอง)
+    u.weasels.push({ side: i % 2 === 0 ? -1 : 1, hp: max, maxHp: max, x: u.x, y: u.y, respawnAt: 0 });
+  }
+}
+
+// น้องที่ยังไม่ตาย — ใช้ทั้งตอนลอกท่าและตอนคิดดาเมจออโต้
+export function liveWeasels(u) {
+  return (u.weasels || []).filter((w) => w.hp > 0);
+}
+
+
+export function tickWeasels(state, u, dt) {
+  const cfg = u.champ && u.champ.weasels;
+  if (!cfg) return;
+  if (!u.weasels) initWeasels(state, u);
+  const max = weaselHp(u, cfg);
+  // ทิศที่พี่หันอยู่ — น้องขนาบซ้ายขวาของทิศนั้น
+  const tgt = state.units.find((x) => x.id === u.targetId && x.alive);
+  const ang = tgt ? Math.atan2(tgt.y - u.y, tgt.x - u.x) : (u.faceAng || 0);
+  u.faceAng = ang;
+  const nx = -Math.sin(ang), ny = Math.cos(ang);
+
+  for (const w of u.weasels) {
+    w.maxHp = max;
+    if (w.hp <= 0) {
+      if (state.t >= w.respawnAt) { w.hp = max; w.respawnAt = 0; }
+      else continue;
+    }
+    w.x = u.x + nx * cfg.offset * w.side;
+    w.y = u.y + ny * cfg.offset * w.side;
+
+    // ---- น้องโดนตีได้ ----
+    // ใช้วิธีเดียวกับยักษ์ของ JACK: ศัตรูที่ยืนประชิดฟาดใส่มันไปด้วย
+    // และลูกสกิลที่พาดผ่านตัวมันก็ลงดาเมจ (ลูกยังวิ่งต่อ ไม่ได้ถูกกินทิ้ง)
+    const res = (u.armor || 0) * cfg.resPct;
+    const mit = 100 / (100 + res);
+    for (const e of state.units) {
+      if (!e.alive || e.team === u.team || e.stunned || e.disarmed) continue;
+      if (Math.hypot(e.x - w.x, e.y - w.y) > 40 + e.radius + 40) continue;
+      w.hp -= (e.ad || 0) * (e.asEff || 0.6) * AUTO_DMG * mit * dt;
+    }
+    for (const p of state.projectiles) {
+      if (p.team === u.team || p.homing || p.weaselHit) continue;
+      if (Math.hypot(p.x - w.x, p.y - w.y) > 40) continue;
+      p.weaselHit = true;
+      w.hp -= p.dmg * mit;
+      vfx(state, { kind: "flash", x: p.x, y: p.y, r: 34, color: "126,214,140", dur: 0.2 });
+    }
+    if (w.hp <= 0) {
+      w.hp = 0;
+      w.respawnAt = state.t + cfg.respawn[tierOf(u.level, cfg.tiers)];
+      vfx(state, { kind: "shards", x: w.x, y: w.y, r: 70, count: 8, color: "126,214,140", dur: 0.5 });
+    }
+  }
+}
+
+
+// ออโต้ของพี่ น้องช่วยงับขาเป้าอีกตัวละก้อน — เรียกจาก on-hit.js
+export function weaselOnHit(state, u, target) {
+  const cfg = u.champ && u.champ.weasels;
+  if (!cfg || !cfg.onHit) return;
+  const n = liveWeasels(u).length;
+  if (!n) return;
+  const each = cfg.onHit.base + cfg.onHit.perLevel * ((u.level || 1) - 1) + (cfg.onHit.badRatio || 0) * (u.bonusAd || 0);
+  const prev = state.dmgSrc;
+  state.dmgSrc = tr("พาสซีฟ Sickle-Wind Siblings");
+  applyDamage(state, u, target, each * n, false);
+  state.dmgSrc = prev;
+}
+
+
+// ---- น้องลอกท่าตามพี่ ------------------------------------------
+// ยิงจาก "จุดที่น้องยืน" ไม่ใช่จุดของพี่ ท่าที่เป็นเส้นจึงพลาดบ่อยเวลาเจอเป้าเดี่ยว
+// และกินขาดเวลาศัตรูยืนกองกัน — นั่นคือจุดขายของตัวนี้
+export function weaselMirror(state, u, sk, target) {
+  const cfg = u.champ && u.champ.weasels;
+  if (!cfg || !sk.mirror || !target) return;
+  const live = liveWeasels(u);
+  if (!live.length) return;
+  const ang = Math.atan2(target.y - u.y, target.x - u.x);
+  const nx = Math.cos(ang), ny = Math.sin(ang);
+  const share = cfg.dmgPct;
+  const size = cfg.sizePct;
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk) + tr(" (น้อง)");
+  for (const w of live) {
+    if (sk.mirror === "line") {
+      const len = sk.range || sk.dashRange || 600;
+      const halfW = ((sk.mirrorWidth != null ? sk.mirrorWidth : (sk.width || 120) * size)) / 2;
+      const dmg = (at(sk.dmg, sk) + (sk.badRatio || 0) * (u.bonusAd || 0)) * share;
+      vfx(state, { kind: "beam", x: w.x, y: w.y, x2: w.x + nx * len, y2: w.y + ny * len,
+        w: halfW, color: "126,214,140", dur: 0.28 });
+      for (const e of enemiesOf(state, u)) {
+        const rx = e.x - w.x, ry = e.y - w.y;
+        const along = rx * nx + ry * ny;
+        if (along < -e.radius || along > len + e.radius) continue;
+        if (Math.abs(rx * -ny + ry * nx) > halfW + e.radius) continue;
+        applyDamage(state, u, e, dmg, !!sk.magic);
+      }
+    } else if (sk.mirror === "cleave") {
+      const rad = (sk.radius || 300) * size;
+      const dmg = (at(sk.dmg, sk) + (sk.badRatio || 0) * (u.bonusAd || 0)) * share;
+      vfx(state, { kind: "cone", x: w.x, y: w.y, r: rad, ang, half: Math.PI / 2, color: "126,214,140", dur: 0.3 });
+      for (const e of enemiesOf(state, u)) {
+        const d = Math.hypot(e.x - w.x, e.y - w.y);
+        if (d > rad + e.radius) continue;
+        let diff = Math.atan2(e.y - w.y, e.x - w.x) - ang;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        if (Math.abs(diff) > Math.PI / 2) continue;
+        applyDamage(state, u, e, dmg, !!sk.magic);
+      }
+    }
+  }
+  state.dmgSrc = prev;
+}
+
+
+// ---- W · ฟันครึ่งวงกลมสองจังหวะ --------------------------------
+function cleaveOnce(state, u, sk, ang, seen) {
+  const rad = sk.radius;
+  const dmg = at(sk.dmg, sk) + (sk.badRatio || 0) * (u.bonusAd || 0);
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk);
+  vfx(state, { kind: "cone", x: u.x, y: u.y, r: rad, ang, half: Math.PI / 2, color: "126,214,140", dur: 0.28 });
+  vfx(state, { kind: "slashes", x: u.x, y: u.y, r: rad, ang, half: Math.PI / 2, count: 3, color: "126,214,140", dur: 0.3 });
+  for (const e of enemiesOf(state, u)) {
+    const d = dist(u, e);
+    if (d > rad + e.radius) continue;
+    let diff = Math.atan2(e.y - u.y, e.x - u.x) - ang;
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    if (Math.abs(diff) > Math.PI / 2) continue;
+    applyDamage(state, u, e, dmg, false);
+    // โดนครบทั้งสองจังหวะถึงจะติดสโลว์ — จังหวะเดียวไม่นับ
+    if (seen.has(e.id)) addBuff(e, { type: "slow", v: sk.bothSlow, until: state.t + sk.slowDur }, state.t);
+    else seen.add(e.id);
+  }
+  state.dmgSrc = prev;
+}
+
+
+// ---- R · โดมพายุ ------------------------------------------------
+// คามาจิหายไปจากสนามจริงๆ จนกว่าเขาจะลงมือเอง
+// "ยืนนิ่งเพื่ออยู่ยงคงกระพัน" หรือ "ออกมาสู้เพื่อดาเมจ" คือการตัดสินใจ ไม่ใช่สูตร
+export function domainHoldPlan(state, u, sk) {
+  const dec = (u.athlete && u.athlete.decision) || 0;
+  const sense = (u.athlete && u.athlete.gameSense) || 0;
+  // อ่านว่าตอนนี้อันตรายแค่ไหน — เลือดที่เหลือ และจำนวนศัตรูที่จ่อรอบวง
+  let near = 0;
+  for (const e of enemiesOf(state, u)) if (dist(u, e) <= sk.radius + 200) near += 1;
+  const hpFrac = u.hp / u.maxHp;
+  let danger = (1 - hpFrac) * 10 + near * 2;
+  // สายตาไม่ถึงก็อ่านอันตรายเพี้ยนไปคนละทาง
+  danger *= 1 + (1 - sense / 10) * (u.rng() - 0.5);
+  // คนตัดสินใจไม่แม่นประเมินอันตรายต่ำกว่าจริง เห็นแต่ดาเมจตรงหน้า
+  // เลยสวนออกมาทั้งที่ควรหลบ ส่วนคนแม่นอ่านอันตรายได้เต็มเม็ดเต็มหน่วย
+  danger *= DOMAIN_GREED + (1 - DOMAIN_GREED) * (dec / 10);
+  return danger > DOMAIN_RISK;
+}
+
+
 // ---------------------------------------------------------------
 // ทุกเฟรม — ของที่ไม่ผูกกับยูนิตคนเดียว (เรียกจาก systems.js)
 // ---------------------------------------------------------------
@@ -384,6 +564,42 @@ export function tickP4(state, dt) {
     state.dmgSrc = prev;
     return false;
   });
+
+  // KAMACHI W — จังหวะฟันที่สอง สวนกลับจากจุดที่เขายืน "ตอนนั้น"
+  p.swipes = p.swipes.filter((c) => {
+    if (state.t < c.at) return true;
+    const u = state.units.find((x) => x.id === c.ownerId);
+    if (!u || !u.alive) return false;
+    const tgt = state.units.find((x) => x.id === u.targetId && x.alive);
+    const ang = tgt ? Math.atan2(tgt.y - u.y, tgt.x - u.x) : (u.faceAng || 0);
+    cleaveOnce(state, u, c.sk, ang, c.seen);
+    weaselMirror(state, u, c.sk, tgt || { x: u.x + Math.cos(ang), y: u.y + Math.sin(ang) });
+    return false;
+  });
+
+  // KAMACHI R — โดมพายุเฉือนทุกคนในวงเป็นระลอก
+  p.domains = p.domains.filter((g) => {
+    if (state.t > g.until || g.left <= 0) return false;
+    const u = state.units.find((x) => x.id === g.ownerId);
+    if (!u) return false;
+    if (state.t < g.next) return true;
+    // บวกจากเวลาที่นัดไว้ ไม่ใช่จากเวลาปัจจุบัน ไม่งั้นความคลาดเคลื่อนสะสม
+    // จนระลอกสุดท้ายเลยเวลาโดมหมดอายุไปแล้ว และหายไปหนึ่งระลอก
+    g.next += g.sk.every;
+    g.left -= 1;
+    const dmg = g.sk.dmg[g.rank] + (g.sk.badRatio || 0) * (u.bonusAd || 0);
+    const prev = state.dmgSrc;
+    state.dmgSrc = skillLabel(u, g.sk);
+    vfx(state, { kind: "shock", x: g.x, y: g.y, r: g.sk.radius, color: "126,214,140", dur: 0.35 });
+    for (const e of state.units) {
+      if (!e.alive || e.team === g.team) continue;
+      if (Math.hypot(e.x - g.x, e.y - g.y) > g.sk.radius + e.radius) continue;
+      applyDamage(state, u, e, dmg, false);
+      vfx(state, { kind: "flash", x: e.x, y: e.y, r: 28, color: "126,214,140", dur: 0.15 });
+    }
+    state.dmgSrc = prev;
+    return g.left > 0;
+  });
 }
 
 
@@ -391,7 +607,29 @@ export function tickP4(state, dt) {
 // ทุกเฟรม ต่อยูนิต — เรียกจาก step.js ต่อจาก tickLoreUnit()
 // ---------------------------------------------------------------
 export function tickP4Unit(state, u, dt) {
-  void dt;
+  // KAMACHI — น้องพังพอนเกาะตำแหน่ง โดนตี และเกิดใหม่
+  if (u.champ.weasels) tickWeasels(state, u, dt);
+
+  // KAMACHI E — ล่องหนหมดเวลาโดยไม่ได้กดพุ่ง คูลดาวน์เริ่มนับตอนนี้
+  if (u.zephyr && state.t > u.zephyr.until) {
+    const sk = u.skills.find((x) => x.type === "zephyr");
+    u.zephyr = null;
+    if (sk && sk.cdLeft <= 0) sk.cdLeft = fullCd(u, sk);
+  }
+
+  // KAMACHI R — อมตะอยู่ได้จนกว่าเขาจะลงมือเอง โดมหมุนต่อจนครบเวลาอยู่ดี
+  if (u.domain) {
+    const acted = u.casts > u.domain.casts || u.hits > u.domain.hits;
+    if (acted || state.t > u.domain.until) {
+      if (acted && state.t <= u.domain.until) {
+        pushLog(state, tr("{0} {1} ออกจากสายลมมาลงมือเอง", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+      }
+      u.domain = null;
+      u.domainHold = 0;
+      u.buffs = u.buffs.filter((b) => !["domain", "domaininv", "domainhide"].includes(b.tag));
+    }
+  }
+
   // R ของ STEIN — หยั่งรากอยู่กับที่ แล้วปล่อยคลื่นฮีลทีละระลอก
   const c = u.channeling;
   if (c && c.p4 === "arbor") {
@@ -437,6 +675,80 @@ export function fireP4Skill(state, u, sk, target, prec, aim) {
       rebound(state, u, sk);
       return true;
     }
+    // ---- KAMACHI W · ฟันครึ่งวงกลมสองจังหวะติด ----
+    case "twinCleave": {
+      const ang = target ? Math.atan2(target.y - u.y, target.x - u.x) : (u.faceAng || 0);
+      const seen = new Set();
+      cleaveOnce(state, u, sk, ang, seen);
+      // จังหวะที่สองฟันสวนกลับอีกทาง หน่วงไว้นิดเดียว
+      P(state).swipes.push({ ownerId: u.id, sk, at: state.t + (sk.gap || 0.2), seen, follow: true });
+      return true;
+    }
+
+    // ---- KAMACHI E · ล่องหนก่อน กดซ้ำถึงจะพุ่ง ----
+    case "zephyr": {
+      // ยังไม่ได้ล่องหน = นี่คือการกดครั้งแรก
+      if (!u.zephyr || state.t > u.zephyr.until) {
+        const until = state.t + sk.hideDur;
+        u.zephyr = { until, sk };
+        addBuff(u, { type: "stealth", v: 1, until }, state.t);
+        addBuff(u, { type: "ms", v: at(sk.msBuff, sk), until }, state.t);
+        vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 30, color: "126,214,140", grow: 1, dur: 0.5 });
+        pushLog(state, tr("{0} {1} สลายร่างกลืนไปกับสายลม", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+        return true;
+      }
+      // กดครั้งที่สอง = พุ่งทะลวง
+      u.zephyr = null;
+      u.buffs = u.buffs.filter((b) => b.type !== "stealth");
+      const ang = target ? Math.atan2(target.y - u.y, target.x - u.x) : (u.faceAng || 0);
+      const nx = Math.cos(ang), ny = Math.sin(ang);
+      const len = sk.dashRange;
+      const halfW = (sk.width || 150) / 2;
+      const dmg = at(sk.dmg, sk) + (sk.badRatio || 0) * (u.bonusAd || 0);
+      const prev = state.dmgSrc;
+      state.dmgSrc = skillLabel(u, sk);
+      vfx(state, { kind: "trail", x: u.x, y: u.y, color: "126,214,140", pending: u.id });
+      vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + nx * len, y2: u.y + ny * len, w: halfW, color: "126,214,140", dur: 0.3 });
+      for (const e of enemiesOf(state, u)) {
+        const rx = e.x - u.x, ry = e.y - u.y;
+        const along = rx * nx + ry * ny;
+        if (along < -e.radius || along > len + e.radius) continue;
+        if (Math.abs(rx * -ny + ry * nx) > halfW + e.radius) continue;
+        applyDamage(state, u, e, dmg, false);
+      }
+      state.dmgSrc = prev;
+      // น้องพุ่งประกบซ้ายขวาก่อนที่พี่จะย้ายที่ จะได้ยิงจากจุดเดิม
+      weaselMirror(state, u, sk, target);
+      place(u, u.x + nx * len, u.y + ny * len);
+      return true;
+    }
+
+    // ---- KAMACHI R · โดมพายุที่ลบตัวตนเขาออกจากสนาม ----
+    case "domain": {
+      const r = R(sk);
+      const dd = target ? (dist(u, target) || 1) : 1;
+      const cx = target ? u.x + ((target.x - u.x) / dd) * Math.min(dd, sk.range) : u.x;
+      const cy = target ? u.y + ((target.y - u.y) / dd) * Math.min(dd, sk.range) : u.y;
+      place(u, cx, cy);
+      P(state).domains.push({
+        ownerId: u.id, team: u.team, sk, rank: r, x: cx, y: cy,
+        // เผื่อเศษเวลาไว้นิดเดียว ระลอกสุดท้ายลงพอดีกับวินาทีที่โดมหมดอายุ
+        until: state.t + sk.dur + 0.05, next: state.t + sk.every, left: sk.waves,
+      });
+      u.domain = { until: state.t + sk.dur, casts: u.casts, hits: u.hits };
+      addBuffUnique(u, "domain", { type: "untargetable", v: 1, until: state.t + sk.dur }, state.t);
+      addBuffUnique(u, "domaininv", { type: "invuln", v: 1, until: state.t + sk.dur }, state.t);
+      addBuffUnique(u, "domainhide", { type: "stealth", v: 1, until: state.t + sk.dur }, state.t);
+      // ยืนนิ่งเพื่ออยู่ยงคงกระพัน หรือออกมาสู้เพื่อดาเมจ — เป็นการตัดสินใจ
+      if (u.domainPlan != null ? u.domainPlan : domainHoldPlan(state, u, sk)) {
+        u.domainHold = state.t + sk.dur;
+      }
+      u.domainPlan = null;
+      vfx(state, { kind: "ring", x: cx, y: cy, r: sk.radius, color: "126,214,140", grow: 0.2, dur: sk.dur });
+      pushLog(state, tr("{0} {1} ปักเคียวเปิดอาณาเขตพายุ", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
+      return true;
+    }
+
     // ---- STEIN W · กรวยหนามที่หน่วงไว้ 0.4 วิ ----
     case "thornCone": {
       const half = ((sk.angle || 60) * Math.PI) / 180 / 2;

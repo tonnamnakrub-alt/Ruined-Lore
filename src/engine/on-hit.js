@@ -7,7 +7,7 @@ import { assassinOnHit } from "./assassin.js";
 import { activeSkills } from "./targeting.js";
 import { arthurCleave, carriageCrash, ellaOnHit, hoodBleed, pickDuelMark } from "./lore.js";
 import { loreItemsOnHit } from "./lore-items.js";
-import { steinSap, stickDagger } from "./lore-p4.js";
+import { steinSap, stickDagger, weaselOnHit } from "./lore-p4.js";
 
 
 // Lost Boys' Blade — มีดยังปักอยู่ แล้วโดนอะไรก็ตามจากคนปาซ้ำ (ออโต้ "หรือสกิล")
@@ -97,6 +97,8 @@ export function onAutoLanded(state, u, target) {
   if (u.champ.daggers) stickDagger(state, u, target, 1);
   // STEIN — ออโต้ครั้งที่พาสซีฟพร้อม หลั่งน้ำเลี้ยงฮีลตัวเองและเพื่อนที่เลือดพร่องสุด
   if (u.champ.sap) steinSap(state, u);
+  // KAMACHI — น้องพังพอนที่ยังไม่ตาย ช่วยงับขาเป้าไปด้วย
+  if (u.champ.weasels) weaselOnHit(state, u, target);
   if (u.champ.fragments && u.shadow <= 0) addFrag(u, u.champ.fragments.onAuto);
   if (u.champ.fragments) applyFragmentDamage(state, u, target);
   if (u.champ.doubleTrouble) {

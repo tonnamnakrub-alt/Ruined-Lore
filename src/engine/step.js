@@ -5,7 +5,7 @@ import { AUTO_DMG, DEFAULT_CAST, DEFAULT_WINDUP, REGEN_DELAY, REGEN_RATE, RETREA
 import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
-import { steinCastCut, steinPull, tickP4Unit } from "./lore-p4.js";
+import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -539,7 +539,9 @@ export function step(state) {
             champ: { value: 1, melee: false, th: tr("จุด") }, targetId: null,
           };
         }
-        if (sk && sk.rank > 0 && (sk.ammoMax ? sk.ammo > 0 : sk.cdLeft <= 0) && tgt && u.castLock <= 0 && !u.stunned && !u.silenced) {
+        // ท่าที่ล่องหนรออยู่ (KAMACHI E) กดซ้ำได้แม้คูลดาวน์ยังไม่ลง
+        const recast = sk && sk.type === "zephyr" && u.zephyr && state.t <= u.zephyr.until;
+        if (sk && sk.rank > 0 && (recast || (sk.ammoMax ? sk.ammo > 0 : sk.cdLeft <= 0)) && tgt && u.castLock <= 0 && !u.stunned && !u.silenced) {
           let use = sk;
           if (sk.type === "dual") {
             const half = u.shadow > 0 ? sk.shadow : sk.light;
@@ -548,7 +550,9 @@ export function step(state) {
           } else if (!sk.fragCost) {
             if (sk.ammoMax) { sk.ammo -= 1; if (sk.rechargeAt == null) sk.rechargeAt = state.t + sk.rechargeTime; }
             // คอมโบที่ยังไม่จบไม่ลงคูลดาวน์ จังหวะถัดไปถึงจะกดต่อได้
-            else if (!(sk.type === "combo" && (u.comboStep || 0) + 1 < (sk.steps || []).length)) sk.cdLeft = fullCd(u, sk);
+            // คอมโบที่ยังไม่จบ และ E ที่ยังไม่ได้พุ่ง ยังไม่ลงคูลดาวน์
+            else if (!(sk.type === "combo" && (u.comboStep || 0) + 1 < (sk.steps || []).length)
+                     && !(sk.type === "zephyr" && !u.zephyr)) sk.cdLeft = fullCd(u, sk);
           }
           state.castQueue.push({ u, sk: use, target: tgt, prec: 10 });
           onKazemCast(state, u);
@@ -873,12 +877,14 @@ export function step(state) {
     else { u.nvx = 0; u.nvy = 0; }
 
     // ---- cast (the AI picks a skill before it thinks about auto attacking)
-    if (u.castLock <= 0 && !u.stunned && !u.silenced && u.charging == null && u.channeling == null) castSkills(state, u, target, d, disc, aw, prec);
+    // KAMACHI R — เลือกจะยืนนิ่งในสายลม ก็ต้องไม่ลงมือเลยจริงๆ ไม่งั้นอมตะหลุด
+    const windHold = u.domainHold > 0 && state.t < u.domainHold;
+    if (!windHold && u.castLock <= 0 && !u.stunned && !u.silenced && u.charging == null && u.channeling == null) castSkills(state, u, target, d, disc, aw, prec);
 
     // ---- auto attack: it always lands. Ranged champions just pay a travel delay,
     // which is the whole cost of having range in the first place.
     u.atkCd -= dt;
-    if (d <= u.range && u.atkCd <= 0 && !u.stunned && !u.disarmed && u.charging == null && u.channeling == null && state.t >= u.reloadUntil) {
+    if (!windHold && d <= u.range && u.atkCd <= 0 && !u.stunned && !u.disarmed && u.charging == null && u.channeling == null && state.t >= u.reloadUntil) {
       u.atkCd = 1 / u.asEff;
       u.atkLock = (u.champ.windup != null ? u.champ.windup : DEFAULT_WINDUP) / u.asEff;
       u.shots += 1;
@@ -1092,6 +1098,9 @@ export function step(state) {
     // STEIN — ร่ายสกิลทีไรก็เร่งการสังเคราะห์น้ำเลี้ยงของพาสซีฟ
     // อยู่ตรงคิวนี้เพราะเป็นจุดเดียวที่ทั้งทางของบอทและทางของห้องซ้อมมาบรรจบกัน
     if (q.u.champ.sap) steinCastCut(state, q.u);
+    // KAMACHI — น้องพังพอนลอกท่าตามทันที ยิงจากจุดที่ตัวเองยืน
+    // (E จัดการเองในตอนร่าย เพราะต้องยิงก่อนที่พี่จะพุ่งย้ายที่)
+    if (q.u.champ.weasels && q.sk.mirror && q.sk.type !== "zephyr") weaselMirror(state, q.u, q.sk, q.target);
     // Balmung's Dragon-Cleaver: casting a skill empowers the next basic attack
     // with 175% Base AD and a 2s speed kick, capped every 1.5s
     if (q.u.hasItem("bdc") && (q.u.bdcReadyAt == null || state.t >= q.u.bdcReadyAt)) {
