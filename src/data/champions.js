@@ -319,7 +319,7 @@ const CORE_CHAMPIONS = {
     passive: { th: "Curious Curiosity",
       desc: "สกิลที่โดนแชมเปี้ยนศัตรูจะติดตราประทับ 3 วิ — เป้าที่ติดตราจะกินดาเมจเพิ่มอีก 2.5% (+2% ต่อ AP 100) ของดาเมจต้น จ่ายเป็นดาเมจเวท · โดนซ้ำต่ออายุแต่ไม่ทับซ้อน" },
     skills: [
-      { key: "Q", th: "Mad Tea Garden", type: "teaGarden", range: 825, radius: 285,
+      { key: "Q", th: "Mad Tea Garden", type: "teaGarden", range: 650, radius: 285,
         cast: 0.25, cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8],
         dur: 3.5, every: 0.5,
         heal: [15, 22, 29, 36, 43], healAp: 0.10,

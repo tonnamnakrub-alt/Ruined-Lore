@@ -67,8 +67,10 @@ export const LORE_CHAMPIONS = {
         slow: [0.25, 0.30, 0.35, 0.40, 0.45], dur: 2.5,
         atkCut: [0.10, 0.125, 0.15, 0.175, 0.20] },
       // ตะกร้าเสบียง — ฮีลและบัฟทุก 2 วิ รวม 5 ระลอก
-      { key: "W", th: "Grandmother's Care", type: "basketZone", range: 750, radius: 300,
+      { key: "W", th: "Grandmother's Care", type: "basketZone", range: 750, radius: 750,
         life: 10, every: 2, cast: 0.3, cd: 18, cdByRank: [18, 17, 16, 15, 14],
+        // แต่ละระลอกดูแลได้แค่กี่คน — เรียงจากคนที่เลือดพร่องที่สุดก่อน
+        targets: [1, 1, 2, 2, 3],
         heal: [30, 45, 60, 75, 90], apRatio: 0.20,
         adBuff: [8, 12, 16, 20, 24], adPerAp: 0.03, apBuff: [12, 18, 24, 30, 36], apPerAp: 0.05,
         buffDur: 2.5 },

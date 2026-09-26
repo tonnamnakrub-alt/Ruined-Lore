@@ -875,8 +875,14 @@ export function tickLore(state, dt) {
       const ap = sk.apBuff[z.rank] + sk.apPerAp * u.ap;
       const prev = state.dmgSrc, prevU = state.srcUnit;
       state.dmgSrc = skillLabel(u, sk); state.srcUnit = u;
-      for (const a of alliesOf(state, u)) {
-        if (Math.hypot(a.x - z.x, a.y - z.y) > z.r + a.radius) continue;
+      // วงกว้างแต่ดูแลได้ทีละไม่กี่คน — เลือกคนที่เลือดพร่องที่สุดก่อน
+      // ลำดับจาก alliesOf คงที่ และ sort ของ JS เสถียร สองเครื่องจึงเลือกคนเดียวกันเสมอ
+      const cap = sk.targets ? sk.targets[z.rank] : Infinity;
+      const pool = alliesOf(state, u)
+        .filter((a) => Math.hypot(a.x - z.x, a.y - z.y) <= z.r + a.radius)
+        .sort((x, y) => x.hp / x.maxHp - y.hp / y.maxHp)
+        .slice(0, cap);
+      for (const a of pool) {
         healUnit(state, a, heal);
         addBuffUnique(a, "basketad:" + u.id, { type: "adFlat", v: ad, until: state.t + sk.buffDur }, state.t);
         addBuffUnique(a, "basketap:" + u.id, { type: "apFlat", v: ap, until: state.t + sk.buffDur }, state.t);

@@ -2796,4 +2796,22 @@ export const DICT = {
    "A board-wide projectile slowdown was tried and reverted: it did not weaken the top, it did not raise how often anything was dodged (12.6 against 12.5 per fight), and it punished mages who were already weak — FAUSTUS fell from 35.7 to 30.2",
  "ตอนนี้ลดความเร็วลูกเฉพาะตัวที่อัตราชนะสูงจริงสามตัวเท่านั้น":
    "Only the three genuinely high win-rate champions keep the projectile cut",
+ "PIROSKA ตะกร้าวงกว้างขึ้น แต่ดูแลได้ทีละไม่กี่คน · ALICE Q ระยะสั้นลง":
+   "PIROSKA's basket reaches wider but tends to fewer · ALICE Q's range cut",
+ "PIROSKA W — วงขยายจาก 300 เป็น 750 หน่วย (2.5 เท่า) เอื้อมถึงคนที่ยืนคนละมุมได้แล้ว":
+   "PIROSKA W: the circle grows from 300 to 750 units, two and a half times wider, so it now reaches someone standing across the fight",
+ "PIROSKA W — แต่ละระลอกดูแลได้แค่ 1/1/2/2/3 คนตามขั้นสกิล จากเดิมที่แจกทุกคนที่ยืนอยู่ในวง":
+   "PIROSKA W: each pulse now tends only 1/1/2/2/3 allies by rank, where it used to help everyone standing inside",
+ "เลือกให้คนที่เลือดพร่องที่สุดก่อนเสมอ ไม่ใช่สุ่มหรือเลือกคนที่อยู่ใกล้":
+   "It always picks whoever is missing the most health, not whoever is nearest or random",
+ "ต้องบอกตรงๆ ว่าวัดแล้วอันนี้เป็นการบัฟ ไม่ใช่เนิร์ฟ — ฮีลรวมต่อไฟต์ขึ้นจาก 752 เป็น 1465 (เกือบสองเท่า)":
+   "Stated plainly: measured, this is a buff rather than a nerf — her healing per fight rises from 752 to 1465, close to double",
+ "เพราะวงเดิมที่ 300 หน่วยเล็กมากจนปกติครอบได้แค่คนเดียวหรือสองคนอยู่แล้ว เพดาน 3 คนจึงกว้างกว่าของเดิม":
+   "The old 300-unit circle was small enough that it usually covered only one or two allies anyway, so a cap of three is more generous than what it replaced",
+ "ถ้าอยากให้เป็นเนิร์ฟจริง ต้องลดเพดานลงอีก: ลอง 1/1/1/2/2 ได้ 1265 · วง 600 กับเพดานเดิมได้ 1314 · ทั้งคู่ยังสูงกว่าของเดิมอยู่":
+   "To make it a real nerf the cap has to come down further: 1/1/1/2/2 measured 1265, and a 600 circle with the same caps measured 1314 — both still above the old number",
+ "ALICE Q — ระยะวางลดจาก 825 เหลือ 650 หน่วย เดิมไกลกว่าออโต้ของเธอเอง (550) และไกลกว่าทุกท่าในชุดตัวเองที่ไม่ใช่อัลติ":
+   "ALICE Q is placed from 650 units instead of 825 — it used to outrange her own auto attack at 550 and every other ability she has short of the ultimate",
+ "วางตะกร้าลงพื้นในระยะ {0} วงกว้าง {1} หน่วย อยู่ {2} วิ แจกฮีลและบัฟทุก {3} วิ ให้ครั้งละ {4} คนที่เลือดพร่องที่สุด":
+   "Drops a basket up to {0} away, {1} wide, lasting {2}s, handing out healing and buffs every {3}s to the {4} most wounded allies each time",
 };
