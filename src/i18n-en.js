@@ -2708,4 +2708,42 @@ export const DICT = {
    "Farming {0}g {1}xp · ganking {2}g {3}xp — a gank abandons the camps for the whole round, so there is no base income at all and the gold comes from kills only",
  "ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย รายได้ฟาร์มคูณ {0} = {1}g {2}xp":
    "In the round after a gank, farming also clears what piled up: farm income ×{0} = {1}g {2}xp",
+ "เล็งสกิลแม่น หลบสกิลทัน ออโต้พลาดน้อยกว่า":
+   "Lands skillshots, dodges them, and wastes fewer basic attacks",
+ "อ่านว่ากำลังโดนรุม — ศัตรูประชิดเข้ามาหลายตัวแล้วกินดาเมจน้อยลง ถอยเป็น ยืนถูกระยะ":
+   "Reads a collapse — takes less damage the more enemies close in, retreats in time, and holds the right spacing",
+ "รู้แมตช์อัพ — ตีแรงขึ้น กินดาเมจน้อยลง และเลือกเป้าถูกตัว":
+   "Knows the matchup — deals more damage, takes less, and picks the right target",
+ "อดใจรออัลติให้คุ้ม จังหวะเข้าถอย และไม่ไล่จนหลุดทีม":
+   "Holds the ultimate for a moment worth spending it on, times engages, and doesn't chase out of position",
+ "รุมเป้าเดียวกับเพื่อน — ยิ่งหลายคนจ่อเป้าเดียวกัน ดาเมจยิ่งแรง":
+   "Focus fire — the more teammates already on the same target, the harder everyone hits",
+ "ไปแกงค์ = ทิ้งแคมป์ ไม่มีรายได้ฐานทั้งยก · ยกถัดไปถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย รายได้ฟาร์มคูณ 1.5":
+   "Ganking abandons the camps — no base income for that whole round · farm the next round and you clear what piled up too, for 1.5× farm income",
+ "ค่าสถานะนักแข่งทั้งห้าค่ามีผลจริงแล้ว":
+   "All five athlete stats now actually do something",
+ "วัดด้วยทีมที่เหมือนกันทุกอย่างยกเว้นค่าสถานะ 240 ไฟต์ต่อชุด พบว่าเดิมมีแค่สองค่าที่มีน้ำหนักจริง":
+   "Measured with identical teams differing only in their stats, 240 fights per pairing: only two of the five carried any real weight",
+ "เดิม: ดันค่านั้นเป็น 10 เจอทีมที่ทุกค่า 5 — decision ชนะ 80% · mechanics 56% · knowledge 55% · gameSense 51% · teamwork 45%":
+   "Before, pushing one stat to 10 against a team at 5 across the board won: decision 80% · mechanics 56% · knowledge 55% · gameSense 51% · teamwork 45%",
+ "teamwork ยิ่งใส่ยิ่งแพ้บ่อยกว่าไม่ใส่ เพราะมันสั่งให้ทุกคนรุมเป้าเดียวกันแต่ไม่มีรางวัลอะไรตอบแทน ดาเมจส่วนเกินทิ้งเปล่า":
+   "Teamwork actively lost you games: it told everyone to pile onto one target but paid nothing for doing so, and the overkill was wasted",
+ "gameSense แทบไม่ขยับผลเลย และ knowledge เขียนคำอธิบายไว้ว่า 'ทำดาเมจได้มากขึ้นและกินดาเมจน้อยลง' ทั้งที่ไม่มีโค้ดไหนทำแบบนั้นเลย":
+   "Game sense barely moved the result at all, and knowledge's own description promised more damage dealt and less taken while no code did any such thing",
+ "teamwork — รุมเป้าเดียวกับเพื่อนแล้วแรงขึ้นจริง เพื่อนที่จ่อเป้าเดียวกันหนึ่งคนได้ 14% คูณตามแต้ม นับสูงสุดสามคน เต็มสิบแต้มคือ +42% · เฉลี่ยจริงในไฟต์ราว +20% เพราะปกติมีเพื่อนจ่อเป้าเดียวกัน 1.4 คน":
+   "Teamwork now pays for focus fire: +14% per teammate already on the same target, scaled by the stat, counting up to three — +42% at a full 10, and about +20% in practice, since you typically have 1.4 teammates on your target",
+ "gameSense — รู้ตัวว่ากำลังโดนรุม ศัตรูที่ประชิดเข้ามาในรัศมี 600 หนึ่งตัวลดดาเมจที่รับ 10% คูณตามแต้ม นับสูงสุดสามตัว เต็มสิบแต้มคือ −30% · เฉลี่ยจริงราว −11%":
+   "Game sense now reads the collapse: each enemy inside 600 units cuts incoming damage by 10%, scaled by the stat, counting up to three — −30% at a full 10, about −11% in practice",
+ "สองอันนี้เป็นคู่กันโดยตั้งใจ — ทีมที่ยิงไกลได้โบนัสรุมโดยไม่ปลุกเกราะของอีกฝั่ง ส่วนทีมที่บุกประชิดปลุกทั้งสองทาง":
+   "The two are deliberately a pair: a team focusing from range gets its bonus without waking the other side's guard, while a team that dives triggers both",
+ "gameSense — คุมคุณภาพการยืน (posQ) ด้วยแล้ว ค่านี้เคยเป็นเลข 6 ตายตัวที่ไม่ผูกกับค่าสถานะไหนเลย ทั้งที่คำอธิบายเขียนไว้เองว่า 'ยืนถูกระยะ'":
+   "Game sense also drives positioning quality, which used to be a hard-coded 6 wired to no stat at all, even though the description said it held the right spacing",
+ "knowledge — ทำดาเมจได้มากขึ้นและกินดาเมจน้อยลงตามที่เขียนไว้จริงๆ แล้ว 0.6% และ 0.5% ต่อแต้มที่ห่างจากกลางตาราง เต็มสิบแต้มคือตีแรงขึ้น 3% กินน้อยลง 2.5%":
+   "Knowledge finally does what it always claimed: 0.6% more damage dealt and 0.5% less taken per point away from the middle — +3% and −2.5% at a full 10",
+ "decision — ความอดใจรออัลติเคยเป็นหน้าผาที่แต้ม 3.5 ต่ำกว่านั้นกดทิ้งทุกครั้ง สูงกว่านั้นอดใจเสมอ ค่านี้จึงเป็นแค่ 'ต้องมีอย่างน้อย 4' แล้วที่เหลือแทบไม่ต่าง":
+   "Decision's ultimate patience was a cliff at 3.5 — below it you threw the ult away every time, above it you always waited — so the stat was really just \"get at least 4\"",
+ "decision — ตอนนี้เป็นลาดเอียง อดใจรอจังหวะที่คุ้มได้ 1.2 วินาทีต่อหนึ่งแต้ม แล้วถ้าจังหวะยังไม่มาก็ยอมกดทิ้ง — แต้ม 0 รอ 1.5 วิ · แต้ม 5 รอ 6 วิ · แต้ม 10 รอ 12 วิ":
+   "It is now a slope: 1.2 seconds of patience per point before settling for a worse moment — measured holds of 1.5s at 0, 6s at 5 and 12s at 10",
+ "ปุ่มปรับทั้งหมดอยู่รวมกันที่ data/tuning.js ก้อน 'ค่าสถานะของนักแข่ง'":
+   "Every knob for this sits together in data/tuning.js under the athlete-stats block",
 };

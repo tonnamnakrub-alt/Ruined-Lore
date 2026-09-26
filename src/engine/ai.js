@@ -1,5 +1,5 @@
 import { tr } from "../i18n.js";
-import { DEFAULT_CAST } from "../data/tuning.js";
+import { DEFAULT_CAST, ULT_PATIENCE } from "../data/tuning.js";
 import { onKazemCast } from "./kazem.js";
 import { onUltCastItems } from "./lore-items.js";
 import { bonusMs, dist, hasBuff, pushLog, spendFrag } from "./state-util.js";
@@ -99,9 +99,12 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
 
   if (sk.ult) {
     // discipline is the patience to hold an ultimate for a worthwhile moment
-    const patience = disc / 10;
+    // เดิมเป็นหน้าผาที่แต้ม 3.5 — ต่ำกว่านั้นกดทิ้งทุกครั้ง สูงกว่านั้นอดใจเสมอ
+    // ทำให้ decision กลายเป็นค่าที่ "ต้องมีอย่างน้อย 4" แล้วที่เหลือแทบไม่ต่าง
     const worth = target.hp / target.maxHp < 0.55 + 0.15 * (aw / 10) || nearby >= 2 || hpFrac < 0.45;
-    if (patience > 0.35 && !worth) return false;
+    // อดใจรอได้นานตามแต้ม แล้วถ้าจังหวะยังไม่มาก็ยอมกดทิ้ง
+    // (ทอยลูกเต๋าทุกเฟรมไม่ได้ผล เพราะทอยถี่ขนาดนั้นแต้มกลางก็กดทิ้งแทบจะทันที)
+    if (!worth && state.t - (sk.readyAt || 0) < disc * ULT_PATIENCE) return false;
     if (sk.type === "shredWave") return enemiesOf(state, u).filter((e) => dist(u, e) < sk.radiusByRank[Math.max(0, sk.rank - 1)]).length >= 1;
     if (sk.type === "grabSlam") return d <= sk.grabRange + 700;
     if (sk.type === "formShift") return nearby >= 1 || hpFrac < 0.6;

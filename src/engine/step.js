@@ -89,6 +89,13 @@ export function step(state) {
 
   const supB = supportAlive(state, "blue");
   const supR = supportAlive(state, "red");
+  // ค่าสถานะที่ระบบดาเมจต้องอ่าน — คิดทีเดียวต่อเฟรม ไม่ต้องไปเรียก effStat ทุกครั้งที่ตีโดน
+  for (const u of state.units) {
+    const sa = u.team === "blue" ? supB : supR;
+    u.statKnow = effStat(u, "knowledge", sa);
+    u.statTeam = effStat(u, "teamwork", sa);
+    u.statSense = effStat(u, "gameSense", sa);
+  }
   const cen = { blue: centroid(state, "blue"), red: centroid(state, "red") };
 
   // support auras only count while the wearer is still alive
@@ -135,7 +142,10 @@ export function step(state) {
       if (state.t >= iso.until || iso.amt <= 0) u.isoShield = null;
     }
     for (const sk of u.skills) {
-      if (sk.cdLeft > 0) sk.cdLeft -= dt;
+      if (sk.cdLeft > 0) {
+        sk.cdLeft -= dt;
+        if (sk.cdLeft <= 0) sk.readyAt = state.t;
+      } else if (sk.readyAt == null) sk.readyAt = state.t;
       if (sk.ammoMax && sk.ammo < sk.ammoMax && sk.rechargeAt != null && state.t >= sk.rechargeAt) {
         sk.ammo += 1;
         sk.rechargeAt = sk.ammo < sk.ammoMax ? state.t + sk.rechargeTime : null;
@@ -504,7 +514,10 @@ export function step(state) {
     const dec = effStat(u, "decision", supAlive);      // engage/disengage/ult timing
     const team = effStat(u, "teamwork", supAlive);     // focus fire, spacing, peeling
     const prec = mech, reac = mech;                    // both aim and dodge come from mechanics
-    const disc = dec, posQ = 6, aw = know;
+    // posQ = คุณภาพการยืน เคยเป็นเลข 6 ตายตัว ไม่ผูกกับค่าสถานะไหนเลย
+    // ทั้งที่คำอธิบายของ gameSense เขียนไว้เองว่า "ยืนถูกระยะ"
+    // ตอนนี้มันคือ gameSense ตรงๆ — คุมการเดินวน การถอยหนีตัวประชิด และระยะยืนของตัวไกล
+    const disc = dec, posQ = sense, aw = know;
 
     if (u.manual) {
       const mo = u.manual;
