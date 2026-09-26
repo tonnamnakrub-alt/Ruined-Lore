@@ -3132,4 +3132,10 @@ export const DICT = {
    "Bonus MR (shield)",
  "Bonus HP (ฮีล)":
    "Bonus HP (heal)",
+ "กรวยหนามหน่วงเวลา ตรึงเท้าหมู่":
+   "Delayed thorn cone that roots",
+ "โล่คู่ที่แบ่งดาเมจกัน":
+   "Paired shield that splits damage",
+ "หยั่งรากนิ่ง ฮีลทีมเป็นระลอก":
+   "Roots in place, heals the team in waves",
 };
