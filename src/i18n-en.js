@@ -3208,4 +3208,18 @@ export const DICT = {
    "Slow when both swings land",
  "ล่องหนนาน":
    "Invisible for",
+ "ลูกที่ซ้ำตัวเดิมเหลือ {0}% ของลูกแรก":
+   "Repeat hits on the same target deal {0}% of the first",
+ "KAMACHI (คามาจิ) — สามภูตพายุมรณะ · Assassin · JUNGLE":
+   "KAMACHI (The Sickle-Wind Trio) — Assassin · JUNGLE",
+ "KAMACHI — ลงป่าอย่างเดียว ไม่ลงท็อป":
+   "KAMACHI — jungle only, no longer top",
+ "คำบรรยาย falloff เคยเขียนผิดความหมายอยู่สี่ท่า":
+   "The falloff wording had the wrong meaning on four abilities",
+ "falloff ในเกมนี้มีสองความหมายคนละเรื่อง แล้วแต่ชนิดของท่า — ท่ารูปกรวยกับแขนกากบาทหมายถึง \"ลูกที่ซ้ำตัวเดิม\" ทำดาเมจเบาลง ส่วนท่าที่ทะลุแถวกับคลื่นหมายถึง \"เป้าถัดไป\" ที่โดนทำดาเมจเบาลง":
+   "Falloff means two different things in this game depending on the shape of the ability. On cones and cross-arms it means repeat hits on the same target deal less; on piercing lines and waves it means each further target hit takes less",
+ "คำบรรยายเขียนแบบที่สองให้ทุกท่า KAZEM W · PIROSKA Q · PHANTOM Q · ALUCARD W จึงบอกผู้เล่นผิดมาตลอด":
+   "The description used the second wording for every ability, so KAZEM's W, PIROSKA's Q, PHANTOM's Q and ALUCARD's W have been telling players the wrong thing",
+ "แก้เฉพาะคำบรรยาย ตัวเลขและเอนจินไม่ได้แตะ":
+   "Only the wording changed — no numbers and no engine code were touched",
 };

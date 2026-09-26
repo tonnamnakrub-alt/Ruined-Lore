@@ -54,7 +54,7 @@ const theirs = (u, needle) => Object.entries(u.dealtBy || {})
 // ---- ข้อมูลพื้นฐาน ----
 {
   t("KAMACHI อยู่ในรายชื่อตัวละคร", !!KA, KA ? KA.th + " · " + KA.role + " · " + KA.lane : "ไม่มี");
-  t("ลงป่าเป็นหลัก ลงท็อปได้ด้วย", KA.lane === "JUNGLE" && (KA.alsoLanes || []).includes("TOP"),
+  t("ลงป่าอย่างเดียว", KA.lane === "JUNGLE" && !(KA.alsoLanes || []).length,
     [KA.lane, ...(KA.alsoLanes || [])].join(", "));
   t("มีครบสี่ท่า", KA.skills.length === 4, KA.skills.map((s) => s.key + " " + s.type).join(" · "));
   t("เป็นตัวประชิด", KA.melee && KA.range === 150, "ระยะ " + KA.range);

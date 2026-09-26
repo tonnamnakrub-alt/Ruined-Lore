@@ -586,10 +586,16 @@ function extraClause(sk) {
   if (sk.soloMult) out.push(tr("ถ้าโดนตัวเดียวดาเมจคูณ {0}", sk.soloMult));
   if (sk.edgeMult) out.push(tr("โดนขอบวงดาเมจคูณ {0}", sk.edgeMult));
   if (sk.falloff) {
+    // falloff มีสองความหมายคนละเรื่อง แล้วแต่ชนิดของท่า
+    //   กรวย (cone) กับแขนกากบาท (crossDash) — ลูกหรือแขนที่ "ซ้ำตัวเดิม" เบาลง
+    //   ทะลุแถว (line/rangeCharge) กับคลื่น (wave) — "เป้าถัดไป" ที่โดนเบาลง
+    const repeat = sk.type === "cone" || sk.type === "crossDash";
     out.push(sk.falloffFloor
       ? tr("ตัวถัดไปรับดาเมจเหลือ {0}% แต่ไม่ต่ำกว่า {1}% ของก้อนแรก",
         Math.round(sk.falloff * 100), Math.round(sk.falloffFloor * 100))
-      : tr("ตัวถัดไปรับดาเมจเหลือ {0}%", Math.round(sk.falloff * 100)));
+      : repeat
+        ? tr("ลูกที่ซ้ำตัวเดิมเหลือ {0}% ของลูกแรก", Math.round(sk.falloff * 100))
+        : tr("ตัวถัดไปรับดาเมจเหลือ {0}%", Math.round(sk.falloff * 100)));
   }
   if (sk.fullDmg) out.push(tr("ชาร์จเต็มแล้วดาเมจขึ้นเป็น {0} (จาก {1})", sk.fullDmg.join("/"), sk.dmg.join("/")));
   if (sk.landStunByRank) out.push(tr("สตันตัวแรกที่ชน {0} วิ", sk.landStunByRank.join("/")));

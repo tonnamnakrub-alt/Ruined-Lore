@@ -135,7 +135,7 @@ export const P4_CHAMPIONS = {
   // =============================================================
   KAMACHI: {
     id: "KAMACHI", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.18, value: 1.2,
-    th: "คามาจิ", role: "Assassin", lane: "JUNGLE", alsoLanes: ["TOP"], melee: true,
+    th: "คามาจิ", role: "Assassin", lane: "JUNGLE", melee: true,
     hp: 580, hpG: 92, hp5: 6.5, hp5G: 0.7, ad: 62, adG: 3.6, armor: 30, armorG: 3.8, mr: 32, mrG: 2.05,
     // เอกสารเขียนความเร็วโจมตี "+3.0% ต่อเลเวล" ของ 0.670 = 0.0201 ต่อเลเวล
     as: 0.67, asG: 0.02, ms: 345, range: 150,
