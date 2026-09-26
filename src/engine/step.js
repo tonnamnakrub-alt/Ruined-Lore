@@ -27,6 +27,58 @@ import { C } from "../ui/theme.js";
 export const DT = 1 / 60;
 
 
+// ออโต้หนึ่งครั้งที่ตัดสินใจแล้วว่าจะออก — คริ ไอเทม พาสซีฟ แล้วค่อยเข้าคิวดาเมจ
+// ทั้งฝั่ง AI และฝั่งที่ผู้เล่นคุมเองต้องเรียกตัวนี้ตัวเดียว ไม่งั้นของที่ผูกกับออโต้
+// จะทำงานแค่ฝั่งเดียวเหมือนที่เคยเป็นมา
+function landAuto(state, u, target) {
+  let atkDmg = u.ad;
+  let didCrit = false;
+  if (u.crit > 0 && u.rng() < u.crit) {
+    const critBonus = u.ad * (0.75 + (u.critDmg || 0)); // ฐาน +75% บวกโบนัสคริจากไอเทม
+    const motCut = target.motFlat != null && target.hasItem("mot") ? 0.3 : 0;
+    atkDmg = u.ad + critBonus * (1 - motCut);
+    didCrit = true;
+    // Artemis' Silver Crescent — คริติคอลที่ลงติดสโลว์สั้นๆ
+    if (u.hasItem("asc")) addBuff(target, { type: "slow", v: 0.20, until: state.t + 1 }, state.t);
+    // HOOD passive — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลแทน
+    if (u.champ.critBleed) {
+      hoodBleed(state, u, target, critBonus * (1 - motCut) * AUTO_DMG);
+      atkDmg = u.ad;
+    }
+  }
+  if (target.hasItem("mot")) atkDmg = Math.max(0, atkDmg - target.motFlat);
+  // YODAKA — ออโต้ที่มีสแตกดาว จะพุ่งทะลวงไปโผล่หลังเป้าแล้วกวาดทั้งแนว
+  if (u.champ.starlight) starPierce(state, u, target);
+  if (u.champ.isolde) gainIsolde(state, u, didCrit ? u.champ.isolde.onCrit : u.champ.isolde.onAuto);
+  // Plunder — ออโต้ที่คริได้เงินกระเป๋าแยกเพิ่ม 1
+  if (didCrit && u.champ.bounty && u.champ.bounty.perCrit) u.bountyGold += u.champ.bounty.perCrit;
+  // Broadside: critting speeds up the next cannonball's recharge by 2.5s
+  if (didCrit && u.hasItem && u.champ.id === "C.HOOK") {
+    const eSkill = u.skills.find((x) => x.key === "E" && x.ammoMax);
+    if (eSkill && eSkill.rechargeAt != null) eSkill.rechargeAt = Math.max(state.t, eSkill.rechargeAt - 2.5);
+  }
+  const rev = u.champ.revolver;
+  if (rev) {
+    u.shotsFired += 1;
+    if (u.shotsFired % rev.shots === 0) {
+      atkDmg *= rev.mult;
+      u.reloadUntil = state.t + rev.reload;
+    }
+  }
+  atkDmg *= AUTO_DMG;
+  if (!u.champ.missile) {
+    state.hitQueue.push({ ownerId: u.id, targetId: target.id, dmg: atkDmg, magic: false });
+  } else {
+    state.spawnQueue.push({
+      id: state.nextProjId++, team: u.team, ownerId: u.id,
+      homing: true, targetId: target.id,
+      x: u.x, y: u.y, dx: 0, dy: 0,
+      speed: u.champ.missile, dmg: atkDmg, life: 2.5,
+    });
+  }
+}
+
+
 export function step(state) {
   setCurState(state);
   state.dmgSrc = null;
@@ -509,12 +561,7 @@ export function step(state) {
         u.atkCd = 1 / u.asEff;
         u.atkLock = (u.champ.windup != null ? u.champ.windup : DEFAULT_WINDUP) / u.asEff;
         u.shots += 1;
-        let atkDmg = u.ad;
-        const rev = u.champ.revolver;
-        if (rev) { u.shotsFired += 1; if (u.shotsFired % rev.shots === 0) { atkDmg *= rev.mult; u.reloadUntil = state.t + rev.reload; } }
-        if (!u.champ.missile) state.hitQueue.push({ ownerId: u.id, targetId: tgt.id, dmg: atkDmg, magic: false });
-        else state.spawnQueue.push({ id: state.nextProjId++, team: u.team, ownerId: u.id, homing: true, targetId: tgt.id,
-          x: u.x, y: u.y, dx: 0, dy: 0, speed: u.champ.missile, dmg: atkDmg, life: 2.5 });
+        landAuto(state, u, tgt);
       }
       continue;
     }
@@ -598,7 +645,15 @@ export function step(state) {
     const dirY = (target.y - u.y) / d;
     let mvx, mvy;
 
-    if (u.retreating) {
+    // ลอยอยู่บนฟ้าจากท่าที่ให้ขยับได้ (YODAKA R) — ช่วงนี้แตะไม่ได้อยู่แล้ว
+    // ไม่มีเหตุผลต้องยืนรักษาระยะ เดินเข้าไปกลางกองศัตรูเพื่อให้วงที่จะทุบครอบได้มากที่สุด
+    const airborne = u.airFree != null && state.t < u.airFree;
+    if (airborne) {
+      const fc = cen[u.team === "blue" ? "red" : "blue"];
+      const fx = fc.x - u.x, fy = fc.y - u.y;
+      const fl = Math.hypot(fx, fy) || 1;
+      mvx = fx / fl; mvy = fy / fl;
+    } else if (u.retreating) {
       // fall back toward our own side and our own team, not just backwards
       const home = u.team === "blue" ? 0 : ARENA_W;
       const c = cen[u.team];
@@ -828,51 +883,7 @@ export function step(state) {
         else u.caught = (u.caught || 0) + 1;
         continue;
       }
-      let atkDmg = u.ad;
-      let didCrit = false;
-      if (u.crit > 0 && u.rng() < u.crit) {
-        const critBonus = u.ad * (0.75 + (u.critDmg || 0)); // ฐาน +75% บวกโบนัสคริจากไอเทม
-        const motCut = target.motFlat != null && target.hasItem("mot") ? 0.3 : 0;
-        atkDmg = u.ad + critBonus * (1 - motCut);
-        didCrit = true;
-        // Artemis' Silver Crescent — คริติคอลที่ลงติดสโลว์สั้นๆ
-        if (u.hasItem("asc")) addBuff(target, { type: "slow", v: 0.20, until: state.t + 1 }, state.t);
-        // HOOD passive — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลแทน
-        if (u.champ.critBleed) {
-          hoodBleed(state, u, target, critBonus * (1 - motCut) * AUTO_DMG);
-          atkDmg = u.ad;
-        }
-      }
-      if (target.hasItem("mot")) atkDmg = Math.max(0, atkDmg - target.motFlat);
-      // YODAKA — ออโต้ที่มีสแตกดาว จะพุ่งทะลวงไปโผล่หลังเป้าแล้วกวาดทั้งแนว
-      if (u.champ.starlight) starPierce(state, u, target);
-      if (u.champ.isolde) gainIsolde(state, u, didCrit ? u.champ.isolde.onCrit : u.champ.isolde.onAuto);
-      // Plunder — ออโต้ที่คริได้เงินกระเป๋าแยกเพิ่ม 1
-      if (didCrit && u.champ.bounty && u.champ.bounty.perCrit) u.bountyGold += u.champ.bounty.perCrit;
-      // Broadside: critting speeds up the next cannonball's recharge by 2.5s
-      if (didCrit && u.hasItem && u.champ.id === "C.HOOK") {
-        const eSkill = u.skills.find((x) => x.key === "E" && x.ammoMax);
-        if (eSkill && eSkill.rechargeAt != null) eSkill.rechargeAt = Math.max(state.t, eSkill.rechargeAt - 2.5);
-      }
-      const rev = u.champ.revolver;
-      if (rev) {
-        u.shotsFired += 1;
-        if (u.shotsFired % rev.shots === 0) {
-          atkDmg *= rev.mult;
-          u.reloadUntil = state.t + rev.reload;
-        }
-      }
-      atkDmg *= AUTO_DMG;
-      if (!u.champ.missile) {
-        state.hitQueue.push({ ownerId: u.id, targetId: target.id, dmg: atkDmg, magic: false });
-      } else {
-        state.spawnQueue.push({
-          id: state.nextProjId++, team: u.team, ownerId: u.id,
-          homing: true, targetId: target.id,
-          x: u.x, y: u.y, dx: 0, dy: 0,
-          speed: u.champ.missile, dmg: atkDmg, life: 2.5,
-        });
-      }
+      landAuto(state, u, target);
     }
   }
 

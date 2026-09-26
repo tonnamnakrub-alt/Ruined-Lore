@@ -79,11 +79,12 @@ const out = [];
 }
 
 // YODAKA R — ลอยครบ 0.5 วิแล้วสั่งทุบก่อนหมดเวลาได้
+// ต้องมีศัตรูใต้วงสองตัวถึงจะทุบก่อนเวลา ไฟต์เล็กเกินไปมักเหลือตัวเดียวก่อนได้กด
 {
   let early = false, cast = false;
   for (const seed of [2468, 11, 99, 500, 777, 1234]) {
-    run([mk("JUNGLE", "YODAKA", 16), mk("TOP", "KAZEM", 16)],
-      [mk("TOP", "TRISTAN"), mk("MID", "ARIEL")], seed, (st) => {
+    run([mk("JUNGLE", "YODAKA", 16), mk("TOP", "KAZEM", 16), mk("MID", "LAURA", 16)],
+      [mk("TOP", "TRISTAN"), mk("MID", "ARIEL"), mk("ADC", "HOOD"), mk("SUPPORT", "PIROSKA")], seed, (st) => {
         const L = st.lore;
         if (!L || !L.slams) return;
         for (const s of L.slams) if (s.kind === "starfall") { cast = true; if (s.early) early = true; }

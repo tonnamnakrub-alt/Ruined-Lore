@@ -2668,4 +2668,18 @@ export const DICT = {
    "YODAKA R lets him move while he is up in the air, with the landing circle following him, where before he was stuck in place",
  "เหตุที่ขยับไม่ได้คือสถานะอมตะตรึงขาไว้ด้วยเสมอ ตอนนี้แยกให้ท่าที่ตั้งใจให้ขยับได้ไม่โดนตรึง ส่วนท่าอมตะอื่นยังตรึงเหมือนเดิม":
    "He was stuck because being invulnerable always rooted the unit too; abilities meant to allow movement are now exempt, while every other invulnerability still roots as before",
+ "แก้ของที่ไม่ทำงานในห้องซ้อม และ ELLA ออกจากซัพ":
+   "Practice-room fixes, and ELLA leaves support",
+ "ELLA ลงได้แค่ป่าแล้ว ไม่ขึ้นเป็นตัวเลือกของเลนซัพพอร์ตอีกต่อไป":
+   "ELLA is a jungler only now — she no longer shows up as a support option",
+ "พาสซีฟ YODAKA — ร่าย Q หรือ E ไม่เคยได้สแตกดาวเลย Q ไม่ได้เขียนไว้ว่าให้สแตก ส่วน E เขียนไว้แต่ไม่มีโค้ดไหนอ่าน มีแต่ W ที่ได้จริง ตอนนี้ได้ครบทุกท่าตามที่คำอธิบายเขียนไว้":
+   "YODAKA's passive never gave a starlight stack for Q or E — Q was never given one in its data, and E declared one that no code ever read, so only W worked. All four abilities now grant a stack, as the passive always said",
+ "ห้องซ้อม — ออโต้ของตัวที่ผู้เล่นคุมเองเดินคนละทางกับออโต้ในไฟต์จริง ทางนั้นไม่มีคริ ไม่มีตัวคูณดาเมจออโต้ และไม่เรียกของที่ผูกกับออโต้เลย พาสซีฟ YODAKA จึงไม่เคยพุ่งทะลวงในห้องซ้อม ตอนนี้ใช้ทางเดียวกันทั้งสองฝั่ง":
+   "In the practice room, a player-controlled champion's basic attacks ran through a separate code path with no crits, no auto-attack damage multiplier and none of the on-hit hooks, so YODAKA's passive pierce never fired there. Both sides now share one path",
+ "ผลพ่วง: ออโต้ในห้องซ้อมเคยแรงเกินจริงราวหนึ่งในสาม เพราะไม่ได้คูณตัวคูณดาเมจออโต้ ตอนนี้ตรงกับในไฟต์จริงแล้ว และคริกับของที่ติดตอนตีโดนก็ทำงานในห้องซ้อมด้วย":
+   "Knock-on effect: practice-room autos used to hit about a third too hard because the auto-attack multiplier was missing. They now match real fights, and crits and on-hit items work there too",
+ "YODAKA R — ระหว่างลอยอยู่บนฟ้า พาสซีฟพัก ไม่ยืดระยะออโต้และไม่พุ่งทะลวง เพราะวงที่จะทุบตามตัวไป พุ่งตอนนั้นคืออัลติเสียเปล่า":
+   "YODAKA R: the passive is paused while he is up in the air — no extended range, no pierce — because the landing circle follows him, and piercing away from it wastes the ult",
+ "YODAKA R — บอทเดินเข้าหากองศัตรูระหว่างลอย แทนที่จะลอยค้างอยู่กับที่เฉยๆ":
+   "YODAKA R: the bot now walks toward the enemy group while airborne instead of hovering in place",
 };

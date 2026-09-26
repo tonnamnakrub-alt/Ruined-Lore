@@ -27,6 +27,9 @@ export function fireSkill(state, u, sk, target, prec) {
   ];
   state.dmgSrc = label;
   state.srcUnit = u;
+  // สแตกจากการร่ายสกิล (พาสซีฟ YODAKA) — อ่านที่เดียวตรงนี้ ไม่ว่าท่านั้นจะเป็นชนิดไหน
+  // เดิมอ่านอยู่ใน case "selfBuff" อย่างเดียว E ที่ประกาศ gainStack ไว้จึงไม่เคยได้สแตก
+  if (sk.gainStack) gainStar(state, u, sk.gainStack);
   try {
     return fireSkillEffect(state, u, sk, target, prec);
   } finally {
@@ -194,7 +197,6 @@ function fireSkillEffect(state, u, sk, target, prec) {
       }
       if (sk.dashFaster) u.starRush = { until: state.t + sk.dur, mul: 1 + sk.dashFaster };
       if (sk.overcharge) u.overchargeUntil = state.t + sk.dur;
-      if (sk.gainStack) gainStar(state, u, sk.gainStack);
       if (sk.pet && state.lore) {
         for (const g of state.lore.pets) {
           if (g.ownerId !== u.id) continue;

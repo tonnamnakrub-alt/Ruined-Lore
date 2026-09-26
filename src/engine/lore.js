@@ -678,7 +678,11 @@ export function tickLoreUnit(state, u, dt) {
   if (ch.starlight) {
     if (u.starStacks && state.t > (u.starUntil || 0)) u.starStacks = 0;
     const want = ch.starlight.range;
-    const on = (u.starStacks || 0) > 0;
+    // ระหว่างลอยอยู่บนฟ้าจากอัลติ ไม่เอาระยะพาสซีฟมาใช้
+    // ไม่งั้นเขาจะไปยืนห่างกองศัตรูตามระยะ 400 แล้ววงที่จะทุบ (ตามตัวไป) ครอบไม่ถึงสองคน
+    // อัลติก็เลยไม่มีวันทุบก่อนเวลาอย่างที่ออกแบบไว้
+    const airborne = u.airFree != null && state.t < u.airFree;
+    const on = (u.starStacks || 0) > 0 && !airborne;
     if (on && u.starRangeOn !== true) { u.range = want; u.starRangeOn = true; }
     if (!on && u.starRangeOn) { u.range = ch.range; u.starRangeOn = false; }
   }
@@ -1287,6 +1291,8 @@ export function pickDuelMark(state, u) {
 export function starPierce(state, u, target) {
   const cfg = u.champ && u.champ.starlight;
   if (!cfg || !(u.starStacks > 0)) return false;
+  // ลอยอยู่บนฟ้าจากอัลติตัวเอง — วงที่จะทุบตามตัวไป พุ่งตอนนี้คืออัลติเสียเปล่า
+  if (u.airFree != null && state.t < u.airFree) return false;
   u.starStacks -= 1;
   const dd = dist(u, target) || 1;
   const nx = (target.x - u.x) / dd, ny = (target.y - u.y) / dd;

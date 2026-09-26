@@ -15,7 +15,7 @@ export const LORE_CHAMPIONS = {
   // =============================================================
   ELLA: {
     id: "ELLA", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.19, value: 1.2,
-    th: "เอลล่า", role: "Assassin", lane: "JUNGLE", alsoLanes: ["SUPPORT"], melee: true,
+    th: "เอลล่า", role: "Assassin", lane: "JUNGLE", melee: true,
     hp: 570, hpG: 92, hp5: 6.5, hp5G: 0.6, ad: 56, adG: 3.1, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.026, ms: 340, range: 150,
     // เศษแก้วติดออโต้ — แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง
@@ -98,7 +98,7 @@ export const LORE_CHAMPIONS = {
     skills: [
       // พายุลอยช้า -> ค้างเป็นวังวน -> เดินตัดผ่านแล้วระเบิด
       { key: "Q", th: "Astral Squall", type: "vortex", range: 750, projSpeed: 900, width: 150,
-        cast: 0.25, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true,
+        cast: 0.25, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true, gainStack: 1,
         dmg: [50, 80, 110, 140, 170], apRatio: 0.40,
         slowByRank: [0.30, 0.35, 0.40, 0.45, 0.50], slowDur: 1.5,
         zoneDur: 3.0, zoneRadius: 250, every: 0.5,
