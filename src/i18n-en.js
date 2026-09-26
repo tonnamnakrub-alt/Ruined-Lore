@@ -2854,4 +2854,28 @@ export const DICT = {
    "Firing your ultimate grants +{0} AD, +{1}% attack speed and +{2}% move speed for {3}s (every {4}s)",
  "ออโต้แถมดาเมจเวท {0} (+{1}% AP) ทุกครั้งที่ตีโดน":
    "Every basic attack that lands carries an extra {0} (+{1}% AP) magic damage",
+ "เลขค่าสถานะของไอเทมหารห้าลงตัวทั้งกระดานแล้ว":
+   "Every item stat is now a multiple of five",
+ "ไล่ปัดเลขค่าสถานะของไอเทมทุกชิ้นให้หารห้าลงตัว 23 รายการจาก 146 ชิ้น":
+   "Rounded every item stat to a multiple of five — 23 values across the 146 items",
+ "กติกา: ปัดไปหาตัวที่ใกล้ที่สุดที่หารห้าลงตัว · ค่าที่ต่ำกว่า 5 ปัดลงแล้วจะกลายเป็นศูนย์ = ลบค่าสถานะทิ้ง จึงปัดขึ้นเป็น 5 แทน":
+   "The rule: round to the nearest multiple of five, except for values under 5, where rounding down would delete the stat entirely — those round up to 5",
+ "ปัดลง: รองเท้า Steel-Shod ลดดาเมจออโต้ 12% เหลือ 10% · Bow of Eurytus กับ Skadi's Triple Arrow ความเร็วเดิน 7% เหลือ 5% · ฮีลกับโล่แรงขึ้น 12% เหลือ 10% ของ Aceso's Censer และ Elysian Bloom · ดูดเลือดทุกแหล่ง 6% เหลือ 5% ของชิ้นส่วนสองชิ้น":
+   "Rounded down: Steel-Shod boots cut auto damage by 10% instead of 12% · Bow of Eurytus and Skadi's Triple Arrow give 5% move speed instead of 7% · Aceso's Censer and Elysian Bloom heal and shield 10% harder instead of 12% · two components give 5% omnivamp instead of 6%",
+ "ปัดขึ้น: Eye of Horus AP 58 เป็น 60 · Chimera's Prowlers เจาะเกราะ 8 เป็น 10 · Crown of Care พลังสกิล 8 เป็น 10 และฮีลแรงขึ้น 8% เป็น 10% · เจาะต้านเวทของ Mage's Whisper 8% เป็น 10% · Swan Maiden's Cloak ดูดเลือด 8% เป็น 10% · Auric Chalice ฮีลแรงขึ้น 14% เป็น 15%":
+   "Rounded up: Eye of Horus 58 AP to 60 · Chimera's Prowlers 8 armour penetration to 10 · Crown of Care 8 ability haste to 10 and 8% to 10% healing · Mage's Whisper 8% to 10% magic penetration · Swan Maiden's Cloak 8% to 10% omnivamp · Auric Chalice 14% to 15% healing",
+ "ค่าที่ต่ำกว่า 5 ปัดขึ้นเป็น 5: ดูดเลือดของ Chaos Blade 3% · Chaos Bow 2% · Silver Leaf 4% · ความเร็วเดินของ Iron Waft 4%":
+   "Values under 5 rounded up to 5: Chaos Blade's 3% omnivamp, Chaos Bow's 2%, Silver Leaf's 4%, and Iron Waft's 4% move speed",
+ "Kitsune's Foxfire Fan — ดาเมจติดออโต้จากรอบที่แล้ว 8 (+12% AP) ปัดเป็น 10 (+10% AP)":
+   "Kitsune's Foxfire Fan: last patch's 8 (+12% AP) on-hit rounds to 10 (+10% AP)",
+ "ข้อยกเว้นเดียว: รองเท้า Achilles' Talaria ที่ให้ดาเมจตาม Max HP ของเป้า 1% ต่อออโต้ ปัดขึ้นเป็น 5% คือแรงขึ้นห้าเท่า ส่วนปัดลงก็เท่ากับลบพาสซีฟทิ้ง จึงคงไว้ที่ 1%":
+   "One exception: Achilles' Talaria deals 1% of the target's max HP per auto. Rounding up to 5% would make it five times stronger, and rounding down would delete the passive, so it stays at 1%",
+ "ความคุ้มเฉลี่ยรายสายแทบไม่ขยับ — มาร์คแมน 109% เหลือ 108% · ซัพ 82% เหลือ 81% · สายอื่นเท่าเดิม":
+   "Average value per gold barely moved: marksman 109% to 108%, support 82% to 81%, every other line unchanged",
+ "มีเทสล็อกกติกานี้ไว้แล้ว ใครเติมไอเทมใหม่ด้วยเลขที่หารห้าไม่ลงตัวจะไม่ผ่าน":
+   "A test now locks the rule in, so a new item with a stat that is not a multiple of five will fail the suite",
+ "Kitsune's Foxfire Fan — ดาเมจเวทที่ติดออโต้ลดจาก 15 (+20% AP) เหลือ 10 (+10% AP) · ที่ AP 250 คือจาก 65 เหลือ 35 ต่อออโต้หนึ่งครั้ง":
+   "Kitsune's Foxfire Fan: the magic damage riding every auto drops from 15 (+20% AP) to 10 (+10% AP) — at 250 AP that is 65 down to 35 per hit",
+ "Eye of Horus — AP 65 เหลือ 60 · เจาะต้านเวท 35% เหลือ 30% · ค่าสถานะคุ้ม 116%":
+   "Eye of Horus: 65 AP down to 60, magic penetration 35% down to 30% — its stats were worth 116% of its price",
 };

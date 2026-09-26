@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 import { CHAMPIONS } from "./src/data/champions.js";
 import { STAT_KEYS } from "./src/data/constants.js";
-import { ITEM_BY_ID } from "./src/data/items.js";
+import { ITEMS, ITEM_BY_ID } from "./src/data/items.js";
 import { DEFAULT_FIGHT } from "./src/data/tuning.js";
 import { buildFight } from "./src/engine/build-fight.js";
 import { autoRanks } from "./src/engine/skill-ranks.js";
@@ -63,14 +63,14 @@ const mk = (lane, id, items) => ({
 // ---- ของที่เนิร์ฟ/บัฟ ต้องตรงกับที่ตั้งใจ และร้านต้องโชว์เลขใหม่ ----
 {
   const kff = ITEM_BY_ID.kff;
-  t("kff ดาเมจติดออโต้ลดลงจริง", kff.apOnHit.flat === 8 && kff.apOnHit.apRatio === 0.12,
+  t("kff ดาเมจติดออโต้ลดลงจริง", kff.apOnHit.flat === 10 && kff.apOnHit.apRatio === 0.10,
     kff.apOnHit.flat + " (+" + Math.round(kff.apOnHit.apRatio * 100) + "% AP)");
   t("ร้านโชว์เลขใหม่ของ kff ไม่ใช่เลขเก่าที่ฮาร์ดโค้ดไว้",
-    itemDesc(kff).includes("8 (+12% AP)"), itemDesc(kff).split("·").pop().trim());
+    itemDesc(kff).includes("10 (+10% AP)"), itemDesc(kff).split("·").pop().trim());
 
   t("mub ค่าสถานะลดลง", ITEM_BY_ID.mub.ad === 45 && ITEM_BY_ID.mub.armorPenPct === 0.25,
     ITEM_BY_ID.mub.ad + " AD · เจาะเกราะ " + Math.round(ITEM_BY_ID.mub.armorPenPct * 100) + "%");
-  t("eoh ค่าสถานะลดลง", ITEM_BY_ID.eoh.ap === 58 && ITEM_BY_ID.eoh.mrPenPct === 0.30,
+  t("eoh ค่าสถานะลดลง", ITEM_BY_ID.eoh.ap === 60 && ITEM_BY_ID.eoh.mrPenPct === 0.30,
     ITEM_BY_ID.eoh.ap + " AP · เจาะต้านเวท " + Math.round(ITEM_BY_ID.eoh.mrPenPct * 100) + "%");
   t("ahe ค่าสถานะลดลง", ITEM_BY_ID.ahe.armor === 35 && ITEM_BY_ID.ahe.mr === 35,
     ITEM_BY_ID.ahe.armor + " เกราะ · " + ITEM_BY_ID.ahe.mr + " ต้านเวท");
@@ -91,6 +91,28 @@ const mk = (lane, id, items) => ({
   const bad = Object.entries(costs).filter(([id, c]) => ITEM_BY_ID[id].cost !== c);
   t("ราคาทุกชิ้นเท่าเดิม", bad.length === 0,
     bad.length ? bad.map(([id]) => id).join(", ") : "ครบ 8 ชิ้น");
+}
+
+// ---- เลขค่าสถานะของไอเทมต้องหารห้าลงตัวทั้งกระดาน ----
+{
+  const FLAT = ["ad", "ap", "hp", "armor", "mr", "ah", "ms", "pen", "arPen", "ultAh", "range"];
+  const PCT = ["adPct", "apPct", "asPct", "msPct", "armorPenPct", "mrPenPct", "regenPct",
+    "healAmp", "hors", "omnivampFlat", "tenacity", "ultCdr", "dmgReduceAuto", "dmgAmpHighHp"];
+  // ข้อยกเว้นที่ตั้งใจไว้ — act ให้ดาเมจตาม Max HP ของเป้า 1% ต่อออโต้
+  // ปัดขึ้นเป็น 5% คือแรงขึ้นห้าเท่า ส่วนปัดลงเป็น 0 ก็เท่ากับลบพาสซีฟทิ้ง
+  const SKIP = new Set(["act"]);
+  const off = [];
+  for (const it of ITEMS) {
+    if (SKIP.has(it.id)) continue;
+    for (const k of FLAT) if (typeof it[k] === "number" && it[k] % 5 !== 0) off.push(it.id + "." + k + "=" + it[k]);
+    for (const k of PCT) {
+      if (typeof it[k] !== "number") continue;
+      const p = Math.round(it[k] * 1000);
+      if (p % 50 !== 0) off.push(it.id + "." + k + "=" + (p / 10) + "%");
+    }
+  }
+  t("ค่าสถานะของไอเทมทุกชิ้นหารห้าลงตัว", off.length === 0,
+    off.length ? off.join(" · ") : ITEMS.length + " ชิ้น ผ่านหมด");
 }
 
 let fail = 0;
