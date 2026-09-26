@@ -1,0 +1,580 @@
+{
+ "seeds": 15,
+ "level": 13,
+ "fightsEach": 315,
+ "margin": 5.5,
+ "rows": [
+  {
+   "id": "PIROSKA",
+   "wr": 91.4,
+   "dmg": 2384,
+   "took": 1263,
+   "heal": 440,
+   "lived": 91,
+   "src": [
+    [
+     "Q Wolfsbane Powder",
+     1697
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     304
+    ],
+    [
+     "Auto attack",
+     273
+    ],
+    [
+     "Item Raijin's Thunder Drum",
+     109
+    ]
+   ]
+  },
+  {
+   "id": "YODAKA",
+   "wr": 88.6,
+   "dmg": 2371,
+   "took": 1352,
+   "heal": 204,
+   "lived": 89,
+   "src": [
+    [
+     "Passive Starlight Piercing",
+     629
+    ],
+    [
+     "Q Astral Squall",
+     488
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     307
+    ],
+    [
+     "Auto attack",
+     277
+    ]
+   ]
+  },
+  {
+   "id": "NIAN",
+   "wr": 83.2,
+   "dmg": 2311,
+   "took": 1414,
+   "heal": 396,
+   "lived": 83,
+   "src": [
+    [
+     "E Crackling Roar",
+     504
+    ],
+    [
+     "Q Thunder Horn Charge",
+     491
+    ],
+    [
+     "Passive Static Discharge",
+     386
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     296
+    ]
+   ]
+  },
+  {
+   "id": "JACK",
+   "wr": 76.2,
+   "dmg": 2309,
+   "took": 1392,
+   "heal": 387,
+   "lived": 77,
+   "src": [
+    [
+     "Q Magic Bean Sling",
+     633
+    ],
+    [
+     "W Golden Egg Trap",
+     471
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     307
+    ],
+    [
+     "Auto attack",
+     249
+    ]
+   ]
+  },
+  {
+   "id": "ELLA",
+   "wr": 75.9,
+   "dmg": 2301,
+   "took": 1534,
+   "heal": 219,
+   "lived": 77,
+   "src": [
+    [
+     "Passive Glass Shards",
+     627
+    ],
+    [
+     "Q Midnight Waltz",
+     523
+    ],
+    [
+     "W Chimes of Fate",
+     401
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     234
+    ]
+   ]
+  },
+  {
+   "id": "ARTHUR",
+   "wr": 73,
+   "dmg": 2141,
+   "took": 1366,
+   "heal": 627,
+   "lived": 76,
+   "src": [
+    [
+     "Auto attack",
+     675
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     628
+    ],
+    [
+     "E Knight's Lunge",
+     304
+    ],
+    [
+     "R Judgment of the Round Table",
+     274
+    ]
+   ]
+  },
+  {
+   "id": "LAURA",
+   "wr": 69.2,
+   "dmg": 2272,
+   "took": 1806,
+   "heal": 339,
+   "lived": 71,
+   "src": [
+    [
+     "Q Sanguine Wave",
+     723
+    ],
+    [
+     "E Carmilla's Thrall",
+     434
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     392
+    ],
+    [
+     "Auto attack",
+     326
+    ]
+   ]
+  },
+  {
+   "id": "ARIEL",
+   "wr": 66,
+   "dmg": 2325,
+   "took": 1878,
+   "heal": 228,
+   "lived": 68,
+   "src": [
+    [
+     "W Crashing Tide",
+     801
+    ],
+    [
+     "Q Fin Lash",
+     579
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     272
+    ],
+    [
+     "Auto attack",
+     240
+    ]
+   ]
+  },
+  {
+   "id": "TRISTAN",
+   "wr": 60.3,
+   "dmg": 2057,
+   "took": 1929,
+   "heal": 408,
+   "lived": 74,
+   "src": [
+    [
+     "Auto attack",
+     608
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     563
+    ],
+    [
+     "Q Knight of Cornwall",
+     517
+    ],
+    [
+     "W Iron Vow",
+     368
+    ]
+   ]
+  },
+  {
+   "id": "TOTSAKAN",
+   "wr": 55.2,
+   "dmg": 2059,
+   "took": 2055,
+   "heal": 604,
+   "lived": 63,
+   "src": [
+    [
+     "Q Asura Cleave",
+     899
+    ],
+    [
+     "Auto attack",
+     522
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     473
+    ],
+    [
+     "R Cataclysmic Wrath",
+     102
+    ]
+   ]
+  },
+  {
+   "id": "LUCH",
+   "wr": 53.7,
+   "dmg": 2029,
+   "took": 1912,
+   "heal": 658,
+   "lived": 62,
+   "src": [
+    [
+     "Q Radiant Edge",
+     1116
+    ],
+    [
+     "Auto attack",
+     361
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     355
+    ],
+    [
+     "Passive Light form",
+     197
+    ]
+   ]
+  },
+  {
+   "id": "PETER",
+   "wr": 47.9,
+   "dmg": 2016,
+   "took": 1874,
+   "heal": 196,
+   "lived": 50,
+   "src": [
+    [
+     "Q Fairy Bolt",
+     545
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     390
+    ],
+    [
+     "Auto attack",
+     378
+    ],
+    [
+     "W Lost Boys' Blade",
+     212
+    ]
+   ]
+  },
+  {
+   "id": "ALICE",
+   "wr": 47.6,
+   "dmg": 1816,
+   "took": 1964,
+   "heal": 810,
+   "lived": 57,
+   "src": [
+    [
+     "Item Kitsune's Foxfire Fan",
+     478
+    ],
+    [
+     "Auto attack",
+     398
+    ],
+    [
+     "Q Mad Tea Garden",
+     348
+    ],
+    [
+     "R Realm of Wonderland",
+     229
+    ]
+   ]
+  },
+  {
+   "id": "KAZEM",
+   "wr": 43.2,
+   "dmg": 1844,
+   "took": 2101,
+   "heal": 828,
+   "lived": 54,
+   "src": [
+    [
+     "Auto attack",
+     461
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     417
+    ],
+    [
+     "Q Gilded Fist",
+     396
+    ],
+    [
+     "R The Curse of Gold",
+     366
+    ]
+   ]
+  },
+  {
+   "id": "PINO",
+   "wr": 42.2,
+   "dmg": 1511,
+   "took": 2702,
+   "heal": 1256,
+   "lived": 66,
+   "src": [
+    [
+     "Item Kitsune's Foxfire Fan",
+     526
+    ],
+    [
+     "Auto attack",
+     429
+    ],
+    [
+     "Q Liar's Reach",
+     405
+    ],
+    [
+     "Item Raijin's Thunder Drum",
+     151
+    ]
+   ]
+  },
+  {
+   "id": "FAUSTUS",
+   "wr": 32.7,
+   "dmg": 1772,
+   "took": 1906,
+   "heal": 167,
+   "lived": 39,
+   "src": [
+    [
+     "Skills",
+     617
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     299
+    ],
+    [
+     "W Sigil of Ruination",
+     254
+    ],
+    [
+     "Auto attack",
+     231
+    ]
+   ]
+  },
+  {
+   "id": "C.HOOK",
+   "wr": 26,
+   "dmg": 1622,
+   "took": 2067,
+   "heal": 184,
+   "lived": 35,
+   "src": [
+    [
+     "Item Kitsune's Foxfire Fan",
+     572
+    ],
+    [
+     "Auto attack",
+     387
+    ],
+    [
+     "Q Flintlock Shot",
+     297
+    ],
+    [
+     "Mark detonation Smee's Watch",
+     196
+    ]
+   ]
+  },
+  {
+   "id": "KLAEDER",
+   "wr": 17.5,
+   "dmg": 1485,
+   "took": 2329,
+   "heal": 323,
+   "lived": 43,
+   "src": [
+    [
+     "Q Royal Gust",
+     430
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     342
+    ],
+    [
+     "Auto attack",
+     341
+    ],
+    [
+     "E Imperial Tremor",
+     210
+    ]
+   ]
+  },
+  {
+   "id": "PUSS",
+   "wr": 16.2,
+   "dmg": 1659,
+   "took": 2452,
+   "heal": 225,
+   "lived": 53,
+   "src": [
+    [
+     "Item Kitsune's Foxfire Fan",
+     539
+    ],
+    [
+     "Auto attack",
+     524
+    ],
+    [
+     "Q Shadow Lunge",
+     383
+    ],
+    [
+     "R Omni-Flourish",
+     115
+    ]
+   ]
+  },
+  {
+   "id": "HOOD",
+   "wr": 14.9,
+   "dmg": 1527,
+   "took": 2086,
+   "heal": 173,
+   "lived": 23,
+   "src": [
+    [
+     "Item Kitsune's Foxfire Fan",
+     550
+    ],
+    [
+     "Auto attack",
+     526
+    ],
+    [
+     "Skills",
+     267
+    ],
+    [
+     "R Rain of Ruin",
+     184
+    ]
+   ]
+  },
+  {
+   "id": "ALUCARD",
+   "wr": 14.6,
+   "dmg": 1331,
+   "took": 2468,
+   "heal": 332,
+   "lived": 35,
+   "src": [
+    [
+     "Auto attack",
+     471
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     414
+    ],
+    [
+     "Q Crimson Reap",
+     237
+    ],
+    [
+     "W Inverted Cross",
+     152
+    ]
+   ]
+  },
+  {
+   "id": "H.S.B",
+   "wr": 4.4,
+   "dmg": 954,
+   "took": 2245,
+   "heal": 143,
+   "lived": 26,
+   "src": [
+    [
+     "Q Sledge Toss",
+     324
+    ],
+    [
+     "Item Kitsune's Foxfire Fan",
+     287
+    ],
+    [
+     "Auto attack",
+     287
+    ],
+    [
+     "R The Wolf-Proof Bunker",
+     39
+    ]
+   ]
+  }
+ ]
+}

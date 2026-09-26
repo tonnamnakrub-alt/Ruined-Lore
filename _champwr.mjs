@@ -9,6 +9,7 @@
 //
 //   node _champwr.mjs [จำนวน seed ต่อคู่] [เลเวล]
 // ---------------------------------------------------------------
+import fs from "fs";
 import { CHAMPIONS } from "./src/data/champions.js";
 import { STAT_KEYS } from "./src/data/constants.js";
 import { ITEMS } from "./src/data/items.js";
@@ -103,6 +104,17 @@ for (const r of rows) {
     r.ch.role,
   );
 }
+
+// เก็บผลไว้ให้ _champdoc.mjs เอาไปแนบในเอกสารตัวละคร
+fs.writeFileSync("champ-wr.json", JSON.stringify({
+  seeds: SEEDS, level: LVL, fightsEach: S[IDS[0]].games,
+  margin: Number((1.96 * se).toFixed(1)),
+  rows: rows.map((r) => ({
+    id: r.id, wr: Number(r.wr.toFixed(1)), dmg: Math.round(r.dmg), took: Math.round(r.took),
+    heal: Math.round(r.heal), lived: Math.round(r.lived),
+    src: r.src.slice(0, 4).map(([s2, v]) => [s2, Math.round(v)]),
+  })),
+}, null, 1));
 
 console.log("\n=== ดาเมจมาจากท่าไหน (สามอันดับแรกต่อไฟต์) ===");
 for (const r of rows) {
