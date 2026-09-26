@@ -7,8 +7,14 @@
 
 import {
   GANK_HURT, JUNGLE_FARM, JUNGLE_GANK,
-  LANE_MEMBERS, STANCE_LANES, gankOutcome, laneOutcome,
+  LANE_MEMBERS, STANCE_LANES, gankOutcome, jungleFarmAfterGank, laneOutcome,
 } from "../data/behaviour.js";
+
+// รายได้ป่าของยกนี้ — ไปแกงค์ได้ศูนย์ · ฟาร์มได้ฐาน · ฟาร์มหลังยกที่เพิ่งแกงค์ได้ 1.5 เท่า
+export function jungleIncome(gank, afterGank) {
+  if (gank) return { ...JUNGLE_GANK };
+  return afterGank ? jungleFarmAfterGank() : { ...JUNGLE_FARM };
+}
 
 const key = (side, lane) => side + ":" + lane;
 
@@ -16,7 +22,8 @@ const key = (side, lane) => side + ":" + lane;
 const ABANDON_BONUS = 2;
 
 export function buildRoundPlan(opts) {
-  const { stances, foeStances, jungle, foeJungle, round } = opts;
+  // gankedLast / foeGankedLast = ยกที่แล้วป่าฝั่งนั้นไปแกงค์มา ยกนี้ถ้าฟาร์มจะได้ 1.5 เท่า
+  const { stances, foeStances, jungle, foeJungle, round, gankedLast, foeGankedLast } = opts;
   const lanes = {};
   const fights = [];
   const income = {};
@@ -121,10 +128,15 @@ export function buildRoundPlan(opts) {
     if (fight) fights.push({ lane: L, blue, red, hurt, stanceFight, aggroDuel: out.aggroDuel });
   }
 
-  // ป่า — ฟาร์มต่อได้เท่านิสัยปกติ ไปแกงค์ได้เท่าเซฟเพราะทิ้งแคมป์
-  income.JUNGLE = jungle && jungle.lane ? { ...JUNGLE_GANK } : { ...JUNGLE_FARM };
+  // ป่า — ไปแกงค์ไม่ได้รายได้ฐานเลย ฟาร์มได้ฐาน ฟาร์มหลังยกที่เพิ่งแกงค์ได้ 1.5 เท่า
+  const myGanking = !!(jungle && jungle.lane);
+  const myAfterGank = !myGanking && !!gankedLast;
+  income.JUNGLE = jungleIncome(myGanking, myAfterGank);
 
-  return { round, lanes, fights, income, hurt: hurtAll };
+  return {
+    round, lanes, fights, income, hurt: hurtAll,
+    myAfterGank, foeGankedLast: !!foeGankedLast,
+  };
 }
 
 // รายได้ฝั่งศัตรู — คิดจากมุมกลับด้าน ใช้ตอนจ่ายเงินให้บอท
@@ -135,6 +147,6 @@ export function foeIncome(plan) {
     for (const m of LANE_MEMBERS[L]) out[m] = l.stanceFight ? { gold: 0, xp: 0 } : { ...l.out.foe };
   }
   const fj = plan.foeJungleLane;
-  out.JUNGLE = fj ? { ...JUNGLE_GANK } : { ...JUNGLE_FARM };
+  out.JUNGLE = jungleIncome(!!fj, !fj && !!plan.foeGankedLast);
   return out;
 }

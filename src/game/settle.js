@@ -10,7 +10,7 @@
 import { tr } from "../i18n.js";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_MEMBERS,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, JUNGLE_AFTER_GANK, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_MEMBERS, jungleFarmAfterGank,
   STANCES, STANCE_LANES, laneOutcome,
 } from "../data/behaviour.js";
 import { autoRanks } from "../engine/skill-ranks.js";
@@ -30,9 +30,18 @@ function laneParts(plan, lane, persp, forfeited) {
   const parts = [];
   if (lane === "JUNGLE") {
     const gank = persp === "me" ? plan.lanes && Object.values(plan.lanes).some((l) => l.myGank) : !!plan.foeJungleLane;
+    const after = !gank && (persp === "me" ? !!plan.myAfterGank : !!plan.foeGankedLast);
     const src = gank ? JUNGLE_GANK : JUNGLE_FARM;
     parts.push({ key: gank ? "jungleGank" : "jungleFarm", gold: src.gold, xp: src.xp });
-    if (forfeited) parts.push({ key: "safeForfeit", gold: -src.gold, xp: -src.xp });
+    // แคมป์ที่ค้างไว้ตอนไปแกงค์ยกที่แล้ว เก็บได้พร้อมกันยกนี้
+    if (after) {
+      const boost = jungleFarmAfterGank();
+      parts.push({ key: "jungleAfterGank", gold: boost.gold - JUNGLE_FARM.gold, xp: boost.xp - JUNGLE_FARM.xp, mul: JUNGLE_AFTER_GANK });
+    }
+    if (forfeited) {
+      const sum = parts.reduce((s, p) => ({ gold: s.gold + p.gold, xp: s.xp + p.xp }), { gold: 0, xp: 0 });
+      parts.push({ key: "safeForfeit", gold: -sum.gold, xp: -sum.xp });
+    }
     return parts;
   }
   const L = lane === "ADC" || lane === "SUPPORT" ? "BOT" : lane;
@@ -249,8 +258,13 @@ export function settleRound(opts) {
     const sangCap = (sg && sg.max) || 0;
     const sangRaw = (c.sangHp || 0) + ((u && u.sangGained) || 0) + (sg ? (sg.perRound || 0) : 0);
     const sang = sangCap > 0 ? Math.min(sangCap, sangRaw) : sangRaw;
+    // ป่าเท่านั้นที่ต้องพกสถานะนี้ข้ามยก — ยกนี้ไปแกงค์ ยกหน้าฟาร์มได้ 1.5 เท่า
+    const ganked = persp === "me"
+      ? !!(plan.lanes && Object.values(plan.lanes).some((l) => l.myGank))
+      : !!plan.foeJungleLane;
     const next = {
       ...c, xp: nxp, gold: c.gold + gold, level: lvl,
+      gankedLast: c.lane === "JUNGLE" ? ganked : false,
       ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
       bountyGold: bg, sangHp: sang, bmTier,
       ...duelAfterRound(c, u, round),
@@ -314,7 +328,8 @@ export function partLabel(p) {
     case "stanceFightNoIncome": return tr("แตกไฟต์เพราะนิสัย — ไม่มีรายได้ฐาน");
     case "safeForfeit": return tr("แกงค์เลนที่ยืนเซฟแล้วเก็บไม่ลง — เสียยกฟรี");
     case "jungleFarm": return tr("ป่าฟาร์ม");
-    case "jungleGank": return tr("ป่าไปแกงค์");
+    case "jungleGank": return tr("ป่าไปแกงค์ — ทิ้งแคมป์ ไม่มีรายได้ฐาน");
+    case "jungleAfterGank": return tr("เก็บแคมป์ที่ค้างไว้จากยกที่แกงค์ ×{0}", p.mul);
     case "kills":
       // ถ้ามีหัวไหนแพงกว่าปกติ ต้องเห็นว่าแพงเพราะตัวไหน
       return (p.heads || []).some((h) => h !== BOUNTY.base)

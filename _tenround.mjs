@@ -30,6 +30,7 @@ const DIFF = diffOf(process.argv[4] || "NORMAL");
 const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"];
 
 // ---- ที่เก็บผล ----
+let ganks = 0, roundsPlayed = 0;
 const lane = {};            // ต่อเลน
 const champ = {};           // ต่อตัวละคร
 const part = {};            // ต่อที่มาของเงิน
@@ -62,7 +63,13 @@ function playMatch(seed) {
     const ja = botJungle(rand, A, B, sa, lastA, DIFF.stanceSkill, round);
     const jb = botJungle(rand, B, A, sb, lastB, DIFF.stanceSkill, round);
 
-    const plan = buildRoundPlan({ stances: sa, foeStances: sb, jungle: ja, foeJungle: jb, round });
+    const jgA = A.find((c) => c.lane === "JUNGLE");
+    const jgB = B.find((c) => c.lane === "JUNGLE");
+    const plan = buildRoundPlan({
+      stances: sa, foeStances: sb, jungle: ja, foeJungle: jb, round,
+      gankedLast: !!(jgA && jgA.gankedLast),
+      foeGankedLast: !!(jgB && jgB.gankedLast),
+    });
     plan.foeStances = sb;
     plan.foeJungleLane = jb.lane;
     plan.foeJungleCrew = jb.crew || [];
@@ -70,6 +77,8 @@ function playMatch(seed) {
 
     // ---- ไฟต์ทุกเลนของยกนี้ ----
     const done = {};
+    if (ja && ja.lane) ganks++;
+    roundsPlayed++;
     for (const L of STANCE_LANES) {
       const st = buildLaneFight({ plan, lane: L, team: A, foe: B, teamStyle: null, mySide: "blue" });
       if (!st) continue;
@@ -139,6 +148,9 @@ for (const L of LANES) {
 }
 console.log("\nทั้งทีม  เงิน " + tg.toFixed(0) + "g · XP " + tx.toFixed(0) +
   " · เฉลี่ยต่อคนต่อยก " + (tg / 5 / ROUNDS).toFixed(1) + "g / " + (tx / 5 / ROUNDS).toFixed(1) + " xp");
+
+console.log("\nป่าไปแกงค์ " + ganks + " / " + roundsPlayed + " ยก = " +
+  (100 * ganks / Math.max(1, roundsPlayed)).toFixed(0) + "% ของยกทั้งหมด");
 
 console.log("\n--- เงินมาจากไหน (เฉลี่ยต่อแมตช์ ทั้งทีม) ---");
 const rows = Object.entries(part).sort((a, b) => Math.abs(b[1].gold) - Math.abs(a[1].gold));

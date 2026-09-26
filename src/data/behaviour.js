@@ -10,7 +10,7 @@
 export const STANCES = {
   SAFE:    { id: "SAFE",    th: "เซฟ",   gold: 3, xp: 2, desc: "ยืนเก็บของ ไม่เสี่ยง" },
   NEUTRAL: { id: "NEUTRAL", th: "ปกติ",  gold: 5, xp: 3, desc: "เล่นตามน้ำ แลกหมัดได้" },
-  AGGRO:   { id: "AGGRO",   th: "รุกล้ำ", gold: 8, xp: 3, desc: "กดดันหนัก ได้เยอะแต่เสี่ยง" },
+  AGGRO:   { id: "AGGRO",   th: "รุกล้ำ", gold: 6, xp: 3, desc: "กดดันหนัก ได้เยอะแต่เสี่ยง" },
 };
 
 export const STANCE_LIST = ["SAFE", "NEUTRAL", "AGGRO"];
@@ -144,7 +144,18 @@ export function gankOutcome(foeStance, myStance) {
   return JUNGLE_TABLE[foeStance + "|" + myStance] || JUNGLE_TABLE["NEUTRAL|NEUTRAL"];
 }
 
-// พาสซีฟป่า — ไปแกงค์หรือโดนลากเข้าไฟต์ก็ยังได้รายได้ฐานเท่าเดิม
-// เป็นข้อได้เปรียบเฉพาะตัวของเลนป่า เลนอื่นที่แตกไฟต์จะไม่ได้รายได้ฐาน
+// ป่าไปแกงค์ = ทิ้งแคมป์ทั้งยก ไม่ได้รายได้ฐานเลย ทั้งเงินและ XP
+// แลกกับยกถัดไป: ถ้ากลับไปฟาร์ม แคมป์ที่ค้างไว้เก็บได้พร้อมกัน รายได้ฟาร์มคูณ 1.5
+// แกงค์ติดกันสองยกจึงไม่ได้อะไรเลย ต้องสลับฟาร์มคั่นถึงจะคุ้ม
 export const JUNGLE_FARM = { gold: 5, xp: 3 };
-export const JUNGLE_GANK = { gold: 5, xp: 3 };
+export const JUNGLE_GANK = { gold: 0, xp: 0 };
+export const JUNGLE_AFTER_GANK = 1.5;
+export const jungleFarmAfterGank = () => ({
+  gold: Math.round(JUNGLE_FARM.gold * JUNGLE_AFTER_GANK),
+  xp: Math.round(JUNGLE_FARM.xp * JUNGLE_AFTER_GANK),
+});
+
+// บอทต้องรู้ว่าการทิ้งแคมป์มีราคา ไม่งั้นมันแกงค์เท่าเดิมทุกยกแล้วการนี้ก็ไม่เปลี่ยนอะไร
+// หน่วยเดียวกับคะแนน lanePower ใน game/stance-ai.js
+export const GANK_COST_BIAS = 90;
+export const GANK_COST_AFTER = 60;

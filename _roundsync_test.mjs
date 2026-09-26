@@ -63,9 +63,13 @@ function makeOrders(rand, round) {
 // เครื่องหนึ่งเครื่อง: เห็นทีมตัวเองของจริง ทีมอีกฝั่งมาจากสาย
 function playRound(me, meOrd, meStyle, them, themOrd, mySide, seed, round, mode) {
   const foe = unpackTeam(packTeam(them.map((c) => ({ ...c, style: c.style }))));
+  const jgMe = me.find((c) => c.lane === "JUNGLE");
+  const jgFoe = foe.find((c) => c.lane === "JUNGLE");
   const plan = buildRoundPlan({
     stances: meOrd.stances, foeStances: themOrd.stances,
     jungle: meOrd.jungle, foeJungle: themOrd.jungle, round,
+    gankedLast: !!(jgMe && jgMe.gankedLast),
+    foeGankedLast: !!(jgFoe && jgFoe.gankedLast),
   });
   plan.foeStances = themOrd.stances;
   plan.foeJungleLane = themOrd.jungle.lane;
@@ -92,8 +96,8 @@ for (let i = 0; i < N; i++) {
   const round = 1 + Math.floor(rand() * 40);
   const mode = pick(rand, Object.values(MODES));
   const sA = pick(rand, STYLES), sB = pick(rand, STYLES);
-  const A = makeTeam(rand, sA);
-  const B = makeTeam(rand, sB);
+  const A = makeTeam(rand, sA).map((c) => (c.lane === "JUNGLE" && rand() < 0.5 ? { ...c, gankedLast: true } : c));
+  const B = makeTeam(rand, sB).map((c) => (c.lane === "JUNGLE" && rand() < 0.5 ? { ...c, gankedLast: true } : c));
   const oA = makeOrders(rand, round);
   const oB = makeOrders(rand, round);
   const seed = Math.floor(rand() * 1e9);

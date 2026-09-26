@@ -902,7 +902,14 @@ export function App() {
     const fs = (netPlan && netPlan.foeStances) || botStances(rand, shopped, me, d.stanceSkill, round);
     const fj = (netPlan && netPlan.foeJungle) || botJungle(rand, shopped, me, fs, foeLastStances, d.stanceSkill, round);
 
-    const p = buildRoundPlan({ stances, foeStances: fs, jungle, foeJungle: fj, round });
+    // ป่าที่ยกที่แล้วไปแกงค์ ยกนี้ถ้ากลับไปฟาร์มจะเก็บแคมป์ที่ค้างไว้ได้ด้วย (1.5 เท่า)
+    const jgMine = me.find((c) => c.lane === "JUNGLE");
+    const jgFoe = shopped.find((c) => c.lane === "JUNGLE");
+    const p = buildRoundPlan({
+      stances, foeStances: fs, jungle, foeJungle: fj, round,
+      gankedLast: !!(jgMine && jgMine.gankedLast),
+      foeGankedLast: !!(jgFoe && jgFoe.gankedLast),
+    });
     p.foeStances = fs;
     p.foeJungleLane = fj.lane;
     p.foeJungleCrew = fj.crew || [];

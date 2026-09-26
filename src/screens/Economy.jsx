@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import React from "react";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, GANK_HURT, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, GANK_HURT, JUNGLE_AFTER_GANK, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE, jungleFarmAfterGank,
   KILL, SAFE_STAND_SECONDS, STANCES, STANCE_LIST,
 } from "../data/behaviour.js";
 import { LANE_INFO } from "../data/lanes.js";
@@ -74,7 +74,9 @@ export function EconomyScreen(ctx) {
       </Section>
 
       <Section title={tr("ป่า")}>
-        <Line>{tr("ฟาร์ม {0}g {1}xp · ไปแกงค์ {2}g {3}xp — ป่าได้รายได้ฐานเสมอ แม้จะไปแกงค์หรือโดนลากเข้าไฟต์", JUNGLE_FARM.gold, JUNGLE_FARM.xp, JUNGLE_GANK.gold, JUNGLE_GANK.xp)}</Line>
+        <Line>{tr("ฟาร์ม {0}g {1}xp · ไปแกงค์ {2}g {3}xp — ไปแกงค์คือทิ้งแคมป์ทั้งยก ไม่มีรายได้ฐานเลย เงินมาจากศพอย่างเดียว", JUNGLE_FARM.gold, JUNGLE_FARM.xp, JUNGLE_GANK.gold, JUNGLE_GANK.xp)}</Line>
+        <Line>{tr("ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย รายได้ฟาร์มคูณ {0} = {1}g {2}xp", JUNGLE_AFTER_GANK, jungleFarmAfterGank().gold, jungleFarmAfterGank().xp)}</Line>
+        <Line dim>{tr("แกงค์ติดกันสองยกจึงไม่ได้รายได้ฐานเลยทั้งสองยก ต้องสลับฟาร์มคั่นถึงจะคุ้ม")}</Line>
         <Line dim>{tr("แกงค์ได้เฉพาะเลนที่ยกนี้สั่งปกติหรือรุกล้ำ · โดนดักหรือโดนสวนก่อนเข้า เสียเลือด {0}% ก่อนเริ่มไฟต์", Math.round(GANK_HURT * 100))}</Line>
         <Line dim>
           {tr("พาเพื่อนไปแกงค์ด้วยได้: {0} — ดึงได้เฉพาะเลนที่สั่งเซฟ และเลนที่ถูกทิ้งไว้ อีกฝั่งกินฟรี +2 เงิน",

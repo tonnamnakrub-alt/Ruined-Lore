@@ -6,7 +6,7 @@
 // skill ต่ำจะออกมาสุ่มมั่วๆ ตามอารมณ์
 // ---------------------------------------------------------------
 
-import { LANE_MEMBERS, STANCE_LANES, crewAllowed } from "../data/behaviour.js";
+import { GANK_COST_AFTER, GANK_COST_BIAS, LANE_MEMBERS, STANCE_LANES, crewAllowed } from "../data/behaviour.js";
 
 // กำลังรบคร่าวๆ ของเลนหนึ่ง — เลเวลกับมูลค่าของที่ถืออยู่
 function lanePower(roster, lane) {
@@ -64,7 +64,11 @@ export function botJungle(rand, me, foe, stances, lastStances, skill, round) {
     s += (rand() - 0.5) * 160 * (1 - skill);
     if (s > bestS) { bestS = s; best = L; }
   }
-  if (bestS < -60) return { lane: null, crew: [] };
+  // ไปแกงค์ = ทิ้งแคมป์ทั้งยก ไม่ได้รายได้ฐานเลย ต้องคุ้มจริงถึงจะไป
+  // และถ้ายกที่แล้วเพิ่งแกงค์มา ยกนี้ฟาร์มได้ 1.5 เท่า ยิ่งควรกลับไปเก็บ
+  const jg = me.find((c) => c.lane === "JUNGLE");
+  const cost = GANK_COST_BIAS + (jg && jg.gankedLast ? GANK_COST_AFTER : 0);
+  if (bestS < -60 + cost) return { lane: null, crew: [] };
 
   // ยกท้ายๆ พาเพื่อนไปด้วยได้ — เอาเฉพาะเลนที่ยกนี้ไม่มีไฟต์ของตัวเอง
   const max = crewAllowed(round);
