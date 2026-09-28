@@ -23,10 +23,10 @@
 | สาย | ความคุ้มเฉลี่ย | จำนวนชิ้น | ราคาเฉลี่ย |
 |---|---:|---:|---:|
 | TANK | 96% | 4 | 55g |
-| FIGHTER | 77% | 1 | 64g |
-| ASSASSIN | 48% | 11 | 61g |
+| FIGHTER | 110% | 1 | 64g |
+| ASSASSIN | 79% | 11 | 61g |
 | MAGE | 82% | 17 | 61g |
-| MARKSMAN | 83% | 5 | 59g |
+| MARKSMAN | 105% | 5 | 59g |
 | SUPPORT | 105% | 1 | 48g |
 
 ## ชนะจริงในสนาม รายสาย (Tier 3)
@@ -85,7 +85,7 @@
 | 18 | Prometheus' Hearth `pmh` | TANK | 60g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
 | 19 | Mjölnir's Grounding Cloak `mgc` | TANK | 60g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
 | 20 | Apple of Idunn `aoi` | TANK | 60g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
-| 21 | The Legendary Excalibur `lex` | FIGHTER | 64g | 60.0% | **+10.0** | 77% ⚠️ |
+| 21 | The Legendary Excalibur `lex` | FIGHTER | 64g | 60.0% | **+10.0** | 110% ⚠️ |
 | 22 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | 60.0% | **+10.0** | 86% |
 | 23 | Sleipnir's Galloping Horseshoe `slh` | MARKSMAN | 58g | 58.8% | **+8.8** | `พาสซีฟเขียนมือ` |
 | 24 | Cuirass of the Iron John `cij` | TANK | 60g | 58.8% | **+8.8** | `พาสซีฟเขียนมือ` |
@@ -106,7 +106,7 @@
 | 39 | Hel's Nether Domain `hnd` | MAGE | 62g | 55.0% | **+5.0** | 94% ⚠️ |
 | 40 | Cuirass of the Bleeding Centaur `cbc` | FIGHTER | 62g | 55.0% | **+5.0** | `พาสซีฟเขียนมือ` |
 | 41 | Colossal Club of the Oni `cco` | FIGHTER | 62g | 55.0% | **+5.0** | `พาสซีฟเขียนมือ` |
-| 42 | Fafnir's Devouring Maw `fdm` | MARKSMAN | 63g | 55.0% | **+5.0** | 71% ⚠️ |
+| 42 | Fafnir's Devouring Maw `fdm` | MARKSMAN | 63g | 55.0% | **+5.0** | 99% ⚠️ |
 | 43 | Thoth's Emerald Tablet `tet` | MAGE | 65g | 53.8% | **+3.8** | 94% |
 | 44 | Lilith's Sanguine Grimoire `lbg` | MAGE | 62g | 53.8% | **+3.8** | 79% |
 | 45 | Yuki-onna's Frozen Scepter `yfs` | MAGE | 60g | 53.8% | **+3.8** | 74% ⚠️ |
@@ -122,27 +122,27 @@
 | 55 | Nemesis' Vengeful Scales `nvs` | MAGE | 64g | 51.3% | **+1.3** | 70% ⚠️ |
 | 56 | Jack's Giantbane Harp `jbg` | MAGE | 60g | 51.3% | **+1.3** | 68% |
 | 57 | Surtr's Twilight Cinder `stc` | MAGE | 62g | 50.0% | **+0.0** | 65% ⚠️ |
-| 58 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | 50.0% | **+0.0** | 51% |
-| 59 | Wendigo's Voracious Claw `wvc` | ASSASSIN | 60g | 50.0% | **+0.0** | 35% |
-| 60 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | 48.8% | **-1.3** | 106% |
-| 61 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | 48.8% | **-1.3** | 76% |
-| 62 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | 48.8% | **-1.3** | 78% |
+| 58 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | 50.0% | **+0.0** | 78% |
+| 59 | Wendigo's Voracious Claw `wvc` | ASSASSIN | 60g | 50.0% | **+0.0** | 70% |
+| 60 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | 48.8% | **-1.3** | 141% |
+| 61 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | 48.8% | **-1.3** | 100% |
+| 62 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | 48.8% | **-1.3** | 101% |
 | 63 | Norns' Thread of Weaving `ntw` | MAGE | 60g | 47.5% | **-2.5** | 51% |
 | 64 | Swan Maiden's Feathered Cloak `swf` | MARKSMAN | 60g | 47.5% | **-2.5** | `พาสซีฟเขียนมือ` |
 | 65 | Apollo's Sunlit Quiver `asq` | MARKSMAN | 62g | 47.5% | **-2.5** | `พาสซีฟเขียนมือ` |
-| 66 | Seven-League Shadowstriders `sls` | ASSASSIN | 60g | 47.5% | **-2.5** | 43% |
+| 66 | Seven-League Shadowstriders `sls` | ASSASSIN | 60g | 47.5% | **-2.5** | 72% |
 | 67 | Morgana's Unravelling Thread `mut` | MAGE | 60g | 47.5% | **-2.5** | 104% ⚠️ |
-| 68 | Mordred's Usurping Blade `mub` | ASSASSIN | 62g | 47.5% | **-2.5** | 83% |
-| 69 | Sekhmet's Massacre Claws `smc` | ASSASSIN | 62g | 46.3% | **-3.8** | 42% |
-| 70 | Jabberwock's Vorpal Blade `jvb` | ASSASSIN | 60g | 46.3% | **-3.8** | 35% ⚠️ |
-| 71 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | 46.3% | **-3.8** | 51% |
-| 72 | Anubis' Death Mark `adm` | ASSASSIN | 62g | 46.3% | **-3.8** | 44% ⚠️ |
+| 68 | Mordred's Usurping Blade `mub` | ASSASSIN | 62g | 47.5% | **-2.5** | 106% |
+| 69 | Sekhmet's Massacre Claws `smc` | ASSASSIN | 62g | 46.3% | **-3.8** | 75% |
+| 70 | Jabberwock's Vorpal Blade `jvb` | ASSASSIN | 60g | 46.3% | **-3.8** | 70% ⚠️ |
+| 71 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | 46.3% | **-3.8** | 78% |
+| 72 | Anubis' Death Mark `adm` | ASSASSIN | 62g | 46.3% | **-3.8** | 73% ⚠️ |
 | 73 | Merlin's Starbolt Staff `mrt` | MAGE | 60g | 45.0% | **-5.0** | 63% ⚠️ |
 | 74 | Artemis' Silver Crescent `asc` | MARKSMAN | 62g | 45.0% | **-5.0** | `พาสซีฟเขียนมือ` |
 | 75 | Horn of the Wild Hunt `hwh` | FIGHTER | 60g | 45.0% | **-5.0** | `พาสซีฟเขียนมือ` |
-| 76 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | 45.0% | **-5.0** | 52% |
-| 77 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | 45.0% | **-5.0** | 58% |
-| 78 | Fang of the Midgard Serpent `fms` | ASSASSIN | 58g | 45.0% | **-5.0** | 36% ⚠️ |
+| 76 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | 45.0% | **-5.0** | 87% |
+| 77 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | 45.0% | **-5.0** | 92% |
+| 78 | Fang of the Midgard Serpent `fms` | ASSASSIN | 58g | 45.0% | **-5.0** | 72% ⚠️ |
 
 ## ⚠️ ของที่ตารางราคาอ่านไม่ครบ
 
@@ -151,70 +151,70 @@
 
 | ไอเทม | สาย | ราคา | ความคุ้มที่โชว์ | ฟิลด์ที่ไม่ได้ตีราคา |
 |---|---|---:|---:|---|
-| Jabberwock's Vorpal Blade `jvb` | ASSASSIN | 60g | 35% | `executeHit` |
-| Fang of the Midgard Serpent `fms` | ASSASSIN | 58g | 36% | `shieldBreak` |
-| Anubis' Death Mark `adm` | ASSASSIN | 62g | 44% | `deathMark` `antihealOnDmg` |
 | Oath of the Dioscuri `ood` | SUPPORT | 48g | — | `lifeBondShare` |
 | Merlin's Starbolt Staff `mrt` | MAGE | 60g | 63% | `meteor` |
 | Surtr's Twilight Cinder `stc` | MAGE | 62g | 65% | `burnPctHp` |
 | Nemesis' Vengeful Scales `nvs` | MAGE | 64g | 70% | `antihealOnDmg` `storedBurst` |
-| Fafnir's Devouring Maw `fdm` | MARKSMAN | 63g | 71% | `curHpOnHit` `maulBurst` |
+| Jabberwock's Vorpal Blade `jvb` | ASSASSIN | 60g | 70% | `executeHit` |
+| Fang of the Midgard Serpent `fms` | ASSASSIN | 58g | 72% | `shieldBreak` |
 | Raijin's Thunder Drum `rsd` | MAGE | 62g | 73% | `chainBolt` |
+| Anubis' Death Mark `adm` | ASSASSIN | 62g | 73% | `deathMark` `antihealOnDmg` |
 | Yuki-onna's Frozen Scepter `yfs` | MAGE | 60g | 74% | `spellSlow` |
 | Kitsune's Foxfire Fan `kff` | MAGE | 60g | 75% | `apOnHit` |
-| The Legendary Excalibur `lex` | FIGHTER | 64g | 77% | `firstHitShield` |
 | Caliburn's Spellblade `csb` | MAGE | 60g | 78% | `spellblade` |
-| Cuirass of the Bleeding Centaur `cbc` | FIGHTER | 62g | — | `antihealOnDmg` |
 | Baba Yaga's Iron Cauldron `byc` | TANK | 58g | 85% | `antihealOnDmg` |
-| Shiva's Trishula `sst` | MARKSMAN | 60g | — | `antihealOnDmg` |
 | Hel's Nether Domain `hnd` | MAGE | 62g | 94% | `ultZone` |
+| Fafnir's Devouring Maw `fdm` | MARKSMAN | 63g | 99% | `curHpOnHit` `maulBurst` |
 | Mímir's Whispering Well `mww` | TANK | 58g | 100% | `magicPulse` |
 | Amrita's Nectar Goblet `ang` | MAGE | 60g | 104% | `takedownHeal` |
 | Morgana's Unravelling Thread `mut` | MAGE | 60g | 104% | `mrShredStack` |
+| Cuirass of the Bleeding Centaur `cbc` | FIGHTER | 62g | — | `antihealOnDmg` |
+| The Legendary Excalibur `lex` | FIGHTER | 64g | 110% | `firstHitShield` |
+| Shiva's Trishula `sst` | MARKSMAN | 60g | — | `antihealOnDmg` |
 
 ## Tier 3 เรียงตามความคุ้ม
 
 | # | ไอเทม | สาย | ราคา | ความคุ้ม | ค่าสถานะ |
 |---:|---|---|---:|---:|---|
-| 1 | Sleeping Beauty's Spindle `sbs` | MAGE/ASSASSIN | 62g | **108%** | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) |
-| 2 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | **106%** | +30 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD |
-| 3 | Eye of Horus `eoh` | MAGE | 58g | **105%** | +60 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที |
-| 4 | Ariadne's Guiding Thread `agt` | SUPPORT/MAGE | 48g | **105%** | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) |
-| 5 | Amrita's Nectar Goblet `ang` | MAGE/SUPPORT | 60g | **104%** ⚠️ | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP |
-| 6 | Morgana's Unravelling Thread `mut` | MAGE | 60g | **104%** ⚠️ | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) |
-| 7 | Argus' Hundred Eyes `ahe` | TANK/SUPPORT | 58g | **102%** | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) |
-| 8 | Mímir's Whispering Well `mww` | TANK/MAGE/SUPPORT | 58g | **100%** ⚠️ | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ |
-| 9 | Heimdall's Warding Horn `hwg` | TANK/SUPPORT | 45g | **98%** | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) |
-| 10 | Zephyrus' Gale Cloak `zgc` | MAGE | 60g | **97%** | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) |
-| 11 | Thoth's Emerald Tablet `tet` | MAGE | 65g | **94%** | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) |
-| 12 | Hel's Nether Domain `hnd` | MAGE/SUPPORT | 62g | **94%** ⚠️ | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% |
-| 13 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | **86%** | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD |
-| 14 | Baba Yaga's Iron Cauldron `byc` | TANK/FIGHTER | 58g | **85%** ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ |
-| 15 | Mordred's Usurping Blade `mub` | ASSASSIN/FIGHTER | 62g | **83%** | +20 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม |
-| 16 | Lilith's Sanguine Grimoire `lbg` | MAGE/ASSASSIN | 62g | **79%** | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) |
-| 17 | Caliburn's Spellblade `csb` | MAGE/ASSASSIN | 60g | **78%** ⚠️ | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) |
-| 18 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | **78%** | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ |
-| 19 | The Legendary Excalibur `lex` | FIGHTER/ASSASSIN/TANK | 64g | **77%** ⚠️ | +30 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) |
-| 20 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | **76%** | +20 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) |
-| 21 | Kitsune's Foxfire Fan `kff` | MAGE/MARKSMAN | 60g | **75%** ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน |
-| 22 | Yuki-onna's Frozen Scepter `yfs` | MAGE/SUPPORT | 60g | **74%** ⚠️ | +65 AP · +350 HP · สกิลที่โดนศัตรู สโลว์ 30% นาน 2 วิ |
-| 23 | Raijin's Thunder Drum `rsd` | MAGE | 62g | **73%** ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · สายฟ้ากระโดด 3 ต่อ ระยะ 500 — ตัวแรก 80 + 25% AP · ตัวถัดไป 40 + 15% AP (คูลดาวน์ 10 วิ) · สกิลเวทถัดไปแรงขึ้น 80 (+25% AP) และชิ่งไปหาศัตรูข้างเคียง 3 ตัว 40 (+15% AP) (ทุก 12 วิ) |
-| 24 | Fafnir's Devouring Maw `fdm` | MARKSMAN/FIGHTER/ASSASSIN | 63g | **71%** ⚠️ | +25 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) |
-| 25 | Nemesis' Vengeful Scales `nvs` | MAGE/SUPPORT | 64g | **70%** ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · แปะมาร์กเป้า 2.5 วิ ครบเวลาระเบิดซ้ำ 100 (+20% ดาเมจเวทที่สะสมไว้) (ทุก 25 วิ) |
-| 26 | Jack's Giantbane Harp `jbg` | MAGE | 60g | **68%** | +65 AP · +15 Ability Haste · ตีศัตรูที่เลือดมากกว่า 50% ของ Max HP แรงขึ้น 15% ทุกชนิด |
-| 27 | Surtr's Twilight Cinder `stc` | MAGE | 62g | **65%** ⚠️ | +60 AP · +300 HP · ดาเมจเวทจุดไฟเผาเป้า 2% Max HP ต่อวินาที นาน 3 วิ |
-| 28 | Merlin's Starbolt Staff `mrt` | MAGE | 60g | **63%** ⚠️ | +70 AP · +10 Ability Haste · +15 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ยิงดาวตกใส่ศัตรูในระยะ 1200 ระเบิดรัศมี 200 หน่วย ดาเมจเวท 120 (+40% AP) (ทุก 25 วิ) |
-| 29 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | **58%** | +30 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) |
-| 30 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | **52%** | +30 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) |
-| 31 | Norns' Thread of Weaving `ntw` | MAGE/SUPPORT | 60g | **51%** | +50 AP · +200 HP · +20 Ability Haste เฉพาะท่าไม้ตาย · ร่ายท่าไม้ตายแล้วได้ความเร็วเดิน +30% และ AP +20% นาน 4 วิ |
-| 32 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | **51%** | +25 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) |
-| 33 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | **51%** | +25 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) |
-| 34 | Anubis' Death Mark `adm` | ASSASSIN | 62g | **44%** ⚠️ | +25 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) |
-| 35 | Seven-League Shadowstriders `sls` | ASSASSIN | 60g | **43%** | +25 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที |
-| 36 | Sekhmet's Massacre Claws `smc` | ASSASSIN/FIGHTER | 62g | **42%** | +30 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 |
-| 37 | Fang of the Midgard Serpent `fms` | ASSASSIN/FIGHTER | 58g | **36%** ⚠️ | +30 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ |
-| 38 | Jabberwock's Vorpal Blade `jvb` | ASSASSIN/FIGHTER | 60g | **35%** ⚠️ | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) |
-| 39 | Wendigo's Voracious Claw `wvc` | ASSASSIN/FIGHTER | 60g | **35%** | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 |
+| 1 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | **141%** | +30 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD |
+| 2 | The Legendary Excalibur `lex` | FIGHTER/ASSASSIN/TANK | 64g | **110%** ⚠️ | +30 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) |
+| 3 | Sleeping Beauty's Spindle `sbs` | MAGE/ASSASSIN | 62g | **108%** | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) |
+| 4 | Mordred's Usurping Blade `mub` | ASSASSIN/FIGHTER | 62g | **106%** | +20 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม |
+| 5 | Eye of Horus `eoh` | MAGE | 58g | **105%** | +60 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที |
+| 6 | Ariadne's Guiding Thread `agt` | SUPPORT/MAGE | 48g | **105%** | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) |
+| 7 | Amrita's Nectar Goblet `ang` | MAGE/SUPPORT | 60g | **104%** ⚠️ | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP |
+| 8 | Morgana's Unravelling Thread `mut` | MAGE | 60g | **104%** ⚠️ | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) |
+| 9 | Argus' Hundred Eyes `ahe` | TANK/SUPPORT | 58g | **102%** | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) |
+| 10 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | **101%** | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ |
+| 11 | Mímir's Whispering Well `mww` | TANK/MAGE/SUPPORT | 58g | **100%** ⚠️ | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ |
+| 12 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | **100%** | +20 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) |
+| 13 | Fafnir's Devouring Maw `fdm` | MARKSMAN/FIGHTER/ASSASSIN | 63g | **99%** ⚠️ | +25 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) |
+| 14 | Heimdall's Warding Horn `hwg` | TANK/SUPPORT | 45g | **98%** | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) |
+| 15 | Zephyrus' Gale Cloak `zgc` | MAGE | 60g | **97%** | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) |
+| 16 | Thoth's Emerald Tablet `tet` | MAGE | 65g | **94%** | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) |
+| 17 | Hel's Nether Domain `hnd` | MAGE/SUPPORT | 62g | **94%** ⚠️ | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% |
+| 18 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | **92%** | +30 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) |
+| 19 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | **87%** | +30 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) |
+| 20 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | **86%** | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD |
+| 21 | Baba Yaga's Iron Cauldron `byc` | TANK/FIGHTER | 58g | **85%** ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ |
+| 22 | Lilith's Sanguine Grimoire `lbg` | MAGE/ASSASSIN | 62g | **79%** | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) |
+| 23 | Caliburn's Spellblade `csb` | MAGE/ASSASSIN | 60g | **78%** ⚠️ | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) |
+| 24 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | **78%** | +25 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) |
+| 25 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | **78%** | +25 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) |
+| 26 | Kitsune's Foxfire Fan `kff` | MAGE/MARKSMAN | 60g | **75%** ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน |
+| 27 | Sekhmet's Massacre Claws `smc` | ASSASSIN/FIGHTER | 62g | **75%** | +30 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 |
+| 28 | Yuki-onna's Frozen Scepter `yfs` | MAGE/SUPPORT | 60g | **74%** ⚠️ | +65 AP · +350 HP · สกิลที่โดนศัตรู สโลว์ 30% นาน 2 วิ |
+| 29 | Raijin's Thunder Drum `rsd` | MAGE | 62g | **73%** ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · สายฟ้ากระโดด 3 ต่อ ระยะ 500 — ตัวแรก 80 + 25% AP · ตัวถัดไป 40 + 15% AP (คูลดาวน์ 10 วิ) · สกิลเวทถัดไปแรงขึ้น 80 (+25% AP) และชิ่งไปหาศัตรูข้างเคียง 3 ตัว 40 (+15% AP) (ทุก 12 วิ) |
+| 30 | Anubis' Death Mark `adm` | ASSASSIN | 62g | **73%** ⚠️ | +25 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) |
+| 31 | Seven-League Shadowstriders `sls` | ASSASSIN | 60g | **72%** | +25 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที |
+| 32 | Fang of the Midgard Serpent `fms` | ASSASSIN/FIGHTER | 58g | **72%** ⚠️ | +30 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ |
+| 33 | Nemesis' Vengeful Scales `nvs` | MAGE/SUPPORT | 64g | **70%** ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · แปะมาร์กเป้า 2.5 วิ ครบเวลาระเบิดซ้ำ 100 (+20% ดาเมจเวทที่สะสมไว้) (ทุก 25 วิ) |
+| 34 | Jabberwock's Vorpal Blade `jvb` | ASSASSIN/FIGHTER | 60g | **70%** ⚠️ | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) |
+| 35 | Wendigo's Voracious Claw `wvc` | ASSASSIN/FIGHTER | 60g | **70%** | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 |
+| 36 | Jack's Giantbane Harp `jbg` | MAGE | 60g | **68%** | +65 AP · +15 Ability Haste · ตีศัตรูที่เลือดมากกว่า 50% ของ Max HP แรงขึ้น 15% ทุกชนิด |
+| 37 | Surtr's Twilight Cinder `stc` | MAGE | 62g | **65%** ⚠️ | +60 AP · +300 HP · ดาเมจเวทจุดไฟเผาเป้า 2% Max HP ต่อวินาที นาน 3 วิ |
+| 38 | Merlin's Starbolt Staff `mrt` | MAGE | 60g | **63%** ⚠️ | +70 AP · +10 Ability Haste · +15 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ยิงดาวตกใส่ศัตรูในระยะ 1200 ระเบิดรัศมี 200 หน่วย ดาเมจเวท 120 (+40% AP) (ทุก 25 วิ) |
+| 39 | Norns' Thread of Weaving `ntw` | MAGE/SUPPORT | 60g | **51%** | +50 AP · +200 HP · +20 Ability Haste เฉพาะท่าไม้ตาย · ร่ายท่าไม้ตายแล้วได้ความเร็วเดิน +30% และ AP +20% นาน 4 วิ |
 
 ## รายชิ้นแยกตามหมวด
 
@@ -234,7 +234,7 @@
 | ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
 |---|---:|---:|---|---|
 | **Straw Sandals** `ss`<br>รองเท้าฟาง | 6g | 100% | +25 ความเร็วเดิน | — |
-| **Boar Tusk** `bt2`<br>เขี้ยวหมูป่า | 7g | 50% | +5 AD | — |
+| **Boar Tusk** `bt2`<br>เขี้ยวหมูป่า | 7g | 100% | +5 AD | — |
 | **Willow Twig** `wt`<br>กิ่งหลิว | 6g | 100% | +15 AP | — |
 | **Nymph's Dewdrop** `nd`<br>หยาดน้ำค้างนิมฟ์ | 8g | 100% | +150 HP | — |
 | **Boiled Cuirass** `bc`<br>เกราะต้ม | 6g | 100% | +15 เกราะ | — |
@@ -261,36 +261,36 @@
 | **Gargoyle's Bastion** `gb`<br>ป้อมการ์กอยล์ | 15g | 107% | +20 เกราะ · +20 ต้านเวท | Boiled Cuirass (6g) + Braided Clover (6g) |
 | **Pendulum of Neverland** `pon`<br>ลูกตุ้มเนเวอร์แลนด์ | 15g | 138% | +200 HP · +10 Ability Haste | Broken Sundial (5g) + Nymph's Dewdrop (8g) |
 | **Clockwork Carapace** `cwc`<br>กระดองจักรกล | 14g | 129% | +20 เกราะ · +10 Ability Haste | Broken Sundial (5g) + Boiled Cuirass (6g) |
-| **Cauldron Churner** `cc`<br>ไม้พายหม้อเวท | 15g | 113% | +10 AD · +10 Ability Haste | Broken Sundial (5g) + Boar Tusk (7g) |
+| **Cauldron Churner** `cc`<br>ไม้พายหม้อเวท | 15g | 160% | +10 AD · +10 Ability Haste | Broken Sundial (5g) + Boar Tusk (7g) |
 | **Pied Piper's Fife** `ppf`<br>ขลุ่ยจับหนู | 14g | 143% | +25 AP · +10 Ability Haste | Broken Sundial (5g) + Willow Twig (6g) |
-| **Woodcutter's Hewing Axe** `wha`<br>ขวานคนตัดไม้ | 16g | 94% | +10 AD · +150 HP | Boar Tusk (7g) + Nymph's Dewdrop (8g) |
-| **Durandal's Whetted Edge** `dwe`<br>คมดาบดูรันดัล | 16g | 44% | +10 AD | Boar Tusk (7g) + Boar Tusk (7g) |
-| **Hiawatha's Tomahawk** `hwt`<br>ขวานซัดไฮอาวาธา | 13g | 85% | +5 AD · +15% ความเร็วโจมตี | Boar Tusk (7g) + Crow Feather (5g) |
+| **Woodcutter's Hewing Axe** `wha`<br>ขวานคนตัดไม้ | 16g | 138% | +10 AD · +150 HP | Boar Tusk (7g) + Nymph's Dewdrop (8g) |
+| **Durandal's Whetted Edge** `dwe`<br>คมดาบดูรันดัล | 16g | 88% | +10 AD | Boar Tusk (7g) + Boar Tusk (7g) |
+| **Hiawatha's Tomahawk** `hwt`<br>ขวานซัดไฮอาวาธา | 13g | 112% | +5 AD · +15% ความเร็วโจมตี | Boar Tusk (7g) + Crow Feather (5g) |
 | **Valkyrie's Twin Plumes** `vtp`<br>ขนนกวัลคิรี | 12g | 104% | +25% ความเร็วโจมตี | Crow Feather (5g) + Crow Feather (5g) |
-| **Gilgamesh's Vambrace** `gva`<br>สนับแข้งกิลกาเมช | 15g | 90% | +5 AD · +25 เกราะ | Boar Tusk (7g) + Boiled Cuirass (6g) |
-| **Rowan Wand Dagger** `rwd`<br>กริชไม้โรวัน | 15g | 90% | +5 AD · +25 ต้านเวท | Boar Tusk (7g) + Braided Clover (6g) |
-| **Huntsman's Skinning Dirk** `hsd`<br>มีดถลกหนังนายพราน | 15g | 47% | +10 AD · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Boar Tusk (7g) + Boar Tusk (7g) |
-| **Puck's Shadow Cloak** `psc`<br>ผ้าคลุมเงาของพัค | 15g | 55% | +5 AD · +20 ความเร็วเดิน · +5 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Boar Tusk (7g) + Straw Sandals (6g) |
-| **Loki's Mistletoe Dagger** `lmd`<br>กริชมิสเซิลโทโลคิ | 14g | 121% | +10 AD · +10 Ability Haste | Boar Tusk (7g) + Broken Sundial (5g) |
+| **Gilgamesh's Vambrace** `gva`<br>สนับแข้งกิลกาเมช | 15g | 113% | +5 AD · +25 เกราะ | Boar Tusk (7g) + Boiled Cuirass (6g) |
+| **Rowan Wand Dagger** `rwd`<br>กริชไม้โรวัน | 15g | 113% | +5 AD · +25 ต้านเวท | Boar Tusk (7g) + Braided Clover (6g) |
+| **Huntsman's Skinning Dirk** `hsd`<br>มีดถลกหนังนายพราน | 15g | 93% | +10 AD · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Boar Tusk (7g) + Boar Tusk (7g) |
+| **Puck's Shadow Cloak** `psc`<br>ผ้าคลุมเงาของพัค | 15g | 79% | +5 AD · +20 ความเร็วเดิน · +5 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Boar Tusk (7g) + Straw Sandals (6g) |
+| **Loki's Mistletoe Dagger** `lmd`<br>กริชมิสเซิลโทโลคิ | 14g | 171% | +10 AD · +10 Ability Haste | Boar Tusk (7g) + Broken Sundial (5g) |
 | **Circe's Yew Wand** `cyw`<br>ไม้กายสิทธิ์เซอร์ซี | 15g | 93% | +35 AP | Willow Twig (6g) + Willow Twig (6g) |
 | **Orpheus' Resonant Lyre** `orl`<br>พิณก้องกังวานออร์เฟอุส | 15g | 53% | +20 AP · +10 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) | Willow Twig (6g) + Broken Sundial (5g) |
 | **Cerridwen's Brewing Ladle** `cbl`<br>กระบวยปรุงยาแคร์ริดเวน | 15g | 117% | +20 AP · +180 HP | Willow Twig (6g) + Nymph's Dewdrop (8g) |
 | **Persephone's Asphodel** `pwa`<br>ดอกแอสโฟเดลเพอร์เซโฟนี | 14g | 129% | +20 AP · +25 ต้านเวท | Willow Twig (6g) + Braided Clover (6g) |
-| **Hou Yi's Sunpiercer Arrow** `hys`<br>ศรสุริยันโฮ่วยี่ | 16g | 119% | +10 AD · +15% โอกาสคริ | Boar Tusk (7g) + Robin's Fletching (8g) |
+| **Hou Yi's Sunpiercer Arrow** `hys`<br>ศรสุริยันโฮ่วยี่ | 16g | 163% | +10 AD · +15% โอกาสคริ | Boar Tusk (7g) + Robin's Fletching (8g) |
 | **Atalanta's Swift Fletching** `asf`<br>ขนศรลมกรดอตาลันตา | 15g | 180% | +15% ความเร็วโจมตี · +15% โอกาสคริ · +5% ความเร็วเดิน | Crow Feather (5g) + Robin's Fletching (8g) |
-| **Lamia's Blood Needle** `lbn`<br>เข็มสูบเลือดลามิเอ | 15g | 97% | +10 AD · +5% ดูดเลือด | Boar Tusk (7g) |
-| **William Tell's Apple-Splitter** `wtb`<br>ศรผ่าแอปเปิลวิลเลียม เทลล์ | 15g | 107% | +10 AD · เจาะเกราะ 10% | Boar Tusk (7g) + Broken Sundial (5g) |
+| **Lamia's Blood Needle** `lbn`<br>เข็มสูบเลือดลามิเอ | 15g | 143% | +10 AD · +5% ดูดเลือด | Boar Tusk (7g) |
+| **William Tell's Apple-Splitter** `wtb`<br>ศรผ่าแอปเปิลวิลเลียม เทลล์ | 15g | 153% | +10 AD · เจาะเกราะ 10% | Boar Tusk (7g) + Broken Sundial (5g) |
 | **Idunn's Spring Water** `isw`<br>น้ำพุฤดูใบไม้ผลิอิดุนน์ | 13g | 97% | +15 AP · ฮีล/โล่ที่จ่ายให้เพื่อน +8% | Panacea's Dried Petal (5g) + Willow Twig (6g) |
 | **Chiron's Chanted Ribbon** `ccr`<br>ริบบิ้นสวดมนตร์ไครอน | 12g | 139% | +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +8% | Panacea's Dried Petal (5g) + Broken Sundial (5g) |
 | **Nymph's Graceful Veil** `ngv`<br>ม่านลอยลมพรายนิมฟ์ | 13g | 88% | +20 ความเร็วเดิน · ฮีล/โล่ที่จ่ายให้เพื่อน +8% | Panacea's Dried Petal (5g) + Straw Sandals (6g) |
-| **Siren's Song-Flask** `slf`<br>ขวดเพลงไซเรน | 15g | 107% | +10 AD · +6% ดูดเลือด | Siren's Lure (6g) + Boar Tusk (7g) |
+| **Siren's Song-Flask** `slf`<br>ขวดเพลงไซเรน | 15g | 153% | +10 AD · +6% ดูดเลือด | Siren's Lure (6g) + Boar Tusk (7g) |
 | **Lycaon's Gorging Fang** `lgf`<br>เขี้ยวกลืนกินไลเคออน | 15g | 113% | +20 AP · +6% ดูดเลือด | Siren's Lure (6g) + Willow Twig (6g) |
-| **Fenrir's Chain-Link** `fcl`<br>ห่วงโซ่เฟนริร์ | 14g | 25% | +5 AD · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Fenrir's Torn Fang (6g) + Boar Tusk (7g) |
+| **Fenrir's Chain-Link** `fcl`<br>ห่วงโซ่เฟนริร์ | 14g | 50% | +5 AD · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) | Fenrir's Torn Fang (6g) + Boar Tusk (7g) |
 | **Mimir's Whispering Head** `mwh`<br>เศียรกระซิบมิเมียร์ | 16g | 108% | +25 AP · เจาะต้านเวท 8% | Fenrir's Torn Fang (6g) + Willow Twig (6g) |
 | **Icarus' Wax-Bound Wings** `iwb`<br>ปีกขี้ผึ้งอิคารัส | 14g | 88% | +15% ความเร็วโจมตี · +20 ความเร็วเดิน | Icarus' Wax Feather (6g) + Crow Feather (5g) |
 | **Argonaut's Fleece Wrap** `afw`<br>ขนแกะอาร์โกนอต | 15g | 103% | +150 HP · ฮีล/เกราะ/ดูดเลือดที่ได้รับ +12% | Ambrosia Crumb (5g) + Nymph's Dewdrop (8g) |
 | **Dvalinn's Whetted Chisel** `dvc`<br>สิ่วลับคมดวาลิน | 16g | 131% | +15% โอกาสคริ · ดาเมจคริแรงขึ้น 15% (รวมเป็น 190%) | Dwarf's Whetstone (6g) + Robin's Fletching (8g) |
-| **Executioner's Nettle** `exn`<br>ตำแยเพชฌฆาต | 14g | 50% ⚠️ | +10 AD · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Boar Tusk (7g) |
+| **Executioner's Nettle** `exn`<br>ตำแยเพชฌฆาต | 14g | 100% ⚠️ | +10 AD · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Boar Tusk (7g) |
 | **Witch's Banebloom** `wbp`<br>ดอกพิษแม่มด | 14g | 57% ⚠️ | +20 AP · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Willow Twig (6g) |
 | **Baba Yaga's Bone Thorn** `bbt`<br>หนามกระดูกบาบายากา | 14g | 57% ⚠️ | +20 เกราะ · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Boiled Cuirass (6g) |
 
@@ -339,23 +339,23 @@
 | **Colossal Club of the Oni** `cco`<br>กระบองโอนิ | 62g | `พาสซีฟเขียนมือ` | +5.0 | +20 AD · +550 HP · ได้ AD เพิ่มตาม Bonus HP · ออโต้กวาดโคนด้านหลังเป้า | Woodcutter's Hewing Axe (16g) + Giant's Heartstone (19g) + Boar Tusk (7g) |
 | **Girdle of Hippolyta** `goh`<br>เข็มขัดฮิปโปลิตา | 60g | `พาสซีฟเขียนมือ` | +2.5 | +20 AD · +350 HP · +20% ความเร็วโจมตี · +10 Ability Haste · สโลว์ศัตรูรอบตัว 35% พร้อมวิ่งไวตัวเอง 30% นาน 2 วิ (ทุก 20 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Pendulum of Neverland (15g) |
 | **Draupnir's Sovereign Signet** `dss`<br>แหวนดราวป์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +8.8 | +25 AD · +30 เกราะ · +30 ต้านเวท · ติด CC แล้วล้าง CC ทันที + กัน CC 0.5 วิ + วิ่งไว 30% นาน 1.5 วิ (ทุก 45 วิ) · ดูดเลือดทุกชนิด 10% | Durandal's Whetted Edge (16g) + Rowan Wand Dagger (15g) + Boiled Cuirass (6g) |
-| **The Legendary Excalibur** `lex`<br>เอกซ์คาลิเบอร์ในตำนาน | 64g | 77% ⚠️ | +10.0 | +30 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) | Durandal's Whetted Edge (16g) + Woodcutter's Hewing Axe (16g) + Loki's Mistletoe Dagger (14g) |
+| **The Legendary Excalibur** `lex`<br>เอกซ์คาลิเบอร์ในตำนาน | 64g | 110% ⚠️ | +10.0 | +30 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) | Durandal's Whetted Edge (16g) + Woodcutter's Hewing Axe (16g) + Loki's Mistletoe Dagger (14g) |
 
 ### แอสซาซิน (ASSASSIN) — 11 ชิ้น
 
 | ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
 |---|---:|---:|---:|---|---|
-| **Carnwennan's Shadowblade** `cns`<br>กริชเงาคาร์นเวนแนน | 60g | 52% | -5.0 | +30 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
-| **Sekhmet's Massacre Claws** `smc`<br>กรงเล็บสังหารเซคเมต | 62g | 42% | -3.8 | +30 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 | Huntsman's Skinning Dirk (15g) + Puck's Shadow Cloak (15g) |
-| **Seven-League Shadowstriders** `sls`<br>เกือกเจ็ดลีกล่องเงา | 60g | 43% | -2.5 | +25 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที | Puck's Shadow Cloak (15g) + Huntsman's Skinning Dirk (15g) |
-| **Hecate's Triple Crescent** `htc`<br>จันทราสามเสี้ยวเฮคาเต | 62g | 58% | -5.0 | +30 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
-| **Fang of the Midgard Serpent** `fms`<br>เขี้ยวพญางูมิดการ์ด | 58g | 36% ⚠️ | -5.0 | +30 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
-| **Jabberwock's Vorpal Blade** `jvb`<br>ดาบวอร์พอลปลิดชีพ | 60g | 35% ⚠️ | -3.8 | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
-| **Thanatos' Reaping Scythe** `trs`<br>เคียวเก็บเกี่ยวทานาทอส | 64g | 51% | -3.8 | +25 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Broken Sundial (5g) |
-| **Anubis' Death Mark** `adm`<br>มีดชี้ชะตาอนูบิส | 62g | 44% ⚠️ | -3.8 | +25 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) | Huntsman's Skinning Dirk (15g) + Executioner's Nettle (14g) |
-| **Freyja's Shroud of Defiance** `fsd`<br>ผ้าคลุมท้าความตายเฟรยา | 64g | 51% | +0.0 | +25 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Nymph's Dewdrop (8g) |
-| **Wendigo's Voracious Claw** `wvc`<br>กรงเล็บตะกละเวนดิโก | 60g | 35% | +0.0 | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
-| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 83% | -2.5 | +20 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Carnwennan's Shadowblade** `cns`<br>กริชเงาคาร์นเวนแนน | 60g | 87% | -5.0 | +30 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Sekhmet's Massacre Claws** `smc`<br>กรงเล็บสังหารเซคเมต | 62g | 75% | -3.8 | +30 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 | Huntsman's Skinning Dirk (15g) + Puck's Shadow Cloak (15g) |
+| **Seven-League Shadowstriders** `sls`<br>เกือกเจ็ดลีกล่องเงา | 60g | 72% | -2.5 | +25 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที | Puck's Shadow Cloak (15g) + Huntsman's Skinning Dirk (15g) |
+| **Hecate's Triple Crescent** `htc`<br>จันทราสามเสี้ยวเฮคาเต | 62g | 92% | -5.0 | +30 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Fang of the Midgard Serpent** `fms`<br>เขี้ยวพญางูมิดการ์ด | 58g | 72% ⚠️ | -5.0 | +30 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
+| **Jabberwock's Vorpal Blade** `jvb`<br>ดาบวอร์พอลปลิดชีพ | 60g | 70% ⚠️ | -3.8 | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
+| **Thanatos' Reaping Scythe** `trs`<br>เคียวเก็บเกี่ยวทานาทอส | 64g | 78% | -3.8 | +25 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Broken Sundial (5g) |
+| **Anubis' Death Mark** `adm`<br>มีดชี้ชะตาอนูบิส | 62g | 73% ⚠️ | -3.8 | +25 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) | Huntsman's Skinning Dirk (15g) + Executioner's Nettle (14g) |
+| **Freyja's Shroud of Defiance** `fsd`<br>ผ้าคลุมท้าความตายเฟรยา | 64g | 78% | +0.0 | +25 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Nymph's Dewdrop (8g) |
+| **Wendigo's Voracious Claw** `wvc`<br>กรงเล็บตะกละเวนดิโก | 60g | 70% | +0.0 | +30 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
+| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 106% | -2.5 | +20 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
 
 ### เวท (MAGE) — 17 ชิ้น
 
@@ -386,16 +386,16 @@
 | **Artemis' Silver Crescent** `asc`<br>จันทราเงินแห่งอาร์เทมิส | 62g | `พาสซีฟเขียนมือ` | -5.0 | +30 AD · +25% โอกาสคริ · ดาเมจคริแรงขึ้น 25% (รวมเป็น 200%) · ออโต้ที่ติดคริ ทำให้เป้าติดสโลว์ 20% นาน 1 วิ | Hou Yi's Sunpiercer Arrow (16g) + Dvalinn's Whetted Chisel (16g) |
 | **Swan Maiden's Feathered Cloak** `swf`<br>ปีกขนนกหญิงสาวหงส์ | 60g | `พาสซีฟเขียนมือ` | -2.5 | +30 AD · +25% โอกาสคริ · +8% ดูดเลือด · เลือดต่ำกว่า 30% รับโล่ 250 (+100% Bonus AD) นาน 4 วิ (ทุก 60 วิ) | Lamia's Blood Needle (15g) + Hou Yi's Sunpiercer Arrow (16g) |
 | **Sleipnir's Galloping Horseshoe** `slh`<br>เกือกม้าทะยานสเลปนีร์ | 58g | `พาสซีฟเขียนมือ` | +8.8 | +20 AD · +15% ความเร็วโจมตี · +25% โอกาสคริ · +5% ความเร็วเดิน · ทุก 10 วิ ออโต้ครั้งแรกได้ความเร็วเดิน +40% แล้วค่อยๆ จางหายใน 2.5 วิ | Atalanta's Swift Fletching (15g) + Crow Feather (5g) + Boar Tusk (7g) |
-| **William Tell's Sovereign Crossbow** `wtc`<br>หน้าไม้วิลเลียม เทลล์ | 60g | 106% | -1.3 | +30 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD | William Tell's Apple-Splitter (15g) + Hou Yi's Sunpiercer Arrow (16g) |
+| **William Tell's Sovereign Crossbow** `wtc`<br>หน้าไม้วิลเลียม เทลล์ | 60g | 141% | -1.3 | +30 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD | William Tell's Apple-Splitter (15g) + Hou Yi's Sunpiercer Arrow (16g) |
 | **Urd's Loom of Fate** `ulf`<br>กี่ทอชะตาอูร์ด | 62g | `พาสซีฟเขียนมือ` | +2.5 | +10 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · +15 Ability Haste · ออโต้ลดคูลดาวน์ที่เหลือของ Q W E ลง 12% | Hou Yi's Sunpiercer Arrow (16g) + Broken Sundial (5g) + Boar Tusk (7g) |
 | **Indra's Vajra Dart** `ivd`<br>วัชระอัสนีอินทรา | 60g | `พาสซีฟเขียนมือ` | +7.5 | +30 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครบ 3 ครั้ง ระเบิด True Damage 60 (+35% Bonus AD) | Atalanta's Swift Fletching (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
 | **Bow of Eurytus** `boe`<br>คันศรแห่งยูริทัส | 58g | `พาสซีฟเขียนมือ` | +15.0 | +20 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ทุก 5 วิ ออโต้ครั้งถัดไปยิงไกลขึ้น 150 หน่วย และแถมดาเมจเวท 50 (+20% AP) | Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
 | **Shiva's Trishula** `sst`<br>ตรีศูลทำลายล้างพระศิวะ | 60g | `พาสซีฟเขียนมือ` | +3.8 | +20 AD · +30% ความเร็วโจมตี · เจาะเกราะ 30% · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Hiawatha's Tomahawk (13g) + Executioner's Nettle (14g) |
 | **Hephaestus' Twin Hammers** `hth`<br>ค้อนคู่ตีเหล็กเฮเฟสตัส | 62g | `พาสซีฟเขียนมือ` | +6.3 | +20 AD · +40 AP · +35% ความเร็วโจมตี · +10 Ability Haste · ออโต้ครั้งที่ 3 เบิ้ลผล on-hit ทั้งหมดซ้ำอีก 2 ครั้งในฮิตนั้น | Hiawatha's Tomahawk (13g) + Valkyrie's Twin Plumes (12g) + Broken Sundial (5g) |
 | **Apollo's Sunlit Quiver** `asq`<br>กระบอกศรสุริยันอพอลโล | 62g | `พาสซีฟเขียนมือ` | -2.5 | +30 AD · เลือด 50% ขึ้นไป ได้ +20 AD · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือด 15% แทน | Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
-| **Fafnir's Devouring Maw** `fdm`<br>ปากเขี้ยวฟาฟเนียร์ | 63g | 71% ⚠️ | +5.0 | +25 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) | Hiawatha's Tomahawk (13g) + Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
-| **Atalanta's Swift Quiver** `atq`<br>กระบอกศรอตาลันตา | 58g | 76% | -1.3 | +20 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) | Hou Yi's Sunpiercer Arrow (16g) + Atalanta's Swift Fletching (15g) + Crow Feather (5g) |
-| **Odysseus' Unstrung Bow** `oub`<br>คันศรที่ไม่มีใครน้าวไหว | 60g | 78% | -1.3 | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ | Hou Yi's Sunpiercer Arrow (16g) + Valkyrie's Twin Plumes (12g) + Dvalinn's Whetted Chisel (16g) |
+| **Fafnir's Devouring Maw** `fdm`<br>ปากเขี้ยวฟาฟเนียร์ | 63g | 99% ⚠️ | +5.0 | +25 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) | Hiawatha's Tomahawk (13g) + Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
+| **Atalanta's Swift Quiver** `atq`<br>กระบอกศรอตาลันตา | 58g | 100% | -1.3 | +20 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) | Hou Yi's Sunpiercer Arrow (16g) + Atalanta's Swift Fletching (15g) + Crow Feather (5g) |
+| **Odysseus' Unstrung Bow** `oub`<br>คันศรที่ไม่มีใครน้าวไหว | 60g | 101% | -1.3 | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ | Hou Yi's Sunpiercer Arrow (16g) + Valkyrie's Twin Plumes (12g) + Dvalinn's Whetted Chisel (16g) |
 | **Skadi's Triple Arrow** `sta`<br>ศรสามดอกสกาดี | 56g | 86% | +10.0 | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD | Valkyrie's Twin Plumes (12g) + Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
 
 ### ซัพพอร์ต (SUPPORT) — 11 ชิ้น

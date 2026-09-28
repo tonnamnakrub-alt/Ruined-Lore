@@ -1,29 +1,10 @@
 import { ITEMS, ITEM_BY_ID } from "./src/data/items.js";
+import { PRICE, CODED_PASSIVE } from "./_itemprice.mjs";
 
-// ราคาต่อหน่วยของแต่ละค่าสถานะ อ้างอิงจากชิ้นส่วน Tier 1 ที่ให้ค่านั้นล้วนๆ
-// (bt2 7g/10 AD, wt 6g/15 AP, nd 8g/150 HP, bc 6g/15 armor, ...)
-const PRICE = {
-  ad: 0.70, ap: 0.40, hp: 0.0533, armor: 0.40, mr: 0.40,
-  asPct: 50, ah: 1.00, crit: 80, ms: 0.24, msPct: 150,
-  pen: 1.00, critDmg: 60, omnivampFlat: 150, healAmp: 62.5, hors: 83,
-  // ค่าที่ไม่มีชิ้นส่วน Tier 1 ให้เทียบ ตีราคาจากของที่มีอยู่
-  apPct: 90, adPct: 90, armorPenPct: 90, mrPenPct: 90,
-  ultCdr: 55, tenacity: 40, dmgReduceAuto: 120, regenPct: 6,
-  dmgAmpHighHp: 150, onHitAdaptive: 900, itemHaste: 0.20, range: 0.05,
-  goldPerRound: 2,
-};
 const PASSIVE_KEYS = [
   "antihealOnDmg", "chainHors", "horsBuffAs", "horsBuffAp", "tier3ScalingHors",
   "auraArmor", "auraAdPct", "leashCap", "noChaseLowHp", "dmgPct", "armorPct",
 ];
-// ของที่มีพาสซีฟเขียนมือใน engine (ไม่ได้อยู่ในฟิลด์) — เทียบสเตตัสล้วนไม่ได้
-const CODED_PASSIVE = new Set([
-  "nlm","pmh","msq","mgc","aoi","hga","cij","sab","gbs","mot",
-  "biv","soo","cbc","bdc","cbg","pnb","hwh","cco","goh","dss",
-  "swf","slh","ulf","ivd","boe","sst","hth","asq","asc",
-  "ats","acb","sfv","yrh","esb","abw","hmb","pib","gwc","ood",
-  "act","chr","sg","at","toh","cp","cb","cs","csh","cbw","cd",
-]);
 
 function statValue(it) {
   let v = 0;

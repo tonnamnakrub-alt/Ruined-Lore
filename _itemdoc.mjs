@@ -10,6 +10,7 @@
 import fs from "fs";
 import { setLang, tr } from "./src/i18n.js";
 import { CATEGORIES, ITEMS, ITEM_BY_ID, itemCats } from "./src/data/items.js";
+import { PRICE, CODED_PASSIVE as CODED } from "./_itemprice.mjs";
 import { itemDesc } from "./src/ui/item-desc.js";
 
 setLang("th");
@@ -21,27 +22,6 @@ const thaiOf = (it) => {
   return parts.length > 1 ? parts[1].trim() : "";
 };
 
-// ---------------------------------------------------------------
-// ราคาต่อหน่วยของแต่ละค่าสถานะ — ชุดเดียวกับ _balance.mjs
-// อ้างอิงจากชิ้นส่วน Tier 1 ที่ให้ค่านั้นล้วนๆ
-// ---------------------------------------------------------------
-const PRICE = {
-  ad: 0.70, ap: 0.40, hp: 0.0533, armor: 0.40, mr: 0.40,
-  asPct: 50, ah: 1.00, crit: 80, ms: 0.24, msPct: 150,
-  pen: 1.00, critDmg: 60, omnivampFlat: 150, healAmp: 62.5, hors: 83,
-  apPct: 90, adPct: 90, armorPenPct: 90, mrPenPct: 90,
-  ultCdr: 55, tenacity: 40, dmgReduceAuto: 120, regenPct: 6,
-  dmgAmpHighHp: 150, onHitAdaptive: 900, itemHaste: 0.20, range: 0.05,
-  goldPerRound: 2,
-};
-// ของที่พลังจริงอยู่ในพาสซีฟที่เขียนมือ ตีราคาจากค่าสถานะล้วนไม่ได้
-const CODED = new Set([
-  "nlm", "pmh", "msq", "mgc", "aoi", "hga", "cij", "sab", "gbs", "mot",
-  "biv", "soo", "cbc", "bdc", "cbg", "pnb", "hwh", "cco", "goh", "dss",
-  "swf", "slh", "ulf", "ivd", "boe", "sst", "hth", "asq", "asc",
-  "ats", "acb", "sfv", "yrh", "esb", "abw", "hmb", "pib", "gwc", "ood",
-  "act", "chr", "sg", "at", "toh", "cp", "cb", "cs", "csh", "cbw", "cd",
-]);
 // ฟิลด์ที่ให้พลังจริงแต่ไม่มีราคาในตาราง — ของที่มีฟิลด์พวกนี้ ความคุ้มจะต่ำกว่าความจริง
 const UNPRICED = [
   "apOnHit", "spellblade", "burnPctHp", "curHpOnHit", "magicPulse", "chainBolt",
