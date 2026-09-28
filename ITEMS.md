@@ -29,6 +29,121 @@
 | MARKSMAN | 105% | 5 | 59g |
 | SUPPORT | 105% | 1 | 48g |
 
+## ชนะจริงในสนาม รายสาย (Tier 3)
+
+ความคุ้มด้านบนตีราคาจากค่าสถานะบนกระดาษ ตารางนี้วัดจากการรบจริง
+
+**วิธีวัด** — สองทีมเหมือนกันเป๊ะ ตัวละคร เลเวล แต้มนักแข่ง และของที่บอทซื้อเอง
+ต่างกันอย่างเดียวคือฝั่งหนึ่งได้ไอเทมที่กำลังวัดเพิ่มมาคนละชิ้น สลับสีครึ่งหนึ่ง
+
+**แต่ละสายมีทีมของตัวเอง** ประกอบด้วยตัวละครสายนั้นห้าตัว — ของมาร์คแมนจึงวัดบนมือมาร์คแมนห้าคน
+ไม่ใช่ยัดใส่มือแทงค์กับซัพเหมือนเวอร์ชันแรกของเครื่องมือนี้
+
+**"เหนือฐาน" = ชนะเกิน 50% ไปกี่แต้ม** ซึ่งคือค่าที่ควรได้ถ้าไอเทมไม่มีผลอะไรเลย
+(สองทีมเหมือนกันเป๊ะและสลับสีครึ่งหนึ่ง ฐานจึงเป็น 50 โดยโครงสร้าง ไม่ใช่ค่าที่ต้องวัด)
+
+| สาย | ชิ้น | ชนะเฉลี่ย | **เหนือฐาน** | คลาดเคลื่อน | ทีมที่ใช้วัด |
+|---|---:|---:|---:|---:|---|
+| TANK | 14 | 56.3% | **+6.3** | ±2.9 | TOTSAKAN · KLAEDER · NIAN · H.S.B · STEIN |
+| FIGHTER | 11 | 52.7% | **+2.7** | ±3.3 | KAZEM · ARTHUR · TRISTAN · LUCH · ALUCARD |
+| ASSASSIN | 11 | 49.7% | **-0.3** | ±3.3 | ELLA · YODAKA · PUSS · KAMACHI · ALUCARD |
+| MAGE | 17 | 51.1% | **+1.1** | ±2.7 | ARIEL · LAURA · JACK · FAUSTUS · PIROSKA |
+| MARKSMAN | 14 | 58.1% | **+8.1** | ±2.9 | HOOD · PETER · C.HOOK · PHANTOM · HOOD |
+| SUPPORT | 11 | 61.7% | **+11.7** | ±3.3 | PINO · ALICE · PIROSKA · H.S.B · STEIN |
+
+วัดชิ้นละ 80 ไฟต์ · คลาดเคลื่อนรายชิ้น **±11.0 แต้ม**
+
+> **เทียบข้ามสายต้องระวัง** ไฟต์กระจกของแต่ละสายยาวไม่เท่ากัน — ทีมซัพห้าคนสู้กันเอง 44 วิ ตายแค่ 1.4 คน
+> ส่วนทีมแอสซาซินจบใน 21.6 วิ ตาย 7.3 คน · ไฟต์ที่ยาวและสูสีกว่าจะถูกพลิกด้วยค่าสถานะก้อนเล็กได้ง่ายกว่า
+> คู่ที่รูปร่างไฟต์ใกล้กันจึงเทียบกันได้ตรงที่สุด — มาร์คแมน (24.3 วิ) กับแอสซาซิน (21.6 วิ) · ไฟท์เตอร์ (32.5) กับเวท (31.1) · ซัพ (44.0) กับแทงค์ (43.4)
+
+> **อย่าตัดสินไอเทมชิ้นเดียวจากตัวเลขนี้** ±11.0 กว้างเกินกว่าจะแยกของดีกับของกลางๆ ออกจากกัน
+> ค่าเฉลี่ยรายสายด้านบนแม่นกว่ามากเพราะรวมของหลายชิ้น ใช้ตัวนั้นตัดสินทิศทาง
+> แล้วดูรายชิ้นเฉพาะตัวที่โผล่หัวตารางหรือท้ายตารางแบบทิ้งห่าง
+
+## Tier 3 เรียงตามผลวัดในสนาม
+
+| # | ไอเทม | สาย | ราคา | ชนะ | เหนือฐาน | ความคุ้ม |
+|---:|---|---|---:|---:|---:|---:|
+| 1 | Pridwen's Iron Bastion `pib` | SUPPORT | 48g | 73.8% | **+23.8** | `พาสซีฟเขียนมือ` |
+| 2 | Gjallarhorn's War Clarion `gwc` | SUPPORT | 46g | 67.5% | **+17.5** | `พาสซีฟเขียนมือ` |
+| 3 | Ariadne's Guiding Thread `agt` | SUPPORT | 48g | 65.0% | **+15.0** | 105% |
+| 4 | Indra's Vajra Dart `ivd` | MARKSMAN | 60g | 63.8% | **+13.8** | `พาสซีฟเขียนมือ` |
+| 5 | Mímir's Whispering Well `mww` | TANK | 58g | 63.8% | **+13.8** | 100% ⚠️ |
+| 6 | Bow of Eurytus `boe` | MARKSMAN | 58g | 62.5% | **+12.5** | `พาสซีฟเขียนมือ` |
+| 7 | Saraswati's Flowing Veena `sfv` | SUPPORT | 46g | 62.5% | **+12.5** | `พาสซีฟเขียนมือ` |
+| 8 | Aeolus' Bound Winds `abw` | SUPPORT | 46g | 62.5% | **+12.5** | `พาสซีฟเขียนมือ` |
+| 9 | Skadi's Triple Arrow `sta` | MARKSMAN | 56g | 62.5% | **+12.5** | 86% |
+| 10 | Hephaestus' Twin Hammers `hth` | MARKSMAN | 62g | 61.3% | **+11.3** | `พาสซีฟเขียนมือ` |
+| 11 | Aceso's Guiding Censer `acb` | SUPPORT | 46g | 61.3% | **+11.3** | `พาสซีฟเขียนมือ` |
+| 12 | Fafnir's Devouring Maw `fdm` | MARKSMAN | 63g | 61.3% | **+11.3** | 99% ⚠️ |
+| 13 | Thoth's Emerald Tablet `tet` | MAGE | 65g | 60.0% | **+10.0** | 94% |
+| 14 | Apollo's Sunlit Quiver `asq` | MARKSMAN | 62g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 15 | Hermes' Moly Blossom `hmb` | SUPPORT | 48g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 16 | Oath of the Dioscuri `ood` | SUPPORT | 48g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 17 | Cuirass of the Iron John `cij` | TANK | 60g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 18 | Mirror of Truth `mot` | TANK | 58g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 19 | Shroud of Osiris `soo` | FIGHTER | 64g | 60.0% | **+10.0** | `พาสซีฟเขียนมือ` |
+| 20 | Shiva's Trishula `sst` | MARKSMAN | 60g | 58.8% | **+8.8** | `พาสซีฟเขียนมือ` |
+| 21 | Siren's Abyssal Bell `sab` | TANK | 64g | 58.8% | **+8.8** | `พาสซีฟเขียนมือ` |
+| 22 | Gleipnir's Binding Shackles `gbs` | TANK | 64g | 58.8% | **+8.8** | `พาสซีฟเขียนมือ` |
+| 23 | Sleipnir's Galloping Horseshoe `slh` | MARKSMAN | 58g | 57.5% | **+7.5** | `พาสซีฟเขียนมือ` |
+| 24 | Urd's Loom of Fate `ulf` | MARKSMAN | 62g | 57.5% | **+7.5** | `พาสซีฟเขียนมือ` |
+| 25 | Yggdrasil's Radiant Heartwood `yrh` | SUPPORT | 48g | 57.5% | **+7.5** | `พาสซีฟเขียนมือ` |
+| 26 | Prometheus' Hearth `pmh` | TANK | 60g | 57.5% | **+7.5** | `พาสซีฟเขียนมือ` |
+| 27 | Mjölnir's Grounding Cloak `mgc` | TANK | 60g | 57.5% | **+7.5** | `พาสซีฟเขียนมือ` |
+| 28 | Eir's Sanctuary Bell `esb` | SUPPORT | 48g | 56.3% | **+6.3** | `พาสซีฟเขียนมือ` |
+| 29 | Blade of the Impaled Voivode `biv` | FIGHTER | 62g | 56.3% | **+6.3** | `พาสซีฟเขียนมือ` |
+| 30 | Cuirass of the Bleeding Centaur `cbc` | FIGHTER | 62g | 56.3% | **+6.3** | `พาสซีฟเขียนมือ` |
+| 31 | Freyja's Shroud of Defiance `fsd` | ASSASSIN | 64g | 56.3% | **+6.3** | 78% |
+| 32 | Atalanta's Swift Quiver `atq` | MARKSMAN | 58g | 56.3% | **+6.3** | 106% |
+| 33 | Heimdall's Warding Horn `hwg` | TANK | 45g | 56.3% | **+6.3** | 98% |
+| 34 | Mirror of the Snow Queen `msq` | TANK | 60g | 55.0% | **+5.0** | `พาสซีฟเขียนมือ` |
+| 35 | Holy Grail of Avalon `hga` | TANK | 60g | 55.0% | **+5.0** | `พาสซีฟเขียนมือ` |
+| 36 | Cleaver of the Gorgon's Bane `cbg` | FIGHTER | 62g | 55.0% | **+5.0** | `พาสซีฟเขียนมือ` |
+| 37 | Argus' Hundred Eyes `ahe` | TANK | 58g | 55.0% | **+5.0** | 102% |
+| 38 | Odysseus' Unstrung Bow `oub` | MARKSMAN | 60g | 55.0% | **+5.0** | 101% |
+| 39 | Caliburn's Spellblade `csb` | MAGE | 60g | 53.8% | **+3.8** | 78% ⚠️ |
+| 40 | Zephyrus' Gale Cloak `zgc` | MAGE | 60g | 53.8% | **+3.8** | 97% |
+| 41 | Amrita's Nectar Goblet `ang` | MAGE | 60g | 53.8% | **+3.8** | 104% ⚠️ |
+| 42 | William Tell's Sovereign Crossbow `wtc` | MARKSMAN | 60g | 53.8% | **+3.8** | 135% |
+| 43 | Nemean Lion's Mane `nlm` | TANK | 60g | 53.8% | **+3.8** | `พาสซีฟเขียนมือ` |
+| 44 | Pauldrons of the Nian Beast `pnb` | FIGHTER | 60g | 53.8% | **+3.8** | `พาสซีฟเขียนมือ` |
+| 45 | Surtr's Twilight Cinder `stc` | MAGE | 62g | 52.5% | **+2.5** | 65% ⚠️ |
+| 46 | Yuki-onna's Frozen Scepter `yfs` | MAGE | 60g | 52.5% | **+2.5** | 74% ⚠️ |
+| 47 | Raijin's Thunder Drum `rsd` | MAGE | 62g | 52.5% | **+2.5** | 73% ⚠️ |
+| 48 | Artemis' Silver Crescent `asc` | MARKSMAN | 62g | 52.5% | **+2.5** | `พาสซีฟเขียนมือ` |
+| 49 | Asclepius' Twin Serpent Staff `ats` | SUPPORT | 46g | 52.5% | **+2.5** | `พาสซีฟเขียนมือ` |
+| 50 | Hecate's Triple Crescent `htc` | ASSASSIN | 62g | 52.5% | **+2.5** | 86% |
+| 51 | Anubis' Death Mark `adm` | ASSASSIN | 62g | 52.5% | **+2.5** | 73% ⚠️ |
+| 52 | The Legendary Excalibur `lex` | FIGHTER | 64g | 52.5% | **+2.5** | 104% ⚠️ |
+| 53 | Sleeping Beauty's Spindle `sbs` | MAGE | 62g | 52.5% | **+2.5** | 108% |
+| 54 | Eye of Horus `eoh` | MAGE | 58g | 51.3% | **+1.3** | 105% |
+| 55 | Swan Maiden's Feathered Cloak `swf` | MARKSMAN | 60g | 51.3% | **+1.3** | `พาสซีฟเขียนมือ` |
+| 56 | Balmung's Dragon-Cleaver `bdc` | FIGHTER | 60g | 51.3% | **+1.3** | `พาสซีฟเขียนมือ` |
+| 57 | Draupnir's Sovereign Signet `dss` | FIGHTER | 64g | 51.3% | **+1.3** | `พาสซีฟเขียนมือ` |
+| 58 | Kitsune's Foxfire Fan `kff` | MAGE | 60g | 50.0% | **+0.0** | 75% ⚠️ |
+| 59 | Hel's Nether Domain `hnd` | MAGE | 62g | 50.0% | **+0.0** | 94% ⚠️ |
+| 60 | Jack's Giantbane Harp `jbg` | MAGE | 60g | 50.0% | **+0.0** | 68% |
+| 61 | Apple of Idunn `aoi` | TANK | 60g | 50.0% | **+0.0** | `พาสซีฟเขียนมือ` |
+| 62 | Colossal Club of the Oni `cco` | FIGHTER | 62g | 50.0% | **+0.0** | `พาสซีฟเขียนมือ` |
+| 63 | Thanatos' Reaping Scythe `trs` | ASSASSIN | 64g | 50.0% | **+0.0** | 78% |
+| 64 | Mordred's Usurping Blade `mub` | ASSASSIN | 62g | 50.0% | **+0.0** | 111% |
+| 65 | Lilith's Sanguine Grimoire `lbg` | MAGE | 62g | 48.8% | **-1.3** | 79% |
+| 66 | Merlin's Starbolt Staff `mrt` | MAGE | 60g | 48.8% | **-1.3** | 63% ⚠️ |
+| 67 | Horn of the Wild Hunt `hwh` | FIGHTER | 60g | 48.8% | **-1.3** | `พาสซีฟเขียนมือ` |
+| 68 | Sekhmet's Massacre Claws `smc` | ASSASSIN | 62g | 48.8% | **-1.3** | 75% |
+| 69 | Wendigo's Voracious Claw `wvc` | ASSASSIN | 60g | 48.8% | **-1.3** | 64% |
+| 70 | Seven-League Shadowstriders `sls` | ASSASSIN | 60g | 47.5% | **-2.5** | 72% |
+| 71 | Jabberwock's Vorpal Blade `jvb` | ASSASSIN | 60g | 47.5% | **-2.5** | 70% ⚠️ |
+| 72 | Nemesis' Vengeful Scales `nvs` | MAGE | 64g | 46.3% | **-3.8** | 70% ⚠️ |
+| 73 | Norns' Thread of Weaving `ntw` | MAGE | 60g | 46.3% | **-3.8** | 51% |
+| 74 | Baba Yaga's Iron Cauldron `byc` | TANK | 58g | 46.3% | **-3.8** | 85% ⚠️ |
+| 75 | Carnwennan's Shadowblade `cns` | ASSASSIN | 60g | 46.3% | **-3.8** | 81% |
+| 76 | Fang of the Midgard Serpent `fms` | ASSASSIN | 58g | 46.3% | **-3.8** | 66% ⚠️ |
+| 77 | Morgana's Unravelling Thread `mut` | MAGE | 60g | 46.3% | **-3.8** | 104% ⚠️ |
+| 78 | Girdle of Hippolyta `goh` | FIGHTER | 60g | 45.0% | **-5.0** | `พาสซีฟเขียนมือ` |
+
 ## ⚠️ ของที่ตารางราคาอ่านไม่ครบ
 
 ของพวกนี้มีฟิลด์ที่ให้พลังจริงแต่ไม่มีราคาในตาราง **ความคุ้มที่โชว์จึงต่ำกว่าความจริง**
@@ -193,109 +308,109 @@
 
 ### แทงค์ (TANK) — 14 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Nemean Lion's Mane** `nlm`<br>แผงคอสิงโตเนเมียน | 60g | `พาสซีฟเขียนมือ` | +400 HP · +80 เกราะ · โดนตีแล้วสะท้อนดาเมจ 15 + 25% Bonus เกราะ กลับไปหาคนตี ทุกวินาที | Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) + Boiled Cuirass (6g) |
-| **Prometheus' Hearth** `pmh`<br>เตาไฟโพรมีธีอุส | 60g | `พาสซีฟเขียนมือ` | +650 HP · +40 เกราะ · +10 Ability Haste · เผาศัตรูในรัศมี 325 ทุก 2 วิ ครั้งละ 20 + 2.5% Max HP ของตัวเอง (เป็นดาเมจเวท) | Golem's Plated Rib (16g) + Baba Yaga's Bone Thorn (14g) |
-| **Mirror of the Snow Queen** `msq`<br>กระจกราชินีหิมะ | 60g | `พาสซีฟเขียนมือ` | +250 HP · +90 เกราะ · +15 Ability Haste · ลดความเร็วโจมตีศัตรูรอบตัว 400 หน่วย 25% (หลายชิ้นไม่ทับกัน) | Clockwork Carapace (14g) + Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) |
-| **Mjölnir's Grounding Cloak** `mgc`<br>ผ้าคลุมมโยลเนียร์ | 60g | `พาสซีฟเขียนมือ` | +400 HP · +70 ต้านเวท · +25% ความเร็วเดิน · โดนเวทสะสม Stack สูงสุด 10 (+30 ต้านเวท) ครบ 10 ได้ +10% ความเร็วเดิน | Veil of the Silver Bough (14g) + Red Riding Cloak (16g) + Nymph's Dewdrop (8g) |
-| **Apple of Idunn** `aoi`<br>แอปเปิลอิดุนน์ | 60g | `พาสซีฟเขียนมือ` | +800 HP · +10 Ability Haste · เลือดต่ำกว่า 50% แล้วโดนตี จะฟื้น 10% ของเลือดที่หายไป ทยอยใน 3 วิ (ทุก 10 วิ) | Giant's Heartstone (19g) + Pendulum of Neverland (15g) + Nymph's Dewdrop (8g) |
-| **Holy Grail of Avalon** `hga`<br>จอกศักดิ์สิทธิ์อวาลอน | 60g | `พาสซีฟเขียนมือ` | +550 HP · +30 ต้านเวท · +10 Ability Haste · ฮีล เกราะป้องกัน และดูดเลือดที่ตัวเองได้รับ แรงขึ้น 25% (คูณหลังพลังฮีลของคนจ่าย) | Giant's Heartstone (19g) + Argonaut's Fleece Wrap (15g) |
-| **Cuirass of the Iron John** `cij`<br>เกราะคนเหล็ก | 60g | `พาสซีฟเขียนมือ` | +400 HP · +40 เกราะ · +40 ต้านเวท · +10 Ability Haste · อยู่ในไฟต์ครบทุก 3 วิ ได้เกราะและต้านเวท +6 สะสมสูงสุด 5 ชั้น · ครบ 5 ชั้นคูณอีก 1.1 เท่า | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) + Boiled Cuirass (6g) |
-| **Siren's Abyssal Bell** `sab`<br>ระฆังไซเรน | 64g | `พาสซีฟเขียนมือ` | +65 เกราะ · +65 ต้านเวท · +10 Ability Haste · ชาร์จได้สูงสุด 2 วิ (ปล่อยก่อนได้) ระหว่างชาร์จกันดาเมจ 40-60% ตามเลเวล แล้ว Taunt ศัตรูรอบตัว 450 หน่วย 0.5-2 วิ ตามเวลาที่ชาร์จ (ทุก 45 วิ) | Gargoyle's Bastion (15g) + Chainmail of the Nemean (14g) + Veil of the Silver Bough (14g) |
-| **Gleipnir's Binding Shackles** `gbs`<br>โซ่ตรวนกลัยพ์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +450 HP · +45 เกราะ · +45 ต้านเวท · +10 Ability Haste · ยิงโซ่ล่ามศัตรูตัวแรกที่โดน นาน 2.5 วิ (คูลดาวน์ 30 วิ) · ระหว่างโดนล่าม เป้าโดนลด Tenacity 25% | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) + Nymph's Dewdrop (8g) |
-| **Baba Yaga's Iron Cauldron** `byc`<br>หม้อเหล็กบาบายากา | 58g | 85% ⚠️ | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Baba Yaga's Bone Thorn (14g) + Golem's Plated Rib (16g) |
-| **Mirror of Truth** `mot`<br>กระจกสลายภาพลวงตา | 58g | `พาสซีฟเขียนมือ` | +450 HP · +80 เกราะ · +10 Ability Haste · ลดดาเมจออโต้ที่โดน 12 + 3.5 ต่อ Max HP ทุก 1000 ของตัวเอง (คริของศัตรูโดนลดผลอีก 30%) | Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) + Boiled Cuirass (6g) |
-| **Mímir's Whispering Well** `mww`<br>บ่อน้ำกระซิบมิเมียร์ | 58g | 100% ⚠️ | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ | Red Riding Cloak (16g) + Veil of the Silver Bough (14g) + Pendulum of Neverland (15g) |
-| **Argus' Hundred Eyes** `ahe`<br>ร้อยดวงตาอาร์กัส | 58g | 102% | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) | Gargoyle's Bastion (15g) + Giant's Heartstone (19g) + Clockwork Carapace (14g) |
-| **Heimdall's Warding Horn** `hwg`<br>แตรเฝ้าสะพานไฮม์ดัล | 45g | 98% | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Nemean Lion's Mane** `nlm`<br>แผงคอสิงโตเนเมียน | 60g | `พาสซีฟเขียนมือ` | +3.8 | +400 HP · +80 เกราะ · โดนตีแล้วสะท้อนดาเมจ 15 + 25% Bonus เกราะ กลับไปหาคนตี ทุกวินาที | Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) + Boiled Cuirass (6g) |
+| **Prometheus' Hearth** `pmh`<br>เตาไฟโพรมีธีอุส | 60g | `พาสซีฟเขียนมือ` | +7.5 | +650 HP · +40 เกราะ · +10 Ability Haste · เผาศัตรูในรัศมี 325 ทุก 2 วิ ครั้งละ 20 + 2.5% Max HP ของตัวเอง (เป็นดาเมจเวท) | Golem's Plated Rib (16g) + Baba Yaga's Bone Thorn (14g) |
+| **Mirror of the Snow Queen** `msq`<br>กระจกราชินีหิมะ | 60g | `พาสซีฟเขียนมือ` | +5.0 | +250 HP · +90 เกราะ · +15 Ability Haste · ลดความเร็วโจมตีศัตรูรอบตัว 400 หน่วย 25% (หลายชิ้นไม่ทับกัน) | Clockwork Carapace (14g) + Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) |
+| **Mjölnir's Grounding Cloak** `mgc`<br>ผ้าคลุมมโยลเนียร์ | 60g | `พาสซีฟเขียนมือ` | +7.5 | +400 HP · +70 ต้านเวท · +25% ความเร็วเดิน · โดนเวทสะสม Stack สูงสุด 10 (+30 ต้านเวท) ครบ 10 ได้ +10% ความเร็วเดิน | Veil of the Silver Bough (14g) + Red Riding Cloak (16g) + Nymph's Dewdrop (8g) |
+| **Apple of Idunn** `aoi`<br>แอปเปิลอิดุนน์ | 60g | `พาสซีฟเขียนมือ` | +0.0 | +800 HP · +10 Ability Haste · เลือดต่ำกว่า 50% แล้วโดนตี จะฟื้น 10% ของเลือดที่หายไป ทยอยใน 3 วิ (ทุก 10 วิ) | Giant's Heartstone (19g) + Pendulum of Neverland (15g) + Nymph's Dewdrop (8g) |
+| **Holy Grail of Avalon** `hga`<br>จอกศักดิ์สิทธิ์อวาลอน | 60g | `พาสซีฟเขียนมือ` | +5.0 | +550 HP · +30 ต้านเวท · +10 Ability Haste · ฮีล เกราะป้องกัน และดูดเลือดที่ตัวเองได้รับ แรงขึ้น 25% (คูณหลังพลังฮีลของคนจ่าย) | Giant's Heartstone (19g) + Argonaut's Fleece Wrap (15g) |
+| **Cuirass of the Iron John** `cij`<br>เกราะคนเหล็ก | 60g | `พาสซีฟเขียนมือ` | +10.0 | +400 HP · +40 เกราะ · +40 ต้านเวท · +10 Ability Haste · อยู่ในไฟต์ครบทุก 3 วิ ได้เกราะและต้านเวท +6 สะสมสูงสุด 5 ชั้น · ครบ 5 ชั้นคูณอีก 1.1 เท่า | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) + Boiled Cuirass (6g) |
+| **Siren's Abyssal Bell** `sab`<br>ระฆังไซเรน | 64g | `พาสซีฟเขียนมือ` | +8.8 | +65 เกราะ · +65 ต้านเวท · +10 Ability Haste · ชาร์จได้สูงสุด 2 วิ (ปล่อยก่อนได้) ระหว่างชาร์จกันดาเมจ 40-60% ตามเลเวล แล้ว Taunt ศัตรูรอบตัว 450 หน่วย 0.5-2 วิ ตามเวลาที่ชาร์จ (ทุก 45 วิ) | Gargoyle's Bastion (15g) + Chainmail of the Nemean (14g) + Veil of the Silver Bough (14g) |
+| **Gleipnir's Binding Shackles** `gbs`<br>โซ่ตรวนกลัยพ์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +8.8 | +450 HP · +45 เกราะ · +45 ต้านเวท · +10 Ability Haste · ยิงโซ่ล่ามศัตรูตัวแรกที่โดน นาน 2.5 วิ (คูลดาวน์ 30 วิ) · ระหว่างโดนล่าม เป้าโดนลด Tenacity 25% | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) + Nymph's Dewdrop (8g) |
+| **Baba Yaga's Iron Cauldron** `byc`<br>หม้อเหล็กบาบายากา | 58g | 85% ⚠️ | -3.8 | +400 HP · +45 เกราะ · +10 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Baba Yaga's Bone Thorn (14g) + Golem's Plated Rib (16g) |
+| **Mirror of Truth** `mot`<br>กระจกสลายภาพลวงตา | 58g | `พาสซีฟเขียนมือ` | +10.0 | +450 HP · +80 เกราะ · +10 Ability Haste · ลดดาเมจออโต้ที่โดน 12 + 3.5 ต่อ Max HP ทุก 1000 ของตัวเอง (คริของศัตรูโดนลดผลอีก 30%) | Chainmail of the Nemean (14g) + Golem's Plated Rib (16g) + Boiled Cuirass (6g) |
+| **Mímir's Whispering Well** `mww`<br>บ่อน้ำกระซิบมิเมียร์ | 58g | 100% ⚠️ | +13.8 | +450 HP · +60 ต้านเวท · +10 Ability Haste · ทุก 1 วิ ปล่อยคลื่นเวท 25 (+1.5% Bonus HP) รอบตัวในระยะ 400 · ศัตรูที่โดนกินดาเมจเวทจากทุกแหล่งแรงขึ้น 12% นาน 3 วิ | Red Riding Cloak (16g) + Veil of the Silver Bough (14g) + Pendulum of Neverland (15g) |
+| **Argus' Hundred Eyes** `ahe`<br>ร้อยดวงตาอาร์กัส | 58g | 102% | +5.0 | +400 HP · +35 เกราะ · +35 ต้านเวท · +10 Ability Haste · แชมเปี้ยนศัตรูแต่ละตัวในระยะ 650 ให้ +8 เกราะ และ +8 ต้านเวท (สูงสุด 5 ตัว) | Gargoyle's Bastion (15g) + Giant's Heartstone (19g) + Clockwork Carapace (14g) |
+| **Heimdall's Warding Horn** `hwg`<br>แตรเฝ้าสะพานไฮม์ดัล | 45g | 98% | +6.3 | +300 HP · +35 เกราะ · +35 ต้านเวท · +15 Ability Haste เฉพาะท่าไม้ตาย · กดอัลติแล้วปล่อยเขตรัศมี 450 นาน 3 วิ ศัตรูในเขตติดสโลว์ 45% (ทุก 30 วิ) | Gargoyle's Bastion (15g) + Pendulum of Neverland (15g) |
 
 ### ไฟท์เตอร์ (FIGHTER) — 11 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Blade of the Impaled Voivode** `biv`<br>ดาบวลาดผู้เสียบ | 62g | `พาสซีฟเขียนมือ` | +45 AD · +350 HP · +15 Ability Haste · ออโต้ครั้งแรกต่อเป้าเพิ่มดาเมจ 15% Max HP ศัตรูและฮีลกลับเต็ม (ต่อตัว ทุก 6 วิ คงที่ ไม่ลดตาม AH) | Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) + Nymph's Dewdrop (8g) |
-| **Shroud of Osiris** `soo`<br>ผ้าห่อโอซิริส | 64g | `พาสซีฟเขียนมือ` | +45 AD · +40 เกราะ · ตายครั้งแรกในไฟต์กลายเป็นแช่แข็ง 3 วิแทน แล้วฟื้นคืนชีพ 30% Base HP (ใช้ได้ครั้งเดียว) | Durandal's Whetted Edge (16g) + Gilgamesh's Vambrace (15g) + Boiled Cuirass (6g) |
-| **Cuirass of the Bleeding Centaur** `cbc`<br>เกราะเลือดเซนทอร์ | 62g | `พาสซีฟเขียนมือ` | +50 AD · +40 เกราะ · +15 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · 30% ของดาเมจทุกชนิดที่โดน กลายเป็นเลือดไหลแบบ True Damage 3 วิ · สังหารหรือช่วยสังหารจะล้างเลือดไหลแล้วฟื้นคืน 150% ของยอดที่ยังไม่ทันไหลออก · ทำดาเมจหรือโดนดาเมจ สะสมชั้นละ +2 เกราะ ต้านเวท และ AD สูงสุด 20 ชั้น · ครบ 20 ชั้นได้ต้านสโลว์ 30% และ Tenacity 30% ไปจนจบไฟต์ | Gilgamesh's Vambrace (15g) + Executioner's Nettle (14g) + Boar Tusk (7g) |
-| **Balmung's Dragon-Cleaver** `bdc`<br>ดาบบาลมุงก์ | 60g | `พาสซีฟเขียนมือ` | +40 AD · +300 HP · +15 Ability Haste · ใช้สกิลแล้วออโต้ครั้งถัดไปเพิ่ม 175% Base AD และวิ่งไว 2 วิ (ทุก 1.5 วิ) | Cauldron Churner (15g) + Woodcutter's Hewing Axe (16g) |
-| **Cleaver of the Gorgon's Bane** `cbg`<br>ขวานกอร์กอน | 62g | `พาสซีฟเขียนมือ` | +45 AD · +350 HP · +15 Ability Haste · ออโต้ลดเกราะศัตรู 5% สะสมสูงสุด 5 ชั้น (25%) และเพิ่มความเร็วเดินตามจำนวนชั้น | Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) + Boar Tusk (7g) |
-| **Pauldrons of the Nian Beast** `pnb`<br>เกราะไหล่เหนียน | 60g | `พาสซีฟเขียนมือ` | +40 AD · +350 HP · +30 เกราะ · ตี/โดนตีสะสมสูงสุด 15 ชั้น ได้เกราะและ Tenacity ตามชั้น ครบ 15 ได้ Slow Resist และวิ่งไวอีก 10 วิ | Woodcutter's Hewing Axe (16g) + Gilgamesh's Vambrace (15g) + Boiled Cuirass (6g) |
-| **Horn of the Wild Hunt** `hwh`<br>เขาศึกไวลด์ฮันต์ | 60g | `พาสซีฟเขียนมือ` | +40 AD · +300 HP · +20% ความเร็วโจมตี · +25 Ability Haste เฉพาะท่าไม้ตาย · กดท่าไม้ตายแล้วได้ AD +20 · ความเร็วโจมตี +30% · ความเร็วเดิน +15% นาน 10 วิ (ทุก 30 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) |
-| **Colossal Club of the Oni** `cco`<br>กระบองโอนิ | 62g | `พาสซีฟเขียนมือ` | +35 AD · +550 HP · ได้ AD เพิ่มตาม Bonus HP · ออโต้กวาดโคนด้านหลังเป้า | Woodcutter's Hewing Axe (16g) + Giant's Heartstone (19g) + Boar Tusk (7g) |
-| **Girdle of Hippolyta** `goh`<br>เข็มขัดฮิปโปลิตา | 60g | `พาสซีฟเขียนมือ` | +40 AD · +350 HP · +20% ความเร็วโจมตี · +10 Ability Haste · สโลว์ศัตรูรอบตัว 35% พร้อมวิ่งไวตัวเอง 30% นาน 2 วิ (ทุก 20 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Pendulum of Neverland (15g) |
-| **Draupnir's Sovereign Signet** `dss`<br>แหวนดราวป์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +50 AD · +30 เกราะ · +30 ต้านเวท · ติด CC แล้วล้าง CC ทันที + กัน CC 0.5 วิ + วิ่งไว 30% นาน 1.5 วิ (ทุก 45 วิ) · ดูดเลือดทุกชนิด 10% | Durandal's Whetted Edge (16g) + Rowan Wand Dagger (15g) + Boiled Cuirass (6g) |
-| **The Legendary Excalibur** `lex`<br>เอกซ์คาลิเบอร์ในตำนาน | 64g | 104% ⚠️ | +55 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) | Durandal's Whetted Edge (16g) + Woodcutter's Hewing Axe (16g) + Loki's Mistletoe Dagger (14g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Blade of the Impaled Voivode** `biv`<br>ดาบวลาดผู้เสียบ | 62g | `พาสซีฟเขียนมือ` | +6.3 | +45 AD · +350 HP · +15 Ability Haste · ออโต้ครั้งแรกต่อเป้าเพิ่มดาเมจ 15% Max HP ศัตรูและฮีลกลับเต็ม (ต่อตัว ทุก 6 วิ คงที่ ไม่ลดตาม AH) | Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) + Nymph's Dewdrop (8g) |
+| **Shroud of Osiris** `soo`<br>ผ้าห่อโอซิริส | 64g | `พาสซีฟเขียนมือ` | +10.0 | +45 AD · +40 เกราะ · ตายครั้งแรกในไฟต์กลายเป็นแช่แข็ง 3 วิแทน แล้วฟื้นคืนชีพ 30% Base HP (ใช้ได้ครั้งเดียว) | Durandal's Whetted Edge (16g) + Gilgamesh's Vambrace (15g) + Boiled Cuirass (6g) |
+| **Cuirass of the Bleeding Centaur** `cbc`<br>เกราะเลือดเซนทอร์ | 62g | `พาสซีฟเขียนมือ` | +6.3 | +50 AD · +40 เกราะ · +15 Ability Haste · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · 30% ของดาเมจทุกชนิดที่โดน กลายเป็นเลือดไหลแบบ True Damage 3 วิ · สังหารหรือช่วยสังหารจะล้างเลือดไหลแล้วฟื้นคืน 150% ของยอดที่ยังไม่ทันไหลออก · ทำดาเมจหรือโดนดาเมจ สะสมชั้นละ +2 เกราะ ต้านเวท และ AD สูงสุด 20 ชั้น · ครบ 20 ชั้นได้ต้านสโลว์ 30% และ Tenacity 30% ไปจนจบไฟต์ | Gilgamesh's Vambrace (15g) + Executioner's Nettle (14g) + Boar Tusk (7g) |
+| **Balmung's Dragon-Cleaver** `bdc`<br>ดาบบาลมุงก์ | 60g | `พาสซีฟเขียนมือ` | +1.3 | +40 AD · +300 HP · +15 Ability Haste · ใช้สกิลแล้วออโต้ครั้งถัดไปเพิ่ม 175% Base AD และวิ่งไว 2 วิ (ทุก 1.5 วิ) | Cauldron Churner (15g) + Woodcutter's Hewing Axe (16g) |
+| **Cleaver of the Gorgon's Bane** `cbg`<br>ขวานกอร์กอน | 62g | `พาสซีฟเขียนมือ` | +5.0 | +45 AD · +350 HP · +15 Ability Haste · ออโต้ลดเกราะศัตรู 5% สะสมสูงสุด 5 ชั้น (25%) และเพิ่มความเร็วเดินตามจำนวนชั้น | Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) + Boar Tusk (7g) |
+| **Pauldrons of the Nian Beast** `pnb`<br>เกราะไหล่เหนียน | 60g | `พาสซีฟเขียนมือ` | +3.8 | +40 AD · +350 HP · +30 เกราะ · ตี/โดนตีสะสมสูงสุด 15 ชั้น ได้เกราะและ Tenacity ตามชั้น ครบ 15 ได้ Slow Resist และวิ่งไวอีก 10 วิ | Woodcutter's Hewing Axe (16g) + Gilgamesh's Vambrace (15g) + Boiled Cuirass (6g) |
+| **Horn of the Wild Hunt** `hwh`<br>เขาศึกไวลด์ฮันต์ | 60g | `พาสซีฟเขียนมือ` | -1.3 | +40 AD · +300 HP · +20% ความเร็วโจมตี · +25 Ability Haste เฉพาะท่าไม้ตาย · กดท่าไม้ตายแล้วได้ AD +20 · ความเร็วโจมตี +30% · ความเร็วเดิน +15% นาน 10 วิ (ทุก 30 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Cauldron Churner (15g) |
+| **Colossal Club of the Oni** `cco`<br>กระบองโอนิ | 62g | `พาสซีฟเขียนมือ` | +0.0 | +35 AD · +550 HP · ได้ AD เพิ่มตาม Bonus HP · ออโต้กวาดโคนด้านหลังเป้า | Woodcutter's Hewing Axe (16g) + Giant's Heartstone (19g) + Boar Tusk (7g) |
+| **Girdle of Hippolyta** `goh`<br>เข็มขัดฮิปโปลิตา | 60g | `พาสซีฟเขียนมือ` | -5.0 | +40 AD · +350 HP · +20% ความเร็วโจมตี · +10 Ability Haste · สโลว์ศัตรูรอบตัว 35% พร้อมวิ่งไวตัวเอง 30% นาน 2 วิ (ทุก 20 วิ) | Hiawatha's Tomahawk (13g) + Woodcutter's Hewing Axe (16g) + Pendulum of Neverland (15g) |
+| **Draupnir's Sovereign Signet** `dss`<br>แหวนดราวป์เนียร์ | 64g | `พาสซีฟเขียนมือ` | +1.3 | +50 AD · +30 เกราะ · +30 ต้านเวท · ติด CC แล้วล้าง CC ทันที + กัน CC 0.5 วิ + วิ่งไว 30% นาน 1.5 วิ (ทุก 45 วิ) · ดูดเลือดทุกชนิด 10% | Durandal's Whetted Edge (16g) + Rowan Wand Dagger (15g) + Boiled Cuirass (6g) |
+| **The Legendary Excalibur** `lex`<br>เอกซ์คาลิเบอร์ในตำนาน | 64g | 104% ⚠️ | +2.5 | +55 AD · +250 HP · +15 Ability Haste · ดาเมจก้อนแรกที่ลงแชมเปี้ยนศัตรู ได้โล่ 120 (+100% Bonus AD) นาน 3.5 วิ และวิ่งเร็วขึ้น 10% ขณะมีโล่ (ทุก 15 วิ) | Durandal's Whetted Edge (16g) + Woodcutter's Hewing Axe (16g) + Loki's Mistletoe Dagger (14g) |
 
 ### แอสซาซิน (ASSASSIN) — 11 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Carnwennan's Shadowblade** `cns`<br>กริชเงาคาร์นเวนแนน | 60g | 81% | +55 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
-| **Sekhmet's Massacre Claws** `smc`<br>กรงเล็บสังหารเซคเมต | 62g | 75% | +60 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 | Huntsman's Skinning Dirk (15g) + Puck's Shadow Cloak (15g) |
-| **Seven-League Shadowstriders** `sls`<br>เกือกเจ็ดลีกล่องเงา | 60g | 72% | +50 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที | Puck's Shadow Cloak (15g) + Huntsman's Skinning Dirk (15g) |
-| **Hecate's Triple Crescent** `htc`<br>จันทราสามเสี้ยวเฮคาเต | 62g | 86% | +55 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
-| **Fang of the Midgard Serpent** `fms`<br>เขี้ยวพญางูมิดการ์ด | 58g | 66% ⚠️ | +55 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
-| **Jabberwock's Vorpal Blade** `jvb`<br>ดาบวอร์พอลปลิดชีพ | 60g | 70% ⚠️ | +60 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
-| **Thanatos' Reaping Scythe** `trs`<br>เคียวเก็บเกี่ยวทานาทอส | 64g | 78% | +50 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Broken Sundial (5g) |
-| **Anubis' Death Mark** `adm`<br>มีดชี้ชะตาอนูบิส | 62g | 73% ⚠️ | +50 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) | Huntsman's Skinning Dirk (15g) + Executioner's Nettle (14g) |
-| **Freyja's Shroud of Defiance** `fsd`<br>ผ้าคลุมท้าความตายเฟรยา | 64g | 78% | +50 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Nymph's Dewdrop (8g) |
-| **Wendigo's Voracious Claw** `wvc`<br>กรงเล็บตะกละเวนดิโก | 60g | 64% | +55 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
-| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 111% | +45 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Carnwennan's Shadowblade** `cns`<br>กริชเงาคาร์นเวนแนน | 60g | 81% | -3.8 | +55 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · จบการพุ่ง ออโต้ครั้งถัดไปแถมดาเมจกายภาพ 80 (+50% Bonus AD) (ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Sekhmet's Massacre Claws** `smc`<br>กรงเล็บสังหารเซคเมต | 62g | 75% | -1.3 | +60 AD · +20 ความเร็วเดิน · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · 10 วินาทีแรกของไฟต์ ได้เจาะเกราะเพิ่ม +15 | Huntsman's Skinning Dirk (15g) + Puck's Shadow Cloak (15g) |
+| **Seven-League Shadowstriders** `sls`<br>เกือกเจ็ดลีกล่องเงา | 60g | 72% | -2.5 | +50 AD · +35 ความเร็วเดิน · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · เข้าปะทะแล้วได้ความเร็วเดิน +40% นาน 3 วิ (ทุก 15 วิ) · สังหารศัตรูได้ คูลดาวน์พร้อมใช้ทันที | Puck's Shadow Cloak (15g) + Huntsman's Skinning Dirk (15g) |
+| **Hecate's Triple Crescent** `htc`<br>จันทราสามเสี้ยวเฮคาเต | 62g | 86% | +2.5 | +55 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีหรือใช้สกิลใส่เป้าเดิมครบ 3 ฮิตใน 2 วิ ระเบิด True Damage 8% Max HP (ต่อตัว ทุก 8 วิ) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
+| **Fang of the Midgard Serpent** `fms`<br>เขี้ยวพญางูมิดการ์ด | 58g | 66% ⚠️ | -3.8 | +55 AD · +20 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ดาเมจกินหลอดโล่แรงขึ้น 50% และเป้าที่โดนรับโล่ใหม่ได้น้อยลง 40% นาน 3 วิ | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
+| **Jabberwock's Vorpal Blade** `jvb`<br>ดาบวอร์พอลปลิดชีพ | 60g | 70% ⚠️ | -2.5 | +60 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ตีใส่ศัตรูที่เลือดต่ำกว่า 50% แถมดาเมจกายภาพ 100 (+40% Bonus AD) (ต่อตัว ทุก 6 วิ) | Huntsman's Skinning Dirk (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
+| **Thanatos' Reaping Scythe** `trs`<br>เคียวเก็บเกี่ยวทานาทอส | 64g | 78% | +0.0 | +50 AD · +15 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · สังหารหรือช่วยสังหาร รีเซ็ตคูลดาวน์ Q W E ทันที (ครั้งแรกครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Broken Sundial (5g) |
+| **Anubis' Death Mark** `adm`<br>มีดชี้ชะตาอนูบิส | 62g | 73% ⚠️ | +2.5 | +50 AD · +10 Ability Haste · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · ขว้างมีดใส่ศัตรูที่ใกล้ที่สุด สโลว์ 40% นาน 2 วิ และเป้ารับดาเมจจากเราแรงขึ้น 15% นาน 4 วิ (ทุก 35 วิ) | Huntsman's Skinning Dirk (15g) + Executioner's Nettle (14g) |
+| **Freyja's Shroud of Defiance** `fsd`<br>ผ้าคลุมท้าความตายเฟรยา | 64g | 78% | +6.3 | +50 AD · +15 Ability Haste · +10 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · โดนดาเมจที่จะตาย เลือดล็อกที่ 1 แล้วอมตะ 2 วิ (ครั้งเดียวต่อยก) | Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) + Nymph's Dewdrop (8g) |
+| **Wendigo's Voracious Claw** `wvc`<br>กรงเล็บตะกละเวนดิโก | 60g | 64% | -1.3 | +55 AD · +15 เจาะเกราะ (ลบเกราะเป้าก่อนคิดดาเมจกายภาพ) · ศัตรูคนแรกของไฟต์ที่เลือดเหลือต่ำกว่า 20% ของ Max HP จะโดนประหารทันที และได้เงินกระเป๋าแยกเพิ่ม 2 | Huntsman's Skinning Dirk (15g) + Fenrir's Chain-Link (14g) |
+| **Mordred's Usurping Blade** `mub`<br>ดาบทรยศมอร์เดรด | 62g | 111% | +0.0 | +45 AD · +15 Ability Haste · เจาะเกราะ 25% · เก็บศพหรือช่วยเก็บ ตัดคูลดาวน์อัลติที่เหลือทิ้ง 25% ของคูลดาวน์เต็ม | William Tell's Apple-Splitter (15g) + Huntsman's Skinning Dirk (15g) + Loki's Mistletoe Dagger (14g) |
 
 ### เวท (MAGE) — 17 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Thoth's Emerald Tablet** `tet`<br>ศิลาจารึกมรกตธอธ | 65g | 94% | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) | Circe's Yew Wand (15g) + Circe's Yew Wand (15g) |
-| **Eye of Horus** `eoh`<br>ดวงตาแห่งฮอรัส | 58g | 105% | +60 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที | Mimir's Whispering Head (16g) + Orpheus' Resonant Lyre (15g) |
-| **Kitsune's Foxfire Fan** `kff`<br>พัดเพลิงจิ้งจอกเก้าหาง | 60g | 75% ⚠️ | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน | Circe's Yew Wand (15g) + Crow Feather (5g) + Broken Sundial (5g) |
-| **Caliburn's Spellblade** `csb`<br>ดาบมนตราแคลิเบิร์น | 60g | 78% ⚠️ | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
-| **Surtr's Twilight Cinder** `stc`<br>เถ้าอัคคีสุรเทอร์ | 62g | 65% ⚠️ | +60 AP · +300 HP · ดาเมจเวทจุดไฟเผาเป้า 2% Max HP ต่อวินาที นาน 3 วิ | Cerridwen's Brewing Ladle (15g) + Witch's Banebloom (14g) |
-| **Lilith's Sanguine Grimoire** `lbg`<br>คัมภีร์โลหิตลิลิธ | 62g | 79% | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) | Cerridwen's Brewing Ladle (15g) + Lycaon's Gorging Fang (15g) |
-| **Yuki-onna's Frozen Scepter** `yfs`<br>คทาเหมันต์ยูกิอนนะ | 60g | 74% ⚠️ | +65 AP · +350 HP · สกิลที่โดนศัตรู สโลว์ 30% นาน 2 วิ | Cerridwen's Brewing Ladle (15g) + Circe's Yew Wand (15g) |
-| **Zephyrus' Gale Cloak** `zgc`<br>ผ้าคลุมวายุเซฟีรัส | 60g | 97% | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) + Straw Sandals (6g) |
-| **Nemesis' Vengeful Scales** `nvs`<br>ตราชั่งล้างแค้นเนเมซิส | 64g | 70% ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · แปะมาร์กเป้า 2.5 วิ ครบเวลาระเบิดซ้ำ 100 (+20% ดาเมจเวทที่สะสมไว้) (ทุก 25 วิ) | Circe's Yew Wand (15g) + Witch's Banebloom (14g) |
-| **Raijin's Thunder Drum** `rsd`<br>กลองอัสนีไรจิน | 62g | 73% ⚠️ | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · สายฟ้ากระโดด 3 ต่อ ระยะ 500 — ตัวแรก 80 + 25% AP · ตัวถัดไป 40 + 15% AP (คูลดาวน์ 10 วิ) · สกิลเวทถัดไปแรงขึ้น 80 (+25% AP) และชิ่งไปหาศัตรูข้างเคียง 3 ตัว 40 (+15% AP) (ทุก 12 วิ) | Circe's Yew Wand (15g) + Orpheus' Resonant Lyre (15g) + Broken Sundial (5g) |
-| **Hel's Nether Domain** `hnd`<br>แดนอเวจีแห่งเฮล | 62g | 94% ⚠️ | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% | Cerridwen's Brewing Ladle (15g) + Persephone's Asphodel (14g) |
-| **Merlin's Starbolt Staff** `mrt`<br>ไม้เท้าสะเก็ดดาวเมอร์ลิน | 60g | 63% ⚠️ | +70 AP · +10 Ability Haste · +15 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ยิงดาวตกใส่ศัตรูในระยะ 1200 ระเบิดรัศมี 200 หน่วย ดาเมจเวท 120 (+40% AP) (ทุก 25 วิ) | Circe's Yew Wand (15g) + Orpheus' Resonant Lyre (15g) |
-| **Norns' Thread of Weaving** `ntw`<br>เส้นด้ายลิขิตนอร์นส์ | 60g | 51% | +50 AP · +200 HP · +20 Ability Haste เฉพาะท่าไม้ตาย · ร่ายท่าไม้ตายแล้วได้ความเร็วเดิน +30% และ AP +20% นาน 4 วิ | Pied Piper's Fife (14g) + Cerridwen's Brewing Ladle (15g) |
-| **Jack's Giantbane Harp** `jbg`<br>พิณปราบยักษ์ของแจ็ค | 60g | 68% | +65 AP · +15 Ability Haste · ตีศัตรูที่เลือดมากกว่า 50% ของ Max HP แรงขึ้น 15% ทุกชนิด | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
-| **Amrita's Nectar Goblet** `ang`<br>จอกน้ำอมฤต | 60g | 104% ⚠️ | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP | Orpheus' Resonant Lyre (15g) + Cerridwen's Brewing Ladle (15g) |
-| **Morgana's Unravelling Thread** `mut`<br>เส้นด้ายคลายมนตร์มอร์กานา | 60g | 104% ⚠️ | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) | Cerridwen's Brewing Ladle (15g) + Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
-| **Sleeping Beauty's Spindle** `sbs`<br>กระสวยเจ้าหญิงนิทรา | 62g | 108% | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) | Circe's Yew Wand (15g) + Clockwork Carapace (14g) + Chainmail of the Nemean (14g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Thoth's Emerald Tablet** `tet`<br>ศิลาจารึกมรกตธอธ | 65g | 94% | +10.0 | +85 AP · +30% AP · ทุก 100 AP ที่มี แถมเจาะต้านเวทให้อีก 3 (คิดหลังคูณ AP% ของตัวมันเอง) | Circe's Yew Wand (15g) + Circe's Yew Wand (15g) |
+| **Eye of Horus** `eoh`<br>ดวงตาแห่งฮอรัส | 58g | 105% | +1.3 | +60 AP · +10 Ability Haste · เจาะต้านเวท 30% · สกิลเวทที่โดนแชมเปี้ยนจะเปิดตำแหน่งเป้า 2 วิ — คนล่องหนอยู่จะถูกเผยตัวทันที | Mimir's Whispering Head (16g) + Orpheus' Resonant Lyre (15g) |
+| **Kitsune's Foxfire Fan** `kff`<br>พัดเพลิงจิ้งจอกเก้าหาง | 60g | 75% ⚠️ | +0.0 | +50 AP · +30% ความเร็วโจมตี · +10 Ability Haste · ออโต้แถมดาเมจเวท 8 (+12% AP) ทุกครั้งที่ตีโดน | Circe's Yew Wand (15g) + Crow Feather (5g) + Broken Sundial (5g) |
+| **Caliburn's Spellblade** `csb`<br>ดาบมนตราแคลิเบิร์น | 60g | 78% ⚠️ | +3.8 | +60 AP · +15 Ability Haste · +5% ความเร็วเดิน · หลังร่ายสกิล ออโต้ครั้งถัดไปแถมดาเมจเวท 75% Base AD + 45% AP (ทุก 1.5 วิ) | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
+| **Surtr's Twilight Cinder** `stc`<br>เถ้าอัคคีสุรเทอร์ | 62g | 65% ⚠️ | +2.5 | +60 AP · +300 HP · ดาเมจเวทจุดไฟเผาเป้า 2% Max HP ต่อวินาที นาน 3 วิ | Cerridwen's Brewing Ladle (15g) + Witch's Banebloom (14g) |
+| **Lilith's Sanguine Grimoire** `lbg`<br>คัมภีร์โลหิตลิลิธ | 62g | 79% | -1.3 | +70 AP · +250 HP · +5% ดูดเลือด · เลือดเหลือ 50% หรือน้อยกว่า ได้ดูดเลือดเพิ่มอีก 10% (รวมเป็น 15%) | Cerridwen's Brewing Ladle (15g) + Lycaon's Gorging Fang (15g) |
+| **Yuki-onna's Frozen Scepter** `yfs`<br>คทาเหมันต์ยูกิอนนะ | 60g | 74% ⚠️ | +2.5 | +65 AP · +350 HP · สกิลที่โดนศัตรู สโลว์ 30% นาน 2 วิ | Cerridwen's Brewing Ladle (15g) + Circe's Yew Wand (15g) |
+| **Zephyrus' Gale Cloak** `zgc`<br>ผ้าคลุมวายุเซฟีรัส | 60g | 97% | +3.8 | +50 AP · +200 HP · +20 Ability Haste · +5% ความเร็วเดิน · ร่ายสกิลแล้วเร็วขึ้น 20% นาน 3 วิ · ทำดาเมจเวทแล้วได้ความเร็วเดิน +20% นาน 2 วิ (ไม่มีคูลดาวน์) | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) + Straw Sandals (6g) |
+| **Nemesis' Vengeful Scales** `nvs`<br>ตราชั่งล้างแค้นเนเมซิส | 64g | 70% ⚠️ | -3.8 | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ · แปะมาร์กเป้า 2.5 วิ ครบเวลาระเบิดซ้ำ 100 (+20% ดาเมจเวทที่สะสมไว้) (ทุก 25 วิ) | Circe's Yew Wand (15g) + Witch's Banebloom (14g) |
+| **Raijin's Thunder Drum** `rsd`<br>กลองอัสนีไรจิน | 62g | 73% ⚠️ | +2.5 | +75 AP · +15 Ability Haste · +20 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · สายฟ้ากระโดด 3 ต่อ ระยะ 500 — ตัวแรก 80 + 25% AP · ตัวถัดไป 40 + 15% AP (คูลดาวน์ 10 วิ) · สกิลเวทถัดไปแรงขึ้น 80 (+25% AP) และชิ่งไปหาศัตรูข้างเคียง 3 ตัว 40 (+15% AP) (ทุก 12 วิ) | Circe's Yew Wand (15g) + Orpheus' Resonant Lyre (15g) + Broken Sundial (5g) |
+| **Hel's Nether Domain** `hnd`<br>แดนอเวจีแห่งเฮล | 62g | 94% ⚠️ | +0.0 | +60 AP · +250 HP · +10 Ability Haste · ลดคูลดาวน์ท่าไม้ตาย 20% · ท่าไม้ตายทิ้งเขตไว้ รัศมี 600 นาน 4 วิ ทำดาเมจ 10 + 5% AP ต่อวินาที และลดต้านเวทเป้า 15% · ร่ายท่าไม้ตายแล้วเปิดวงน้ำแข็ง 450 หน่วย นาน 4 วิ เผา 20 (+10% AP) ต่อวินาที และลดต้านเวทศัตรูในวง 15% | Cerridwen's Brewing Ladle (15g) + Persephone's Asphodel (14g) |
+| **Merlin's Starbolt Staff** `mrt`<br>ไม้เท้าสะเก็ดดาวเมอร์ลิน | 60g | 63% ⚠️ | -1.3 | +70 AP · +10 Ability Haste · +15 เจาะต้านเวท (ลบต้านเวทเป้าก่อนคิดดาเมจเวท) · ยิงดาวตกใส่ศัตรูในระยะ 1200 ระเบิดรัศมี 200 หน่วย ดาเมจเวท 120 (+40% AP) (ทุก 25 วิ) | Circe's Yew Wand (15g) + Orpheus' Resonant Lyre (15g) |
+| **Norns' Thread of Weaving** `ntw`<br>เส้นด้ายลิขิตนอร์นส์ | 60g | 51% | -3.8 | +50 AP · +200 HP · +20 Ability Haste เฉพาะท่าไม้ตาย · ร่ายท่าไม้ตายแล้วได้ความเร็วเดิน +30% และ AP +20% นาน 4 วิ | Pied Piper's Fife (14g) + Cerridwen's Brewing Ladle (15g) |
+| **Jack's Giantbane Harp** `jbg`<br>พิณปราบยักษ์ของแจ็ค | 60g | 68% | +0.0 | +65 AP · +15 Ability Haste · ตีศัตรูที่เลือดมากกว่า 50% ของ Max HP แรงขึ้น 15% ทุกชนิด | Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
+| **Amrita's Nectar Goblet** `ang`<br>จอกน้ำอมฤต | 60g | 104% ⚠️ | +3.8 | +60 AP · +200 HP · +10 Ability Haste · เจาะต้านเวท 20% · สังหารหรือช่วยสังหารครั้งแรกของไฟต์ ฮีลทั้งทีม 100 + 35% AP | Orpheus' Resonant Lyre (15g) + Cerridwen's Brewing Ladle (15g) |
+| **Morgana's Unravelling Thread** `mut`<br>เส้นด้ายคลายมนตร์มอร์กานา | 60g | 104% ⚠️ | -3.8 | +85 AP · +250 HP · +15 Ability Haste · ดาเมจเวทใส่แชมเปี้ยนลดต้านเวทเป้า 5% นาน 4 วิ ซ้อนได้ 6 ชั้น (รวม 30%) | Cerridwen's Brewing Ladle (15g) + Circe's Yew Wand (15g) + Pied Piper's Fife (14g) |
+| **Sleeping Beauty's Spindle** `sbs`<br>กระสวยเจ้าหญิงนิทรา | 62g | 108% | +2.5 | +85 AP · +45 เกราะ · +15 Ability Haste · เลือดต่ำกว่า 30% เข้าสภาวะแช่แข็ง แตะไม่ได้และไม่กินดาเมจ 2 วิ (ทุก 45 วิ) | Circe's Yew Wand (15g) + Clockwork Carapace (14g) + Chainmail of the Nemean (14g) |
 
 ### มาร์คแมน (MARKSMAN) — 14 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Artemis' Silver Crescent** `asc`<br>จันทราเงินแห่งอาร์เทมิส | 62g | `พาสซีฟเขียนมือ` | +60 AD · +25% โอกาสคริ · ดาเมจคริแรงขึ้น 25% (รวมเป็น 200%) · ออโต้ที่ติดคริ ทำให้เป้าติดสโลว์ 20% นาน 1 วิ | Hou Yi's Sunpiercer Arrow (16g) + Dvalinn's Whetted Chisel (16g) |
-| **Swan Maiden's Feathered Cloak** `swf`<br>ปีกขนนกหญิงสาวหงส์ | 60g | `พาสซีฟเขียนมือ` | +60 AD · +25% โอกาสคริ · +8% ดูดเลือด · เลือดต่ำกว่า 30% รับโล่ 250 (+100% Bonus AD) นาน 4 วิ (ทุก 60 วิ) | Lamia's Blood Needle (15g) + Hou Yi's Sunpiercer Arrow (16g) |
-| **Sleipnir's Galloping Horseshoe** `slh`<br>เกือกม้าทะยานสเลปนีร์ | 58g | `พาสซีฟเขียนมือ` | +35 AD · +15% ความเร็วโจมตี · +25% โอกาสคริ · +5% ความเร็วเดิน · ทุก 10 วิ ออโต้ครั้งแรกได้ความเร็วเดิน +40% แล้วค่อยๆ จางหายใน 2.5 วิ | Atalanta's Swift Fletching (15g) + Crow Feather (5g) + Boar Tusk (7g) |
-| **William Tell's Sovereign Crossbow** `wtc`<br>หน้าไม้วิลเลียม เทลล์ | 60g | 135% | +55 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD | William Tell's Apple-Splitter (15g) + Hou Yi's Sunpiercer Arrow (16g) |
-| **Urd's Loom of Fate** `ulf`<br>กี่ทอชะตาอูร์ด | 62g | `พาสซีฟเขียนมือ` | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · +15 Ability Haste · ออโต้ลดคูลดาวน์ที่เหลือของ Q W E ลง 12% | Hou Yi's Sunpiercer Arrow (16g) + Broken Sundial (5g) + Boar Tusk (7g) |
-| **Indra's Vajra Dart** `ivd`<br>วัชระอัสนีอินทรา | 60g | `พาสซีฟเขียนมือ` | +55 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครบ 3 ครั้ง ระเบิด True Damage 60 (+35% Bonus AD) | Atalanta's Swift Fletching (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
-| **Bow of Eurytus** `boe`<br>คันศรแห่งยูริทัส | 58g | `พาสซีฟเขียนมือ` | +35 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ทุก 5 วิ ออโต้ครั้งถัดไปยิงไกลขึ้น 150 หน่วย และแถมดาเมจเวท 50 (+20% AP) | Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
-| **Shiva's Trishula** `sst`<br>ตรีศูลทำลายล้างพระศิวะ | 60g | `พาสซีฟเขียนมือ` | +45 AD · +30% ความเร็วโจมตี · เจาะเกราะ 30% · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Hiawatha's Tomahawk (13g) + Executioner's Nettle (14g) |
-| **Hephaestus' Twin Hammers** `hth`<br>ค้อนคู่ตีเหล็กเฮเฟสตัส | 62g | `พาสซีฟเขียนมือ` | +40 AD · +40 AP · +35% ความเร็วโจมตี · +10 Ability Haste · ออโต้ครั้งที่ 3 เบิ้ลผล on-hit ทั้งหมดซ้ำอีก 2 ครั้งในฮิตนั้น | Hiawatha's Tomahawk (13g) + Valkyrie's Twin Plumes (12g) + Broken Sundial (5g) |
-| **Apollo's Sunlit Quiver** `asq`<br>กระบอกศรสุริยันอพอลโล | 62g | `พาสซีฟเขียนมือ` | +60 AD · เลือด 50% ขึ้นไป ได้ +40 AD · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือด 15% แทน | Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
-| **Fafnir's Devouring Maw** `fdm`<br>ปากเขี้ยวฟาฟเนียร์ | 63g | 99% ⚠️ | +50 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) | Hiawatha's Tomahawk (13g) + Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
-| **Atalanta's Swift Quiver** `atq`<br>กระบอกศรอตาลันตา | 58g | 106% | +45 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) | Hou Yi's Sunpiercer Arrow (16g) + Atalanta's Swift Fletching (15g) + Crow Feather (5g) |
-| **Odysseus' Unstrung Bow** `oub`<br>คันศรที่ไม่มีใครน้าวไหว | 60g | 101% | +40 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ | Hou Yi's Sunpiercer Arrow (16g) + Valkyrie's Twin Plumes (12g) + Dvalinn's Whetted Chisel (16g) |
-| **Skadi's Triple Arrow** `sta`<br>ศรสามดอกสกาดี | 56g | 86% | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD | Valkyrie's Twin Plumes (12g) + Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Artemis' Silver Crescent** `asc`<br>จันทราเงินแห่งอาร์เทมิส | 62g | `พาสซีฟเขียนมือ` | +2.5 | +60 AD · +25% โอกาสคริ · ดาเมจคริแรงขึ้น 25% (รวมเป็น 200%) · ออโต้ที่ติดคริ ทำให้เป้าติดสโลว์ 20% นาน 1 วิ | Hou Yi's Sunpiercer Arrow (16g) + Dvalinn's Whetted Chisel (16g) |
+| **Swan Maiden's Feathered Cloak** `swf`<br>ปีกขนนกหญิงสาวหงส์ | 60g | `พาสซีฟเขียนมือ` | +1.3 | +60 AD · +25% โอกาสคริ · +8% ดูดเลือด · เลือดต่ำกว่า 30% รับโล่ 250 (+100% Bonus AD) นาน 4 วิ (ทุก 60 วิ) | Lamia's Blood Needle (15g) + Hou Yi's Sunpiercer Arrow (16g) |
+| **Sleipnir's Galloping Horseshoe** `slh`<br>เกือกม้าทะยานสเลปนีร์ | 58g | `พาสซีฟเขียนมือ` | +7.5 | +35 AD · +15% ความเร็วโจมตี · +25% โอกาสคริ · +5% ความเร็วเดิน · ทุก 10 วิ ออโต้ครั้งแรกได้ความเร็วเดิน +40% แล้วค่อยๆ จางหายใน 2.5 วิ | Atalanta's Swift Fletching (15g) + Crow Feather (5g) + Boar Tusk (7g) |
+| **William Tell's Sovereign Crossbow** `wtc`<br>หน้าไม้วิลเลียม เทลล์ | 60g | 135% | +3.8 | +55 AD · +25% โอกาสคริ · เจาะเกราะ 25% · ออโต้ครั้งแรกที่ลงศัตรูแต่ละตัวในไฟต์ พ่วงดาเมจจริงอีก 50% AD | William Tell's Apple-Splitter (15g) + Hou Yi's Sunpiercer Arrow (16g) |
+| **Urd's Loom of Fate** `ulf`<br>กี่ทอชะตาอูร์ด | 62g | `พาสซีฟเขียนมือ` | +7.5 | +20 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · +15 Ability Haste · ออโต้ลดคูลดาวน์ที่เหลือของ Q W E ลง 12% | Hou Yi's Sunpiercer Arrow (16g) + Broken Sundial (5g) + Boar Tusk (7g) |
+| **Indra's Vajra Dart** `ivd`<br>วัชระอัสนีอินทรา | 60g | `พาสซีฟเขียนมือ` | +13.8 | +55 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครบ 3 ครั้ง ระเบิด True Damage 60 (+35% Bonus AD) | Atalanta's Swift Fletching (15g) + Boar Tusk (7g) + Boar Tusk (7g) |
+| **Bow of Eurytus** `boe`<br>คันศรแห่งยูริทัส | 58g | `พาสซีฟเขียนมือ` | +12.5 | +35 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ทุก 5 วิ ออโต้ครั้งถัดไปยิงไกลขึ้น 150 หน่วย และแถมดาเมจเวท 50 (+20% AP) | Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
+| **Shiva's Trishula** `sst`<br>ตรีศูลทำลายล้างพระศิวะ | 60g | `พาสซีฟเขียนมือ` | +8.8 | +45 AD · +30% ความเร็วโจมตี · เจาะเกราะ 30% · ทำดาเมจใส่ใคร ตัดฮีลของเป้า 40% นาน 3 วิ | Hiawatha's Tomahawk (13g) + Executioner's Nettle (14g) |
+| **Hephaestus' Twin Hammers** `hth`<br>ค้อนคู่ตีเหล็กเฮเฟสตัส | 62g | `พาสซีฟเขียนมือ` | +11.3 | +40 AD · +40 AP · +35% ความเร็วโจมตี · +10 Ability Haste · ออโต้ครั้งที่ 3 เบิ้ลผล on-hit ทั้งหมดซ้ำอีก 2 ครั้งในฮิตนั้น | Hiawatha's Tomahawk (13g) + Valkyrie's Twin Plumes (12g) + Broken Sundial (5g) |
+| **Apollo's Sunlit Quiver** `asq`<br>กระบอกศรสุริยันอพอลโล | 62g | `พาสซีฟเขียนมือ` | +10.0 | +60 AD · เลือด 50% ขึ้นไป ได้ +40 AD · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือด 15% แทน | Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
+| **Fafnir's Devouring Maw** `fdm`<br>ปากเขี้ยวฟาฟเนียร์ | 63g | 99% ⚠️ | +11.3 | +50 AD · +25% ความเร็วโจมตี · +10% ดูดเลือด · ออโต้ทำดาเมจกายภาพเพิ่ม 8% (ประชิด) หรือ 5% (ระยะไกล) ของเลือดปัจจุบันเป้า · ตีเป้าเดิมครบ 3 ครั้ง ระเบิด 5% Max HP และขโมยความเร็วเดิน 20% นาน 2 วิ (ทุก 20 วิ ต่อเป้า) | Hiawatha's Tomahawk (13g) + Lamia's Blood Needle (15g) + Siren's Song-Flask (15g) |
+| **Atalanta's Swift Quiver** `atq`<br>กระบอกศรอตาลันตา | 58g | 106% | +6.3 | +45 AD · +20% ความเร็วโจมตี · +25% โอกาสคริ · ออโต้ครั้งแรกของการเข้าปะทะ ได้ความเร็วเดิน +35% แล้วค่อยๆ จางใน 2.5 วิ (ทุก 15 วิ) | Hou Yi's Sunpiercer Arrow (16g) + Atalanta's Swift Fletching (15g) + Crow Feather (5g) |
+| **Odysseus' Unstrung Bow** `oub`<br>คันศรที่ไม่มีใครน้าวไหว | 60g | 101% | +5.0 | +40 AD · +25% ความเร็วโจมตี · +25% โอกาสคริ · เก็บศพหรือช่วยเก็บ ได้ระยะโจมตี +100 และความเร็วเดิน +8% นาน 6 วิ | Hou Yi's Sunpiercer Arrow (16g) + Valkyrie's Twin Plumes (12g) + Dvalinn's Whetted Chisel (16g) |
+| **Skadi's Triple Arrow** `sta`<br>ศรสามดอกสกาดี | 56g | 86% | +12.5 | +35% ความเร็วโจมตี · +25% โอกาสคริ · +7% ความเร็วเดิน · ออโต้ยิงลูกเสริมใส่ศัตรูข้างเคียงอีก 2 ตัวในระยะ 500 ตัวละ 40% Total AD | Valkyrie's Twin Plumes (12g) + Atalanta's Swift Fletching (15g) + Icarus' Wax-Bound Wings (14g) |
 
 ### ซัพพอร์ต (SUPPORT) — 11 ชิ้น
 
-| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |
-|---|---:|---:|---|---|
-| **Asclepius' Twin Serpent Staff** `ats`<br>คทาอสรพิษคู่แอสคลีเปียส | 46g | `พาสซีฟเขียนมือ` | +45 AP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +12% · ฮีลหรือกางโล่ให้เพื่อน ส่งต่อผล 25% ให้เพื่อนที่เลือดเหลือน้อยสุดในระยะ 750 ด้วย | Idunn's Spring Water (13g) + Chiron's Chanted Ribbon (12g) |
-| **Aceso's Guiding Censer** `acb`<br>กระถางกำยานอเคโซ | 46g | `พาสซีฟเขียนมือ` | +50 AP · +10 Ability Haste · +25 ความเร็วเดิน · ฮีล/โล่ที่จ่ายให้เพื่อน +14% · ฮีลหรือกางโล่ให้เพื่อน ทั้งคู่ได้ 4 วิ · ความเร็วโจมตี +15% (+0.5% ต่อเลเวล) · ออโต้แถมดาเมจเวท 5 (+1.5 ต่อเลเวล) (+5% AP) | Idunn's Spring Water (13g) + Nymph's Graceful Veil (13g) |
-| **Saraswati's Flowing Veena** `sfv`<br>พิณธารปัญญาสรัสวดี | 46g | `พาสซีฟเขียนมือ` | +40 AP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ฮีลหรือกางโล่ให้เพื่อน ทั้งคู่ได้ 4 วิ · AP +13 (+1 ต่อเลเวล) · Ability Haste +15 | Idunn's Spring Water (13g) + Chiron's Chanted Ribbon (12g) |
-| **Yggdrasil's Radiant Heartwood** `yrh`<br>แก่นไม้อิกดราซิล | 48g | `พาสซีฟเขียนมือ` | +35 AP · +150 HP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ฮีล/โล่ที่จ่ายให้เพื่อน +4% ต่อไอเทม Tier 3 ที่ถืออยู่ (รวมชิ้นนี้) | Idunn's Spring Water (13g) + Nymph's Dewdrop (8g) |
-| **Eir's Sanctuary Bell** `esb`<br>ระฆังเขตบุญแห่งเออีร์ | 48g | `พาสซีฟเขียนมือ` | +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +12% · เพื่อนเลือดต่ำกว่า 40% กางวง 700 หน่วย อีก 2 วิ ฮีลทุกคนในวง 10% Max HP (ทุก 60 วิ) | Chiron's Chanted Ribbon (12g) + Nymph's Dewdrop (8g) |
-| **Aeolus' Bound Winds** `abw`<br>ถุงลมกักวายุแอโอลัส | 46g | `พาสซีฟเขียนมือ` | +40 AP · +10 Ability Haste · +20 ความเร็วเดิน · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · กดเองตามจังหวะ — เข้าปะทะ เพื่อนโดนสโลว์ หรือเพื่อนเลือดต่ำกว่าครึ่ง · เพื่อนในระยะ 700 ได้ความเร็วเดิน +20% ถึง +45% ตามเลเวล แล้วค่อยๆ จางใน 3 วิ (ทุก 20 วิ) | Nymph's Graceful Veil (13g) + Chiron's Chanted Ribbon (12g) |
-| **Hermes' Moly Blossom** `hmb`<br>ดอกโมลีแห่งเฮอร์มีส | 48g | `พาสซีฟเขียนมือ` | +30 AP · +100 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +15% · ล้างสถานะติดตัวทุกชนิดให้เพื่อนหรือตัวเองทันที (รวมสโลว์และใบ้) + กัน CC 1 วิ + ฮีล 50 (+6 ต่อเลเวล) (+25% AP) (ทุก 60 วิ) | Chiron's Chanted Ribbon (12g) + Idunn's Spring Water (13g) |
-| **Pridwen's Iron Bastion** `pib`<br>ป้อมปราการเหล็กพริตเวน | 48g | `พาสซีฟเขียนมือ` | +175 HP · +25 เกราะ · +25 ต้านเวท · เพื่อนเลือดต่ำกว่า 50% กางโล่ให้เพื่อนในระยะ 700 เท่ากับ 100 (+15 ต่อเลเวล) นาน 3 วิ (ทุก 60 วิ) | Gargoyle's Bastion (15g) + Nymph's Dewdrop (8g) |
-| **Gjallarhorn's War Clarion** `gwc`<br>แตรศึกกยัลลาร์ฮอร์น | 46g | `พาสซีฟเขียนมือ` | +250 HP · +30 เกราะ · +10 Ability Haste · ออร่ารอบตัว 600 หน่วย เพื่อนได้ความเร็วเดิน +15 และความเร็วโจมตี +10% ตลอดเวลาที่ยังไม่ตาย | Golem's Plated Rib (16g) + Straw Sandals (6g) |
-| **Oath of the Dioscuri** `ood`<br>คำสัตย์แห่งไดออสคูรี | 48g | `พาสซีฟเขียนมือ` | +250 HP · +30 เกราะ · ผูกกับเพื่อน 1 คน (เน้นแครี่) · รับดาเมจแทน 15% (หยุดเมื่อตัวเองเลือดต่ำกว่า 20%) · ฮีลตัวเอง 10% ของดาเมจที่เพื่อนทำได้ · เพื่อนตายแล้วผูกใหม่ใน 5 วิ | Golem's Plated Rib (16g) + Pendulum of Neverland (15g) |
-| **Ariadne's Guiding Thread** `agt`<br>เส้นด้ายนำทางอาเรียดเน | 48g | 105% | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) | Cerridwen's Brewing Ladle (15g) + Chiron's Chanted Ribbon (12g) + Idunn's Spring Water (13g) |
+| ไอเทม | ราคา | ความคุ้ม | เหนือฐาน | ค่าสถานะและพาสซีฟ | สร้างจาก |
+|---|---:|---:|---:|---|---|
+| **Asclepius' Twin Serpent Staff** `ats`<br>คทาอสรพิษคู่แอสคลีเปียส | 46g | `พาสซีฟเขียนมือ` | +2.5 | +45 AP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +12% · ฮีลหรือกางโล่ให้เพื่อน ส่งต่อผล 25% ให้เพื่อนที่เลือดเหลือน้อยสุดในระยะ 750 ด้วย | Idunn's Spring Water (13g) + Chiron's Chanted Ribbon (12g) |
+| **Aceso's Guiding Censer** `acb`<br>กระถางกำยานอเคโซ | 46g | `พาสซีฟเขียนมือ` | +11.3 | +50 AP · +10 Ability Haste · +25 ความเร็วเดิน · ฮีล/โล่ที่จ่ายให้เพื่อน +14% · ฮีลหรือกางโล่ให้เพื่อน ทั้งคู่ได้ 4 วิ · ความเร็วโจมตี +15% (+0.5% ต่อเลเวล) · ออโต้แถมดาเมจเวท 5 (+1.5 ต่อเลเวล) (+5% AP) | Idunn's Spring Water (13g) + Nymph's Graceful Veil (13g) |
+| **Saraswati's Flowing Veena** `sfv`<br>พิณธารปัญญาสรัสวดี | 46g | `พาสซีฟเขียนมือ` | +12.5 | +40 AP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ฮีลหรือกางโล่ให้เพื่อน ทั้งคู่ได้ 4 วิ · AP +13 (+1 ต่อเลเวล) · Ability Haste +15 | Idunn's Spring Water (13g) + Chiron's Chanted Ribbon (12g) |
+| **Yggdrasil's Radiant Heartwood** `yrh`<br>แก่นไม้อิกดราซิล | 48g | `พาสซีฟเขียนมือ` | +7.5 | +35 AP · +150 HP · +10 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ฮีล/โล่ที่จ่ายให้เพื่อน +4% ต่อไอเทม Tier 3 ที่ถืออยู่ (รวมชิ้นนี้) | Idunn's Spring Water (13g) + Nymph's Dewdrop (8g) |
+| **Eir's Sanctuary Bell** `esb`<br>ระฆังเขตบุญแห่งเออีร์ | 48g | `พาสซีฟเขียนมือ` | +6.3 | +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +12% · เพื่อนเลือดต่ำกว่า 40% กางวง 700 หน่วย อีก 2 วิ ฮีลทุกคนในวง 10% Max HP (ทุก 60 วิ) | Chiron's Chanted Ribbon (12g) + Nymph's Dewdrop (8g) |
+| **Aeolus' Bound Winds** `abw`<br>ถุงลมกักวายุแอโอลัส | 46g | `พาสซีฟเขียนมือ` | +12.5 | +40 AP · +10 Ability Haste · +20 ความเร็วเดิน · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · กดเองตามจังหวะ — เข้าปะทะ เพื่อนโดนสโลว์ หรือเพื่อนเลือดต่ำกว่าครึ่ง · เพื่อนในระยะ 700 ได้ความเร็วเดิน +20% ถึง +45% ตามเลเวล แล้วค่อยๆ จางใน 3 วิ (ทุก 20 วิ) | Nymph's Graceful Veil (13g) + Chiron's Chanted Ribbon (12g) |
+| **Hermes' Moly Blossom** `hmb`<br>ดอกโมลีแห่งเฮอร์มีส | 48g | `พาสซีฟเขียนมือ` | +10.0 | +30 AP · +100 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +15% · ล้างสถานะติดตัวทุกชนิดให้เพื่อนหรือตัวเองทันที (รวมสโลว์และใบ้) + กัน CC 1 วิ + ฮีล 50 (+6 ต่อเลเวล) (+25% AP) (ทุก 60 วิ) | Chiron's Chanted Ribbon (12g) + Idunn's Spring Water (13g) |
+| **Pridwen's Iron Bastion** `pib`<br>ป้อมปราการเหล็กพริตเวน | 48g | `พาสซีฟเขียนมือ` | +23.8 | +175 HP · +25 เกราะ · +25 ต้านเวท · เพื่อนเลือดต่ำกว่า 50% กางโล่ให้เพื่อนในระยะ 700 เท่ากับ 100 (+15 ต่อเลเวล) นาน 3 วิ (ทุก 60 วิ) | Gargoyle's Bastion (15g) + Nymph's Dewdrop (8g) |
+| **Gjallarhorn's War Clarion** `gwc`<br>แตรศึกกยัลลาร์ฮอร์น | 46g | `พาสซีฟเขียนมือ` | +17.5 | +250 HP · +30 เกราะ · +10 Ability Haste · ออร่ารอบตัว 600 หน่วย เพื่อนได้ความเร็วเดิน +15 และความเร็วโจมตี +10% ตลอดเวลาที่ยังไม่ตาย | Golem's Plated Rib (16g) + Straw Sandals (6g) |
+| **Oath of the Dioscuri** `ood`<br>คำสัตย์แห่งไดออสคูรี | 48g | `พาสซีฟเขียนมือ` | +10.0 | +250 HP · +30 เกราะ · ผูกกับเพื่อน 1 คน (เน้นแครี่) · รับดาเมจแทน 15% (หยุดเมื่อตัวเองเลือดต่ำกว่า 20%) · ฮีลตัวเอง 10% ของดาเมจที่เพื่อนทำได้ · เพื่อนตายแล้วผูกใหม่ใน 5 วิ | Golem's Plated Rib (16g) + Pendulum of Neverland (15g) |
+| **Ariadne's Guiding Thread** `agt`<br>เส้นด้ายนำทางอาเรียดเน | 48g | 105% | +15.0 | +35 AP · +250 HP · +15 Ability Haste · ฮีล/โล่ที่จ่ายให้เพื่อน +10% · ตีศัตรูที่ติดสโลว์หรือ CC อยู่ จะแปะตรานาน 4 วิ · ดาเมจครั้งถัดไปจากทีมเราแรงขึ้น 15% หนึ่งครั้ง (ทุก 8 วิ ต่อเป้า) | Cerridwen's Brewing Ladle (15g) + Chiron's Chanted Ribbon (12g) + Idunn's Spring Water (13g) |
 
