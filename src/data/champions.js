@@ -6,7 +6,7 @@ import { P4_CHAMPIONS } from "./champions-p4.js";
 const CORE_CHAMPIONS = {
   KAZEM: {
     id: "KAZEM", skillPriority: ["Q","E","W"], missile: 0, windup: 0.19, value: 0.7, th: "คาเซม", role: "Bruiser AD", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true,
-    hp: 645, hpG: 112, hp5: 9.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.8, mr: 32, mrG: 2.1,
+    hp: 645, hpG: 112, hp5: 9.5, hp5G: 0.85, ad: 33, adG: 2, armor: 38, armorG: 4.8, mr: 32, mrG: 2.1,
     as: 0.65, asG: 0.024, ms: 350, range: 175, omnivamp: 0.08, rage: 0.2,
     // ตัวเลขจริงของพาสซีฟอยู่ใน engine/kazem.js — ที่นี่เก็บไว้ให้หน้าข้อมูลอ่าน
     goldenTouch: { base: 40, perLevel: 10, bonusHp: 0.10, bonusAd: 0.60, cd: 14, cdAtMax: 12, cutOnCast: 4 },
@@ -33,7 +33,7 @@ const CORE_CHAMPIONS = {
   LUCH: {
     id: "LUCH", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.19, value: 1.0,
     th: "ลูช", role: "Skirmisher", lane: "TOP", alsoLanes: ["JUNGLE"], melee: true,
-    hp: 600, hpG: 105, hp5: 8.0, hp5G: 0.7, ad: 65, adG: 3.4, armor: 34, armorG: 4.4, mr: 32, mrG: 1.3,
+    hp: 600, hpG: 105, hp5: 8.0, hp5G: 0.7, ad: 33, adG: 1.7, armor: 34, armorG: 4.4, mr: 32, mrG: 1.3,
     as: 0.68, asG: 0.028, ms: 350, omnivamp: 0.08, range: 175,
     fragments: { max: 100, lightCost: 20, shadowCost: 100, onAuto: 20, perAh: 10, perAhRate: 2, oocSeconds: 5,
       lightDrPer10: 0.04, drCap: 0.40, darkChaseMs: 0.15 },
@@ -64,7 +64,7 @@ const CORE_CHAMPIONS = {
   ARIEL: {
     id: "ARIEL", skillPriority: ["W", "Q", "E"], missile: 0, windup: 0.2, value: 1.15,
     th: "แอเรียล", role: "Battle Mage", lane: "MID", melee: true,
-    hp: 630, hpG: 110, hp5: 6.0, hp5G: 0.45, ad: 58, adG: 3.2, armor: 34, armorG: 4.6, mr: 32, mrG: 1.6,
+    hp: 630, hpG: 110, hp5: 6.0, hp5G: 0.45, ad: 29, adG: 1.6, armor: 34, armorG: 4.6, mr: 32, mrG: 1.6,
     as: 0.64, asG: 0.022, ms: 345, range: 175,
     msPerAp: 10,
     // สเปคใหม่: ความเร็วเดินส่วนเกิน "ไม่บวกดาเมจ" อีกต่อไป แต่ไปเพิ่มคุณภาพของทุกสกิลแทน
@@ -97,7 +97,7 @@ const CORE_CHAMPIONS = {
   ALUCARD: {
     id: "ALUCARD", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.19, value: 1.0,
     th: "อลูคาร์ด", role: "Diver", lane: "JUNGLE", melee: true, rage: 0.15,
-    hp: 625, hpG: 112, hp5: 9.0, hp5G: 0.8, ad: 67, adG: 3.7, armor: 36, armorG: 4.4, mr: 32, mrG: 2.0,
+    hp: 625, hpG: 112, hp5: 9.0, hp5G: 0.8, ad: 34, adG: 1.85, armor: 36, armorG: 4.4, mr: 32, mrG: 2.0,
     as: 0.67, asG: 0.025, ms: 355, range: 175,
     vamp: { base: 0.0575, perLevel: 0.0025, perBonusHp: 0.01 / 100, overShield: 3 },
     passive: { th: "Bloodline of Dracul", desc: "Omnivamp 5.75% + 0.25% ต่อเลเวล + 1% ต่อ Bonus HP ทุก 100 · ฮีลส่วนที่ล้นเลือดเต็มกลายเป็นโล่ที่สลายใน 3 วิ" },
@@ -126,7 +126,7 @@ const CORE_CHAMPIONS = {
   PINO: {
     id: "PINO", skillPriority: ["W", "Q", "E"], missile: 1500, windup: 0.32, value: 1.0,
     th: "พิน็อกคิโอ", role: "Enchanter", lane: "SUPPORT", melee: false,
-    hp: 610, hpG: 98, hp5: 7.0, hp5G: 0.55, ad: 50, adG: 2.8, armor: 31, armorG: 4.4, mr: 30, mrG: 1.3,
+    hp: 610, hpG: 98, hp5: 7.0, hp5G: 0.55, ad: 25, adG: 1.4, armor: 31, armorG: 4.4, mr: 30, mrG: 1.3,
     as: 0.62, asG: 0.02, ms: 330, range: 550,
     // สเปคใหม่: ฮีลเป็น "ตัวเลขตรงๆ" ไม่ใช่ % Max HP อีกแล้ว (แทงค์ไม่ได้ฮีลเยอะเกินตัว)
     kindness: { radius: 1200, flat: 8, perLevel: 1.2, perAp: 0.06,
@@ -152,7 +152,7 @@ const CORE_CHAMPIONS = {
   TRISTAN: {
     id: "TRISTAN", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.19, value: 1.0,
     th: "ทริสตัน", role: "Skirmisher", lane: "TOP", melee: true, rage: 0.15,
-    hp: 610, hpG: 108, hp5: 10.0, hp5G: 0.9, ad: 66, adG: 3.5, armor: 35, armorG: 4.4, mr: 32, mrG: 1.3,
+    hp: 610, hpG: 108, hp5: 10.0, hp5G: 0.9, ad: 33, adG: 1.75, armor: 35, armorG: 4.4, mr: 32, mrG: 1.3,
     as: 0.68, asG: 0.03, ms: 350, range: 175,
     isolde: { need: 100, onAuto: 5, onCrit: 10, onSkill: 10, onTaken: 3,
       base: 0.0125, perLevel: 0.0025, perAd: 0.015 / 100, shield: true, shieldDur: 5 },
@@ -180,7 +180,7 @@ const CORE_CHAMPIONS = {
   "C.HOOK": {
     id: "C.HOOK", skillPriority: ["Q", "W", "E"], missile: 1650, windup: 0.32, value: 1.35,
     th: "กัปตันฮุค", role: "Marksman", lane: "ADC", melee: false,
-    hp: 565, hpG: 98, hp5: 5.5, hp5G: 0.4, ad: 61, adG: 3.4, armor: 42, armorG: 4.0, mr: 30, mrG: 1.3,
+    hp: 565, hpG: 98, hp5: 5.5, hp5G: 0.4, ad: 31, adG: 1.7, armor: 42, armorG: 4.0, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.03, ms: 330, range: 550,
     bounty: { perKill: 5, perAssist: 5, perRound: 10, perCrit: 1, price: 150, doubleCap: 4 },
     passive: { th: "Plunder", desc: "เงินแยกกระเป๋า สะสมข้ามยก ขายคืนไม่ได้ · ยกที่ฟาร์มเฉยๆ ได้ +10 · ยกที่ได้ลงไฟต์ เงินคูณสองขึ้นไปเรื่อยๆ 10 → 20 → 40 → 80 → 160 แล้วคงที่ · สังหารหรือช่วยสังหาร +5 · คริติคอลได้ +1 (ทั้งออโต้และ Q) · อัพเกรดชิ้นละ 150" },
@@ -206,7 +206,7 @@ const CORE_CHAMPIONS = {
   PETER: {
     id: "PETER", skillPriority: ["Q", "W", "E"], missile: 1700, windup: 0.32, value: 1.35,
     th: "ปีเตอร์แพน", role: "Marksman", lane: "ADC", melee: false,
-    hp: 555, hpG: 96, hp5: 5.5, hp5G: 0.4, ad: 60, adG: 3.3, armor: 24, armorG: 4.3, mr: 30, mrG: 1.3,
+    hp: 555, hpG: 96, hp5: 5.5, hp5G: 0.4, ad: 30, adG: 1.65, armor: 24, armorG: 4.3, mr: 30, mrG: 1.3,
     as: 0.67, asG: 0.028, ms: 335, range: 550,
     stillKids: { per: 0.05, max: 5, dur: 5 },
     passive: { th: "Never Grow Up", desc: "สกิลที่โดนศัตรู +5% ความเร็วโจมตี สูงสุด 5 ชั้น อยู่ 5 วิ" },
@@ -231,7 +231,7 @@ const CORE_CHAMPIONS = {
   LAURA: {
     id: "LAURA", skillPriority: ["Q", "E", "W"], missile: 1400, windup: 0.3, value: 1.2,
     th: "ลอร่า", role: "Battle Mage", lane: "MID", melee: false,
-    hp: 590, hpG: 100, hp5: 6.5, hp5G: 0.5, ad: 54, adG: 3.0, armor: 28, armorG: 4.2, mr: 30, mrG: 1.2,
+    hp: 590, hpG: 100, hp5: 6.5, hp5G: 0.5, ad: 27, adG: 1.5, armor: 28, armorG: 4.2, mr: 30, mrG: 1.2,
     as: 0.63, asG: 0.021, ms: 335, range: 500,
     // พาสซีฟ — สกิลโดนแชมเปี้ยนศัตรูแล้วดูดเลือดสูงสุดมาเป็นของตัวเอง
     sanguine: { perHit: 1, perTakedown: 5, perRound: 5, hpPerStack: 7, max: 0 },
@@ -258,7 +258,7 @@ const CORE_CHAMPIONS = {
   FAUSTUS: {
     id: "FAUSTUS", skillPriority: ["Q", "W", "E"], missile: 1500, windup: 0.32, value: 1.25,
     th: "ดร. เฟาสตุส", role: "Artillery Mage", lane: "MID", melee: false,
-    hp: 540, hpG: 90, hp5: 5, hp5G: 0.4, ad: 50, adG: 2.8, armor: 25, armorG: 4.5, mr: 30, mrG: 1.2,
+    hp: 540, hpG: 90, hp5: 5, hp5G: 0.4, ad: 25, adG: 1.4, armor: 25, armorG: 4.5, mr: 30, mrG: 1.2,
     as: 0.62, asG: 0.02, ms: 330, range: 525,
     // พันธสัญญากับมาร — ทุกสกิลพ่วงดาเมจจริงอีกก้อน คิดเป็น % ของดาเมจต้น
     faustian: { base: 0.10, perAp: 0.01 / 100, cap: 0.5 },
@@ -286,7 +286,7 @@ const CORE_CHAMPIONS = {
   KLAEDER: {
     id: "KLAEDER", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.19, value: 1.1,
     th: "เคลเดอร์", role: "Vanguard", lane: "TOP", melee: true, rage: 0.15,
-    hp: 660, hpG: 115, hp5: 10, hp5G: 0.8, ad: 60, adG: 3.5, armor: 40, armorG: 5, mr: 30, mrG: 1.5,
+    hp: 660, hpG: 115, hp5: 10, hp5G: 0.8, ad: 30, adG: 1.75, armor: 40, armorG: 5, mr: 30, mrG: 1.5,
     as: 0.64, asG: 0.022, ms: 350, range: 175,
     // ภูษาทอประกายลวงตา — โดนดาเมจชนิดไหนก็ทอเส้นใยกันชนิดนั้น รวมกันไม่เกิน 20 ชั้น
     weave: { max: 20, dur: 6, pctBase: 0.10, pctPer500: 0.05, pctCap: 9, msBase: 0.10, msPer500: 0.05, msCap: 0.20 },
@@ -318,7 +318,7 @@ const CORE_CHAMPIONS = {
   ALICE: {
     id: "ALICE", skillPriority: ["Q", "W", "E"], missile: 1500, windup: 0.3, value: 1.15,
     th: "อลิซ", role: "Controller", lane: "SUPPORT", melee: false,
-    hp: 570, hpG: 95, hp5: 7, hp5G: 0.5, ad: 50, adG: 2.8, armor: 25, armorG: 4, mr: 30, mrG: 1.3,
+    hp: 570, hpG: 95, hp5: 7, hp5G: 0.5, ad: 25, adG: 1.4, armor: 25, armorG: 4, mr: 30, mrG: 1.3,
     as: 0.62, asG: 0.02, ms: 330, range: 550,
     // ตราประทับกระต่ายขาว — เป้าที่โดนสกิลจะรับดาเมจจากทุกแหล่งแรงขึ้น
     curious: { dur: 3, base: 0.025, perAp: 0.02 / 100 },

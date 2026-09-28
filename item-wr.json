@@ -46,359 +46,343 @@
   ]
  },
  "baseline": {
-  "TANK": 45,
-  "FIGHTER": 46.3,
-  "ASSASSIN": 50,
+  "TANK": 53.8,
+  "FIGHTER": 47.5,
+  "ASSASSIN": 43.8,
   "MAGE": 47.5,
-  "MARKSMAN": 46.3,
+  "MARKSMAN": 37.5,
   "SUPPORT": 56.3
  },
  "cats": [
   {
    "cat": "TANK",
    "n": 14,
-   "wr": 56.3,
-   "edge": 6.3,
+   "wr": 60,
+   "edge": 10,
    "margin": 2.9
   },
   {
    "cat": "FIGHTER",
    "n": 11,
-   "wr": 52.7,
-   "edge": 2.7,
+   "wr": 56.8,
+   "edge": 6.8,
    "margin": 3.3
   },
   {
    "cat": "ASSASSIN",
    "n": 11,
-   "wr": 49.7,
-   "edge": -0.3,
+   "wr": 46.8,
+   "edge": -3.2,
    "margin": 3.3
   },
   {
    "cat": "MAGE",
    "n": 17,
-   "wr": 51.1,
-   "edge": 1.1,
+   "wr": 52.3,
+   "edge": 2.3,
    "margin": 2.7
   },
   {
    "cat": "MARKSMAN",
    "n": 14,
-   "wr": 58.1,
-   "edge": 8.1,
+   "wr": 53.2,
+   "edge": 3.2,
    "margin": 2.9
   },
   {
    "cat": "SUPPORT",
    "n": 11,
-   "wr": 61.7,
-   "edge": 11.7,
+   "wr": 61.9,
+   "edge": 11.9,
    "margin": 3.3
   }
  ],
  "rows": [
   {
-   "id": "pib",
-   "cat": "SUPPORT",
-   "cost": 48,
-   "name": "Pridwen's Iron Bastion",
-   "wr": 73.8,
-   "edge": 23.8
-  },
-  {
    "id": "gwc",
    "cat": "SUPPORT",
    "cost": 46,
    "name": "Gjallarhorn's War Clarion",
-   "wr": 67.5,
-   "edge": 17.5
-  },
-  {
-   "id": "agt",
-   "cat": "SUPPORT",
-   "cost": 48,
-   "name": "Ariadne's Guiding Thread",
-   "wr": 65,
-   "edge": 15
-  },
-  {
-   "id": "ivd",
-   "cat": "MARKSMAN",
-   "cost": 60,
-   "name": "Indra's Vajra Dart",
-   "wr": 63.8,
-   "edge": 13.8
-  },
-  {
-   "id": "mww",
-   "cat": "TANK",
-   "cost": 58,
-   "name": "Mímir's Whispering Well",
-   "wr": 63.8,
-   "edge": 13.8
+   "wr": 73.8,
+   "edge": 23.8
   },
   {
    "id": "boe",
    "cat": "MARKSMAN",
    "cost": 58,
    "name": "Bow of Eurytus",
-   "wr": 62.5,
-   "edge": 12.5
+   "wr": 65,
+   "edge": 15
   },
   {
    "id": "sfv",
    "cat": "SUPPORT",
    "cost": 46,
    "name": "Saraswati's Flowing Veena",
-   "wr": 62.5,
-   "edge": 12.5
-  },
-  {
-   "id": "abw",
-   "cat": "SUPPORT",
-   "cost": 46,
-   "name": "Aeolus' Bound Winds",
-   "wr": 62.5,
-   "edge": 12.5
-  },
-  {
-   "id": "sta",
-   "cat": "MARKSMAN",
-   "cost": 56,
-   "name": "Skadi's Triple Arrow",
-   "wr": 62.5,
-   "edge": 12.5
-  },
-  {
-   "id": "hth",
-   "cat": "MARKSMAN",
-   "cost": 62,
-   "name": "Hephaestus' Twin Hammers",
-   "wr": 61.3,
-   "edge": 11.3
-  },
-  {
-   "id": "acb",
-   "cat": "SUPPORT",
-   "cost": 46,
-   "name": "Aceso's Guiding Censer",
-   "wr": 61.3,
-   "edge": 11.3
-  },
-  {
-   "id": "fdm",
-   "cat": "MARKSMAN",
-   "cost": 63,
-   "name": "Fafnir's Devouring Maw",
-   "wr": 61.3,
-   "edge": 11.3
-  },
-  {
-   "id": "tet",
-   "cat": "MAGE",
-   "cost": 65,
-   "name": "Thoth's Emerald Tablet",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "asq",
-   "cat": "MARKSMAN",
-   "cost": 62,
-   "name": "Apollo's Sunlit Quiver",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "hmb",
-   "cat": "SUPPORT",
-   "cost": 48,
-   "name": "Hermes' Moly Blossom",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "ood",
-   "cat": "SUPPORT",
-   "cost": 48,
-   "name": "Oath of the Dioscuri",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "cij",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Cuirass of the Iron John",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "mot",
-   "cat": "TANK",
-   "cost": 58,
-   "name": "Mirror of Truth",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "soo",
-   "cat": "FIGHTER",
-   "cost": 64,
-   "name": "Shroud of Osiris",
-   "wr": 60,
-   "edge": 10
-  },
-  {
-   "id": "sst",
-   "cat": "MARKSMAN",
-   "cost": 60,
-   "name": "Shiva's Trishula",
-   "wr": 58.8,
-   "edge": 8.8
+   "wr": 65,
+   "edge": 15
   },
   {
    "id": "sab",
    "cat": "TANK",
    "cost": 64,
    "name": "Siren's Abyssal Bell",
-   "wr": 58.8,
-   "edge": 8.8
+   "wr": 65,
+   "edge": 15
+  },
+  {
+   "id": "ats",
+   "cat": "SUPPORT",
+   "cost": 46,
+   "name": "Asclepius' Twin Serpent Staff",
+   "wr": 63.8,
+   "edge": 13.8
+  },
+  {
+   "id": "acb",
+   "cat": "SUPPORT",
+   "cost": 46,
+   "name": "Aceso's Guiding Censer",
+   "wr": 63.8,
+   "edge": 13.8
+  },
+  {
+   "id": "abw",
+   "cat": "SUPPORT",
+   "cost": 46,
+   "name": "Aeolus' Bound Winds",
+   "wr": 63.8,
+   "edge": 13.8
+  },
+  {
+   "id": "pib",
+   "cat": "SUPPORT",
+   "cost": 48,
+   "name": "Pridwen's Iron Bastion",
+   "wr": 63.8,
+   "edge": 13.8
   },
   {
    "id": "gbs",
    "cat": "TANK",
    "cost": 64,
    "name": "Gleipnir's Binding Shackles",
-   "wr": 58.8,
-   "edge": 8.8
-  },
-  {
-   "id": "slh",
-   "cat": "MARKSMAN",
-   "cost": 58,
-   "name": "Sleipnir's Galloping Horseshoe",
-   "wr": 57.5,
-   "edge": 7.5
-  },
-  {
-   "id": "ulf",
-   "cat": "MARKSMAN",
-   "cost": 62,
-   "name": "Urd's Loom of Fate",
-   "wr": 57.5,
-   "edge": 7.5
+   "wr": 63.8,
+   "edge": 13.8
   },
   {
    "id": "yrh",
    "cat": "SUPPORT",
    "cost": 48,
    "name": "Yggdrasil's Radiant Heartwood",
-   "wr": 57.5,
-   "edge": 7.5
-  },
-  {
-   "id": "pmh",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Prometheus' Hearth",
-   "wr": 57.5,
-   "edge": 7.5
-  },
-  {
-   "id": "mgc",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Mjölnir's Grounding Cloak",
-   "wr": 57.5,
-   "edge": 7.5
-  },
-  {
-   "id": "esb",
-   "cat": "SUPPORT",
-   "cost": 48,
-   "name": "Eir's Sanctuary Bell",
-   "wr": 56.3,
-   "edge": 6.3
-  },
-  {
-   "id": "biv",
-   "cat": "FIGHTER",
-   "cost": 62,
-   "name": "Blade of the Impaled Voivode",
-   "wr": 56.3,
-   "edge": 6.3
-  },
-  {
-   "id": "cbc",
-   "cat": "FIGHTER",
-   "cost": 62,
-   "name": "Cuirass of the Bleeding Centaur",
-   "wr": 56.3,
-   "edge": 6.3
-  },
-  {
-   "id": "fsd",
-   "cat": "ASSASSIN",
-   "cost": 64,
-   "name": "Freyja's Shroud of Defiance",
-   "wr": 56.3,
-   "edge": 6.3
-  },
-  {
-   "id": "atq",
-   "cat": "MARKSMAN",
-   "cost": 58,
-   "name": "Atalanta's Swift Quiver",
-   "wr": 56.3,
-   "edge": 6.3
-  },
-  {
-   "id": "hwg",
-   "cat": "TANK",
-   "cost": 45,
-   "name": "Heimdall's Warding Horn",
-   "wr": 56.3,
-   "edge": 6.3
+   "wr": 62.5,
+   "edge": 12.5
   },
   {
    "id": "msq",
    "cat": "TANK",
    "cost": 60,
    "name": "Mirror of the Snow Queen",
-   "wr": 55,
-   "edge": 5
+   "wr": 62.5,
+   "edge": 12.5
   },
   {
-   "id": "hga",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Holy Grail of Avalon",
-   "wr": 55,
-   "edge": 5
-  },
-  {
-   "id": "cbg",
+   "id": "biv",
    "cat": "FIGHTER",
    "cost": 62,
-   "name": "Cleaver of the Gorgon's Bane",
-   "wr": 55,
-   "edge": 5
+   "name": "Blade of the Impaled Voivode",
+   "wr": 62.5,
+   "edge": 12.5
+  },
+  {
+   "id": "soo",
+   "cat": "FIGHTER",
+   "cost": 64,
+   "name": "Shroud of Osiris",
+   "wr": 62.5,
+   "edge": 12.5
+  },
+  {
+   "id": "mww",
+   "cat": "TANK",
+   "cost": 58,
+   "name": "Mímir's Whispering Well",
+   "wr": 62.5,
+   "edge": 12.5
+  },
+  {
+   "id": "agt",
+   "cat": "SUPPORT",
+   "cost": 48,
+   "name": "Ariadne's Guiding Thread",
+   "wr": 62.5,
+   "edge": 12.5
+  },
+  {
+   "id": "nlm",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Nemean Lion's Mane",
+   "wr": 61.3,
+   "edge": 11.3
+  },
+  {
+   "id": "hwg",
+   "cat": "TANK",
+   "cost": 45,
+   "name": "Heimdall's Warding Horn",
+   "wr": 61.3,
+   "edge": 11.3
+  },
+  {
+   "id": "pmh",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Prometheus' Hearth",
+   "wr": 60,
+   "edge": 10
+  },
+  {
+   "id": "mgc",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Mjölnir's Grounding Cloak",
+   "wr": 60,
+   "edge": 10
+  },
+  {
+   "id": "aoi",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Apple of Idunn",
+   "wr": 60,
+   "edge": 10
+  },
+  {
+   "id": "lex",
+   "cat": "FIGHTER",
+   "cost": 64,
+   "name": "The Legendary Excalibur",
+   "wr": 60,
+   "edge": 10
+  },
+  {
+   "id": "sta",
+   "cat": "MARKSMAN",
+   "cost": 56,
+   "name": "Skadi's Triple Arrow",
+   "wr": 60,
+   "edge": 10
+  },
+  {
+   "id": "slh",
+   "cat": "MARKSMAN",
+   "cost": 58,
+   "name": "Sleipnir's Galloping Horseshoe",
+   "wr": 58.8,
+   "edge": 8.8
+  },
+  {
+   "id": "cij",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Cuirass of the Iron John",
+   "wr": 58.8,
+   "edge": 8.8
+  },
+  {
+   "id": "bdc",
+   "cat": "FIGHTER",
+   "cost": 60,
+   "name": "Balmung's Dragon-Cleaver",
+   "wr": 58.8,
+   "edge": 8.8
+  },
+  {
+   "id": "dss",
+   "cat": "FIGHTER",
+   "cost": 64,
+   "name": "Draupnir's Sovereign Signet",
+   "wr": 58.8,
+   "edge": 8.8
   },
   {
    "id": "ahe",
    "cat": "TANK",
    "cost": 58,
    "name": "Argus' Hundred Eyes",
-   "wr": 55,
-   "edge": 5
+   "wr": 58.8,
+   "edge": 8.8
   },
   {
-   "id": "oub",
+   "id": "ivd",
    "cat": "MARKSMAN",
    "cost": 60,
-   "name": "Odysseus' Unstrung Bow",
+   "name": "Indra's Vajra Dart",
+   "wr": 57.5,
+   "edge": 7.5
+  },
+  {
+   "id": "mot",
+   "cat": "TANK",
+   "cost": 58,
+   "name": "Mirror of Truth",
+   "wr": 57.5,
+   "edge": 7.5
+  },
+  {
+   "id": "cbg",
+   "cat": "FIGHTER",
+   "cost": 62,
+   "name": "Cleaver of the Gorgon's Bane",
+   "wr": 57.5,
+   "edge": 7.5
+  },
+  {
+   "id": "pnb",
+   "cat": "FIGHTER",
+   "cost": 60,
+   "name": "Pauldrons of the Nian Beast",
+   "wr": 57.5,
+   "edge": 7.5
+  },
+  {
+   "id": "ang",
+   "cat": "MAGE",
+   "cost": 60,
+   "name": "Amrita's Nectar Goblet",
+   "wr": 56.3,
+   "edge": 6.3
+  },
+  {
+   "id": "hth",
+   "cat": "MARKSMAN",
+   "cost": 62,
+   "name": "Hephaestus' Twin Hammers",
+   "wr": 56.3,
+   "edge": 6.3
+  },
+  {
+   "id": "hmb",
+   "cat": "SUPPORT",
+   "cost": 48,
+   "name": "Hermes' Moly Blossom",
+   "wr": 56.3,
+   "edge": 6.3
+  },
+  {
+   "id": "hga",
+   "cat": "TANK",
+   "cost": 60,
+   "name": "Holy Grail of Avalon",
+   "wr": 56.3,
+   "edge": 6.3
+  },
+  {
+   "id": "kff",
+   "cat": "MAGE",
+   "cost": 60,
+   "name": "Kitsune's Foxfire Fan",
    "wr": 55,
    "edge": 5
   },
@@ -407,62 +391,102 @@
    "cat": "MAGE",
    "cost": 60,
    "name": "Caliburn's Spellblade",
-   "wr": 53.8,
-   "edge": 3.8
+   "wr": 55,
+   "edge": 5
   },
   {
    "id": "zgc",
    "cat": "MAGE",
    "cost": 60,
    "name": "Zephyrus' Gale Cloak",
-   "wr": 53.8,
-   "edge": 3.8
+   "wr": 55,
+   "edge": 5
   },
   {
-   "id": "ang",
-   "cat": "MAGE",
-   "cost": 60,
-   "name": "Amrita's Nectar Goblet",
-   "wr": 53.8,
-   "edge": 3.8
-  },
-  {
-   "id": "wtc",
-   "cat": "MARKSMAN",
-   "cost": 60,
-   "name": "William Tell's Sovereign Crossbow",
-   "wr": 53.8,
-   "edge": 3.8
-  },
-  {
-   "id": "nlm",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Nemean Lion's Mane",
-   "wr": 53.8,
-   "edge": 3.8
-  },
-  {
-   "id": "pnb",
-   "cat": "FIGHTER",
-   "cost": 60,
-   "name": "Pauldrons of the Nian Beast",
-   "wr": 53.8,
-   "edge": 3.8
-  },
-  {
-   "id": "stc",
+   "id": "hnd",
    "cat": "MAGE",
    "cost": 62,
-   "name": "Surtr's Twilight Cinder",
-   "wr": 52.5,
-   "edge": 2.5
+   "name": "Hel's Nether Domain",
+   "wr": 55,
+   "edge": 5
+  },
+  {
+   "id": "cbc",
+   "cat": "FIGHTER",
+   "cost": 62,
+   "name": "Cuirass of the Bleeding Centaur",
+   "wr": 55,
+   "edge": 5
+  },
+  {
+   "id": "cco",
+   "cat": "FIGHTER",
+   "cost": 62,
+   "name": "Colossal Club of the Oni",
+   "wr": 55,
+   "edge": 5
+  },
+  {
+   "id": "fdm",
+   "cat": "MARKSMAN",
+   "cost": 63,
+   "name": "Fafnir's Devouring Maw",
+   "wr": 55,
+   "edge": 5
+  },
+  {
+   "id": "tet",
+   "cat": "MAGE",
+   "cost": 65,
+   "name": "Thoth's Emerald Tablet",
+   "wr": 53.8,
+   "edge": 3.8
+  },
+  {
+   "id": "lbg",
+   "cat": "MAGE",
+   "cost": 62,
+   "name": "Lilith's Sanguine Grimoire",
+   "wr": 53.8,
+   "edge": 3.8
   },
   {
    "id": "yfs",
    "cat": "MAGE",
    "cost": 60,
    "name": "Yuki-onna's Frozen Scepter",
+   "wr": 53.8,
+   "edge": 3.8
+  },
+  {
+   "id": "sst",
+   "cat": "MARKSMAN",
+   "cost": 60,
+   "name": "Shiva's Trishula",
+   "wr": 53.8,
+   "edge": 3.8
+  },
+  {
+   "id": "esb",
+   "cat": "SUPPORT",
+   "cost": 48,
+   "name": "Eir's Sanctuary Bell",
+   "wr": 53.8,
+   "edge": 3.8
+  },
+  {
+   "id": "sbs",
+   "cat": "MAGE",
+   "cost": 62,
+   "name": "Sleeping Beauty's Spindle",
+   "wr": 53.8,
+   "edge": 3.8
+  },
+  {
+   "id": "eoh",
+   "cat": "MAGE",
+   "cost": 58,
+   "name": "Eye of Horus",
    "wr": 52.5,
    "edge": 2.5
   },
@@ -475,180 +499,124 @@
    "edge": 2.5
   },
   {
-   "id": "asc",
+   "id": "ulf",
    "cat": "MARKSMAN",
    "cost": 62,
-   "name": "Artemis' Silver Crescent",
+   "name": "Urd's Loom of Fate",
    "wr": 52.5,
    "edge": 2.5
   },
   {
-   "id": "ats",
+   "id": "ood",
    "cat": "SUPPORT",
-   "cost": 46,
-   "name": "Asclepius' Twin Serpent Staff",
+   "cost": 48,
+   "name": "Oath of the Dioscuri",
    "wr": 52.5,
    "edge": 2.5
   },
   {
-   "id": "htc",
-   "cat": "ASSASSIN",
-   "cost": 62,
-   "name": "Hecate's Triple Crescent",
-   "wr": 52.5,
-   "edge": 2.5
-  },
-  {
-   "id": "adm",
-   "cat": "ASSASSIN",
-   "cost": 62,
-   "name": "Anubis' Death Mark",
-   "wr": 52.5,
-   "edge": 2.5
-  },
-  {
-   "id": "lex",
-   "cat": "FIGHTER",
-   "cost": 64,
-   "name": "The Legendary Excalibur",
-   "wr": 52.5,
-   "edge": 2.5
-  },
-  {
-   "id": "sbs",
-   "cat": "MAGE",
-   "cost": 62,
-   "name": "Sleeping Beauty's Spindle",
-   "wr": 52.5,
-   "edge": 2.5
-  },
-  {
-   "id": "eoh",
-   "cat": "MAGE",
+   "id": "byc",
+   "cat": "TANK",
    "cost": 58,
-   "name": "Eye of Horus",
-   "wr": 51.3,
-   "edge": 1.3
+   "name": "Baba Yaga's Iron Cauldron",
+   "wr": 52.5,
+   "edge": 2.5
   },
   {
-   "id": "swf",
-   "cat": "MARKSMAN",
-   "cost": 60,
-   "name": "Swan Maiden's Feathered Cloak",
-   "wr": 51.3,
-   "edge": 1.3
-  },
-  {
-   "id": "bdc",
+   "id": "goh",
    "cat": "FIGHTER",
    "cost": 60,
-   "name": "Balmung's Dragon-Cleaver",
-   "wr": 51.3,
-   "edge": 1.3
+   "name": "Girdle of Hippolyta",
+   "wr": 52.5,
+   "edge": 2.5
   },
   {
-   "id": "dss",
-   "cat": "FIGHTER",
+   "id": "nvs",
+   "cat": "MAGE",
    "cost": 64,
-   "name": "Draupnir's Sovereign Signet",
+   "name": "Nemesis' Vengeful Scales",
    "wr": 51.3,
    "edge": 1.3
-  },
-  {
-   "id": "kff",
-   "cat": "MAGE",
-   "cost": 60,
-   "name": "Kitsune's Foxfire Fan",
-   "wr": 50,
-   "edge": 0
-  },
-  {
-   "id": "hnd",
-   "cat": "MAGE",
-   "cost": 62,
-   "name": "Hel's Nether Domain",
-   "wr": 50,
-   "edge": 0
   },
   {
    "id": "jbg",
    "cat": "MAGE",
    "cost": 60,
    "name": "Jack's Giantbane Harp",
-   "wr": 50,
-   "edge": 0
+   "wr": 51.3,
+   "edge": 1.3
   },
   {
-   "id": "aoi",
-   "cat": "TANK",
-   "cost": 60,
-   "name": "Apple of Idunn",
-   "wr": 50,
-   "edge": 0
-  },
-  {
-   "id": "cco",
-   "cat": "FIGHTER",
+   "id": "stc",
+   "cat": "MAGE",
    "cost": 62,
-   "name": "Colossal Club of the Oni",
+   "name": "Surtr's Twilight Cinder",
    "wr": 50,
    "edge": 0
   },
   {
-   "id": "trs",
+   "id": "fsd",
    "cat": "ASSASSIN",
    "cost": 64,
-   "name": "Thanatos' Reaping Scythe",
+   "name": "Freyja's Shroud of Defiance",
    "wr": 50,
    "edge": 0
-  },
-  {
-   "id": "mub",
-   "cat": "ASSASSIN",
-   "cost": 62,
-   "name": "Mordred's Usurping Blade",
-   "wr": 50,
-   "edge": 0
-  },
-  {
-   "id": "lbg",
-   "cat": "MAGE",
-   "cost": 62,
-   "name": "Lilith's Sanguine Grimoire",
-   "wr": 48.8,
-   "edge": -1.3
-  },
-  {
-   "id": "mrt",
-   "cat": "MAGE",
-   "cost": 60,
-   "name": "Merlin's Starbolt Staff",
-   "wr": 48.8,
-   "edge": -1.3
-  },
-  {
-   "id": "hwh",
-   "cat": "FIGHTER",
-   "cost": 60,
-   "name": "Horn of the Wild Hunt",
-   "wr": 48.8,
-   "edge": -1.3
-  },
-  {
-   "id": "smc",
-   "cat": "ASSASSIN",
-   "cost": 62,
-   "name": "Sekhmet's Massacre Claws",
-   "wr": 48.8,
-   "edge": -1.3
   },
   {
    "id": "wvc",
    "cat": "ASSASSIN",
    "cost": 60,
    "name": "Wendigo's Voracious Claw",
+   "wr": 50,
+   "edge": 0
+  },
+  {
+   "id": "wtc",
+   "cat": "MARKSMAN",
+   "cost": 60,
+   "name": "William Tell's Sovereign Crossbow",
    "wr": 48.8,
    "edge": -1.3
+  },
+  {
+   "id": "atq",
+   "cat": "MARKSMAN",
+   "cost": 58,
+   "name": "Atalanta's Swift Quiver",
+   "wr": 48.8,
+   "edge": -1.3
+  },
+  {
+   "id": "oub",
+   "cat": "MARKSMAN",
+   "cost": 60,
+   "name": "Odysseus' Unstrung Bow",
+   "wr": 48.8,
+   "edge": -1.3
+  },
+  {
+   "id": "ntw",
+   "cat": "MAGE",
+   "cost": 60,
+   "name": "Norns' Thread of Weaving",
+   "wr": 47.5,
+   "edge": -2.5
+  },
+  {
+   "id": "swf",
+   "cat": "MARKSMAN",
+   "cost": 60,
+   "name": "Swan Maiden's Feathered Cloak",
+   "wr": 47.5,
+   "edge": -2.5
+  },
+  {
+   "id": "asq",
+   "cat": "MARKSMAN",
+   "cost": 62,
+   "name": "Apollo's Sunlit Quiver",
+   "wr": 47.5,
+   "edge": -2.5
   },
   {
    "id": "sls",
@@ -659,66 +627,98 @@
    "edge": -2.5
   },
   {
-   "id": "jvb",
-   "cat": "ASSASSIN",
+   "id": "mut",
+   "cat": "MAGE",
    "cost": 60,
-   "name": "Jabberwock's Vorpal Blade",
+   "name": "Morgana's Unravelling Thread",
    "wr": 47.5,
    "edge": -2.5
   },
   {
-   "id": "nvs",
-   "cat": "MAGE",
-   "cost": 64,
-   "name": "Nemesis' Vengeful Scales",
+   "id": "mub",
+   "cat": "ASSASSIN",
+   "cost": 62,
+   "name": "Mordred's Usurping Blade",
+   "wr": 47.5,
+   "edge": -2.5
+  },
+  {
+   "id": "smc",
+   "cat": "ASSASSIN",
+   "cost": 62,
+   "name": "Sekhmet's Massacre Claws",
    "wr": 46.3,
    "edge": -3.8
   },
   {
-   "id": "ntw",
+   "id": "jvb",
+   "cat": "ASSASSIN",
+   "cost": 60,
+   "name": "Jabberwock's Vorpal Blade",
+   "wr": 46.3,
+   "edge": -3.8
+  },
+  {
+   "id": "trs",
+   "cat": "ASSASSIN",
+   "cost": 64,
+   "name": "Thanatos' Reaping Scythe",
+   "wr": 46.3,
+   "edge": -3.8
+  },
+  {
+   "id": "adm",
+   "cat": "ASSASSIN",
+   "cost": 62,
+   "name": "Anubis' Death Mark",
+   "wr": 46.3,
+   "edge": -3.8
+  },
+  {
+   "id": "mrt",
    "cat": "MAGE",
    "cost": 60,
-   "name": "Norns' Thread of Weaving",
-   "wr": 46.3,
-   "edge": -3.8
+   "name": "Merlin's Starbolt Staff",
+   "wr": 45,
+   "edge": -5
   },
   {
-   "id": "byc",
-   "cat": "TANK",
-   "cost": 58,
-   "name": "Baba Yaga's Iron Cauldron",
-   "wr": 46.3,
-   "edge": -3.8
+   "id": "asc",
+   "cat": "MARKSMAN",
+   "cost": 62,
+   "name": "Artemis' Silver Crescent",
+   "wr": 45,
+   "edge": -5
+  },
+  {
+   "id": "hwh",
+   "cat": "FIGHTER",
+   "cost": 60,
+   "name": "Horn of the Wild Hunt",
+   "wr": 45,
+   "edge": -5
   },
   {
    "id": "cns",
    "cat": "ASSASSIN",
    "cost": 60,
    "name": "Carnwennan's Shadowblade",
-   "wr": 46.3,
-   "edge": -3.8
+   "wr": 45,
+   "edge": -5
+  },
+  {
+   "id": "htc",
+   "cat": "ASSASSIN",
+   "cost": 62,
+   "name": "Hecate's Triple Crescent",
+   "wr": 45,
+   "edge": -5
   },
   {
    "id": "fms",
    "cat": "ASSASSIN",
    "cost": 58,
    "name": "Fang of the Midgard Serpent",
-   "wr": 46.3,
-   "edge": -3.8
-  },
-  {
-   "id": "mut",
-   "cat": "MAGE",
-   "cost": 60,
-   "name": "Morgana's Unravelling Thread",
-   "wr": 46.3,
-   "edge": -3.8
-  },
-  {
-   "id": "goh",
-   "cat": "FIGHTER",
-   "cost": 60,
-   "name": "Girdle of Hippolyta",
    "wr": 45,
    "edge": -5
   }

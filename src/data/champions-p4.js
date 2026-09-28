@@ -20,7 +20,7 @@ export const P4_CHAMPIONS = {
   PHANTOM: {
     id: "PHANTOM", skillPriority: ["Q", "W", "E"], missile: 1700, windup: 0.31, value: 1.3,
     th: "แฟนทอม", role: "Marksman", lane: "ADC", melee: false,
-    hp: 575, hpG: 90, hp5: 6.0, hp5G: 0.65, ad: 59, adG: 3.3, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
+    hp: 575, hpG: 90, hp5: 6.0, hp5G: 0.65, ad: 30, adG: 1.65, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     // เอกสารเขียน "+3.1% ต่อเลเวล" ของ 0.658 = 0.0204 ต่อเลเวล — เกมนี้เก็บเป็นค่าคงที่ต่อเลเวล
     as: 0.658, asG: 0.02, ms: 335, range: 550,
 
@@ -79,7 +79,7 @@ export const P4_CHAMPIONS = {
   STEIN: {
     id: "STEIN", skillPriority: ["W", "E", "Q"], missile: 0, windup: 0.21, value: 0.95,
     th: "สไตน์", role: "Warden", lane: "SUPPORT", alsoLanes: ["TOP"], melee: true,
-    hp: 635, hpG: 104, hp5: 8.5, hp5G: 0.85, ad: 56, adG: 3.2, armor: 38, armorG: 4.0, mr: 32, mrG: 2.05,
+    hp: 635, hpG: 104, hp5: 8.5, hp5G: 0.85, ad: 28, adG: 1.6, armor: 38, armorG: 4.0, mr: 32, mrG: 2.05,
     // เอกสารไม่ได้ระบุความเร็วโจมตี ตั้งให้เท่ากับวอร์เดนอีกตัวในเกม (H.S.B)
     as: 0.62, asG: 0.02, ms: 335, range: 175,
 
@@ -136,7 +136,7 @@ export const P4_CHAMPIONS = {
   KAMACHI: {
     id: "KAMACHI", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.18, value: 1.2,
     th: "คามาจิ", role: "Assassin", lane: "JUNGLE", melee: true,
-    hp: 580, hpG: 92, hp5: 6.5, hp5G: 0.7, ad: 62, adG: 3.6, armor: 30, armorG: 3.8, mr: 32, mrG: 2.05,
+    hp: 580, hpG: 92, hp5: 6.5, hp5G: 0.7, ad: 31, adG: 1.8, armor: 30, armorG: 3.8, mr: 32, mrG: 2.05,
     // เอกสารเขียนความเร็วโจมตี "+3.0% ต่อเลเวล" ของ 0.670 = 0.0201 ต่อเลเวล
     as: 0.67, asG: 0.02, ms: 345, range: 150,
 
