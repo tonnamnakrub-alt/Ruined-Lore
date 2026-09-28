@@ -1,0 +1,1253 @@
+{
+ "seeds": 20,
+ "points": [
+  {
+   "auto": 0.9375,
+   "netOfAd": 0.75,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "HOOD",
+     "wr": 94,
+     "dmg": 2534,
+     "took": 749,
+     "lived": 94,
+     "auto": 1286
+    },
+    {
+     "id": "PETER",
+     "wr": 88.3,
+     "dmg": 2541,
+     "took": 1055,
+     "lived": 88,
+     "auto": 1223
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 86.9,
+     "dmg": 2526,
+     "took": 1046,
+     "lived": 87,
+     "auto": 1329
+    },
+    {
+     "id": "ARTHUR",
+     "wr": 82.7,
+     "dmg": 2485,
+     "took": 905,
+     "lived": 83,
+     "auto": 994
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 82.5,
+     "dmg": 2502,
+     "took": 1382,
+     "lived": 84,
+     "auto": 965
+    },
+    {
+     "id": "KAZEM",
+     "wr": 80,
+     "dmg": 2454,
+     "took": 1271,
+     "lived": 80,
+     "auto": 849
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 79.8,
+     "dmg": 2326,
+     "took": 1359,
+     "lived": 81,
+     "auto": 1179
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 78.8,
+     "dmg": 2538,
+     "took": 1010,
+     "lived": 79,
+     "auto": 1215
+    },
+    {
+     "id": "LUCH",
+     "wr": 73.8,
+     "dmg": 2320,
+     "took": 1330,
+     "lived": 74,
+     "auto": 760
+    },
+    {
+     "id": "PUSS",
+     "wr": 56.7,
+     "dmg": 2271,
+     "took": 1611,
+     "lived": 62,
+     "auto": 849
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 55.2,
+     "dmg": 1984,
+     "took": 2045,
+     "lived": 59,
+     "auto": 854
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 49,
+     "dmg": 2079,
+     "took": 1400,
+     "lived": 52,
+     "auto": 637
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 41.5,
+     "dmg": 1519,
+     "took": 2332,
+     "lived": 73,
+     "auto": 600
+    },
+    {
+     "id": "YODAKA",
+     "wr": 41,
+     "dmg": 1777,
+     "took": 2044,
+     "lived": 42,
+     "auto": 199
+    },
+    {
+     "id": "ARIEL",
+     "wr": 38.5,
+     "dmg": 1737,
+     "took": 2505,
+     "lived": 43,
+     "auto": 244
+    },
+    {
+     "id": "ELLA",
+     "wr": 34.8,
+     "dmg": 1703,
+     "took": 2155,
+     "lived": 38,
+     "auto": 164
+    },
+    {
+     "id": "NIAN",
+     "wr": 33.8,
+     "dmg": 1705,
+     "took": 2445,
+     "lived": 43,
+     "auto": 272
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 32.5,
+     "dmg": 1423,
+     "took": 2587,
+     "lived": 40,
+     "auto": 318
+    },
+    {
+     "id": "H.S.B",
+     "wr": 29.4,
+     "dmg": 1080,
+     "took": 1942,
+     "lived": 82,
+     "auto": 540
+    },
+    {
+     "id": "LAURA",
+     "wr": 26.5,
+     "dmg": 1522,
+     "took": 2582,
+     "lived": 41,
+     "auto": 294
+    },
+    {
+     "id": "JACK",
+     "wr": 23.1,
+     "dmg": 1354,
+     "took": 2099,
+     "lived": 30,
+     "auto": 179
+    },
+    {
+     "id": "STEIN",
+     "wr": 20.6,
+     "dmg": 718,
+     "took": 2208,
+     "lived": 76,
+     "auto": 269
+    },
+    {
+     "id": "ALICE",
+     "wr": 7.9,
+     "dmg": 810,
+     "took": 2360,
+     "lived": 37,
+     "auto": 238
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 7.7,
+     "dmg": 1067,
+     "took": 2388,
+     "lived": 20,
+     "auto": 156
+    },
+    {
+     "id": "PINO",
+     "wr": 5.2,
+     "dmg": 558,
+     "took": 2726,
+     "lived": 44,
+     "auto": 246
+    }
+   ]
+  },
+  {
+   "auto": 0.75,
+   "netOfAd": 0.6,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "HOOD",
+     "wr": 89,
+     "dmg": 2532,
+     "took": 852,
+     "lived": 89,
+     "auto": 1224
+    },
+    {
+     "id": "PETER",
+     "wr": 87.9,
+     "dmg": 2549,
+     "took": 1093,
+     "lived": 88,
+     "auto": 1076
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 86.5,
+     "dmg": 2535,
+     "took": 1104,
+     "lived": 86,
+     "auto": 1186
+    },
+    {
+     "id": "KAZEM",
+     "wr": 83.1,
+     "dmg": 2479,
+     "took": 1245,
+     "lived": 83,
+     "auto": 736
+    },
+    {
+     "id": "ARTHUR",
+     "wr": 83.1,
+     "dmg": 2485,
+     "took": 892,
+     "lived": 84,
+     "auto": 882
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 82.7,
+     "dmg": 2495,
+     "took": 1395,
+     "lived": 85,
+     "auto": 836
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 82.3,
+     "dmg": 2326,
+     "took": 1386,
+     "lived": 84,
+     "auto": 1050
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 77.1,
+     "dmg": 2521,
+     "took": 1092,
+     "lived": 77,
+     "auto": 1105
+    },
+    {
+     "id": "LUCH",
+     "wr": 74.8,
+     "dmg": 2361,
+     "took": 1321,
+     "lived": 75,
+     "auto": 659
+    },
+    {
+     "id": "PUSS",
+     "wr": 56.7,
+     "dmg": 2262,
+     "took": 1615,
+     "lived": 61,
+     "auto": 728
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 56.5,
+     "dmg": 1974,
+     "took": 2081,
+     "lived": 60,
+     "auto": 742
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 49.8,
+     "dmg": 2065,
+     "took": 1394,
+     "lived": 52,
+     "auto": 542
+    },
+    {
+     "id": "ARIEL",
+     "wr": 41.3,
+     "dmg": 1764,
+     "took": 2471,
+     "lived": 47,
+     "auto": 206
+    },
+    {
+     "id": "YODAKA",
+     "wr": 40.6,
+     "dmg": 1804,
+     "took": 2026,
+     "lived": 42,
+     "auto": 0
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 39.2,
+     "dmg": 1430,
+     "took": 2272,
+     "lived": 77,
+     "auto": 494
+    },
+    {
+     "id": "NIAN",
+     "wr": 36,
+     "dmg": 1750,
+     "took": 2417,
+     "lived": 46,
+     "auto": 0
+    },
+    {
+     "id": "ELLA",
+     "wr": 34.2,
+     "dmg": 1698,
+     "took": 2128,
+     "lived": 38,
+     "auto": 135
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 32.3,
+     "dmg": 1418,
+     "took": 2557,
+     "lived": 42,
+     "auto": 266
+    },
+    {
+     "id": "H.S.B",
+     "wr": 27.1,
+     "dmg": 994,
+     "took": 1858,
+     "lived": 85,
+     "auto": 439
+    },
+    {
+     "id": "LAURA",
+     "wr": 26.7,
+     "dmg": 1525,
+     "took": 2560,
+     "lived": 42,
+     "auto": 244
+    },
+    {
+     "id": "JACK",
+     "wr": 22.9,
+     "dmg": 1366,
+     "took": 2102,
+     "lived": 31,
+     "auto": 150
+    },
+    {
+     "id": "STEIN",
+     "wr": 21,
+     "dmg": 676,
+     "took": 2113,
+     "lived": 80,
+     "auto": 222
+    },
+    {
+     "id": "ALICE",
+     "wr": 8.5,
+     "dmg": 795,
+     "took": 2327,
+     "lived": 39,
+     "auto": 196
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 8.3,
+     "dmg": 1078,
+     "took": 2372,
+     "lived": 22,
+     "auto": 131
+    },
+    {
+     "id": "PINO",
+     "wr": 2.5,
+     "dmg": 517,
+     "took": 2730,
+     "lived": 46,
+     "auto": 200
+    }
+   ]
+  },
+  {
+   "auto": 0.65,
+   "netOfAd": 0.52,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "KAZEM",
+     "wr": 87.1,
+     "dmg": 2514,
+     "took": 1211,
+     "lived": 88,
+     "auto": 668
+    },
+    {
+     "id": "PETER",
+     "wr": 86.9,
+     "dmg": 2546,
+     "took": 1133,
+     "lived": 87,
+     "auto": 992
+    },
+    {
+     "id": "HOOD",
+     "wr": 86.3,
+     "dmg": 2519,
+     "took": 928,
+     "lived": 86,
+     "auto": 1188
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 86.3,
+     "dmg": 2538,
+     "took": 1131,
+     "lived": 86,
+     "auto": 1100
+    },
+    {
+     "id": "ARTHUR",
+     "wr": 85.2,
+     "dmg": 2512,
+     "took": 891,
+     "lived": 86,
+     "auto": 821
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 82.5,
+     "dmg": 2314,
+     "took": 1430,
+     "lived": 84,
+     "auto": 975
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 82.5,
+     "dmg": 2495,
+     "took": 1401,
+     "lived": 85,
+     "auto": 757
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 75,
+     "dmg": 2509,
+     "took": 1133,
+     "lived": 75,
+     "auto": 1042
+    },
+    {
+     "id": "LUCH",
+     "wr": 74.8,
+     "dmg": 2357,
+     "took": 1314,
+     "lived": 75,
+     "auto": 593
+    },
+    {
+     "id": "PUSS",
+     "wr": 56.7,
+     "dmg": 2254,
+     "took": 1622,
+     "lived": 62,
+     "auto": 658
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 55,
+     "dmg": 1951,
+     "took": 2118,
+     "lived": 58,
+     "auto": 675
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 49,
+     "dmg": 2083,
+     "took": 1383,
+     "lived": 53,
+     "auto": 492
+    },
+    {
+     "id": "ARIEL",
+     "wr": 41.9,
+     "dmg": 1774,
+     "took": 2459,
+     "lived": 49,
+     "auto": 182
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 40.6,
+     "dmg": 1399,
+     "took": 2224,
+     "lived": 79,
+     "auto": 436
+    },
+    {
+     "id": "YODAKA",
+     "wr": 39.4,
+     "dmg": 1812,
+     "took": 2025,
+     "lived": 41,
+     "auto": 0
+    },
+    {
+     "id": "NIAN",
+     "wr": 35.8,
+     "dmg": 1737,
+     "took": 2414,
+     "lived": 45,
+     "auto": 0
+    },
+    {
+     "id": "ELLA",
+     "wr": 35.4,
+     "dmg": 1742,
+     "took": 2110,
+     "lived": 39,
+     "auto": 0
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 31.7,
+     "dmg": 1425,
+     "took": 2556,
+     "lived": 43,
+     "auto": 238
+    },
+    {
+     "id": "H.S.B",
+     "wr": 27.1,
+     "dmg": 953,
+     "took": 1798,
+     "lived": 89,
+     "auto": 384
+    },
+    {
+     "id": "LAURA",
+     "wr": 26.7,
+     "dmg": 1521,
+     "took": 2546,
+     "lived": 43,
+     "auto": 217
+    },
+    {
+     "id": "JACK",
+     "wr": 23.3,
+     "dmg": 1399,
+     "took": 2098,
+     "lived": 31,
+     "auto": 134
+    },
+    {
+     "id": "STEIN",
+     "wr": 21.7,
+     "dmg": 651,
+     "took": 2071,
+     "lived": 81,
+     "auto": 195
+    },
+    {
+     "id": "ALICE",
+     "wr": 8.5,
+     "dmg": 778,
+     "took": 2289,
+     "lived": 42,
+     "auto": 172
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 8.1,
+     "dmg": 1075,
+     "took": 2353,
+     "lived": 23,
+     "auto": 116
+    },
+    {
+     "id": "PINO",
+     "wr": 2.7,
+     "dmg": 496,
+     "took": 2716,
+     "lived": 47,
+     "auto": 175
+    }
+   ]
+  },
+  {
+   "auto": 0.5625,
+   "netOfAd": 0.45,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "KAZEM",
+     "wr": 89,
+     "dmg": 2534,
+     "took": 1205,
+     "lived": 89,
+     "auto": 606
+    },
+    {
+     "id": "PETER",
+     "wr": 87.5,
+     "dmg": 2542,
+     "took": 1159,
+     "lived": 88,
+     "auto": 912
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 87.5,
+     "dmg": 2544,
+     "took": 1137,
+     "lived": 88,
+     "auto": 1015
+    },
+    {
+     "id": "ARTHUR",
+     "wr": 85.6,
+     "dmg": 2503,
+     "took": 872,
+     "lived": 86,
+     "auto": 749
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 83.8,
+     "dmg": 2493,
+     "took": 1394,
+     "lived": 87,
+     "auto": 684
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 82.7,
+     "dmg": 2302,
+     "took": 1459,
+     "lived": 85,
+     "auto": 892
+    },
+    {
+     "id": "HOOD",
+     "wr": 81.5,
+     "dmg": 2487,
+     "took": 994,
+     "lived": 82,
+     "auto": 1132
+    },
+    {
+     "id": "LUCH",
+     "wr": 76,
+     "dmg": 2367,
+     "took": 1315,
+     "lived": 76,
+     "auto": 530
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 71.7,
+     "dmg": 2502,
+     "took": 1182,
+     "lived": 72,
+     "auto": 954
+    },
+    {
+     "id": "PUSS",
+     "wr": 55.6,
+     "dmg": 2258,
+     "took": 1645,
+     "lived": 61,
+     "auto": 599
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 55.4,
+     "dmg": 1932,
+     "took": 2132,
+     "lived": 58,
+     "auto": 609
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 51,
+     "dmg": 2115,
+     "took": 1383,
+     "lived": 53,
+     "auto": 445
+    },
+    {
+     "id": "ARIEL",
+     "wr": 41.7,
+     "dmg": 1795,
+     "took": 2441,
+     "lived": 49,
+     "auto": 161
+    },
+    {
+     "id": "YODAKA",
+     "wr": 41.3,
+     "dmg": 1823,
+     "took": 2007,
+     "lived": 42,
+     "auto": 0
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 37.3,
+     "dmg": 1366,
+     "took": 2197,
+     "lived": 81,
+     "auto": 380
+    },
+    {
+     "id": "ELLA",
+     "wr": 36.5,
+     "dmg": 1754,
+     "took": 2092,
+     "lived": 39,
+     "auto": 0
+    },
+    {
+     "id": "NIAN",
+     "wr": 36,
+     "dmg": 1757,
+     "took": 2395,
+     "lived": 47,
+     "auto": 0
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 32.9,
+     "dmg": 1408,
+     "took": 2560,
+     "lived": 44,
+     "auto": 211
+    },
+    {
+     "id": "LAURA",
+     "wr": 27.3,
+     "dmg": 1517,
+     "took": 2527,
+     "lived": 44,
+     "auto": 193
+    },
+    {
+     "id": "H.S.B",
+     "wr": 24,
+     "dmg": 914,
+     "took": 1761,
+     "lived": 91,
+     "auto": 336
+    },
+    {
+     "id": "JACK",
+     "wr": 22.9,
+     "dmg": 1412,
+     "took": 2094,
+     "lived": 31,
+     "auto": 119
+    },
+    {
+     "id": "STEIN",
+     "wr": 22.1,
+     "dmg": 638,
+     "took": 2019,
+     "lived": 84,
+     "auto": 172
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 9,
+     "dmg": 1085,
+     "took": 2331,
+     "lived": 24,
+     "auto": 103
+    },
+    {
+     "id": "ALICE",
+     "wr": 8.3,
+     "dmg": 757,
+     "took": 2277,
+     "lived": 43,
+     "auto": 151
+    },
+    {
+     "id": "PINO",
+     "wr": 3.5,
+     "dmg": 482,
+     "took": 2712,
+     "lived": 50,
+     "auto": 153
+    }
+   ]
+  },
+  {
+   "auto": 0.5,
+   "netOfAd": 0.4,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "KAZEM",
+     "wr": 89,
+     "dmg": 2534,
+     "took": 1204,
+     "lived": 90,
+     "auto": 555
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 87.5,
+     "dmg": 2542,
+     "took": 1158,
+     "lived": 88,
+     "auto": 944
+    },
+    {
+     "id": "PETER",
+     "wr": 86.9,
+     "dmg": 2545,
+     "took": 1173,
+     "lived": 87,
+     "auto": 844
+    },
+    {
+     "id": "ARTHUR",
+     "wr": 84.8,
+     "dmg": 2505,
+     "took": 866,
+     "lived": 87,
+     "auto": 697
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 84.6,
+     "dmg": 2484,
+     "took": 1376,
+     "lived": 88,
+     "auto": 620
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 82.9,
+     "dmg": 2282,
+     "took": 1447,
+     "lived": 85,
+     "auto": 817
+    },
+    {
+     "id": "LUCH",
+     "wr": 78.8,
+     "dmg": 2373,
+     "took": 1297,
+     "lived": 79,
+     "auto": 484
+    },
+    {
+     "id": "HOOD",
+     "wr": 77.3,
+     "dmg": 2453,
+     "took": 1027,
+     "lived": 78,
+     "auto": 1077
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 69.2,
+     "dmg": 2455,
+     "took": 1208,
+     "lived": 71,
+     "auto": 883
+    },
+    {
+     "id": "PUSS",
+     "wr": 58.1,
+     "dmg": 2252,
+     "took": 1630,
+     "lived": 63,
+     "auto": 547
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 55.6,
+     "dmg": 1911,
+     "took": 2154,
+     "lived": 59,
+     "auto": 557
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 51.3,
+     "dmg": 2116,
+     "took": 1380,
+     "lived": 53,
+     "auto": 406
+    },
+    {
+     "id": "YODAKA",
+     "wr": 41.9,
+     "dmg": 1852,
+     "took": 1994,
+     "lived": 43,
+     "auto": 0
+    },
+    {
+     "id": "ARIEL",
+     "wr": 40.8,
+     "dmg": 1793,
+     "took": 2426,
+     "lived": 50,
+     "auto": 0
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 37.3,
+     "dmg": 1326,
+     "took": 2168,
+     "lived": 83,
+     "auto": 340
+    },
+    {
+     "id": "ELLA",
+     "wr": 37.1,
+     "dmg": 1761,
+     "took": 2082,
+     "lived": 39,
+     "auto": 0
+    },
+    {
+     "id": "NIAN",
+     "wr": 37.1,
+     "dmg": 1760,
+     "took": 2375,
+     "lived": 49,
+     "auto": 0
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 33.8,
+     "dmg": 1414,
+     "took": 2556,
+     "lived": 46,
+     "auto": 190
+    },
+    {
+     "id": "LAURA",
+     "wr": 26,
+     "dmg": 1508,
+     "took": 2510,
+     "lived": 44,
+     "auto": 0
+    },
+    {
+     "id": "H.S.B",
+     "wr": 24.2,
+     "dmg": 880,
+     "took": 1703,
+     "lived": 94,
+     "auto": 298
+    },
+    {
+     "id": "JACK",
+     "wr": 24,
+     "dmg": 1422,
+     "took": 2074,
+     "lived": 33,
+     "auto": 0
+    },
+    {
+     "id": "STEIN",
+     "wr": 21.9,
+     "dmg": 626,
+     "took": 1982,
+     "lived": 85,
+     "auto": 154
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 9,
+     "dmg": 1086,
+     "took": 2330,
+     "lived": 24,
+     "auto": 0
+    },
+    {
+     "id": "ALICE",
+     "wr": 7.9,
+     "dmg": 750,
+     "took": 2275,
+     "lived": 46,
+     "auto": 137
+    },
+    {
+     "id": "PINO",
+     "wr": 3.3,
+     "dmg": 468,
+     "took": 2705,
+     "lived": 51,
+     "auto": 138
+    }
+   ]
+  },
+  {
+   "auto": 0.4,
+   "netOfAd": 0.32,
+   "fightsEach": 480,
+   "margin": 4.5,
+   "rows": [
+    {
+     "id": "ARTHUR",
+     "wr": 89.2,
+     "dmg": 2506,
+     "took": 816,
+     "lived": 91,
+     "auto": 614
+    },
+    {
+     "id": "KAZEM",
+     "wr": 87.7,
+     "dmg": 2533,
+     "took": 1194,
+     "lived": 90,
+     "auto": 463
+    },
+    {
+     "id": "TOTSAKAN",
+     "wr": 86.7,
+     "dmg": 2488,
+     "took": 1366,
+     "lived": 90,
+     "auto": 517
+    },
+    {
+     "id": "PHANTOM",
+     "wr": 85.8,
+     "dmg": 2545,
+     "took": 1202,
+     "lived": 86,
+     "auto": 816
+    },
+    {
+     "id": "PETER",
+     "wr": 85,
+     "dmg": 2542,
+     "took": 1206,
+     "lived": 85,
+     "auto": 725
+    },
+    {
+     "id": "TRISTAN",
+     "wr": 82.5,
+     "dmg": 2252,
+     "took": 1488,
+     "lived": 89,
+     "auto": 696
+    },
+    {
+     "id": "LUCH",
+     "wr": 80,
+     "dmg": 2394,
+     "took": 1275,
+     "lived": 81,
+     "auto": 410
+    },
+    {
+     "id": "HOOD",
+     "wr": 73.1,
+     "dmg": 2417,
+     "took": 1122,
+     "lived": 74,
+     "auto": 985
+    },
+    {
+     "id": "C.HOOK",
+     "wr": 65.6,
+     "dmg": 2420,
+     "took": 1262,
+     "lived": 69,
+     "auto": 776
+    },
+    {
+     "id": "PUSS",
+     "wr": 56.9,
+     "dmg": 2276,
+     "took": 1662,
+     "lived": 61,
+     "auto": 467
+    },
+    {
+     "id": "ALUCARD",
+     "wr": 56.3,
+     "dmg": 1910,
+     "took": 2205,
+     "lived": 59,
+     "auto": 472
+    },
+    {
+     "id": "KAMACHI",
+     "wr": 51.7,
+     "dmg": 2124,
+     "took": 1374,
+     "lived": 53,
+     "auto": 336
+    },
+    {
+     "id": "ARIEL",
+     "wr": 42.9,
+     "dmg": 1830,
+     "took": 2407,
+     "lived": 53,
+     "auto": 0
+    },
+    {
+     "id": "YODAKA",
+     "wr": 41.3,
+     "dmg": 1864,
+     "took": 1998,
+     "lived": 42,
+     "auto": 0
+    },
+    {
+     "id": "NIAN",
+     "wr": 39.4,
+     "dmg": 1776,
+     "took": 2358,
+     "lived": 51,
+     "auto": 0
+    },
+    {
+     "id": "ELLA",
+     "wr": 38.3,
+     "dmg": 1784,
+     "took": 2070,
+     "lived": 40,
+     "auto": 0
+    },
+    {
+     "id": "KLAEDER",
+     "wr": 36.5,
+     "dmg": 1277,
+     "took": 2109,
+     "lived": 86,
+     "auto": 274
+    },
+    {
+     "id": "PIROSKA",
+     "wr": 33.3,
+     "dmg": 1405,
+     "took": 2534,
+     "lived": 48,
+     "auto": 156
+    },
+    {
+     "id": "LAURA",
+     "wr": 28.5,
+     "dmg": 1516,
+     "took": 2489,
+     "lived": 47,
+     "auto": 0
+    },
+    {
+     "id": "JACK",
+     "wr": 24,
+     "dmg": 1423,
+     "took": 2067,
+     "lived": 33,
+     "auto": 0
+    },
+    {
+     "id": "H.S.B",
+     "wr": 23.1,
+     "dmg": 837,
+     "took": 1650,
+     "lived": 95,
+     "auto": 242
+    },
+    {
+     "id": "STEIN",
+     "wr": 22.3,
+     "dmg": 606,
+     "took": 1911,
+     "lived": 88,
+     "auto": 125
+    },
+    {
+     "id": "FAUSTUS",
+     "wr": 9.4,
+     "dmg": 1103,
+     "took": 2320,
+     "lived": 25,
+     "auto": 0
+    },
+    {
+     "id": "ALICE",
+     "wr": 7.3,
+     "dmg": 734,
+     "took": 2257,
+     "lived": 47,
+     "auto": 110
+    },
+    {
+     "id": "PINO",
+     "wr": 3.3,
+     "dmg": 450,
+     "took": 2672,
+     "lived": 54,
+     "auto": 113
+    }
+   ]
+  }
+ ]
+}
