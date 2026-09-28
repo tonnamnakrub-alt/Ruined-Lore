@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Champion icons</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 24px; background: #0B1220; color: #E4EBF7;
+         font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  h1 { font-size: 15px; margin: 0 0 4px; }
+  p  { color: #7F8DA8; margin: 0 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px; }
+  .cell { border: 1px solid #1A2438; border-radius: 8px; padding: 10px 6px; text-align: center; background: #0E1626; }
+  .name { margin-top: 7px; font-size: 10.5px; color: #9FB0CC; }
+  .row { display: flex; gap: 10px; align-items: center; justify-content: center; }
+  canvas { image-rendering: auto; }
+  .note { margin: 26px 0 10px; color: #E3B75F; }
+</style>
+</head>
+<body>
+<h1>ไอคอนตัวละครทั้ง 25 ตัว</h1>
+<p>ซ้าย = ขนาดจริงในสนาม (วงสีทีม) · กลาง = ขนาดหมุดจัดทัพ · ขวา = ขนาดในเมนู</p>
+<div class="grid" id="g"></div>
+<script type="module">
+import { drawChampIcon, CHAMP_ICON, iconSvgParts } from "./src/ui/champ-icon.js";
+
+const g = document.getElementById("g");
+for (const id of Object.keys(CHAMP_ICON)) {
+  const cell = document.createElement("div");
+  cell.className = "cell";
+  const row = document.createElement("div");
+  row.className = "row";
+
+  // ขนาดจริงในสนาม — วงกลมทีมน้ำเงิน รัศมี 13
+  for (const [br, team] of [[13, "#4B8DF8"], [9, "#FF9498"]]) {
+    const cv = document.createElement("canvas");
+    const dpr = 2;
+    cv.width = br * 2.6 * dpr; cv.height = br * 2.6 * dpr;
+    cv.style.width = br * 2.6 + "px"; cv.style.height = br * 2.6 + "px";
+    const ctx = cv.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const c = br * 1.3;
+    ctx.fillStyle = team;
+    ctx.beginPath(); ctx.arc(c, c, br, 0, Math.PI * 2); ctx.fill();
+    drawChampIcon(ctx, id, c, c, br * 1.32, "#0B1220");
+    row.appendChild(cv);
+  }
+
+  // ขนาดเมนู เป็น SVG
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "34"); svg.setAttribute("height", "34");
+  for (const p of iconSvgParts(id, "#E3B75F")) {
+    const el = document.createElementNS(ns, p.tag);
+    for (const [k, v] of Object.entries(p.attrs)) {
+      el.setAttribute(k.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase()), v);
+    }
+    svg.appendChild(el);
+  }
+  row.appendChild(svg);
+
+  cell.appendChild(row);
+  const n = document.createElement("div");
+  n.className = "name";
+  n.textContent = id;
+  cell.appendChild(n);
+  g.appendChild(cell);
+}
+</script>
+</body>
+</html>

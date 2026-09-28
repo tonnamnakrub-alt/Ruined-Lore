@@ -4,7 +4,7 @@ import { CHAMPIONS, lanesOf } from "../data/champions.js";
 import { BAN_ORDER, PICK_ORDER, draftTurn } from "../game/draft.js";
 import { Shell, btn, card } from "../ui/chrome.jsx";
 import { ChampFilterBar, LaneHeading, filterChamps, groupByLane } from "../ui/champ-pick.jsx";
-import { Empty, Panel, Tile, TileGrid } from "../ui/kit.jsx";
+import { ChampIcon, Empty, Panel, Tile, TileGrid } from "../ui/kit.jsx";
 import { C, MONO, SANS } from "../ui/theme.js";
 import { Label } from "../ui/widgets.jsx";
 import { skillShape } from "../game/skill-desc.js";
@@ -53,7 +53,7 @@ export function DraftScreen(ctx) {
         width: 24, height: 24, borderRadius: 5, background: id ? tone : "#1A2438",
         color: id ? "#0B1220" : C.dim, fontFamily: MONO, fontSize: 10, fontWeight: 800,
         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-      }}>{id ? id.slice(0, 2) : i + 1}</span>
+      }}>{id ? <ChampIcon id={id} size={15} color="#0B1220" /> : i + 1}</span>
       <div style={{ minWidth: 0 }}>
         <div style={{ fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: id ? C.ink : C.line }}>
           {id || tr("ยังไม่เลือก")}

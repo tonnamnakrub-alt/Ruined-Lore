@@ -204,17 +204,9 @@ const FLAT = [
   ["widthMax", "ความกว้างสูงสุด", "n"],
   ["burstAt", "ระเบิดที่วินาทีที่", "sec"],
   ["burstPct", "ระเบิดเป็น % ของโล่", "pct"],
-  ["healPct", "ฮีลคืนเป็น % ของดาเมจ", "pct"],
   ["evade", "โอกาสหลบ", "pct"],
-  ["selfStacks", "ดาเมจต่อสแตกของตัวเอง", "n"],
-  ["selfBonusHp", "สเกลตาม Bonus HP", "pct"],
-  ["shieldBad", "โล่ต่อ Bonus AD", "pct"],
-  ["shieldBonusHp", "โล่ต่อ Bonus HP", "pct"],
-  ["hpBonusHp", "เลือดสิ่งก่อสร้างต่อ Bonus HP", "pct"],
   ["res", "เกราะ/ต้านเวทของสิ่งก่อสร้าง", "n"],
-  ["resRatio", "สเกลตามเกราะ/ต้านเวทของตัวเอง", "pct"],
   ["hitDmg", "ดาเมจตอนชน", "n"],
-  ["hitBonusHp", "ดาเมจตอนชนต่อ Bonus HP", "pct"],
   ["msDur", "ความเร็วเดินอยู่นาน", "sec"],
   ["gainStack", "ได้สแตกตอนกด", "n"],
   ["blinkRange", "ระยะวาร์ป", "n"],
@@ -235,7 +227,6 @@ const FLAT = [
   ["allyMsDur", "เพื่อนเร็วขึ้นนาน", "sec"],
   ["selfMs", "ตัวเองเร็วขึ้น", "pct"],
   ["selfDur", "บัฟตัวเองนาน", "sec"],
-  ["allyPct", "ฮีล/โล่ให้เพื่อนคิดเป็น % ของดาเมจที่เขากินมา", "pct"],
   ["reflect", "สะท้อนคืน", "pct"],
   ["lookback", "ย้อนดูดาเมจที่กินมา", "sec"],
   ["reviveDelay", "ล้มนิ่งก่อนลุก", "sec"],
@@ -247,18 +238,66 @@ const FLAT = [
   ["holdNeed", "ต้องมีศัตรูในวงกี่ตัวถึงอยู่ต่อ", "n"],
 ];
 
-// ค่าสเกลตามสถานะตัวเอง
+// ---------------------------------------------------------------
+// ค่าสเกล — ทุกอย่างที่ทำให้ตัวเลขของท่าโตขึ้นตามของที่ออกหรือตามเลเวล
+//
+// เดิมมีอยู่แค่สิบช่อง ที่เหลือไปจมอยู่ในตารางค่าคงที่ ผู้เล่นจึงเห็น
+// "Scales with: +60% AD" ทั้งที่จริงๆ ท่านั้นสเกลกับ Bonus HP อีกสองทาง
+//
+// รูปแบบตัวเลข:
+//   pct    = ตัวคูณธรรมดา  0.6  -> "+60%"
+//   rank   = ไล่ตามขั้นสกิล [0.1, 0.2] -> "+10/20%"
+//   flat   = ตัวเลขตรงๆ ไม่ใช่ร้อยละ
+//   per100n = ต่อค่าสถานะทุก 100 หน่วย ได้เป็นตัวเลขตรงๆ (AP 100 -> +3 AD)
+//   per100p = ต่อค่าสถานะทุก 100 หน่วย ได้เป็นร้อยละ (AP 100 -> +3% ความเร็วเดิน)
+// ---------------------------------------------------------------
 const RATIOS = [
-  ["adRatio", "AD"],
-  ["badRatio", "Bonus AD"],
-  ["apRatio", "AP"],
-  ["bonusHpRatio", "Bonus HP"],
-  ["armAdRatio", "AD (ต่อแขน)"],
-  ["pctPerBad", "% Max HP ต่อ Bonus AD 100"],
-  ["shieldBonusArmor", "Bonus Armor (โล่)"],
-  ["shieldBonusMr", "Bonus MR (โล่)"],
-  ["healBonusHp", "Bonus HP (ฮีล)"],
-  ["ripBadRatio", "Bonus AD (ต่อมีดหนึ่งเล่ม)"],
+  // ---- ดาเมจของท่าหลัก ----
+  ["adRatio", "AD", "pct"],
+  ["badRatio", "Bonus AD", "pct"],
+  ["apRatio", "AP", "pct"],
+  ["bonusHpRatio", "Bonus HP", "pct"],
+  ["selfBonusHp", "Bonus HP → ดาเมจ", "pct"],
+  ["selfStacks", "ต่อสแตกที่สะสมไว้ → ดาเมจ", "flat"],
+  ["enemyMaxHp", "เลือดสูงสุดของเป้า → ดาเมจ", "pct"],
+  ["pctPerBad", "Max HP เป้า ต่อ Bonus AD 100", "pct"],
+  // ---- ดาเมจก้อนย่อยของท่าเดียวกัน ----
+  ["armAdRatio", "AD → ดาเมจแต่ละแขน", "pct"],
+  ["fullBadRatio", "Bonus AD → ดาเมจตอนชาร์จเต็ม", "pct"],
+  ["hitBadRatio", "Bonus AD → ดาเมจตอนชน", "pct"],
+  ["hitBonusHp", "Bonus HP → ดาเมจตอนชน", "pct"],
+  ["burstBadRatio", "Bonus AD → ดาเมจตอนระเบิด", "pct"],
+  ["burstBonusHp", "Bonus HP → ดาเมจตอนระเบิด", "pct"],
+  ["ripBadRatio", "Bonus AD → ดาเมจต่อมีดหนึ่งเล่ม", "pct"],
+  ["innerApRatio", "AP → ดาเมจด้านใน", "pct"],
+  ["popApRatio", "AP → ดาเมจตอนระเบิด", "pct"],
+  ["tickApRatio", "AP → ดาเมจต่อระลอก", "pct"],
+  ["onHitApRatio", "AP → ดาเมจติดออโต้", "pct"],
+  // ---- โล่ ----
+  ["shieldBad", "Bonus AD → โล่", "pct"],
+  ["shieldBonusHp", "Bonus HP → โล่", "pct"],
+  ["shieldBonusArmor", "Bonus Armor → โล่", "pct"],
+  ["shieldBonusMr", "Bonus MR → โล่", "pct"],
+  ["castShieldBonusHp", "Bonus HP → โล่ตอนกด", "pct"],
+  ["shieldAp", "AP → โล่", "pct"],
+  // ---- ฮีล ----
+  ["healBonusHp", "Bonus HP → ฮีล", "pct"],
+  ["healAp", "AP → ฮีล", "pct"],
+  ["healPct", "ดาเมจที่ทำได้ → ฮีลคืน", "pct"],
+  ["healPctDealt", "ดาเมจที่ท่านี้ทำได้ → ฮีลคืน", "rank"],
+  ["allyPct", "ดาเมจที่เพื่อนกินมา → ฮีลและโล่ให้เพื่อน", "pct"],
+  // ---- สิ่งก่อสร้าง ----
+  ["hpBonusHp", "Bonus HP → เลือดสิ่งก่อสร้าง", "pct"],
+  ["resRatio", "เกราะ/ต้านเวทของตัวเอง → ของสิ่งก่อสร้าง", "pct"],
+  // ---- ค่าที่คิดต่อสถานะทุก 100 หน่วย ----
+  ["adPerAp", "AP ทุก 100 → เพิ่ม AD", "per100n"],
+  ["apPerAp", "AP ทุก 100 → เพิ่ม AP", "per100n"],
+  ["msPerAp", "AP ทุก 100 → เพิ่มความเร็วเดิน", "per100p"],
+  ["ampPerAp", "AP ทุก 100 → ขยายผล", "per100p"],
+  ["stashPerAp", "AP ทุก 100 → สะสมดาเมจเพิ่ม", "per100p"],
+  ["slowPerAp", "AP ทุก 100 → สโลว์เพิ่ม", "per100p"],
+  ["knockupPerMs", "วิ ต่อความเร็วเดินส่วนเกิน 1 → เวลาลอย", "flat"],
+  ["knockupPerApMs", "วิ ต่อความเร็วเดินจาก AP 100 → เวลาลอย", "flat"],
 ];
 
 const FLAGS = [
@@ -341,10 +380,21 @@ export function flatRows(sk) {
 export function ratioLine(sk) {
   if (!sk) return "";
   const parts = [];
-  for (const [key, label] of RATIOS) {
+  for (const [key, label, kind] of RATIOS) {
     const v = sk[key];
+    if (v == null) continue;
+    if (kind === "rank") {
+      if (!Array.isArray(v) || !v.some((x) => x)) continue;
+      const same = v.every((x) => x === v[0]);
+      parts.push("+" + (same ? Math.round(v[0] * 1000) / 10 : v.map((x) => Math.round(x * 1000) / 10).join("/")) + "% " + tr(label));
+      continue;
+    }
     if (typeof v !== "number" || v === 0) continue;
-    parts.push("+" + Math.round(v * 100) + "% " + tr(label));
+    if (kind === "flat") parts.push("+" + (Math.round(v * 100) / 100) + " " + tr(label));
+    // เก็บในข้อมูลเป็น "ต่อหนึ่งหน่วย" จึงต้องคูณร้อยกลับก่อนโชว์
+    else if (kind === "per100n") parts.push("+" + (Math.round(v * 100 * 100) / 100) + " " + tr(label));
+    else if (kind === "per100p") parts.push("+" + (Math.round(v * 100 * 1000) / 10) + "% " + tr(label));
+    else parts.push("+" + (Math.round(v * 1000) / 10) + "% " + tr(label));
   }
   return parts.join(" · ");
 }

@@ -7,9 +7,9 @@
   {
    "id": "HOOD",
    "wr": 89,
-   "dmg": 2535,
-   "took": 854,
-   "heal": 54,
+   "dmg": 2532,
+   "took": 852,
+   "heal": 53,
    "lived": 89,
    "src": [
     [
@@ -26,16 +26,16 @@
     ],
     [
      "Item Shiva's Trishula",
-     133
+     131
     ]
    ]
   },
   {
    "id": "PETER",
    "wr": 87.9,
-   "dmg": 2566,
-   "took": 1095,
-   "heal": 255,
+   "dmg": 2549,
+   "took": 1093,
+   "heal": 254,
    "lived": 88,
    "src": [
     [
@@ -52,16 +52,16 @@
     ],
     [
      "Item Shiva's Trishula",
-     264
+     252
     ]
    ]
   },
   {
    "id": "PHANTOM",
    "wr": 86.5,
-   "dmg": 2548,
+   "dmg": 2535,
    "took": 1104,
-   "heal": 270,
+   "heal": 269,
    "lived": 86,
    "src": [
     [
@@ -78,16 +78,16 @@
     ],
     [
      "Item Shiva's Trishula",
-     293
+     280
     ]
    ]
   },
   {
    "id": "KAZEM",
    "wr": 83.1,
-   "dmg": 2501,
-   "took": 1247,
-   "heal": 976,
+   "dmg": 2479,
+   "took": 1245,
+   "heal": 973,
    "lived": 83,
    "src": [
     [
@@ -96,7 +96,7 @@
     ],
     [
      "Q Gilded Fist",
-     636
+     620
     ],
     [
      "Item Fafnir's Devouring Maw",
@@ -111,9 +111,9 @@
   {
    "id": "ARTHUR",
    "wr": 83.1,
-   "dmg": 2504,
-   "took": 895,
-   "heal": 772,
+   "dmg": 2485,
+   "took": 892,
+   "heal": 771,
    "lived": 84,
    "src": [
     [
@@ -137,9 +137,9 @@
   {
    "id": "TOTSAKAN",
    "wr": 82.7,
-   "dmg": 2502,
-   "took": 1399,
-   "heal": 628,
+   "dmg": 2495,
+   "took": 1395,
+   "heal": 627,
    "lived": 85,
    "src": [
     [
@@ -156,16 +156,16 @@
     ],
     [
      "Item Shiva's Trishula",
-     236
+     229
     ]
    ]
   },
   {
    "id": "TRISTAN",
    "wr": 82.3,
-   "dmg": 2355,
-   "took": 1392,
-   "heal": 590,
+   "dmg": 2326,
+   "took": 1386,
+   "heal": 588,
    "lived": 84,
    "src": [
     [
@@ -174,7 +174,7 @@
     ],
     [
      "Q Knight of Cornwall",
-     625
+     601
     ],
     [
      "W Iron Vow",
@@ -182,15 +182,15 @@
     ],
     [
      "Item Shiva's Trishula",
-     186
+     181
     ]
    ]
   },
   {
    "id": "C.HOOK",
    "wr": 77.1,
-   "dmg": 2533,
-   "took": 1093,
+   "dmg": 2521,
+   "took": 1092,
    "heal": 58,
    "lived": 77,
    "src": [
@@ -208,16 +208,16 @@
     ],
     [
      "Item Shiva's Trishula",
-     140
+     132
     ]
    ]
   },
   {
    "id": "LUCH",
    "wr": 74.8,
-   "dmg": 2377,
-   "took": 1326,
-   "heal": 690,
+   "dmg": 2361,
+   "took": 1321,
+   "heal": 687,
    "lived": 75,
    "src": [
     [
@@ -234,15 +234,15 @@
     ],
     [
      "Passive Light form",
-     248
+     242
     ]
    ]
   },
   {
    "id": "PUSS",
    "wr": 56.7,
-   "dmg": 2265,
-   "took": 1625,
+   "dmg": 2262,
+   "took": 1615,
    "heal": 215,
    "lived": 61,
    "src": [
@@ -267,9 +267,9 @@
   {
    "id": "ALUCARD",
    "wr": 56.5,
-   "dmg": 1978,
-   "took": 2089,
-   "heal": 546,
+   "dmg": 1974,
+   "took": 2081,
+   "heal": 545,
    "lived": 60,
    "src": [
     [
@@ -293,8 +293,8 @@
   {
    "id": "KAMACHI",
    "wr": 49.8,
-   "dmg": 2070,
-   "took": 1402,
+   "dmg": 2065,
+   "took": 1394,
    "heal": 182,
    "lived": 52,
    "src": [
@@ -319,8 +319,8 @@
   {
    "id": "ARIEL",
    "wr": 41.3,
-   "dmg": 1765,
-   "took": 2479,
+   "dmg": 1764,
+   "took": 2471,
    "heal": 146,
    "lived": 47,
    "src": [
@@ -345,8 +345,8 @@
   {
    "id": "YODAKA",
    "wr": 40.6,
-   "dmg": 1807,
-   "took": 2034,
+   "dmg": 1804,
+   "took": 2026,
    "heal": 161,
    "lived": 42,
    "src": [
@@ -364,7 +364,7 @@
     ],
     [
      "Item Kitsune's Foxfire Fan",
-     170
+     168
     ]
    ]
   },
@@ -372,7 +372,7 @@
    "id": "KLAEDER",
    "wr": 39.2,
    "dmg": 1430,
-   "took": 2277,
+   "took": 2272,
    "heal": 572,
    "lived": 77,
    "src": [
@@ -397,8 +397,8 @@
   {
    "id": "NIAN",
    "wr": 36,
-   "dmg": 1751,
-   "took": 2429,
+   "dmg": 1750,
+   "took": 2417,
    "heal": 448,
    "lived": 46,
    "src": [
@@ -423,8 +423,8 @@
   {
    "id": "ELLA",
    "wr": 34.2,
-   "dmg": 1703,
-   "took": 2136,
+   "dmg": 1698,
+   "took": 2128,
    "heal": 157,
    "lived": 38,
    "src": [
@@ -441,8 +441,8 @@
      273
     ],
     [
-     "Item Kitsune's Foxfire Fan",
-     138
+     "Auto attack",
+     135
     ]
    ]
   },
@@ -450,7 +450,7 @@
    "id": "PIROSKA",
    "wr": 32.3,
    "dmg": 1418,
-   "took": 2565,
+   "took": 2557,
    "heal": 537,
    "lived": 42,
    "src": [
@@ -472,7 +472,7 @@
    "id": "H.S.B",
    "wr": 27.1,
    "dmg": 994,
-   "took": 1860,
+   "took": 1858,
    "heal": 771,
    "lived": 85,
    "src": [
@@ -497,8 +497,8 @@
   {
    "id": "LAURA",
    "wr": 26.7,
-   "dmg": 1526,
-   "took": 2569,
+   "dmg": 1525,
+   "took": 2560,
    "heal": 214,
    "lived": 42,
    "src": [
@@ -523,8 +523,8 @@
   {
    "id": "JACK",
    "wr": 22.9,
-   "dmg": 1367,
-   "took": 2113,
+   "dmg": 1366,
+   "took": 2102,
    "heal": 344,
    "lived": 31,
    "src": [
@@ -550,7 +550,7 @@
    "id": "STEIN",
    "wr": 21,
    "dmg": 676,
-   "took": 2117,
+   "took": 2113,
    "heal": 1326,
    "lived": 80,
    "src": [
@@ -572,7 +572,7 @@
    "id": "ALICE",
    "wr": 8.5,
    "dmg": 795,
-   "took": 2341,
+   "took": 2327,
    "heal": 663,
    "lived": 39,
    "src": [
@@ -598,7 +598,7 @@
    "id": "FAUSTUS",
    "wr": 8.3,
    "dmg": 1078,
-   "took": 2380,
+   "took": 2372,
    "heal": 90,
    "lived": 22,
    "src": [
@@ -624,7 +624,7 @@
    "id": "PINO",
    "wr": 2.5,
    "dmg": 517,
-   "took": 2737,
+   "took": 2730,
    "heal": 688,
    "lived": 46,
    "src": [

@@ -100,7 +100,7 @@ export function PickScreen(ctx) {
       <Label style={{ marginBottom: 8 }}>CHARACTER INFO</Label>
 
       <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-        <Portrait text={ch.id.slice(0, 2)} tone={isPicked ? C.gold : C.blue} />
+        <Portrait id={ch.id} tone={isPicked ? C.gold : C.blue} />
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: C.ink }}>{ch.id}</div>
           <div style={{ fontSize: 12, color: C.ink }}>{tr(ch.th)}</div>

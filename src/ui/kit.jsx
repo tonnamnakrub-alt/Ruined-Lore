@@ -1,6 +1,7 @@
 import React from "react";
 import { tr } from "../i18n.js";
 import { C, MONO, SANS } from "./theme.js";
+import { iconSvgParts } from "./champ-icon.js";
 
 // ---------------------------------------------------------------
 // ชิ้นส่วนหน้าตาแบบ "ตารางซ้าย + รายละเอียดขวา" ตามสเก็ตช์
@@ -92,8 +93,18 @@ export function Tile({ title, sub, badge, selected, locked, tone, onClick }) {
   );
 }
 
-// กล่องรูปตัวละคร — ยังไม่มีอาร์ตเวิร์ก ใช้อักษรย่อไปก่อน
-export function Portrait({ text, size = 62, tone }) {
+// ไอคอนประจำตัวละคร — รูปทรงอยู่ใน ui/champ-icon.js ใช้ชุดเดียวกับที่วาดในสนาม
+export function ChampIcon({ id, size = 24, color, bg }) {
+  const col = color || C.ink;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: "block", flexShrink: 0 }}>
+      {iconSvgParts(id, col, bg).map((p, i) => React.createElement(p.tag, { key: i, ...p.attrs }))}
+    </svg>
+  );
+}
+
+// กล่องรูปตัวละคร — ใส่ไอคอนประจำตัวถ้ารู้ว่าเป็นตัวไหน ไม่งั้นใช้ข้อความที่ส่งมา
+export function Portrait({ id, text, size = 62, tone }) {
   return (
     <div style={{
       width: size, height: size, flexShrink: 0, borderRadius: 8,
@@ -101,7 +112,7 @@ export function Portrait({ text, size = 62, tone }) {
       display: "flex", alignItems: "center", justifyContent: "center",
       fontFamily: MONO, fontSize: size * 0.34, fontWeight: 800, color: tone || C.dim,
     }}>
-      {text}
+      {id ? <ChampIcon id={id} size={size * 0.62} color={tone || C.dim} /> : text}
     </div>
   );
 }

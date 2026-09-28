@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { ARENA_H, ARENA_W, RENDER_SCALE } from "../data/constants.js";
 import { drawFx, drawFxText, drawGround, shakeAmount } from "./draw-fx.js";
 import { drawLore } from "./draw-lore.js";
+import { drawChampIcon } from "./champ-icon.js";
 import { C, MONO } from "./theme.js";
 
 
@@ -348,11 +349,9 @@ export function Arena({ stateRef, tick, focusId, showRanges, drawRef }) {
       }
       ctx.globalAlpha = 1;
 
-      ctx.fillStyle = "#0B1220";
-      ctx.font = "bold 13px " + MONO;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(u.champ.id[0], x, y + 1);
+      // ไอคอนประจำตัว — เดิมวาดแค่ตัวอักษรตัวแรกของชื่อ ซึ่งชนกันเละ
+      // (P มีห้าตัว · A มีสี่ · K มีสาม) จนแยกไม่ออกว่าใครเป็นใครกลางไฟต์
+      drawChampIcon(ctx, u.champ.id, x, y, br * 1.34, "#0B1220", col);
 
       const w = 40;
       const frac = u.hp / u.maxHp;

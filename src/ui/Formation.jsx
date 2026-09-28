@@ -4,6 +4,7 @@ import { ARENA_H, ARENA_W, DEPLOY, radiusOf } from "../data/constants.js";
 import { CHAMPIONS } from "../data/champions.js";
 import { C, MONO, SANS } from "./theme.js";
 import { btn, mini } from "./chrome.jsx";
+import { ChampIcon } from "./kit.jsx";
 
 
 // ---------------- จัดทัพก่อนไฟต์ ----------------
@@ -135,7 +136,9 @@ export function FormationPanel({ team, setTeam, onClose }) {
                     color: held === i ? "#0B1220" : C.ink,
                     cursor: "grab", touchAction: "none", userSelect: "none",
                   }}
-                >{c.champId.slice(0, 2)}</div>
+                >
+                  <ChampIcon id={c.champId} size={13} color={held === i ? "#0B1220" : C.ink} />
+                </div>
               );
             })}
           </div>

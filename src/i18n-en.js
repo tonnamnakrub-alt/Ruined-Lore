@@ -3222,4 +3222,88 @@ export const DICT = {
    "The description used the second wording for every ability, so KAZEM's W, PIROSKA's Q, PHANTOM's Q and ALUCARD's W have been telling players the wrong thing",
  "แก้เฉพาะคำบรรยาย ตัวเลขและเอนจินไม่ได้แตะ":
    "Only the wording changed — no numbers and no engine code were touched",
+ "แก้บั๊กใหญ่ — เงินค่าหัวกับ XP จากการสังหารจ่ายซ้ำมาตลอด":
+   "Major fix — kill gold and XP have been paid out twice all along",
+ "เอฟเฟกต์หลายอย่างพ่วงดาเมจซ้อนเข้าไปกลางการคิดดาเมจก้อนเดิม เช่น Faustian Bargain ของ FAUSTUS ตราของ Another Eye เมล็ดถั่วของ JACK และประจุของ NIAN":
+   "Several effects add a second hit from inside the same damage calculation — FAUSTUS's Faustian Bargain, Another Eye's mark, JACK's beanstalk seeds, NIAN's static charge",
+ "ถ้าเป้าตายในชั้นที่ซ้อนอยู่ข้างใน พอกลับออกมาชั้นนอก เลือดก็ยังติดลบอยู่ บล็อกนับสังหารจึงทำงานอีกรอบกับศพเดิม แล้วแจกทั้งเครดิตสังหาร เงินค่าหัว XP และเครดิตช่วยสังหารซ้ำอีกชุด":
+   "If the target died inside that nested call, its health was still below zero when the outer call resumed, so the death block ran a second time on the same corpse and handed out another full set of kill credit, bounty gold, XP and assist credit",
+ "อีกทางหนึ่ง: ศพยังรับดาเมจได้อยู่ ลูกสกิลหรือดาเมจต่อเนื่องที่มาถึงทีหลังจึงทำให้บล็อกนับสังหารทำงานซ้ำได้อีก":
+   "There was a second route too: corpses still took damage, so a projectile or a damage-over-time tick arriving afterwards could run the death block again",
+ "วัดจาก 120 ไฟต์: เอนจินนับสังหารไป 935 ครั้ง ทั้งที่มีคนล้มจริงแค่ 760 ครั้ง — **เกินมา 23%** ส่วนช่วยสังหารเกินมา 19%":
+   "Measured over 120 fights: the engine counted 935 kills when only 760 champions actually fell — **23% too many** — and assists were 19% too many",
+ "แก้แล้ว 757 สังหารต่อ 762 คนล้ม · ส่วนต่างที่เหลือคือคนที่ตายด้วยดาเมจต่อเนื่องหลังคนยิงตายไปก่อน ซึ่งไม่ควรมีใครได้เครดิต":
+   "After the fix: 757 kills against 762 champions falling. The remaining gap is champions who bled out from damage over time after whoever applied it had already died, which nobody should get credit for",
+ "ผลข้างเคียง: เงินและ XP ต่อยกลดลงจริงสำหรับคนที่เก็บศพได้ และตัวเลขอัตราชนะทั้งตารางขยับ เพราะศพไม่ดูดดาเมจและไม่โปรคเอฟเฟกต์ติดตัวอีกต่อไป":
+   "Side effects: gold and XP per round genuinely drop for anyone who takes kills, and the whole win-rate table shifts, because corpses no longer soak damage or trigger on-hit effects",
+ "Bonus HP → ดาเมจ":
+   "Bonus HP → damage",
+ "Bonus HP → โล่":
+   "Bonus HP → shield",
+ "Bonus HP → ฮีล":
+   "Bonus HP → healing",
+ "Bonus HP → โล่ตอนกด":
+   "Bonus HP → shield on cast",
+ "Bonus HP → ดาเมจตอนชน":
+   "Bonus HP → impact damage",
+ "Bonus HP → ดาเมจตอนระเบิด":
+   "Bonus HP → burst damage",
+ "Bonus HP → เลือดสิ่งก่อสร้าง":
+   "Bonus HP → structure health",
+ "Bonus Armor → โล่":
+   "Bonus Armor → shield",
+ "Bonus MR → โล่":
+   "Bonus MR → shield",
+ "Bonus AD → ดาเมจตอนชาร์จเต็ม":
+   "Bonus AD → fully charged damage",
+ "Bonus AD → ดาเมจตอนชน":
+   "Bonus AD → impact damage",
+ "Bonus AD → ดาเมจตอนระเบิด":
+   "Bonus AD → burst damage",
+ "Bonus AD → ดาเมจต่อมีดหนึ่งเล่ม":
+   "Bonus AD → damage per buried dagger",
+ "AD → ดาเมจแต่ละแขน":
+   "AD → damage per arm",
+ "AP → โล่":
+   "AP → shield",
+ "AP → ฮีล":
+   "AP → healing",
+ "AP → ดาเมจด้านใน":
+   "AP → inner damage",
+ "AP → ดาเมจตอนระเบิด":
+   "AP → burst damage",
+ "AP → ดาเมจต่อระลอก":
+   "AP → damage per pulse",
+ "AP → ดาเมจติดออโต้":
+   "AP → on-hit damage",
+ "AP ทุก 100 → เพิ่ม AD":
+   "AD, per 100 AP",
+ "AP ทุก 100 → เพิ่ม AP":
+   "AP, per 100 AP",
+ "AP ทุก 100 → เพิ่มความเร็วเดิน":
+   "move speed, per 100 AP",
+ "AP ทุก 100 → ขยายผล":
+   "amplification, per 100 AP",
+ "AP ทุก 100 → สะสมดาเมจเพิ่ม":
+   "stored damage, per 100 AP",
+ "AP ทุก 100 → สโลว์เพิ่ม":
+   "slow, per 100 AP",
+ "ต่อสแตกที่สะสมไว้ → ดาเมจ":
+   "damage per stack held",
+ "เลือดสูงสุดของเป้า → ดาเมจ":
+   "target's max HP → damage",
+ "Max HP เป้า ต่อ Bonus AD 100":
+   "target's max HP, per 100 Bonus AD",
+ "เกราะ/ต้านเวทของตัวเอง → ของสิ่งก่อสร้าง":
+   "his own armor and magic resist → the structure's",
+ "ดาเมจที่ทำได้ → ฮีลคืน":
+   "damage dealt → healing",
+ "ดาเมจที่ท่านี้ทำได้ → ฮีลคืน":
+   "this ability's damage → healing",
+ "ดาเมจที่เพื่อนกินมา → ฮีลและโล่ให้เพื่อน":
+   "damage the ally took → healing and shield for them",
+ "วิ ต่อความเร็วเดินส่วนเกิน 1 → เวลาลอย":
+   "s of knock-up per 1 excess move speed",
+ "วิ ต่อความเร็วเดินจาก AP 100 → เวลาลอย":
+   "s of knock-up per 100 AP worth of move speed",
 };

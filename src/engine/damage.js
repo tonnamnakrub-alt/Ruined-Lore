@@ -34,6 +34,8 @@ function cbcCleanse(state, u) {
 }
 
 export function applyDamage(state, source, target, amount, magic, trueDmg, isAuto) {
+  // ศพไม่รับดาเมจอีก — ไม่งั้นบล็อกนับสังหารด้านล่างจะเข้าอีกรอบ แล้วแจกเครดิตซ้ำ
+  if (target.alive === false) return;
   if (hasBuff(target, "invuln") || hasBuff(target, "evade")) {
     if (target.absorb) target.absorb.dmg += amount;   // Theon's ult banks what it eats
     return;
@@ -282,7 +284,11 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
       }
     }
   }
-  if (target.hp <= 0) {
+  // `target.alive` ต้องเช็คด้วย ไม่ใช่แค่เลือด — เอฟเฟกต์ที่พ่วงดาเมจซ้อนอยู่กลางฟังก์ชันนี้
+  // (Faustian Bargain ของ FAUSTUS · ตราของ Another Eye · เมล็ดของ JACK · ประจุของ NIAN)
+  // เรียก applyDamage ซ้อนเข้าไปแล้วเป้าตายในชั้นใน พอกลับมาชั้นนอกเลือดก็ยังติดลบอยู่
+  // บล็อกนี้จึงทำงานอีกรอบกับศพเดิม แล้วแจกเครดิตสังหารกับเงินค่าหัวซ้ำ
+  if (target.hp <= 0 && target.alive) {
     // Freyja's Shroud of Defiance: ดาเมจที่จะฆ่าถูกกันไว้ เลือดล็อกที่ 1 แล้วอมตะสั้นๆ
     if (denyDeath(state, target)) return;
     // I WILL NOT YIELD — กดเองไม่ได้ ทำงานเองตอนจะตาย: ล้มนิ่ง 2.5 วิ แล้วลุกกลับมาพร้อมบัฟ

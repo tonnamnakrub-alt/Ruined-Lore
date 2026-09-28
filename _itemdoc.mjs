@@ -50,6 +50,9 @@ const UNPRICED = [
   "antihealOnDmg", "spellSlow", "storedBurst", "ultZone", "meteor", "cdReset",
 ];
 
+// หมวดที่เป็นของจบ Tier 3 — มีผลวัดในสนามให้โชว์ ส่วนชิ้นส่วนกับรองเท้าไม่มี
+const it3 = (catId) => !["START", "T1", "T2", "BOOTS"].includes(catId);
+
 const value = (it) => {
   let v = 0;
   for (const k in PRICE) if (it[k]) v += it[k] * PRICE[k];
@@ -57,6 +60,20 @@ const value = (it) => {
 };
 const worth = (it) => (it.cost > 0 ? Math.round((100 * value(it)) / it.cost) : null);
 const unpricedOf = (it) => UNPRICED.filter((k) => it[k] != null);
+
+// ---------------------------------------------------------------
+// ผลวัดในสนามจาก _itemwr.mjs — ไม่มีไฟล์ก็ข้ามหัวข้อนั้นไป
+// ค่าที่ใช้จริงคือ edge (ชนะ ลบ ฐานของหมวดตัวเอง) เพราะทีมแต่ละหมวดไม่เท่ากัน
+// ทีมมาร์คแมนห้าคนชนะทีมมาร์คแมนห้าคนที่ 50% อยู่แล้ว เลขดิบจึงเทียบข้ามหมวดไม่ได้
+// ---------------------------------------------------------------
+let WR = null;
+try { WR = JSON.parse(fs.readFileSync("item-wr.json", "utf8")); } catch { WR = null; }
+const wrOf = (id) => (WR ? WR.rows.find((r) => r.id === id) : null);
+const edgeStr = (id) => {
+  const r = wrOf(id);
+  if (!r) return "—";
+  return (r.edge >= 0 ? "+" : "") + r.edge.toFixed(1);
+};
 
 const recipe = (it) => (it.parts || []).map((p) => {
   const q = ITEM_BY_ID[p];
@@ -83,6 +100,9 @@ doc.push("- ของที่ขึ้น **`พาสซีฟเขียน�
 doc.push("- ของที่ขึ้น **⚠️ ไม่ได้ตีราคา** คือมีฟิลด์ที่ให้พลังจริงแต่ตารางราคาไม่รู้จัก");
 doc.push("  **ความคุ้มของพวกนี้ต่ำกว่าความจริง** อย่าเอาไปตัดสินว่าของอ่อน");
 doc.push("");
+doc.push("- **เหนือฐาน** = ผลวัดในสนามจริง ทีมที่ได้ของชิ้นนี้เพิ่มชนะเกินทีมที่ไม่ได้กี่แต้ม · **0 คือไม่มีผลเลย**");
+doc.push("  วัดแยกตามสาย ของมาร์คแมนวัดบนมือมาร์คแมน ของแทงค์วัดบนมือแทงค์ (ดูหัวข้อถัดไป)");
+doc.push("");
 doc.push("เทียบความคุ้มด้วย `node _balance.mjs` · วัดพลังจริงในสนามด้วย `node _itemwr.mjs`");
 doc.push("");
 
@@ -99,6 +119,50 @@ for (const cat of ["TANK", "FIGHTER", "ASSASSIN", "MAGE", "MARKSMAN", "SUPPORT"]
   doc.push(`| ${cat} | ${avg.toFixed(0)}% | ${list.length} | ${cost.toFixed(0)}g |`);
 }
 doc.push("");
+
+// ---- ชนะจริงในสนาม รายสาย ----
+if (WR) {
+  doc.push("## ชนะจริงในสนาม รายสาย (Tier 3)");
+  doc.push("");
+  doc.push("ความคุ้มด้านบนตีราคาจากค่าสถานะบนกระดาษ ตารางนี้วัดจากการรบจริง");
+  doc.push("");
+  doc.push("**วิธีวัด** — สองทีมเหมือนกันเป๊ะ ตัวละคร เลเวล แต้มนักแข่ง และของที่บอทซื้อเอง");
+  doc.push("ต่างกันอย่างเดียวคือฝั่งหนึ่งได้ไอเทมที่กำลังวัดเพิ่มมาคนละชิ้น สลับสีครึ่งหนึ่ง");
+  doc.push("");
+  doc.push("**แต่ละสายมีทีมของตัวเอง** ประกอบด้วยตัวละครสายนั้นห้าตัว — ของมาร์คแมนจึงวัดบนมือมาร์คแมนห้าคน");
+  doc.push("ไม่ใช่ยัดใส่มือแทงค์กับซัพเหมือนเวอร์ชันแรกของเครื่องมือนี้");
+  doc.push("");
+  doc.push("**\"เหนือฐาน\" คือตัวเลขที่ใช้เทียบข้ามสายได้** เพราะหักฐานของหมวดตัวเองออกแล้ว");
+  doc.push("(ทีมมาร์คแมนห้าคนสู้ทีมมาร์คแมนห้าคนก็ชนะ 50% อยู่แล้ว เลขดิบจึงเทียบข้ามสายไม่ได้)");
+  doc.push("");
+  doc.push("| สาย | ชิ้น | ชนะเฉลี่ย | **เหนือฐาน** | คลาดเคลื่อน | ทีมที่ใช้วัด |");
+  doc.push("|---|---:|---:|---:|---:|---|");
+  for (const c of WR.cats) {
+    doc.push("| " + c.cat + " | " + c.n + " | " + c.wr.toFixed(1) + "% | **" +
+      (c.edge >= 0 ? "+" : "") + c.edge.toFixed(1) + "** | ±" + c.margin.toFixed(1) + " | " +
+      (WR.squads[c.cat] || []).join(" · ") + " |");
+  }
+  doc.push("");
+  doc.push("วัดชิ้นละ " + WR.fightsEach + " ไฟต์ · คลาดเคลื่อนรายชิ้น **±" + WR.margin.toFixed(1) + " แต้ม**");
+  doc.push("");
+  doc.push("> **อย่าตัดสินไอเทมชิ้นเดียวจากตัวเลขนี้** ±" + WR.margin.toFixed(1) + " กว้างเกินกว่าจะแยกของดีกับของกลางๆ ออกจากกัน");
+  doc.push("> ค่าเฉลี่ยรายสายด้านบนแม่นกว่ามากเพราะรวมของหลายชิ้น ใช้ตัวนั้นตัดสินทิศทาง");
+  doc.push("> แล้วดูรายชิ้นเฉพาะตัวที่โผล่หัวตารางหรือท้ายตารางแบบทิ้งห่าง");
+  doc.push("");
+
+  // ---- อันดับรายชิ้น ----
+  doc.push("## Tier 3 เรียงตามผลวัดในสนาม");
+  doc.push("");
+  doc.push("| # | ไอเทม | สาย | ราคา | ชนะ | เหนือฐาน | ความคุ้ม |");
+  doc.push("|---:|---|---|---:|---:|---:|---:|");
+  WR.rows.forEach((r, i) => {
+    const it = ITEM_BY_ID[r.id];
+    const w = !it ? "—" : CODED.has(it.id) ? "`พาสซีฟเขียนมือ`" : worth(it) + "%" + (unpricedOf(it).length ? " ⚠️" : "");
+    doc.push("| " + (i + 1) + " | " + esc(r.name) + " `" + r.id + "` | " + r.cat + " | " + r.cost + "g | " +
+      r.wr.toFixed(1) + "% | **" + (r.edge >= 0 ? "+" : "") + r.edge.toFixed(1) + "** | " + w + " |");
+  });
+  doc.push("");
+}
 
 // ---- ของที่ตีราคาไม่ครบ ----
 const gaps = ITEMS.filter((i) => i.tier === 3 && unpricedOf(i).length);
@@ -137,12 +201,13 @@ for (const cat of CATEGORIES) {
   if (!list.length) continue;
   doc.push(`### ${esc(tr(cat.th))} (${cat.id}) — ${list.length} ชิ้น`);
   doc.push("");
-  doc.push("| ไอเทม | ราคา | ความคุ้ม | ค่าสถานะและพาสซีฟ | สร้างจาก |");
-  doc.push("|---|---:|---:|---|---|");
+  const showWr = WR && it3(cat.id);
+  doc.push("| ไอเทม | ราคา | ความคุ้ม |" + (showWr ? " เหนือฐาน |" : "") + " ค่าสถานะและพาสซีฟ | สร้างจาก |");
+  doc.push("|---|---:|---:|" + (showWr ? "---:|" : "") + "---|---|");
   for (const it of list) {
     const w = CODED.has(it.id) ? "`พาสซีฟเขียนมือ`" : worth(it) + "%" + (unpricedOf(it).length ? " ⚠️" : "");
     const th = thaiOf(it);
-    doc.push(`| **${esc(nameOf(it))}** \`${it.id}\`${th ? "<br>" + esc(th) : ""} | ${it.cost}g | ${w} | ${esc(itemDesc(it))} | ${esc(recipe(it)) || "—"} |`);
+    doc.push(`| **${esc(nameOf(it))}** \`${it.id}\`${th ? "<br>" + esc(th) : ""} | ${it.cost}g | ${w} |${showWr ? " " + edgeStr(it.id) + " |" : ""} ${esc(itemDesc(it))} | ${esc(recipe(it)) || "—"} |`);
   }
   doc.push("");
 }
