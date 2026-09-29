@@ -144,8 +144,13 @@ export function tickHurls(state) {
     const sk = h.skill;
     const r = Math.max(0, sk.rank - 1);
     const bh = u.bonusHp || 0;
-    const direct = sk.dmg[r] + (sk.badRatio || 0) * u.bonusAd + (sk.selfBonusHp || 0) * bh;
-    const splash = sk.aoeDmg[r] + (sk.aoeBad || 0) * u.bonusAd + (sk.aoeBonusHp || 0) * bh;
+    // ท่านี้คิดดาเมจเอง ไม่ได้ผ่าน skillPower จึงต้องรู้จักฟิลด์ใหม่ของ 0.5 ตรงนี้ด้วย
+    // ไม่งั้น selfMaxHp ที่ประกาศไว้จะเป็นเลขลอยๆ ที่ไม่มีใครอ่าน
+    const mh = u.maxHp || 0;
+    const direct = sk.dmg[r] + (sk.badRatio || 0) * u.bonusAd
+      + (sk.selfBonusHp || 0) * bh + (sk.selfMaxHp || 0) * mh;
+    const splash = sk.aoeDmg[r] + (sk.aoeBad || 0) * u.bonusAd
+      + (sk.aoeBonusHp || 0) * bh + (sk.aoeMaxHp || 0) * mh;
     const prev = state.dmgSrc;
     state.dmgSrc = skillLabel(u, sk);
     if (t && t.alive) {

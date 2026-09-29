@@ -563,7 +563,10 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
     // ---- ARTHUR R · ดาบพิพากษา ดาเมจจริง + ประหาร ----
     case "judgment": {
       if (!target) return true;
-      const dmg = at(sk.dmg, sk) + (sk.badRatio || 0) * u.bonusAd;
+      // ท่านี้คิดดาเมจเอง ไม่ได้ผ่าน skillPower จึงต้องรู้จักฟิลด์ใหม่ของ 0.5 ด้วย
+      // 0.5 ย้ายจากสเกล Bonus AD ไปเป็น % ของเลือดที่เป้าหายไปแล้ว
+      const dmg = at(sk.dmg, sk) + (sk.badRatio || 0) * u.bonusAd
+        + (sk.enemyMissingHp || 0) * Math.max(0, (target.maxHp || 0) - (target.hp || 0));
       vfx(state, { kind: "beam", x: target.x, y: target.y - 400, x2: target.x, y2: target.y, w: 18, color: "255,236,190", dur: 0.6 });
       vfx(state, { kind: "flash", x: target.x, y: target.y, r: 140, color: "255,236,190", dur: 0.5 });
       applyDamage(state, u, target, dmg, false, true);
