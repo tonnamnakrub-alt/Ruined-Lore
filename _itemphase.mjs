@@ -28,11 +28,22 @@ const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"];
 const flat = (v) => Object.fromEntries(STAT_KEYS.map((k) => [k, v]));
 
 // ช่วงเกม — เลเวลและงบซื้อของ ณ ตอนนั้น
+//
+// งบคาลิเบรตมาจากของที่ถือจริงในแมตช์ (game-wr.json) ไม่ได้ตั้งเอาเอง:
+//   ต้นเกม เลเวล 4.3 ถือของใหญ่ 0.18 ชิ้น · กลางเกม 9.7 ถือ 1.47 · เลทเกม 14.0 ถือ 2.40
+// งบที่ทำให้บอทซื้อได้เท่านั้นคือ 35 / 95 / 155 ทอง
+//
+// รอบแรกผมตั้งไว้ 100/250/430 ซึ่งซื้อได้ 2.00/4.00/4.80 ชิ้น มากกว่าความจริงเท่าตัว
+// ผลที่ได้จึงใช้ไม่ได้ทั้งใบ — ต้นเกมอิ่มตัวที่ 93.7% เฉลี่ย และ 18 ชิ้นชน 99-100%
 const PHASES = [
-  { key: "early", th: "ต้นเกม", level: 5, gold: 100 },
-  { key: "mid", th: "กลางเกม", level: 10, gold: 250 },
-  { key: "late", th: "เลทเกม", level: 15, gold: 430 },
+  { key: "early", th: "ต้นเกม", level: 5, gold: 35 },
+  { key: "mid", th: "กลางเกม", level: 10, gold: 95 },
+  { key: "late", th: "เลทเกม", level: 15, gold: 155 },
 ];
+
+// ของใหญ่ (T3) ไม่มีอยู่จริงในต้นเกม — ที่ถือกันตอนนั้นคือชิ้นส่วน T1/T2
+// จึงวัด T3 เฉพาะกลางกับเลทเกม ส่วนต้นเกมวัด T1/T2 แยกอีกตาราง
+const T3_PHASES = ["mid", "late"];
 
 const SQUAD = {
   TANK: ["TOTSAKAN", "KLAEDER", "NIAN", "H.S.B", "STEIN"],
@@ -101,7 +112,7 @@ const rows = [];
 let done = 0;
 for (const it of t3) {
   const ph = {};
-  for (const p of PHASES) ph[p.key] = winRate(it.cat, it, p);
+  for (const p of PHASES) if (T3_PHASES.includes(p.key)) ph[p.key] = winRate(it.cat, it, p);
   rows.push({ id: it.id, cat: it.cat, cost: it.cost, name: it.th.split("—")[0].trim(), ph });
   if (++done % 10 === 0) process.stderr.write("  วัดไปแล้ว " + done + "/" + t3.length + " ชิ้น\n");
 }
@@ -110,41 +121,62 @@ for (const it of t3) {
 const edge = (r, k) => r.ph[k] - baseline[k][r.cat];
 
 console.log("\n=== ความแรงเหนือฐาน แยกตามช่วง (0 = ไม่มีผลเลย) ===\n");
-console.log("สาย        ต้นเกม  กลางเกม  เลทเกม   ต้น->เลท  จำนวนชิ้น");
+console.log("สาย        กลางเกม  เลทเกม   กลาง->เลท  จำนวนชิ้น");
 const catRows = [];
 for (const cat of CATS) {
   const list = rows.filter((r) => r.cat === cat);
   const avg = (k) => list.reduce((s, r) => s + edge(r, k), 0) / list.length;
-  const e = avg("early"), m = avg("mid"), l = avg("late");
-  catRows.push({ cat, early: e, mid: m, late: l, n: list.length,
+  const m = avg("mid"), l = avg("late");
+  catRows.push({ cat, mid: m, late: l, n: list.length,
     margin: (196 * Math.sqrt(0.25 / (N * list.length))) });
-  console.log(cat.padEnd(11) + (e >= 0 ? "+" : "") + e.toFixed(1).padStart(5) +
-    ((m >= 0 ? "+" : "") + m.toFixed(1)).padStart(9) + ((l >= 0 ? "+" : "") + l.toFixed(1)).padStart(9) +
-    ((l - e >= 0 ? "+" : "") + (l - e).toFixed(1)).padStart(10) + String(list.length).padStart(10));
+  console.log(cat.padEnd(11) + ((m >= 0 ? "+" : "") + m.toFixed(1)).padStart(7) +
+    ((l >= 0 ? "+" : "") + l.toFixed(1)).padStart(8) +
+    ((l - m >= 0 ? "+" : "") + (l - m).toFixed(1)).padStart(11) + String(list.length).padStart(10));
 }
 
 console.log("\n=== รายชิ้น เรียงตามตัวที่ไต่ขึ้นตอนท้ายมากสุด ===\n");
-console.log("สาย       รหัส  ราคา  ต้นเกม  กลางเกม  เลทเกม  ต้น->เลท  ชื่อ");
-const byArc = [...rows].sort((a, b) => (edge(b, "late") - edge(b, "early")) - (edge(a, "late") - edge(a, "early")));
+console.log("สาย       รหัส  ราคา  กลางเกม  เลทเกม  กลาง->เลท  ชื่อ");
+const byArc = [...rows].sort((a, b) => (edge(b, "late") - edge(b, "mid")) - (edge(a, "late") - edge(a, "mid")));
 for (const r of byArc) {
-  const e = edge(r, "early"), m = edge(r, "mid"), l = edge(r, "late");
+  const m = edge(r, "mid"), l = edge(r, "late");
   console.log(r.cat.padEnd(10) + r.id.padEnd(6) + (r.cost + "g").padStart(5) +
-    ((e >= 0 ? "+" : "") + e.toFixed(1)).padStart(8) + ((m >= 0 ? "+" : "") + m.toFixed(1)).padStart(9) +
-    ((l >= 0 ? "+" : "") + l.toFixed(1)).padStart(8) + ((l - e >= 0 ? "+" : "") + (l - e).toFixed(1)).padStart(10) +
-    "  " + r.name);
+    ((m >= 0 ? "+" : "") + m.toFixed(1)).padStart(9) + ((l >= 0 ? "+" : "") + l.toFixed(1)).padStart(8) +
+    ((l - m >= 0 ? "+" : "") + (l - m).toFixed(1)).padStart(11) + "  " + r.name);
+}
+
+// ---- ของ T1/T2 ที่ถือกันจริงในต้นเกม ----
+const early = PHASES.find((p) => p.key === "early");
+const t12 = ITEMS.filter((i) => i.tier < 3 && i.cat !== "START");
+const smallRows = [];
+done = 0;
+for (const it of t12) {
+  // ชิ้นส่วนไม่ได้ผูกกับสายเหมือนของใหญ่ จึงวัดบนทีมแทงค์กับทีมมาร์คแมนแล้วเฉลี่ย
+  const a = winRate("TANK", it, early) - baseline.early.TANK;
+  const b = winRate("MARKSMAN", it, early) - baseline.early.MARKSMAN;
+  smallRows.push({ id: it.id, tier: it.tier, cost: it.cost, name: it.th.split("—")[0].trim(),
+    edge: (a + b) / 2, tank: a, marksman: b });
+  if (++done % 10 === 0) process.stderr.write("  ชิ้นส่วนต้นเกม " + done + "/" + t12.length + "\n");
+}
+smallRows.sort((x, y) => y.edge - x.edge);
+console.log("\n=== ชิ้นส่วน T1/T2 ในต้นเกม (เลเวล " + early.level + " งบ " + early.gold + "g) ===\n");
+console.log("tier  รหัส  ราคา  เหนือฐาน  ชื่อ");
+for (const r of smallRows) {
+  console.log("  T" + r.tier + "  " + r.id.padEnd(6) + (r.cost + "g").padStart(5) +
+    ((r.edge >= 0 ? "+" : "") + r.edge.toFixed(1)).padStart(10) + "  " + r.name);
 }
 
 fs.writeFileSync("item-phase.json", JSON.stringify({
+  smallRows: smallRows.map((r) => ({ ...r, edge: Number(r.edge.toFixed(1)),
+    tank: Number(r.tank.toFixed(1)), marksman: Number(r.marksman.toFixed(1)) })),
   fightsEach: N, margin: Number(margin.toFixed(1)),
   phases: PHASES, baseline, squads: SQUAD,
-  cats: catRows.map((c) => ({ ...c, early: Number(c.early.toFixed(1)), mid: Number(c.mid.toFixed(1)),
+  cats: catRows.map((c) => ({ ...c, mid: Number(c.mid.toFixed(1)),
     late: Number(c.late.toFixed(1)), margin: Number(c.margin.toFixed(1)) })),
   rows: rows.map((r) => ({
     id: r.id, cat: r.cat, cost: r.cost, name: r.name,
-    early: Number(edge(r, "early").toFixed(1)),
     mid: Number(edge(r, "mid").toFixed(1)),
     late: Number(edge(r, "late").toFixed(1)),
-    raw: { early: Number(r.ph.early.toFixed(1)), mid: Number(r.ph.mid.toFixed(1)), late: Number(r.ph.late.toFixed(1)) },
+    raw: { mid: Number(r.ph.mid.toFixed(1)), late: Number(r.ph.late.toFixed(1)) },
   })),
 }, null, 1));
 console.log("\nเขียน item-phase.json แล้ว");
