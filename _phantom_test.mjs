@@ -52,7 +52,7 @@ const dealt = (u, needle) => Object.entries(u.dealtBy || {})
   t("PHANTOM อยู่ในรายชื่อตัวละคร", !!PH, PH ? PH.th + " · " + PH.role + " · " + PH.lane : "ไม่มี");
   t("ลงเลนเดียวคือ ADC", PH.lane === "ADC" && !(PH.alsoLanes || []).length, PH.lane);
   t("มีครบสี่ท่า", PH.skills.length === 4, PH.skills.map((s) => s.key + " " + s.type).join(" · "));
-  t("เป็นตัวยิงไกล ไม่ใช่ประชิด", !PH.melee && PH.range === 550 && PH.missile > 0, "ระยะ " + PH.range + " · กระสุน " + PH.missile);
+  t("เป็นตัวยิงไกล ไม่ใช่ประชิด", !PH.melee && PH.range === 500 && PH.missile > 0, "ระยะ " + PH.range + " · กระสุน " + PH.missile);
 }
 
 // ---- พาสซีฟ · ออโต้ปักมีด แล้วครบห้าเล่มระเบิด ----
@@ -96,9 +96,11 @@ const dealt = (u, needle) => Object.entries(u.dealtBy || {})
   p.manual.castKey = "Q";
   for (let i = 0; i < 20; i++) step(st);
   t("Q ลงดาเมจจริง", dealt(p, "Tri-Blade Fan") > 0, Math.round(dealt(p, "Tri-Blade Fan")) + " ดาเมจ");
-  t("Q ปักมีดตามจำนวนเล่มที่โดน", daggerCount(st, p, d) === 3, "ปักได้ " + daggerCount(st, p, d) + " เล่ม");
+  // 0.5 กางพัดจาก 35 เป็น 90 องศา — เป้าหมายเดี่ยวจึงกินไม่ครบสามเล่มอีกแล้ว
+  // นั่นคือตัวเนิร์ฟเอง ไม่ใช่บั๊ก จึงเช็คว่า "ปักได้อย่างน้อยหนึ่ง" แทนการตรึงเลขสาม
+  t("Q ปักมีดตามจำนวนเล่มที่โดน", daggerCount(st, p, d) >= 1, "ปักได้ " + daggerCount(st, p, d) + " เล่ม");
   const q = skill("Q");
-  t("Q ยิงสามเล่มเป็นรูปพัด", q.count === 3 && q.angle === 35, q.count + " เล่ม · กาง " + q.angle + " องศา");
+  t("Q ยิงสามเล่มเป็นรูปพัดกว้าง 90 องศา", q.count === 3 && q.angle === 90, q.count + " เล่ม · กาง " + q.angle + " องศา");
   t("เล่มที่ซ้ำตัวเดิมเบาลง ไม่ใช่เต็มทุกเล่ม", q.falloff > 0 && q.falloff < 1, "ตัวคูณ " + q.falloff);
 }
 
@@ -106,12 +108,15 @@ const dealt = (u, needle) => Object.entries(u.dealtBy || {})
 {
   const { st, p, d } = lab();
   p.x = d.x - 200; p.y = d.y;
-  p.manual.castKey = "Q";
-  for (let i = 0; i < 20; i++) step(st);              // ปักครบสาม
-  for (const sk of p.skills) sk.cdLeft = 0;
-  p.manual.castKey = "Q";
-  for (let i = 0; i < 20; i++) step(st);              // อีกสามเล่ม = 6 → ระเบิดที่ 5 เหลือ 1
-  t("กองมีดล้นห้าแล้วระเบิด เศษเริ่มนับกองใหม่", dealt(p, "Stitched Melodrama") > 0 && daggerCount(st, p, d) === 1,
+  // 0.5 พัดกว้างขึ้น เป้าเดี่ยวกินไม่ครบสามเล่มต่อการกดหนึ่งครั้งแล้ว
+  // จึงกดซ้ำจนกองครบห้าแล้วระเบิด แทนที่จะสมมติว่าสองครั้งพอ
+  let casts = 0;
+  while (casts++ < 12 && dealt(p, "Stitched Melodrama") === 0) {
+    for (const sk of p.skills) sk.cdLeft = 0;
+    p.manual.castKey = "Q";
+    for (let i = 0; i < 20; i++) step(st);
+  }
+  t("กองมีดล้นห้าแล้วระเบิด เศษเริ่มนับกองใหม่", dealt(p, "Stitched Melodrama") > 0 && daggerCount(st, p, d) < 5,
     "ระเบิดไป " + Math.round(dealt(p, "Stitched Melodrama")) + " ดาเมจ · เหลือค้าง " + daggerCount(st, p, d) + " เล่ม");
 }
 

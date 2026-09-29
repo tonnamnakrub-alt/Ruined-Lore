@@ -113,6 +113,7 @@ function fireSkillEffect(state, u, sk, target, prec) {
         x: u.x, y: u.y, dx: Math.cos(ang), dy: Math.sin(ang),
         speed: sk.projSpeed || BASE.projSpeed * 1.15, dmg: power, magic: !!sk.magic,
         width: sk.width, pierce: !!sk.pierce, falloff: sk.falloff, root: sk.root, daggerBleed: sk.daggerBleed,
+        landStun: sk.landStun,
         pullHalf: sk.pullHalf,
         slow: sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow, dur: sk.dur,
         charm: sk.charm ? sk.charm[Math.max(0, sk.rank - 1)] : 0, charmSlow: sk.charmSlow,
@@ -176,7 +177,9 @@ function fireSkillEffect(state, u, sk, target, prec) {
       vfx(state, { kind: "aura", id: u.id, r: u.radius + 30, color: sk.shield ? "228,235,247" : "63,191,127", dur: sk.dur || 3 });
       if (sk.shield) {
         u.shield = 0;
-        grantShield(u, skillHeal(u, sk) + (sk.badRatio || 0) * u.bonusAd + (sk.bonusHpRatio || 0) * u.bonusHp);
+        grantShield(u, skillHeal(u, sk) + (sk.badRatio || 0) * u.bonusAd + (sk.adRatio || 0) * u.ad
+          + (sk.bonusHpRatio || 0) * u.bonusHp + (sk.maxHpRatio || 0) * (u.maxHp || 0)
+          + (sk.maxHpRatio == null && sk.shieldMaxHp ? sk.shieldMaxHp * (u.maxHp || 0) : 0));
         u.buffs.push({ type: "shield", v: 1, until: state.t + (sk.durByRank ? sk.durByRank[r] : sk.dur) });
       }
       if (sk.slowImmune) { u.slowImmuneUntil = state.t + (sk.slowImmuneDur || sk.dur); }
@@ -205,8 +208,9 @@ function fireSkillEffect(state, u, sk, target, prec) {
         for (const g of state.lore.pets) {
           if (g.ownerId !== u.id) continue;
           g.shield = sk.pet.shield[r] + (sk.pet.shieldAp || 0) * u.ap;
-          g.msBuff = sk.pet.ms[r];
-          g.as = sk.pet.as[r];
+          g.msBuff = sk.pet.ms ? sk.pet.ms[r] : 0;
+          // 0.5 ตัดบัฟความเร็วตีที่ E เคยแจกให้ยักษ์ออก — ประกาศไม่มาก็คือศูนย์
+          g.as = sk.pet.as ? sk.pet.as[r] : 0;
           g.buffUntil = state.t + sk.pet.dur;
           vfx(state, { kind: "ring", x: g.x, y: g.y, r: g.radius + 20, color: "232,214,120", grow: 0.8 });
         }

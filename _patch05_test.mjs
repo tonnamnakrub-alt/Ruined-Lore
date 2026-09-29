@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------
 import { CHAMPIONS } from "./src/data/champions.js";
 import { STAT_KEYS } from "./src/data/constants.js";
-import { DEFAULT_FIGHT } from "./src/data/tuning.js";
+import { DEFAULT_FIGHT, DMG_MUL } from "./src/data/tuning.js";
 import { buildFight } from "./src/engine/build-fight.js";
 import { applyDamage } from "./src/engine/damage.js";
 import { autoRanks } from "./src/engine/skill-ranks.js";
@@ -114,18 +114,13 @@ const cast = (st, u, key, target) => {
     "L1 " + share(1) + " · L7 " + share(7) + " · L13 " + share(13));
   // DMG_MUL 0.80 คูณทั้งก้อนหลักและก้อนที่พ่วง ผลรวมจึงเป็น 0.8 x 1000 x (1 + share)
   const lo = rider(1), hi = rider(13);
-  // เทียบกับคนที่ไม่มีพาสซีฟนี้ ยิงเลขเดียวกันใส่เป้าเดียวกัน ส่วนต่างคือก้อนที่พ่วงมา
-  const plain = (() => {
-    const o = fight("JACK", "KAZEM", 1);
-    const before = o.foe.hp;
-    o.st.dmgSrc = "W Golden Egg Trap";
-    applyDamage(o.st, o.u, o.foe, 1000, true);
-    o.st.dmgSrc = null;
-    return before - o.foe.hp;
-  })();
-  t("FAUSTUS พาสซีฟพ่วงดาเมจจริงตามมา", lo > plain * 1.05,
-    "เฟาสตุส " + lo.toFixed(0) + " · คนไม่มีพาสซีฟ " + plain.toFixed(0) + " จากดาเมจต้น 1000 เท่ากัน");
-  t("FAUSTUS พาสซีฟแรงขึ้นตามเลเวลจริง (โค้ดอ่าน byTier)", hi > lo + 30,
+  // ที่เลเวล 13 เป้าไม่มีเกราะ/ต้านเวทเหลือ ตัวเลขจึงคำนวณตรงๆ ได้:
+  //   1000 x DMG_MUL 0.80 x (1 + ขั้นพาสซีฟ 0.15) = 920
+  // ถ้าโค้ดไม่อ่าน byTier จะได้ 880 (ใช้ base 0.10) ถ้าไม่พ่วงเลยจะได้ 800
+  const want = 1000 * DMG_MUL * (1 + share(13));
+  t("FAUSTUS พาสซีฟพ่วงดาเมจจริงตามขั้นที่ควรได้", Math.abs(hi - want) < 1,
+    "ได้ " + hi.toFixed(0) + " · ควรได้ " + want.toFixed(0) + " (ถ้าไม่อ่าน byTier จะได้ " + (1000 * DMG_MUL * 1.1).toFixed(0) + ")");
+  t("FAUSTUS พาสซีฟแรงขึ้นตามเลเวลจริง", hi > lo + 30,
     "เลเวล 1 = " + lo.toFixed(0) + " · เลเวล 13 = " + hi.toFixed(0));
 }
 

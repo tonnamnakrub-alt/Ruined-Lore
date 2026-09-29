@@ -258,7 +258,12 @@ export function steinSap(state, u) {
   const cfg = u.champ && u.champ.sap;
   if (!cfg) return;
   if (u.sapReadyAt != null && state.t < u.sapReadyAt) return;
-  const amount = byLevel(cfg, u.level) + cfg.apRatio * (u.ap || 0) + cfg.bonusHp * (u.bonusHp || 0);
+  // 0.5: เลิกสเกลกับ AP/Bonus HP มาสเกลกับเลือดที่สไตน์เสียไปแล้วแทน
+  // ยิ่งเขาเจ็บ น้ำเลี้ยงยิ่งแรง ซึ่งเข้ากับบทบาทที่ยืนรับดาเมจแทนเพื่อน
+  const amount = byLevel(cfg, u.level)
+    + (cfg.apRatio || 0) * (u.ap || 0)
+    + (cfg.bonusHp || 0) * (u.bonusHp || 0)
+    + (cfg.missingHp || 0) * Math.max(0, (u.maxHp || 0) - (u.hp || 0));
   u.sapReadyAt = state.t + cfg.cd[tierOf(u.level, cfg.tiers)];
   const prev = state.dmgSrc;
   state.dmgSrc = tr("พาสซีฟ Sap of Compassion");
@@ -327,6 +332,7 @@ function canopyShieldAmount(u, sk) {
   return at(sk.shield, sk)
     + (sk.apRatio || 0) * (u.ap || 0)
     + (sk.shieldBonusHp || 0) * (u.bonusHp || 0)
+    + (sk.shieldMaxHp || 0) * (u.maxHp || 0)
     + (sk.shieldBonusArmor || 0) * bonusArmor(u)
     + (sk.shieldBonusMr || 0) * bonusMr(u);
 }
@@ -637,7 +643,8 @@ export function tickP4Unit(state, u, dt) {
       c.next = state.t + c.sk.every;
       c.left -= 1;
       const sk = c.sk;
-      const amount = sk.heal[c.rank] + (sk.apRatio || 0) * (u.ap || 0) + (sk.healBonusHp || 0) * (u.bonusHp || 0);
+      const amount = sk.heal[c.rank] + (sk.apRatio || 0) * (u.ap || 0)
+        + (sk.healBonusHp || 0) * (u.bonusHp || 0) + (sk.healMaxHp || 0) * (u.maxHp || 0);
       const prev = state.dmgSrc;
       state.dmgSrc = skillLabel(u, sk);
       vfx(state, { kind: "ring", x: u.x, y: u.y, r: sk.radius, color: "99,199,127", grow: 0.9, dur: 0.7 });
@@ -774,6 +781,11 @@ export function fireP4Skill(state, u, sk, target, prec, aim) {
         grantShield(mate, amount);
         addBuffUnique(mate, "canopy", { type: "shield", v: 1, until: state.t + sk.dur }, state.t);
         mate.canopy = { ownerId: u.id, until: state.t + sk.dur, share: sk.share };
+        // 0.5: ยืมเกราะและต้านเวทของสไตน์ให้เพื่อนด้วย ไม่ใช่แค่โล่
+        if (sk.allyResPct) {
+          mate.borrowedRes = { armor: (u.armor || 0) * sk.allyResPct, mr: (u.mr || 0) * sk.allyResPct,
+            until: state.t + (sk.allyResDur || 4) };
+        }
         vfx(state, { kind: "beam", x: u.x, y: u.y, x2: mate.x, y2: mate.y, w: 6, color: "99,199,127", dur: 0.4 });
         vfx(state, { kind: "aura", id: mate.id, r: mate.radius + 26, color: "99,199,127", dur: sk.dur });
         pushLog(state, tr("{0} {1} แบ่งร่มเงาให้ {2}",

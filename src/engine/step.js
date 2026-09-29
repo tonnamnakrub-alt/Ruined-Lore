@@ -313,7 +313,14 @@ export function step(state) {
 
 
     const argus = (u.argusStacks || 0) * ((u.crowdGuard && u.crowdGuard.per) || 0);
-    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus + centaurAr + argus + (u.weaveArmor || 0)) * ironJohnMult);
+    // เกราะ/ต้านเวทที่ยืมมาจากร่มเงาของ STEIN — หมดอายุแล้วล้างทิ้ง
+    let lentAr = 0, lentMr = 0;
+    if (u.borrowedRes) {
+      if (state.t < u.borrowedRes.until) { lentAr = u.borrowedRes.armor; lentMr = u.borrowedRes.mr; }
+      else u.borrowedRes = null;
+    }
+    u.armor = Math.round((u.baseArmor * (1 - shred) + ironJohnBonus + pnbBonus + centaurAr + argus + (u.weaveArmor || 0)) * ironJohnMult) + Math.round(lentAr);
+    if (lentMr) u.mr += Math.round(lentMr);
     if (centaurAd) u.ad += centaurAd;
     // Apollo's Sunlit Quiver: เลือด 50% ขึ้นไปได้ AD ก้อนใหญ่ · ต่ำกว่านั้นเปลี่ยนเป็นดูดเลือดแทน
     if (u.apolloSplit) {
@@ -1058,6 +1065,13 @@ export function step(state) {
     // root ที่ท่านั้นใส่ให้ตัวเองเพื่อยืนนิ่ง ไม่ใช่การขัดจังหวะ — แท็กไว้ทั้งสองแบบ
     const SELF = ["channel", "selfchannel", "arbor", "arbordr"];
     const outsideRoot = u.buffs.some((b) => b.type === "root" && !SELF.includes(b.tag) && b.until > state.t);
+    // ccImmune — ท่าที่ประกาศไว้ว่ากันคราวด์คอนโทรลระหว่างร่าย ล้างของที่เพิ่งโดนทิ้งทุกเฟรม
+    if (ch.skill && ch.skill.ccImmune && u.alive) {
+      u.buffs = u.buffs.filter((b) => !(b.type === "stun" || b.type === "fear" || b.type === "silence"
+        || (b.type === "root" && !SELF.includes(b.tag))));
+      u.charmed = null;
+      u.stunned = false;
+    }
     if (!u.alive || hasBuff(u, "stun") || hasBuff(u, "fear") || outsideRoot || u.charmed) {
       u.channeling = null;
       u.buffs = u.buffs.filter((b) => !SELF.includes(b.tag));
@@ -1174,6 +1188,8 @@ export function step(state) {
       state.dmgSrc = null;
       if (owner && !p.skill) owner.hits += 1;
       if (p.root) u.buffs.push({ type: "root", v: 1, until: state.t + p.root });
+      // 0.5: landStun — ลูกกระสุนที่ประกาศไว้ว่าโดนแล้วสตันสั้นๆ (STEIN Q)
+      if (p.landStun) addBuff(u, { type: "stun", v: 1, until: state.t + p.landStun }, state.t);
       // STEIN Q — รากกระชากเป้าเข้ามาครึ่งหนึ่งของระยะห่าง ณ ตอนที่โดน
       if (p.pullHalf && owner) steinPull(state, owner, u, p.pullHalf);
       if (p.daggerBleed) {

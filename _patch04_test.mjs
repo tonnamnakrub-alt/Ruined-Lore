@@ -64,7 +64,8 @@ const sk = (u, k) => u.skills.find((x) => x.key === k);
 // ---- 3) HOOD พาสซีฟ ออโต้ที่ไม่คริก็ทิ้งเลือดไหล ----
 {
   const cfg = CHAMPIONS.HOOD.critBleed;
-  t("HOOD มีตัวเลขเลือดไหลของออโต้ธรรมดา", cfg.nonCritPct === 1.5 && cfg.pct === 1.75,
+  // 0.5 กด nonCritPct จาก 150% เหลือ 120% — ตรึงเลขของ 0.4 ต่อไม่ได้แล้ว
+  t("HOOD มีตัวเลขเลือดไหลของออโต้ธรรมดา", cfg.nonCritPct === 1.2 && cfg.pct === 1.75,
     "ไม่คริ " + Math.round(cfg.nonCritPct * 100) + "% · คริ " + Math.round(cfg.pct * 100) + "%");
 
   const { st, me, foe } = duel("HOOD", "KAZEM", 16, [big[2]]);

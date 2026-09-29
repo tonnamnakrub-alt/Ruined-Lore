@@ -175,19 +175,22 @@ const dealt = (u, needle) => Object.entries(u.dealtBy || {})
   t("สายเชื่อมผูกไว้บนตัวเพื่อน", !!f.canopy && f.canopy.ownerId === s.id,
     f.canopy ? "แบ่ง " + Math.round(f.canopy.share * 100) + "%" : "ไม่มี");
 
-  // เกราะเยอะขึ้น โล่ต้องหนาขึ้น
+  // 0.5 เปลี่ยนสูตรโล่: เลิกสเกลกับเกราะ/ต้านเวทส่วนเกิน มาสเกลกับ Max HP แทน
+  // และเพื่อนที่รับโล่จะได้ยืมเกราะ/ต้านเวทของสไตน์ติดไปด้วย
   const thicker = (() => {
     const L = lab();
     step(L.st);
-    L.s.baseArmor += 200; L.s.baseMr += 200;
+    L.s.maxHp += 2000;
     step(L.st);
     L.s.manual.castKey = "E";
     for (let i = 0; i < 25; i++) step(L.st);
     return L.s.shield;
   })();
   const sk = skill("E");
-  t("โล่สเกลตามเกราะและต้านเวทส่วนเกิน", thicker > s.shield * 1.3,
-    Math.round(s.shield) + " → " + Math.round(thicker) + " เมื่อเกราะ+ต้านเวทเพิ่มอย่างละ 200 (สูตร " + Math.round(sk.shieldBonusArmor * 100) + "%)");
+  t("โล่สเกลตาม Max HP", thicker > s.shield * 1.3,
+    Math.round(s.shield) + " → " + Math.round(thicker) + " เมื่อ Max HP เพิ่ม 2000 (สูตร " + Math.round(sk.shieldMaxHp * 100) + "%)");
+  t("เพื่อนที่รับโล่ได้ยืมเกราะ/ต้านเวทของสไตน์", !!f.borrowedRes && f.borrowedRes.armor > 0,
+    f.borrowedRes ? "เกราะ +" + Math.round(f.borrowedRes.armor) + " · ต้านเวท +" + Math.round(f.borrowedRes.mr) : "ไม่ได้ยืม");
 }
 
 // ---- E · ดาเมจที่เพื่อนกิน ส่วนหนึ่งไปหักที่โล่ของสไตน์ ----

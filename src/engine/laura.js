@@ -113,7 +113,9 @@ export function tickLaura(state, u, dt) {
       if (cfg) growLaura(state, u, cfg.perHit);
     }
   }
-  const drain = sk.drainByRank ? sk.drainByRank[r] : (sk.drain || 0);
+  // 0.5: healPctDealt — ฮีลคืนเป็น % ของดาเมจที่ระลอกนี้ทำได้ ไล่ตามขั้นอัลติ
+  const drain = (sk.drainByRank ? sk.drainByRank[r] : (sk.drain || 0))
+    + (sk.healPctDealt ? sk.healPctDealt[r] : 0);
   if (dealt > 0) withSrc(state, skillLabel(u, sk), u, () => healUnit(state, u, dealt * drain));
   // ยังกัดใครอยู่ก็คืนเวลาให้ แต่ระหว่างจางเพดานคือ grace ไม่ใช่ระยะเวลาเต็ม
   bs.left = Math.min(bs.fading ? (sk.grace || 3) : sk.dur, bs.left + (sk.regen || 0));

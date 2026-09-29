@@ -22,7 +22,7 @@ export const P4_CHAMPIONS = {
     th: "แฟนทอม", role: "Marksman", lane: "ADC", melee: false,
     hp: 575, hpG: 90, hp5: 6.0, hp5G: 0.65, ad: 59, adG: 3.3, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     // เอกสารเขียน "+3.1% ต่อเลเวล" ของ 0.658 = 0.0204 ต่อเลเวล — เกมนี้เก็บเป็นค่าคงที่ต่อเลเวล
-    as: 0.658, asG: 0.02, ms: 335, range: 550,
+    as: 0.658, asG: 0.02, ms: 335, range: 500,
 
     // ---- พาสซีฟ: มีดที่ปักค้างอยู่บนตัวเป้า ----
     // สโลว์ 5 ขั้นในเอกสารไม่มีแรงก์ให้อิง เลยผูกกับเลเวล 1/5/9/13/17
@@ -37,8 +37,8 @@ export const P4_CHAMPIONS = {
       // เอกสารให้ระยะ 850 และเป็นกระสุนบินจริง แต่ท่ารูปกรวยในเกมนี้เป็นการกวาดทันที
       // 850 แบบกวาดทันทีคือโพคฟรีเกินไปสำหรับตัวที่มีระยะออโต้ 550 อยู่แล้ว เลยลงมาที่ 800
       // ดาเมจต่อเล่มก็ลดจาก 60-200 เหลือ 50-170 ด้วยเหตุผลเดียวกัน (โดนครบสามเล่มคือ 1.7 เท่า)
-      { key: "Q", th: "Tri-Blade Fan", type: "cone", range: 800, count: 3, angle: 35, falloff: 0.35,
-        cast: 0.2, cd: 8, cdByRank: [8, 7.25, 6.5, 5.75, 5],
+      { key: "Q", th: "Tri-Blade Fan", type: "cone", range: 800, count: 3, angle: 90, falloff: 0.35,
+        cast: 0.2, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
         dmg: [50, 80, 110, 140, 170], badRatio: 0.55,
         stickPerHit: 1 },
 
@@ -49,13 +49,13 @@ export const P4_CHAMPIONS = {
       { key: "W", th: "The Phantom's Persona", type: "mask", cast: 0.25, cd: 6,
         // เอกสารให้ AS 20-50% กับเจาะเกราะ 7-19 ซึ่งทำให้สุขนาฏกรรมชนะเกือบทุกสถานการณ์
         // และมรณะไม่มีวันถูกเลือกเลย — กดสุขนาฏกรรมลงและดันมรณะขึ้นจนทั้งสามใบมีที่ยืนจริง
-        adFlat: [12, 18, 24, 30, 36],
-        asPct: [0.15, 0.20, 0.25, 0.30, 0.35],
-        arPen: [10, 15, 20, 25, 30] },
+        adFlat: [10, 15, 20, 25, 30],
+        asPct: [0.10, 0.125, 0.15, 0.175, 0.20],
+        arPen: [8, 11, 14, 17, 20] },
 
       // ---- E · กระชากมีดทั้งกองกลับมา ----
       { key: "E", th: "Maestro's Rebound", type: "rebound", range: 1100, width: 120, cast: 0.25,
-        cd: 13, cdByRank: [13, 12, 11, 10, 9],
+        cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
         ripDmg: [20, 30, 40, 50, 60], ripBadRatio: 0.25,
         dmg: [40, 65, 90, 115, 140], badRatio: 0.40 },
 
@@ -63,8 +63,8 @@ export const P4_CHAMPIONS = {
       // เอกสารให้คูลดาวน์ 100/85/70 ซึ่งยาวกว่าอัลติทุกตัวในเกมนี้มาก (ส่วนใหญ่ 50-60)
       // ไฟต์ยกหนึ่งสั้นเกินกว่าจะได้กดสองครั้ง เลยลงมาที่ 75/65/55 ยังยาวที่สุดในเกมอยู่ดี
       { key: "R", th: "The Grand Masquerade", type: "bladeTempest", ult: true, cast: 0.2,
-        cd: 75, cdByRank: [75, 65, 55], air: 0.75, radius: 500,
-        dmg: [180, 280, 380], badRatio: 0.85, stacks: 3 },
+        cd: 45, cdByRank: [45, 45, 45], air: 0.75, radius: 500,
+        dmg: [120, 240, 360], badRatio: 0.60, stacks: 3 },
     ],
   },
 
@@ -85,33 +85,33 @@ export const P4_CHAMPIONS = {
 
     // ---- พาสซีฟ: ออโต้ที่หลั่งน้ำเลี้ยง ----
     // คูลดาวน์ไล่ตามเลเวลเป็นขั้น 1/7/13 เหมือนพาสซีฟสามขั้นตัวอื่นในเกม
-    sap: { cd: [12, 10, 8], tiers: [1, 7, 13], radius: 650, cutOnCast: 2.0,
-      base: 30, perLevel: (150 - 30) / 17, apRatio: 0.25, bonusHp: 0.05 },
+    sap: { cd: [10, 8, 6], tiers: [1, 7, 13], radius: 650, cutOnCast: 2.0,
+      base: 100, perLevel: (270 - 100) / 17, missingHp: 0.10 },
     passive: { th: "Sap of Compassion",
       desc: "ทุก 12/10/8 วิ (ที่เลเวล 1/7/13) ออโต้ครั้งถัดไปหลั่งน้ำเลี้ยง ฟื้นเลือดให้ตัวเองและเพื่อนที่มีสัดส่วนเลือดน้อยที่สุดในระยะ 650 คนละ 30 ที่เลเวล 1 ไล่ถึง 150 ที่เลเวล 18 (+25% AP +5% Bonus HP ของสไตน์) · ร่ายสกิล Q/W/E หรือทุกระลอกของ R ตัดคูลดาวน์พาสซีฟลงทันที 2 วิ" },
 
     skills: [
       // ---- Q · รากพุ่งใต้ดินแล้วกระชากเข้ามาครึ่งทาง ----
-      { key: "Q", th: "Grasping Roots", type: "line", range: 800, width: 125, projSpeed: 1600,
+      { key: "Q", th: "Grasping Roots", type: "line", range: 900, width: 150, projSpeed: 1600,
         cast: 0.25, cd: 9, cdByRank: [9, 8.5, 8, 7.5, 7], magic: true,
-        dmg: [70, 105, 140, 175, 210], apRatio: 0.50, selfBonusHp: 0.06,
+        dmg: [100, 140, 180, 220, 260], apRatio: 0.50, selfMaxHp: 0.06, landStun: 0.5,
         // กระชากเข้ามา 50% ของระยะห่าง ณ เสี้ยววินาทีที่โดน
         pullHalf: 0.5 },
 
       // ---- W · กรวยหนามหน่วง 0.4 วิ แล้วตรึงเท้าทั้งวง ----
-      { key: "W", th: "Bramble Overgrowth", type: "thornCone", range: 625, angle: 60, delay: 0.4,
-        cast: 0.25, cd: 13, cdByRank: [13, 12, 11, 10, 9], magic: true,
-        dmg: [80, 120, 160, 200, 240], apRatio: 0.60,
-        root: [1.25, 1.4, 1.55, 1.7, 1.85] },
+      { key: "W", th: "Bramble Overgrowth", type: "thornCone", range: 550, angle: 60, delay: 0.5,
+        cast: 0.25, cd: 11, cdByRank: [11, 10.5, 10, 9.5, 9], magic: true,
+        dmg: [100, 145, 190, 235, 290], apRatio: 0.45, selfMaxHp: 0.06,
+        root: [1.0, 1.2, 1.4, 1.6, 1.8] },
 
       // ---- E · โล่คู่ที่แบ่งดาเมจกัน ----
       { key: "E", th: "Canopy of Shared Life", type: "canopy", range: 700, cast: 0.25, dur: 4,
-        cd: 15, cdByRank: [15, 14, 13, 12, 11],
+        cd: 10, cdByRank: [10, 10, 10, 10, 10],
         // เอกสารให้ 70-230 + 12% Bonus HP + 60% Bonus Armor + 60% Bonus MR
         // วัดจริงแล้วได้ 562 ต่อคน คูณสอง = 1124 ต่อการกดหนึ่งครั้ง ซึ่งเป็นโล่ก้อนใหญ่ที่สุดในเกม
         // แถมยังมีการแบ่งดาเมจซ้อนอยู่อีกชั้น เลยกดลงมาราวหนึ่งในสี่
-        shield: [60, 90, 120, 150, 180], apRatio: 0.30, shieldBonusHp: 0.10,
-        shieldBonusArmor: 0.40, shieldBonusMr: 0.40,
+        shield: [120, 160, 200, 240, 280], shieldMaxHp: 0.10,
+        allyResPct: 0.10, allyResDur: 4,
         // ดาเมจที่เพื่อนกิน ส่วนนี้ไปหักที่โล่ของสไตน์แทน ตราบใดที่โล่ทั้งคู่ยังอยู่
         share: 0.30 },
 
@@ -119,9 +119,9 @@ export const P4_CHAMPIONS = {
       // เอกสารให้คูลดาวน์ 110/95/80 ซึ่งยาวกว่าอัลติทุกตัวในเกมนี้มาก (ส่วนใหญ่ 50-60)
       // ลงมาที่ 90/80/70 ยังยาวเป็นอันดับหนึ่งอยู่ดี แต่ได้กดจริงในไฟต์ยาว
       { key: "R", th: "Arbor's Sanctuary", type: "arbor", ult: true, cast: 0.3,
-        cd: 90, cdByRank: [90, 80, 70], radius: 650, waves: 5, every: 0.8, selfRoot: true,
-        heal: [40, 65, 90], apRatio: 0.15, healBonusHp: 0.03,
-        dr: [0.20, 0.25, 0.30] },
+        cd: 60, cdByRank: [60, 55, 50], radius: 600, waves: 5, every: 1.0, selfRoot: true, ccImmune: true,
+        heal: [75, 125, 175], apRatio: 0.20, healMaxHp: 0.03,
+        dr: [0.15, 0.175, 0.20] },
     ],
   },
 

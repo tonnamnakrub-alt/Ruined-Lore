@@ -284,6 +284,11 @@ export function consumeOnHit(state, u, target) {
   if (sk.cdCutOnHit) for (const x of activeSkills(u)) if (x.key !== "R" && x.cdLeft > 0) {
     x.cdLeft = Math.max(0, x.cdLeft * (1 - sk.cdCutOnHit));
   }
+  // 0.5: autoCdCut — ออโต้ที่ลงตัดคูลดาวน์ของท่านี้เองเป็นวินาทีตรงๆ
+  if (sk.autoCdCut) {
+    const own = (u.skills || []).find((x) => x.key === sk.key);
+    if (own && own.cdLeft > 0) own.cdLeft = Math.max(0, own.cdLeft - sk.autoCdCut);
+  }
   // ARTHUR Q — เป้าเลือดเกินครึ่ง จะสับซ้ำอีกดาบทันทีด้วยความเร็วสูงสุด
   if (sk.doubleAbove && target.alive && target.hp / target.maxHp > sk.doubleAbove) {
     state.dmgSrc = tr("ออโต้");

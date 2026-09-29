@@ -25,7 +25,7 @@ export const LORE_CHAMPIONS = {
     skills: [
       // คอมโบ 3 จังหวะ — แต่ละจังหวะปลดล็อกด้วยการออโต้โดนหลังกด และมีหน้าต่าง 5 วิ
       { key: "Q", th: "Midnight Waltz", type: "combo", cast: 0.2, window: 5,
-        cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8], magic: true,
+        cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true,
         steps: [
           { th: "Dash & Pierce", dashRange: 350, dmg: [40, 65, 90, 115, 140], apRatio: 0.35, needAuto: true },
           { th: "Crescent Sweep", radius: 325, halfCircle: true, dmg: [60, 95, 130, 165, 200], apRatio: 0.55, needAuto: true },
@@ -34,16 +34,16 @@ export const LORE_CHAMPIONS = {
         ] },
       // สะสมดาเมจที่ทำใส่เป้าไว้ 3 วิ แล้วสั่งระเบิดทีเดียว
       { key: "W", th: "Chimes of Fate", type: "damageStash", range: 750, stashDur: 3.0, cast: 0.25,
-        cd: 14, cdByRank: [14, 13, 12, 11, 10], magic: true,
+        cd: 10, cdByRank: [10, 10, 10, 10, 10], magic: true,
         stashPct: [0.20, 0.23, 0.26, 0.29, 0.32], stashPerAp: 0.02 / 100,
         dmg: [40, 60, 80, 100, 120], apRatio: 0.30 },
       { key: "E", th: "Royal Ascent", type: "skyward", cast: 0, airTime: 0.75,
-        cd: 18, cdByRank: [18, 16.5, 15, 13.5, 12],
+        cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8],
         msBuff: [0.35, 0.40, 0.45, 0.50, 0.55], dur: 2.0 },
       // ล่องหนแล้วเปิดตัวด้วยออโต้ระยะไกลที่ลากรถม้าตามมาทุบ
       { key: "R", th: "Midnight Carriage", type: "carriage", ult: true, cast: 0.25,
-        cd: 55, cdByRank: [55, 50, 45], dur: 10, openRange: 550, radius: 325,
-        msPct: [0.30, 0.40, 0.50], dmg: [200, 325, 450], apRatio: 0.75, magic: true,
+        cd: 50, cdByRank: [50, 47.5, 45], dur: 10, openRange: 550, radius: 325,
+        msPct: [0.30, 0.40, 0.50], dmg: [250, 400, 550], apRatio: 0.75, magic: true,
         slowByRank: [0.60, 0.70, 0.80], slowDur: 2.0 },
     ],
   },
@@ -70,7 +70,7 @@ export const LORE_CHAMPIONS = {
       { key: "W", th: "Grandmother's Care", type: "basketZone", range: 750, radius: 750,
         life: 10, every: 2, cast: 0.3, cd: 18, cdByRank: [18, 17, 16, 15, 14],
         // แต่ละระลอกดูแลได้แค่กี่คน — เรียงจากคนที่เลือดพร่องที่สุดก่อน
-        targets: [1, 1, 2, 2, 3],
+        targets: [3, 3, 3, 3, 3],
         heal: [100, 125, 150, 175, 200], apRatio: 0.20,
         adBuff: [10, 15, 20, 25, 30], adPerAp: 0.03, apBuff: [16, 22, 28, 34, 40], apPerAp: 0.05,
         buffDur: 5 },
@@ -139,17 +139,17 @@ export const LORE_CHAMPIONS = {
       // กระบองฟาดพื้นแล้วดินแยกเป็นร่องพุ่งไปข้างหน้า — โดนทั้งแนวพร้อมกันทันที ไม่ใช่ของที่ลอยไป
       // ร่องที่แยกออกลุกเป็นเพลิงค้างไว้ ใครยืนทับก็ไหม้ต่อ
       { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 260, instant: true, pierce: true,
-        cast: 0.3, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
-        dmg: [75, 110, 145, 180, 215], adRatio: 0.75,
+        cast: 0.3, cd: 7, cdByRank: [7, 7, 7, 7, 7],
+        dmg: [50, 80, 110, 140, 170], badRatio: 0.75,
         groundBurn: { dur: 3, every: 0.5, dmg: [8, 13, 18, 23, 28], badRatio: 0.08 },
         slowBase: 0.15, slowPerLevel: 0.01, dur: 1.5 },
       // ออร่าโทสะ — กดพลังโจมตีของศัตรูรอบตัว แล้วเร่งตัวเองให้เดินเร็วขึ้นตีเร็วขึ้น
       { key: "W", th: "Wrath of the Asura", type: "wrathAura", radius: 450, dur: 5, cast: 0.15,
-        cd: 14, cdByRank: [14, 13, 12, 11, 10],
-        atkCut: [0.10, 0.125, 0.15, 0.175, 0.20], linger: 1.5,
+        cd: 12, cdByRank: [12, 12, 12, 12, 12],
+        atkCut: [0.05, 0.075, 0.10, 0.125, 0.15], linger: 1.5,
         // ดูดเลือดจากทุกดาเมจที่ทำระหว่างออร่าเปิด — แลกกับความเร็วเดินที่ลดลงจาก 20-40% เหลือ 15-35%
-        vamp: [0.10, 0.125, 0.15, 0.175, 0.20],
-        msBuff: [0.15, 0.20, 0.25, 0.30, 0.35], asBuff: [0.20, 0.25, 0.30, 0.35, 0.40] },
+        vamp: [0.025, 0.04, 0.055, 0.07, 0.085],
+        msBuff: [0.075, 0.10, 0.125, 0.15, 0.175], asBuff: [0.20, 0.225, 0.25, 0.275, 0.30] },
       // พุ่งชนตัวแรก จับเหวี่ยงข้ามหัวไปข้างหลัง พร้อมกางแขนยี่สิบกรคุ้มตัว
       { key: "E", th: "Dreadful Toss & Aegis", type: "chargeFling", dashRange: 550, dashSpeed: 1200,
         toss: 275, airborne: 0.5, cast: 0.15, cd: 13, cdByRank: [13, 12.5, 12, 11.5, 11],
@@ -158,7 +158,7 @@ export const LORE_CHAMPIONS = {
           drAll: [0.15, 0.18, 0.21, 0.24, 0.27] } },
       // ทุบพื้นทันทีรอบตัว ยกทุกคนลอย แล้วงอกแขนอสูรตามจำนวนคนที่โดน
       { key: "R", th: "Cataclysmic Wrath", type: "asuraSlam", ult: true, cast: 0.15,
-        cd: 100, cdByRank: [100, 85, 70], radius: 550,
+        cd: 60, cdByRank: [60, 55, 50], radius: 550,
         dmg: [200, 325, 450], badRatio: 0.90, selfBonusHp: 0.10, airborne: 1.25,
         // ตัวโตขึ้นตามจำนวนแขน ระยะออโต้ก็ยืดตามขนาดตัว
         arms: { per: 2, max: 10, amp: [0.03, 0.04, 0.05], dur: 10, size: 1.35, rangePct: 0.35 } },
@@ -175,7 +175,7 @@ export const LORE_CHAMPIONS = {
     as: 0.658, asG: 0.021, ms: 335, range: 575,
     // คริไม่ระเบิดทีเดียว — ส่วนเกินกลายเป็นเลือดไหล ซ้อนได้ 5 ชั้น
     // nonCritPct — ออโต้ที่ไม่คริก็ทิ้งเลือดไหลไว้เหมือนกัน คิดจากดาเมจที่ลงจริง
-    critBleed: { pct: 1.75, nonCritPct: 1.5, dur: 3, every: 0.5, maxStacks: 5 },
+    critBleed: { pct: 1.75, nonCritPct: 1.2, dur: 3, every: 0.5, maxStacks: 5 },
     passive: { th: "Lacerating Precision",
       desc: "ออโต้ที่ติดคริไม่ทำดาเมจคริทันที (เป้ากินแค่ 100% AD) แต่ส่วนเกินที่ควรได้จะกลายเป็นเลือดไหล 150% ของส่วนเกินนั้น จ่ายทุก 0.5 วิ ตลอด 3 วิ · ซ้อนได้สูงสุด 5 ชั้น แต่ละชั้นนับเวลาและดาเมจแยกกัน" },
     skills: [
@@ -188,15 +188,15 @@ export const LORE_CHAMPIONS = {
       { key: "W", th: "Rapid Fletching", type: "rampBuff", cast: 0,
         // ออโต้ทุกครั้งตัดคูลดาวน์ของท่านี้ลง 1.5 วิ
         cdPerAuto: 1.5,
-        cd: 20, cdByRank: [20, 18.5, 16, 14.5, 13],
+        cd: 20, cdByRank: [20, 19, 18, 17, 16],
         burstAs: [0.70, 0.85, 1.00, 1.15, 1.30], burstDur: 2.0,
-        holdAs: [0.35, 0.425, 0.50, 0.575, 0.65], holdDur: 3.0 },
+        holdAs: [0.25, 0.275, 0.30, 0.325, 0.35], holdDur: 3.0 },
       { key: "E", th: "Flare of the Greenwood", type: "sightZone", range: 1500, radius: 350,
         life: 5, revealDur: 2, cast: 0.25, cd: 20, cdByRank: [20, 18.5, 16, 14.5, 13] },
       { key: "R", th: "Rain of Ruin", type: "aoeGround", range: 1150, radius: 450, delay: 0.65,
         cast: 0.3, ult: true, cd: 50, cdByRank: [50, 45, 40],
         dmg: [150, 250, 350], badRatio: 0.75,
-        slowByRank: [0.35, 0.45, 0.55], slowDur: 1.5,
+        slowByRank: [0.25, 0.25, 0.25], slowDur: 1.5,
         zoneBleed: { dur: 4, every: 1, dmg: [30, 50, 70], badRatio: 0.20 } },
     ],
   },
@@ -215,20 +215,20 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Beanstalk Guile",
       desc: "สกิลของแจ็คหรือการโจมตีของยักษ์ที่โดนศัตรู แปะเมล็ดถั่ว 1 สแตก อยู่ได้ 5 วิ · ครบ 3 สแตก รากงอกตรึงเท้า 1.25/1.5/1.75 วิ (ตามเลเวล 1/7/13) พร้อมดาเมจเวท 40 ที่เลเวล 1 ไล่ถึง 180 ที่เลเวล 18 (+30% AP) · โดนตรึงแล้วกันติดซ้ำ 8 วิ" },
     skills: [
-      { key: "Q", th: "Magic Bean Sling", type: "line", range: 875, width: 100, projSpeed: 1600,
-        cast: 0.25, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
-        dmg: [70, 110, 150, 190, 230], apRatio: 0.60, magic: true },
+      { key: "Q", th: "Magic Bean Sling", type: "line", range: 600, width: 100, projSpeed: 1600,
+        cast: 0.25, cd: 6, cdByRank: [6, 6, 6, 6, 6],
+        dmg: [120, 160, 200, 240, 280], apRatio: 0.75, magic: true },
       // ไข่ทองคำ — สโลว์รอบตัวระหว่างรอ แล้วค่อยระเบิด
-      { key: "W", th: "Golden Egg Trap", type: "aoeGround", range: 800, radius: 275, delay: 2.5,
-        cast: 0.25, cd: 14, cdByRank: [14, 13.5, 13, 12.5, 12],
-        dmg: [125, 175, 225, 275, 325], apRatio: 0.75, magic: true,
+      { key: "W", th: "Golden Egg Trap", type: "aoeGround", range: 750, radius: 325, delay: 3.5,
+        cast: 0.25, cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8],
+        dmg: [150, 200, 250, 300, 350], apRatio: 0.80, magic: true,
         auraSlow: [0.40, 0.425, 0.45, 0.475, 0.50] },
       { key: "E", th: "Song of the Golden Harp", type: "selfBuff", cast: 0.2, dur: 4,
-        cd: 14, cdByRank: [14, 13.5, 13, 12.5, 12],
-        shield: [75, 110, 145, 180, 215], apRatio: 0.40,
+        cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
+        shield: [100, 140, 180, 220, 260], apRatio: 0.40,
         msBuff: [0.20, 0.20, 0.20, 0.20, 0.20], msDur: 1.5,
         pet: { shield: [100, 160, 220, 280, 340], shieldAp: 0.60,
-          ms: [0.35, 0.40, 0.45, 0.50, 0.55], as: [0.20, 0.25, 0.30, 0.35, 0.40], dur: 3.5 } },
+          ms: [0.35, 0.40, 0.45, 0.50, 0.55], dur: 3.5 } },
       // อัญเชิญยักษ์ที่ตีเป็นลูป 3 จังหวะ สเตตัสสเกลตาม AP ของแจ็ค
       { key: "R", th: "Descent of the Cloud Giant", type: "summonGiant", ult: true, cast: 0.35,
         cd: 60, cdByRank: [60, 55, 50], range: 700, radius: 350, life: 16,
@@ -296,25 +296,25 @@ export const LORE_CHAMPIONS = {
       desc: "ออร่าไฟฟ้ารัศมี 375 รอบตัว · ทุก 2 วิ ประจุฟาดศัตรู 1 ตัวในระยะ (เล็งแชมเปี้ยนก่อน) ดาเมจเวท 20 ที่เลเวล 1 ไล่ถึง 90 ที่เลเวล 18 (+15% AP) (+3% Bonus HP)" },
     skills: [
       { key: "Q", th: "Thunder Horn Charge", type: "dash", range: 600, dashSpeed: 800, engageRange: 0,
-        cast: 0.15, cd: 14, cdByRank: [14, 13.5, 13, 12.5, 12], magic: true,
-        dmg: [70, 110, 150, 190, 230], apRatio: 0.55, selfBonusHp: 0.05,
+        cast: 0.15, cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10], magic: true,
+        dmg: [100, 140, 180, 220, 260], apRatio: 0.40, selfMaxHp: 0.05,
         landStunByRank: [0.8, 1.0, 1.2, 1.4, 1.6] },
       { key: "W", th: "Overcharged Fur", type: "selfBuff", cast: 0.15, dur: 4,
-        cd: 14, cdByRank: [14, 13, 12, 11, 10],
-        shield: [60, 100, 140, 180, 220], apRatio: 0.40, bonusHpRatio: 0.08,
-        msBuff: [0.20, 0.25, 0.30, 0.35, 0.40], msDur: 2.5, msDecay: true,
+        cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8],
+        shield: [100, 150, 200, 250, 300], apRatio: 0.40, maxHpRatio: 0.10,
+        msBuff: [0.15, 0.175, 0.20, 0.225, 0.25], msDur: 2.5, msDecay: true,
         overcharge: true },
       // คำรามเป็นกรวย 3 ระลอกติด
       { key: "E", th: "Crackling Roar", type: "coneVolley", range: 550, angle: 60,
-        ticks: 3, every: 0.25, cast: 0.2, cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8], magic: true,
+        ticks: 3, every: 0.25, cast: 0.2, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5], magic: true,
         dmg: [30, 50, 70, 90, 110], apRatio: 0.20,
         slowByRank: [0.20, 0.25, 0.30, 0.35, 0.40], slowDur: 1.0 },
       // พายุฟาด 5 ระลอก ระลอกละ 3 ตัว + สแตกกระตุกสตัน
       { key: "R", th: "Calamitous Tempest", type: "tempest", ult: true, cast: 0.3,
         cd: 60, cdByRank: [60, 55, 50], range: 600, radius: 550, dur: 3.0,
         strikes: 5, every: 0.6, targetsPerStrike: 3, magic: true,
-        dmg: [50, 85, 120], apRatio: 0.25, bonusHp: 0.03,
-        jolt: { need: 3, stun: [0.25, 0.30, 0.35] } },
+        dmg: [75, 150, 225], apRatio: 0.25, bonusHp: 0.03,
+        jolt: { need: 3, stun: [0.25, 0.35, 0.45] } },
     ],
   },
 
@@ -324,7 +324,7 @@ export const LORE_CHAMPIONS = {
   "H.S.B": {
     id: "H.S.B", skillPriority: ["W", "Q", "E"], missile: 0, windup: 0.21, value: 0.9,
     th: "แฮม ไส้กรอก เบคอน", role: "Warden", lane: "SUPPORT", alsoLanes: ["TOP"], melee: true,
-    hp: 640, hpG: 102, hp5: 8.5, hp5G: 0.85, ad: 62, adG: 3.5, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
+    hp: 650, hpG: 112, hp5: 8.5, hp5G: 0.85, ad: 62, adG: 3.5, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
     as: 0.63, asG: 0.02, ms: 340, range: 150,
     // หลอดเลือดแบ่ง 3 ขั้น — เสียเลือดข้ามเกณฑ์แล้วหมูหนีไปทีละตัว
     threePigs: [
@@ -336,9 +336,9 @@ export const LORE_CHAMPIONS = {
       desc: "หลอดเลือดแบ่งเป็น 3 ขั้น · ขั้นบ้านฟาง (100-75%) หมูครบ 3 ตัว กินดาเมจน้อยลง 15% · ขั้นบ้านไม้ (ต่ำกว่า 75%) หมูหนีไปตัวหนึ่ง ตัวเล็กลง 10% สกิลกว้างขึ้น 15% สิ่งก่อสร้างอึดขึ้น 20% และเพดานเลือดในไฟต์ล็อกที่ 75% · ขั้นบ้านอิฐ (ต่ำกว่า 50%) เล็กลงอีก สกิลกว้างขึ้น 30% สิ่งก่อสร้างอึดขึ้น 50% เพดานเลือดล็อกที่ 50% แต่กินดาเมจมากขึ้น 15%" },
     skills: [
       // ขว้างค้อน — โดนศัตรูทำดาเมจ โดนสิ่งก่อสร้างของตัวเองคือซ่อม
-      { key: "Q", th: "Sledge Toss", type: "sledge", range: 800, width: 120, projSpeed: 1500,
-        cast: 0.25, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
-        dmg: [50, 75, 100, 125, 150], selfBonusHp: 0.15, enemyMaxHp: 0.10,
+      { key: "Q", th: "Sledge Toss", type: "sledge", range: 550, width: 120, projSpeed: 1200,
+        cast: 0.25, cd: 5, cdByRank: [5, 5, 5, 5, 5],
+        dmg: [100, 130, 160, 190, 220], selfMaxHp: 0.15, enemyCurHp: 0.15,
         slowByRank: [0.40, 0.40, 0.40, 0.40, 0.40], dur: 1.5,
         // ซ่อมสิ่งก่อสร้างเป็นสัดส่วนของเลือดสูงสุดของมัน ไม่ใช่ค่าคงที่อีกต่อไป
         repairPct: [0.30, 0.40, 0.50, 0.60, 0.70], repairRes: 0.40, repairCdCut: 0.5 },
@@ -373,25 +373,24 @@ export const LORE_CHAMPIONS = {
     hp: 625, hpG: 98, hp5: 8.0, hp5G: 0.75, ad: 64, adG: 3.6, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.665, asG: 0.019, ms: 345, range: 175,
     // ดาเมจกายภาพและดาเมจจริงที่ทำได้ แปลงเป็นโล่
-    aegis: { pct: 0.10, pctPerLevel: 0.005, lowPct: 0.25, hpBelow: 0.50, dur: 3.5, cap: 0.25 },
+    aegis: { pct: 0.10, pctPerLevel: 0.005, lowPct: 0.15, hpBelow: 0.30, dur: 2.5, cap: 0.25 },
     passive: { th: "Excalibur's Aegis",
       desc: "ดาเมจกายภาพและดาเมจจริงที่อาเธอร์ทำได้ทุกแหล่ง แปลงเป็นโล่ 15% ของยอดนั้น · โล่อยู่ 3.5 วิ สะสมทับได้ไม่เกิน 30% ของ Max HP · เลือดต่ำกว่า 50% อัตราแปลงขึ้นเป็น 25%" },
     skills: [
       // พาสซีฟฟันกวาด + กดแล้วออโต้ถัดไปแรงขึ้น ถ้าเป้าเลือดเกินครึ่งจะตีสองครั้งรวด
       { key: "Q", th: "Sovereign's Edge", type: "onHit", charges: 1, window: 4, cast: 0,
-        cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5],
-        dmg: [30, 55, 80, 105, 130], badRatio: 0.45,
+        cd: 6, cdByRank: [6, 6, 6, 6, 6],
+        dmg: [20, 40, 60, 80, 100], badRatio: 0.50,
         cleaveRadius: 250, cleaveRatio: [0.35, 0.40, 0.45, 0.50, 0.55],
         doubleAbove: 0.50 },
       // กดได้แม้ติด CC — สวนกลับด้วยการหมุนฟันรอบตัวและตัดเวลา CC ครึ่งหนึ่ง
       { key: "W", th: "Pommel Strike & Retribution", type: "pommel", range: 250, cast: 0.15,
         cd: 14, cdByRank: [14, 13, 12, 11, 10],
         dmg: [50, 80, 110, 140, 170], badRatio: 0.50,
-        stunByRank: [1.0, 1.1, 1.2, 1.3, 1.4],
         whirlRadius: 325, whirlDmg: [60, 100, 140, 180, 220], whirlBadRatio: 0.65, ccCut: 0.5 },
       // พุ่งเส้นตรงแล้วฟันครึ่งวง โดนทั้งสองจังหวะได้ตีเร็วและโล่
       { key: "E", th: "Knight's Lunge", type: "lungeSweep", dashRange: 450, dashSpeed: 900,
-        sweepRadius: 300, cast: 0.1, cd: 12, cdByRank: [12, 11, 10, 9, 8],
+        sweepRadius: 300, cast: 0.1, cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
         dmg: [40, 65, 90, 115, 140], badRatio: 0.40,
         sweepDmg: [60, 95, 130, 165, 200], sweepBadRatio: 0.60,
         dualAs: [0.40, 0.50, 0.60, 0.70, 0.80], dualShield: [80, 130, 180, 230, 280],
@@ -399,7 +398,7 @@ export const LORE_CHAMPIONS = {
       // ดาเมจจริงก้อนใหญ่ แล้วประหารถ้าเลือดเหลือต่ำกว่าเกณฑ์
       { key: "R", th: "Judgment of the Round Table", type: "judgment", ult: true, cast: 0.3,
         cd: 55, cdByRank: [55, 50, 45], range: 450,
-        dmg: [175, 300, 425], badRatio: 0.80,
+        dmg: [175, 300, 450], badRatio: 0, enemyMissingHp: 0.30,
         execAt: [0.15, 0.20, 0.25], execPerBad: 0.01 / 35,
         killMs: 0.40, killMsDur: 3.0 },
     ],

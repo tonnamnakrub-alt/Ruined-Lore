@@ -392,6 +392,13 @@ export function skillPower(u, sk, target) {
   v += (sk.apRatio || 0) * u.ap;
   // สเกลกับ Bonus HP (เลือดที่ได้จากไอเทม + พาสซีฟ) ไม่ใช่ Max HP ทั้งก้อน
   if (sk.selfBonusHp) v += (u.bonusHp || 0) * sk.selfBonusHp;
+  // 0.5: สเกลกับ Max HP ทั้งก้อน ไม่ใช่เฉพาะส่วนที่ได้จากของ
+  if (sk.selfMaxHp) v += (u.maxHp || 0) * sk.selfMaxHp;
+  if (sk.enemyMaxHp && target) v += (target.maxHp || 0) * sk.enemyMaxHp;
+  // เลือดที่เป้า "เหลืออยู่ตอนนี้" — ยิ่งเป้าเลือดเต็มยิ่งเจ็บ
+  if (sk.enemyCurHp && target) v += (target.hp || 0) * sk.enemyCurHp;
+  // เลือดที่เป้า "หายไปแล้ว" — ยิ่งเป้าเลือดน้อยยิ่งเจ็บ (ท่าเก็บศพ)
+  if (sk.enemyMissingHp && target) v += Math.max(0, (target.maxHp || 0) - (target.hp || 0)) * sk.enemyMissingHp;
   if (sk.selfStacks) v += (u.sangStacks || 0) * sk.selfStacks;
   // สเกลกับความเร็วเดินส่วนที่เกินค่าฐานของตัวเอง — ของ Ariel ที่กระแสน้ำแรงตามความเร็ว
   if (sk.msRatio) v += Math.max(0, (u.moveSpeed || 0) - ((u.champ && u.champ.ms) || 0)) * sk.msRatio;

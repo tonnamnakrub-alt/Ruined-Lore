@@ -54,9 +54,11 @@ const mk = (lane, id, extra) => ({
   const q = sk("Q");
   t("Q เป็นแนวสี่เหลี่ยมโดนทันที 650×260", q.range === 650 && q.width === 260 && q.instant,
     q.range + "×" + q.width);
-  t("Q คูลดาวน์ 7/6.5/6/5.5/5", arr(q.cdByRank) === "7/6.5/6/5.5/5", arr(q.cdByRank));
-  t("Q ดาเมจ 75/110/145/180/215 (+75% Total AD)", arr(q.dmg) === "75/110/145/180/215" && q.adRatio === 0.75,
-    arr(q.dmg) + " +" + q.adRatio * 100 + "% AD");
+  // 0.5 ตรึงคูลดาวน์ไว้ที่ 7 ทุกขั้น
+  t("Q คูลดาวน์ 7 ทุกขั้น", arr(q.cdByRank) === "7/7/7/7/7", arr(q.cdByRank));
+  // 0.5 ย้ายสเกลจาก Total AD เป็น Bonus AD และกดตัวเลขฐานลง
+  t("Q ดาเมจ 50/80/110/140/170 (+75% Bonus AD)", arr(q.dmg) === "50/80/110/140/170" && q.badRatio === 0.75,
+    arr(q.dmg) + " +" + q.badRatio * 100 + "% Bonus AD");
   t("Q ถอดสเกล Bonus HP ออกแล้ว", !q.selfBonusHp, q.selfBonusHp ? "ยังมี " + q.selfBonusHp : "ไม่มีแล้ว");
   const gb = q.groundBurn;
   t("Q มีเพลิงต่อเนื่อง 3 วิ จ่ายทุก 0.5 วิ", gb && gb.dur === 3 && gb.every === 0.5, gb ? gb.dur + "s ทุก " + gb.every + "s" : "ไม่มี");
@@ -70,11 +72,11 @@ const mk = (lane, id, extra) => ({
 {
   const w = sk("W");
   t("W เป็นออร่ารอบตัว 450 นาน 5 วิ", w.type === "wrathAura" && w.radius === 450 && w.dur === 5, w.radius + " หน่วย · " + w.dur + "s");
-  t("W คูลดาวน์ 14/13/12/11/10", arr(w.cdByRank) === "14/13/12/11/10", arr(w.cdByRank));
-  t("W กด AD/AP ศัตรู 10-20%", arr(w.atkCut) === "0.1/0.125/0.15/0.175/0.2" && w.linger === 1.5,
+  t("W คูลดาวน์ 12 ทุกขั้น", arr(w.cdByRank) === "12/12/12/12/12", arr(w.cdByRank));
+  t("W กด AD/AP ศัตรู 5-15%", arr(w.atkCut) === "0.05/0.075/0.1/0.125/0.15" && w.linger === 1.5,
     w.atkCut.map((x) => x * 100 + "%").join("/") + " · ค้างต่อ " + w.linger + "s");
   // ความเร็วเดินโดนลดชดเชยการเพิ่มดูดเลือด (เช็คตัวเลขจริงในหมวดรอบปรับด้านล่าง)
-  t("W เร่งความเร็วโจมตีตัวเอง 20-40%", arr(w.asBuff) === "0.2/0.25/0.3/0.35/0.4",
+  t("W เร่งความเร็วโจมตีตัวเอง 20-30%", arr(w.asBuff) === "0.2/0.225/0.25/0.275/0.3",
     "AS " + w.asBuff.map((x) => x * 100 + "%").join("/") + " · MS " + w.msBuff.map((x) => x * 100 + "%").join("/"));
 }
 
@@ -96,7 +98,7 @@ const mk = (lane, id, extra) => ({
 {
   const r = sk("R");
   t("R ทุบทันทีรอบตัว 550 ไม่ล็อกขา", r.type === "asuraSlam" && r.radius === 550 && !r.selfRoot, r.radius + " หน่วย");
-  t("R คูลดาวน์ 100/85/70", arr(r.cdByRank) === "100/85/70", arr(r.cdByRank));
+  t("R คูลดาวน์ 60/55/50", arr(r.cdByRank) === "60/55/50", arr(r.cdByRank));
   t("R ดาเมจ 200/325/450 (+90% Bonus AD) (+10% Bonus HP)",
     arr(r.dmg) === "200/325/450" && r.badRatio === 0.90 && r.selfBonusHp === 0.10, arr(r.dmg));
   t("R ยกลอย 1.25 วิ", r.airborne === 1.25, r.airborne + "s");
@@ -203,11 +205,12 @@ function fight(extra) {
 // =================================================================
 {
   const w = sk("W");
-  t("W มีดูดเลือด 10-20% ระหว่างออร่าเปิด", arr(w.vamp) === "0.1/0.125/0.15/0.175/0.2",
+  // 0.5 กดทั้งสามค่าลงอีกรอบ
+  t("W มีดูดเลือด 2.5-8.5% ระหว่างออร่าเปิด", arr(w.vamp) === "0.025/0.04/0.055/0.07/0.085",
     (w.vamp || []).map((x) => x * 100 + "%").join("/"));
-  t("W ลดความเร็วเดินชดเชยเหลือ 15-35%", arr(w.msBuff) === "0.15/0.2/0.25/0.3/0.35",
-    w.msBuff.map((x) => x * 100 + "%").join("/") + " (เดิม 20-40%)");
-  t("W ความเร็วโจมตียังเท่าเดิม 20-40%", arr(w.asBuff) === "0.2/0.25/0.3/0.35/0.4",
+  t("W ความเร็วเดินเหลือ 7.5-17.5%", arr(w.msBuff) === "0.075/0.1/0.125/0.15/0.175",
+    w.msBuff.map((x) => x * 100 + "%").join("/") + " (เดิม 15-35%)");
+  t("W ความเร็วโจมตีเหลือ 20-30%", arr(w.asBuff) === "0.2/0.225/0.25/0.275/0.3",
     w.asBuff.map((x) => x * 100 + "%").join("/"));
 
   const { st, me, foes } = fight();
