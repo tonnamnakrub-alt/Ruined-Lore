@@ -24,7 +24,8 @@ export function onAliceDamage(state, source, target, isAuto) {
   const cfg = source && source.champ && source.champ.curious;
   if (!cfg || isAuto || !target.alive || source.team === target.team) return;
   if (!SKILL_SRC.test(String(state.dmgSrc || ""))) return;
-  const v = cfg.base + cfg.perAp * (source.ap || 0);
+  // ฐานไต่ตามเลเวล (0.5) แทนที่จะคงที่ — perLevel ไม่มีก็คิดเป็นศูนย์ ของเก่าจึงไม่พัง
+  const v = cfg.base + (cfg.perLevel || 0) * ((source.level || 1) - 1) + cfg.perAp * (source.ap || 0);
   addBuffUnique(target, "curious:" + source.id, { type: "curiousAmp", v, until: state.t + cfg.dur }, state.t);
 }
 
@@ -125,7 +126,10 @@ export function castWonderland(state, u, sk, x, y) {
     addBuff(e, { type: "silence", v: 1, until: state.t + sk.silenceByRank[r] }, state.t);
   }
   state.dmgSrc = prev;
-  state.mirrors.push({ ownerId: u.id, team: u.team, x, y, r: sk.radius, until: state.t + sk.dur, slow: sk.slowByRank[r] });
+  const zoneDur = sk.durByRank ? sk.durByRank[r] : sk.dur;
+  state.mirrors.push({ ownerId: u.id, team: u.team, x, y, r: sk.radius, until: state.t + zoneDur, slow: sk.slowByRank[r] });
+  // cdAfterDur — คูลดาวน์เริ่มนับตอนโซนหมดอายุ ไม่ใช่ตอนกด
+  if (sk.cdAfterDur) { const own = u.skills.find((s) => s.key === sk.key); if (own) own.cdLeft += zoneDur; }
   vfx(state, { kind: "ring", x, y, r: sk.radius, color: "214,120,232", grow: 1, dur: 0.8 });
   pushLog(state, tr("{0} {1} กางอาณาเขตมหัศจรรย์", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th)));
 }

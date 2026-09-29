@@ -252,7 +252,12 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (!faustEcho && !trueDmg && !isAuto && target.alive
         && source.champ && source.champ.faustian && /^[QWER] /.test(String(state.dmgSrc || ""))) {
       const fb = source.champ.faustian;
-      const share = Math.min(fb.cap || 0.5, fb.base + fb.perAp * (source.ap || 0));
+      // ฐานเป็นขั้นตามเลเวล ถ้าไม่ได้ประกาศ byTier ไว้ก็ใช้ base เดิม
+      let fbBase = fb.base;
+      if (fb.byTier && fb.tiers) {
+        for (let i = 0; i < fb.tiers.length; i++) if ((source.level || 1) >= fb.tiers[i]) fbBase = fb.byTier[i];
+      }
+      const share = Math.min(fb.cap || 0.5, fbBase + fb.perAp * (source.ap || 0));
       faustEcho = true;
       try { applyDamage(state, source, target, amount * share, false, true); }
       finally { faustEcho = false; }

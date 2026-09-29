@@ -4,7 +4,7 @@ import { applyDamage, edgeDamage, grantShield, healUnit, skillHeal, skillPower }
 import { startGrab } from "./motion.js";
 import { applyCharm, startBloodStorm } from "./laura.js";
 import { castDismissal, castGuardBurst } from "./klaeder.js";
-import { castAllyBlink, castTeaGarden, castWonderland } from "./alice.js";
+import { castAllyBlink, castTeaGarden, castWonderland, applyPolymorph } from "./alice.js";
 import { addBuff, addBuffUnique, bonusMs, burnDot, dist, hasBuff, pushLog, recentTaken, skillLabel, vfx } from "./state-util.js";
 import { marksmanOnHit, onAutoLanded } from "./on-hit.js";
 import { alliesOf, enemiesOf } from "./targeting.js";
@@ -220,7 +220,11 @@ function fireSkillEffect(state, u, sk, target, prec) {
       // Flintlock Shot ติดคริและออนฮิตได้เหมือนออโต้ · คริคืนทองโจรสลัดเป็นสองเท่า
       const qCrit = !!sk.canCrit && (u.crit || 0) > 0 && u.rng() < u.crit;
       if (qCrit) dmgOut *= 1.75 + (u.critDmg || 0);
-      applyDamage(state, u, target, dmgOut, !!sk.magic);
+      // ท่าที่ตัดดาเมจออกแล้วจะไม่เรียก applyDamage เลย ไม่งั้นมันไปปลุกพาสซีฟที่พ่วงดาเมจ
+      if (dmgOut > 0) applyDamage(state, u, target, dmgOut, !!sk.magic);
+      if (sk.polymorph) {
+        applyPolymorph(state, u, target, sk.polymorph[Math.max(0, sk.rank - 1)], sk.polySlow || 0.4);
+      }
       if (sk.canOnHit) { onAutoLanded(state, u, target); marksmanOnHit(state, u, target); }
       // สเปคใหม่: Q ไม่ให้เงินจากการโดนแล้ว ให้เฉพาะตอนคริเท่านั้น
       if (qCrit && sk.bountyOnCrit) u.bountyGold += sk.bountyOnCrit;

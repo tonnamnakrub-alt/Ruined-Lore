@@ -71,7 +71,7 @@ const mk = (lane, id, items) => ({
   t("ร้านโชว์เลขใหม่ของ kff ไม่ใช่เลขเก่าที่ฮาร์ดโค้ดไว้",
     itemDesc(kff).includes("8 (+12% AP)"), itemDesc(kff).split("·").pop().trim());
 
-  t("mub ค่าสถานะลดลง", ITEM_BY_ID.mub.ad === 20 && ITEM_BY_ID.mub.armorPenPct === 0.25,
+  t("mub ค่าสถานะลดลง", ITEM_BY_ID.mub.ad === 45 && ITEM_BY_ID.mub.armorPenPct === 0.25,
     ITEM_BY_ID.mub.ad + " AD · เจาะเกราะ " + Math.round(ITEM_BY_ID.mub.armorPenPct * 100) + "%");
   t("eoh ค่าสถานะลดลง", ITEM_BY_ID.eoh.ap === 60 && ITEM_BY_ID.eoh.mrPenPct === 0.30,
     ITEM_BY_ID.eoh.ap + " AP · เจาะต้านเวท " + Math.round(ITEM_BY_ID.eoh.mrPenPct * 100) + "%");

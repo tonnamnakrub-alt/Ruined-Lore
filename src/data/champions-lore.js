@@ -16,7 +16,7 @@ export const LORE_CHAMPIONS = {
   ELLA: {
     id: "ELLA", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.19, value: 1.2,
     th: "เอลล่า", role: "Assassin", lane: "JUNGLE", melee: true,
-    hp: 570, hpG: 92, hp5: 6.5, hp5G: 0.6, ad: 28, adG: 1.55, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
+    hp: 570, hpG: 92, hp5: 6.5, hp5G: 0.6, ad: 56, adG: 3.1, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.026, ms: 340, range: 150,
     // เศษแก้วติดออโต้ — แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง
     glassShards: { base: 15, perLevel: (75 - 15) / 17, apRatio: 0.25, lowHpAt: 0.30, lowHpMul: 2 },
@@ -54,7 +54,7 @@ export const LORE_CHAMPIONS = {
   PIROSKA: {
     id: "PIROSKA", skillPriority: ["W", "Q", "E"], missile: 1500, windup: 0.31, value: 1.05,
     th: "ปิโรสก้า", role: "Enchanter", lane: "SUPPORT", melee: false,
-    hp: 590, hpG: 96, hp5: 6.5, hp5G: 0.5, ad: 25, adG: 1.4, armor: 28, armorG: 4.0, mr: 30, mrG: 1.3,
+    hp: 590, hpG: 96, hp5: 6.5, hp5G: 0.5, ad: 50, adG: 2.8, armor: 28, armorG: 4.0, mr: 30, mrG: 1.3,
     as: 0.625, asG: 0.02, ms: 335, range: 550,
     // เลือดตกต่ำกว่าครึ่งครั้งแรก = วิ่งหนีสุดชีวิต
     fleeWolf: { hpBelow: 0.50, ms: [0.60, 0.70, 0.80], dur: 2.0, cd: [75, 60, 45] },
@@ -90,7 +90,7 @@ export const LORE_CHAMPIONS = {
   YODAKA: {
     id: "YODAKA", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.18, value: 1.2,
     th: "โยดากะ", role: "Assassin", lane: "JUNGLE", alsoLanes: ["MID"], melee: true,
-    hp: 580, hpG: 95, hp5: 7.0, hp5G: 0.7, ad: 28, adG: 1.55, armor: 32, armorG: 3.8, mr: 32, mrG: 2.05,
+    hp: 580, hpG: 95, hp5: 7.0, hp5G: 0.7, ad: 56, adG: 3.1, armor: 32, armorG: 3.8, mr: 32, mrG: 2.05,
     as: 0.67, asG: 0.027, ms: 345, range: 150,
     // สะสมสแตกจากการร่ายสกิล แล้วใช้สแตกพุ่งทะลวงตอนออโต้
     starlight: { max: 3, dur: 6, range: 300, through: 200, width: 120,
@@ -129,7 +129,7 @@ export const LORE_CHAMPIONS = {
   TOTSAKAN: {
     id: "TOTSAKAN", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.2, value: 0.85,
     th: "ทศกัณฐ์", role: "Juggernaut", lane: "TOP", melee: true, rage: 0.12,
-    hp: 640, hpG: 108, hp5: 8.5, hp5G: 0.85, ad: 33, adG: 2, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
+    hp: 640, hpG: 108, hp5: 8.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
     as: 0.64, asG: 0.022, ms: 340, range: 175,
     // ค่าสถานะจากไอเทมแรงขึ้นตามเลเวล — 7% บวกอีก 0.75% ต่อเลเวล (เลเวล 1 = 7.75% · เลเวล 18 = 20.5%)
     itemAmp: 0.07, itemAmpPerLevel: 0.0075,
@@ -171,7 +171,7 @@ export const LORE_CHAMPIONS = {
   HOOD: {
     id: "HOOD", skillPriority: ["Q", "W", "E"], missile: 1700, windup: 0.32, value: 1.35,
     th: "ฮูด", role: "Marksman", lane: "ADC", melee: false,
-    hp: 570, hpG: 92, hp5: 5.5, hp5G: 0.6, ad: 29, adG: 1.7, armor: 28, armorG: 3.5, mr: 30, mrG: 1.3,
+    hp: 570, hpG: 92, hp5: 5.5, hp5G: 0.6, ad: 58, adG: 3.4, armor: 28, armorG: 3.5, mr: 30, mrG: 1.3,
     as: 0.658, asG: 0.021, ms: 335, range: 575,
     // คริไม่ระเบิดทีเดียว — ส่วนเกินกลายเป็นเลือดไหล ซ้อนได้ 5 ชั้น
     // nonCritPct — ออโต้ที่ไม่คริก็ทิ้งเลือดไหลไว้เหมือนกัน คิดจากดาเมจที่ลงจริง
@@ -207,7 +207,7 @@ export const LORE_CHAMPIONS = {
   JACK: {
     id: "JACK", skillPriority: ["Q", "W", "E"], missile: 1600, windup: 0.3, value: 1.25,
     th: "แจ็ค", role: "Burst Mage", lane: "MID", melee: false,
-    hp: 560, hpG: 88, hp5: 6.0, hp5G: 0.6, ad: 26, adG: 1.5, armor: 24, armorG: 3.4, mr: 30, mrG: 1.3,
+    hp: 560, hpG: 88, hp5: 6.0, hp5G: 0.6, ad: 52, adG: 3.0, armor: 24, armorG: 3.4, mr: 30, mrG: 1.3,
     as: 0.625, asG: 0.02, ms: 330, range: 550,
     // สกิลหรือหมัดยักษ์โดนศัตรู = แปะเมล็ด ครบ 3 เมล็ดรากงอกตรึงเท้า
     beanstalk: { need: 3, dur: 5, lockout: 8,
@@ -252,7 +252,7 @@ export const LORE_CHAMPIONS = {
   PUSS: {
     id: "PUSS", skillPriority: ["Q", "W", "E"], missile: 0, windup: 0.18, value: 1.25,
     th: "พุสส์", role: "Assassin", lane: "JUNGLE", melee: true, rage: 0.15,
-    hp: 575, hpG: 90, hp5: 6.5, hp5G: 0.65, ad: 30, adG: 1.75, armor: 30, armorG: 3.7, mr: 32, mrG: 2.05,
+    hp: 575, hpG: 90, hp5: 6.5, hp5G: 0.65, ad: 60, adG: 3.5, armor: 30, armorG: 3.7, mr: 32, mrG: 2.05,
     as: 0.68, asG: 0.03, ms: 345, range: 150,
     // ท้าดวลศัตรูหนึ่งตัว + ชีวิตที่เก้า
     // pickLockRounds — เลือกเป้าแล้วเปลี่ยนไม่ได้จนกว่าจะผ่านไปอีกเท่านี้ยก (นับยกที่เลือกด้วย)
@@ -288,7 +288,7 @@ export const LORE_CHAMPIONS = {
   NIAN: {
     id: "NIAN", skillPriority: ["E", "Q", "W"], missile: 0, windup: 0.2, value: 1.0,
     th: "เหนียน", role: "Vanguard", lane: "TOP", alsoLanes: ["MID"], melee: true, rage: 0.12,
-    hp: 620, hpG: 102, hp5: 8.0, hp5G: 0.8, ad: 29, adG: 1.6, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
+    hp: 620, hpG: 102, hp5: 8.0, hp5G: 0.8, ad: 58, adG: 3.2, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.64, asG: 0.022, ms: 345, range: 175,
     // ออร่าไฟฟ้ารอบตัว ฟาดเป้าสุ่มทุก 2 วิ (W ทำให้ฟาดทุกตัวพร้อมกัน)
     staticAura: { radius: 400, every: 2.0, base: 15, perLevel: 4, apRatio: 0.15, bonusHp: 0.02 },
@@ -324,7 +324,7 @@ export const LORE_CHAMPIONS = {
   "H.S.B": {
     id: "H.S.B", skillPriority: ["W", "Q", "E"], missile: 0, windup: 0.21, value: 0.9,
     th: "แฮม ไส้กรอก เบคอน", role: "Warden", lane: "SUPPORT", alsoLanes: ["TOP"], melee: true,
-    hp: 640, hpG: 102, hp5: 8.5, hp5G: 0.85, ad: 31, adG: 1.75, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
+    hp: 640, hpG: 102, hp5: 8.5, hp5G: 0.85, ad: 62, adG: 3.5, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05,
     as: 0.63, asG: 0.02, ms: 340, range: 150,
     // หลอดเลือดแบ่ง 3 ขั้น — เสียเลือดข้ามเกณฑ์แล้วหมูหนีไปทีละตัว
     threePigs: [
@@ -370,7 +370,7 @@ export const LORE_CHAMPIONS = {
   ARTHUR: {
     id: "ARTHUR", skillPriority: ["Q", "E", "W"], missile: 0, windup: 0.19, value: 1.05,
     th: "อาเธอร์", role: "Diver", lane: "TOP", melee: true, rage: 0.15,
-    hp: 625, hpG: 98, hp5: 8.0, hp5G: 0.75, ad: 32, adG: 1.8, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
+    hp: 625, hpG: 98, hp5: 8.0, hp5G: 0.75, ad: 64, adG: 3.6, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.665, asG: 0.019, ms: 345, range: 175,
     // ดาเมจกายภาพและดาเมจจริงที่ทำได้ แปลงเป็นโล่
     aegis: { pct: 0.10, pctPerLevel: 0.005, lowPct: 0.25, hpBelow: 0.50, dur: 3.5, cap: 0.25 },
