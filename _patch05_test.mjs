@@ -143,6 +143,35 @@ const cast = (st, u, key, target) => {
     bad.length ? bad.join(" · ") : "ตรวจครบ 25 ตัว ไม่มีที่ขัดกัน");
 }
 
+// ---- คำบรรยายพาสซีฟต้องตรงกับก้อนตั้งค่าของตัวเอง
+// พาสซีฟไม่ได้ประกอบจากข้อมูลเหมือนสกิล เป็นข้อความเขียนมือล้วน
+// ตัวเลขจึงค้างจากแพตช์เก่าได้เงียบๆ รอบนี้เจอผิด 7 จุดใน 6 ตัว
+// ตรงนี้ตรึงเลขที่พลาดไว้ ให้พังทันทีถ้าข้อมูลขยับแล้วข้อความไม่ขยับตาม
+{
+  const lv = (cfg, level) => (cfg.base || 0) + (cfg.perLevel || 0) * (level - 1);
+  const pct = (v) => String(Math.round(v * 1000) / 10) + "%";
+  const C = CHAMPIONS;
+  const sa = C.NIAN.staticAura, cb = C.HOOD.critBleed;
+  const cases = [
+    ["NIAN", "รัศมีออร่า", String(sa.radius)],
+    ["NIAN", "ดาเมจที่เลเวล 1", String(lv(sa, 1))],
+    ["NIAN", "ดาเมจที่เลเวล 18", String(Math.round(lv(sa, 18)))],
+    ["NIAN", "สเกล Bonus HP", pct(sa.bonusHp)],
+    ["ELLA", "เกณฑ์เลือดต่ำที่ดาเมจคูณสอง", pct(C.ELLA.glassShards.lowHpAt)],
+    ["PIROSKA", "อายุบัฟความเร็วเดิน", String(C.PIROSKA.fleeWolf.dur) + " วิ"],
+    // ampPerBad 0.00025 = +1% ต่อ Bonus AD 40 เคยเขียนว่า 20
+    ["PUSS", "Bonus AD ต่อ +1% ดาเมจใส่คู่ดวล", String(Math.round(0.01 / C.PUSS.duel.ampPerBad))],
+    ["HOOD", "เลือดไหลจากส่วนเกินของคริ", pct(cb.pct)],
+    ["HOOD", "เลือดไหลจากออโต้ที่ไม่คริ", pct(cb.nonCritPct)],
+    ["H.S.B", "ลดดาเมจขั้นบ้านฟาง", pct(C["H.S.B"].threePigs[0].dr)],
+    ["H.S.B", "กินดาเมจเพิ่มขั้นบ้านอิฐ", pct(-C["H.S.B"].threePigs[2].dr)],
+  ];
+  for (const [id, what, want] of cases) {
+    t("พาสซีฟ " + id + " เขียนตรงข้อมูล — " + what,
+      C[id].passive.desc.includes(want), "ต้องมีคำว่า \"" + want + "\"");
+  }
+}
+
 // ---- สรุป
 let bad = 0;
 for (const [n, ok, d] of out) {
