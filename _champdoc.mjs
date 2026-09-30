@@ -105,6 +105,58 @@ try {
 } catch { WR = null; }
 
 // ---------------------------------------------------------------
+// ผลวัดจากแมตช์เต็ม — ไม้บรรทัดหลัก
+//
+// ตารางดวลเดี่ยว (champ-wr.json) อธิบายผลแพ้ชนะจริงได้แค่ 2% จึงใช้ตัดสินใจไม่ได้
+// ที่นี่จึงอ่าน game-wr.json เป็นหลัก แล้วสรุปให้เลยว่าแต่ละตัวควรปรับทางไหน
+// ---------------------------------------------------------------
+let GW = null;
+try {
+  GW = JSON.parse(fs.readFileSync("game-wr.json", "utf8"));
+  GW.by = Object.fromEntries(GW.rows.map((r) => [r.id, r]));
+  // ค่าเฉลี่ยรายเลน — ใช้หักความเอียงของเลนออก (จังเกิ้ลได้ 70%+ ทุกตัวเพราะแกงก์)
+  const lane = {};
+  for (const r of GW.rows) {
+    const f = r.ph.early.fights + r.ph.mid.fights + r.ph.late.fights;
+    r.allPh = (r.ph.early.wr * r.ph.early.fights + r.ph.mid.wr * r.ph.mid.fights + r.ph.late.wr * r.ph.late.fights) / f;
+    (lane[r.lane] = lane[r.lane] || []).push(r.allPh);
+  }
+  GW.laneAvg = Object.fromEntries(Object.entries(lane).map(([k, v]) => [k, v.reduce((a, b) => a + b, 0) / v.length]));
+  for (const r of GW.rows) {
+    r.rel = r.allPh - GW.laneAvg[r.lane];      // เหนือ/ใต้ค่ากลางของเลนตัวเอง
+    r.arc = r.ph.late.wr - r.ph.early.wr;      // ไต่ขึ้นหรือตกลงตอนท้าย
+  }
+} catch { GW = null; }
+
+// ---------------------------------------------------------------
+// คำตัดสิน — ตัดสินด้วย "ชนะแมตช์" เป็นหลัก เพราะนั่นคือผลจริงที่เราสนใจ
+//
+// เคยเขียนให้ตัดสินด้วย "เทียบเลน" อย่างเดียว ซึ่งผิด เพราะชนะไฟต์เยอะ
+// ไม่เท่ากับชนะเกม — KAZEM ชนะไฟต์เหนือค่ากลางเลน +8.1 แต่ชนะแมตช์แค่ 51.2%
+// ส่วน PHANTOM ชนะไฟต์ราวค่ากลาง แต่ชนะแมตช์แค่ 38.9%
+//
+// ชนะแมตช์ = แกนหลัก (แรง/อ่อน) · รูปทรงตามช่วง = บอกว่าควรไปแตะตรงไหน
+// เทียบเลน = ตัวช่วยยืนยัน ถ้าสองสัญญาณขัดกันจะเขียนบอกไว้
+// ---------------------------------------------------------------
+function verdict(r, margin) {
+  const m = margin || 6.3;
+  const strong = r.wr >= 50 + m, weak = r.wr <= 50 - m;
+  const lateish = r.arc >= 10, earlyish = r.arc <= -10;
+  // สองสัญญาณขัดกัน — ชนะไฟต์ไปทางหนึ่ง ชนะเกมไปอีกทาง
+  const split = (strong && r.rel <= -3) || (weak && r.rel >= 3);
+  const note = split ? " ⚠️ ชนะไฟต์กับชนะเกมไม่ไปทางเดียวกัน" : "";
+  if (strong && earlyish) return ["🔴 แรงเกิน กระจุกที่ต้นเกม" + note, "กดต้นเกมกับกลางเกม อย่าแตะเลทเกม"];
+  if (strong && lateish) return ["🔴 แรงเกิน และยิ่งโกงตอนท้าย" + note, "กดเลทเกม เช่นสเกลของท่าไม้ตาย"];
+  if (strong) return ["🔴 แรงเกินทั้งเกม" + note, "กดได้ทุกช่วง ปรับตัวเลขตรงๆ ได้เลย"];
+  if (weak && lateish) return ["🟡 รอดไปไม่ถึงตอนที่ตัวเองแรง" + note, "บัฟต้นเกม อย่าเพิ่มเพดาน ไม่งั้นจะโกงตอนท้าย"];
+  if (weak && earlyish) return ["🟡 แรงแค่ต้นเกมแล้วหายไป" + note, "บัฟเลทเกม เช่นสเกลตามของหรือเลเวล"];
+  if (weak) return ["🟡 อ่อนทั้งเกม" + note, "บัฟได้ทุกช่วง"];
+  if (lateish) return ["🟢 สายเลทที่ทำงานถูกต้อง", "ไม่ต้องแตะ"];
+  if (earlyish) return ["🟢 สายต้นเกมที่ทำงานถูกต้อง", "ไม่ต้องแตะ"];
+  return ["⚪ อยู่ในเกณฑ์", "ไม่ต้องแตะ"];
+}
+
+// ---------------------------------------------------------------
 // สกิลหนึ่งท่า
 // ---------------------------------------------------------------
 function skillBlock(sk) {
@@ -178,9 +230,21 @@ function champBlock(c) {
   const tags = kitTags(c);
   if (tags.length) out.push("", `**ชุดสกิลมี** ${tags.map((t) => "`" + t + "`").join(" ")}`);
 
+  if (GW && GW.by[c.id]) {
+    const g = GW.by[c.id];
+    const [tag, how] = verdict(g, GW.margin);
+    out.push("", `**ผลวัดในแมตช์เต็ม** — ชนะแมตช์ **${g.wr}%** · ลงเล่น ${g.games} แมตช์ · ` +
+      `ฆ่า/ตาย ${g.kills}/${g.deaths} · KDA ${g.kda} · ดาเมจ ${g.dmg.toLocaleString()} · ฮีลกับโล่ ${g.heal.toLocaleString()}`);
+    out.push("", "| | ต้นเกม | กลางเกม | เลทเกม | ทั้งเกม | เทียบค่ากลางเลน |");
+    out.push("|---|---:|---:|---:|---:|---:|");
+    out.push(`| ชนะไฟต์ | ${g.ph.early.wr}% | ${g.ph.mid.wr}% | ${g.ph.late.wr}% | **${g.allPh.toFixed(1)}%** | ${g.rel >= 0 ? "+" : ""}${g.rel.toFixed(1)} |`);
+    out.push(`| เลเวลตอนนั้น | ${g.ph.early.level} | ${g.ph.mid.level} | ${g.ph.late.level} | | |`);
+    out.push("", `**${tag}** — ${how}`);
+  }
+
   if (WR && WR.by[c.id]) {
     const r = WR.by[c.id];
-    out.push("", `**ผลวัดตัวต่อตัว** — ชนะ **${r.wr}%** · ทำดาเมจ ${r.dmg} · กินดาเมจ ${r.took} · ` +
+    out.push("", `ผลวัดตัวต่อตัว (อ้างอิงเท่านั้น) — ชนะ ${r.wr}% · ทำดาเมจ ${r.dmg} · กินดาเมจ ${r.took} · ` +
       `ฮีลกับโล่ ${r.heal} · รอดจบไฟต์ ${r.lived}%`);
     if (r.src && r.src.length) {
       out.push("", "ดาเมจมาจาก — " + r.src.map(([s, v]) =>
@@ -238,17 +302,37 @@ if (WR) {
 }
 doc.push("");
 
-if (WR) {
-  doc.push("## ภาพรวมบาลานซ์");
+if (GW) {
+  doc.push("## ภาพรวมบาลานซ์ — ตัวไหนควรปรับ");
   doc.push("");
-  doc.push("| # | ตัวละคร | ชนะ | ดาเมจ | กินดาเมจ | ฮีล+โล่ | รอดจบไฟต์ | เลน | บทบาท |");
-  doc.push("|---:|---|---:|---:|---:|---:|---:|---|---|");
-  WR.rows.forEach((r, i) => {
+  doc.push(`วัดจาก **${GW.games} แมตช์เต็ม** ตั้งแต่ดราฟต์จนจบ · ตัวละราว ${GW.avgGamesEach} แมตช์ · ±${GW.margin} แต้ม`);
+  doc.push("");
+  doc.push("`เทียบเลน` = อัตราชนะไฟต์ทั้งเกมของเขา ลบค่าเฉลี่ยของเลนเดียวกัน");
+  doc.push("ต้องหักแบบนี้เพราะจังเกิ้ลได้ 70%+ ทุกตัวจากการเลือกลงไฟต์ที่ได้เปรียบ (แกงก์) ไม่ใช่เพราะแรงกว่า");
+  doc.push("");
+  doc.push("| # | ตัวละคร | ชนะแมตช์ | ต้น | กลาง | เลท | ทั้งเกม | เทียบเลน | คำตัดสิน | ควรทำ |");
+  doc.push("|---:|---|---:|---:|---:|---:|---:|---:|---|---|");
+  GW.rows.forEach((r, i) => {
     const c = CHAMPIONS[r.id];
     if (!c) return;
-    doc.push(`| ${i + 1} | [${r.id}](#${anchor(r.id)}) | **${r.wr}%** | ${r.dmg} | ${r.took} | ${r.heal} | ${r.lived}% | ${c.lane} | ${esc(c.role)} |`);
+    const [tag, how] = verdict(r, GW.margin);
+    doc.push(`| ${i + 1} | [${r.id}](#${anchor(r.id)}) | **${r.wr}%** | ${r.ph.early.wr} | ${r.ph.mid.wr} | ${r.ph.late.wr} | ${r.allPh.toFixed(1)} | ${r.rel >= 0 ? "+" : ""}${r.rel.toFixed(1)} | ${tag} | ${how} |`);
   });
   doc.push("");
+  // อีโมจิใน JS กินสองช่อง เทียบด้วย [0] ไม่ได้ ต้องใช้ startsWith
+  const todo = GW.rows.filter((r) => {
+    const v = verdict(r, GW.margin)[0];
+    return !v.startsWith("🟢") && !v.startsWith("⚪");
+  });
+  if (todo.length) {
+    doc.push("### สรุปเฉพาะตัวที่ควรแตะ");
+    doc.push("");
+    for (const r of todo.sort((a, b) => Math.abs(b.wr - 50) - Math.abs(a.wr - 50))) {
+      const [tag, how] = verdict(r, GW.margin);
+      doc.push(`- **[${r.id}](#${anchor(r.id)})** (${r.lane}) ${tag} — ชนะแมตช์ **${r.wr}%** · ต้น→เลท ${r.arc >= 0 ? "+" : ""}${r.arc.toFixed(1)} · เทียบเลน ${r.rel >= 0 ? "+" : ""}${r.rel.toFixed(1)} → **${how}**`);
+    }
+    doc.push("");
+  }
 }
 
 doc.push("## ใครลงเลนไหนได้บ้าง");
@@ -284,4 +368,5 @@ doc.push("");
 
 fs.writeFileSync("CHAMPIONS.md", doc.join("\n").replace(/\n{3,}/g, "\n\n") + "\n");
 console.log("เขียน CHAMPIONS.md แล้ว — " + ALL.length + " ตัว · " + skillCount + " สกิล · " +
-  (WR ? `แนบผลวัด ${WR.fightsEach} ไฟต์ต่อตัว` : "ยังไม่มี champ-wr.json (รัน node _champwr.mjs ก่อน)"));
+  (GW ? `แนบผลแมตช์เต็ม ${GW.games} แมตช์` : "ยังไม่มี game-wr.json (รัน node _gamewr.mjs ก่อน)") +
+  (WR ? ` · ดวลเดี่ยว ${WR.fightsEach} ไฟต์ต่อตัว` : ""));
