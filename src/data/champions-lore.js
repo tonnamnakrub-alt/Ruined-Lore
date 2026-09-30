@@ -18,7 +18,7 @@ export const LORE_CHAMPIONS = {
     th: "เอลล่า", role: "Assassin", lane: "JUNGLE", melee: true,
     hp: 570, hpG: 92, hp5: 6.5, hp5G: 0.6, ad: 56, adG: 3.1, armor: 28, armorG: 3.6, mr: 30, mrG: 1.3,
     as: 0.66, asG: 0.026, ms: 330, range: 150,
-    // เศษแก้วติดออโต้ — แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่าครึ่ง
+    // เศษแก้วติดออโต้ — แรงขึ้นสองเท่าเมื่อเป้าเลือดต่ำกว่า 30% (lowHpAt)
     glassShards: { base: 15, perLevel: (75 - 15) / 17, apRatio: 0.25, lowHpAt: 0.30, lowHpMul: 2 },
     passive: { th: "Glass Shards Execution",
       desc: "ออโต้ทุกครั้งพ่วงดาเมจเวท 15 ที่เลเวล 1 ไล่ถึง 75 ที่เลเวล 18 (+25% AP) · ถ้าเป้าหมายเลือดต่ำกว่า 30% ก้อนนี้แรงขึ้นสองเท่าทันที (30-150 +50% AP)" },
