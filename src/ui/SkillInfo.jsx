@@ -3,6 +3,7 @@ import { CHAMPIONS } from "../data/champions.js";
 import {
   MAX_RANK, flagLines, flatRows, nextRankGain, rankedRows, ratioLine, skillSentence, skillShape, skillTitle, subSkills,
 } from "../game/skill-desc.js";
+import { categoryOf, dodgeOf } from "../game/skill-kind.js";
 import { tr } from "../i18n.js";
 import { mini } from "./chrome.jsx";
 import { Panel } from "./kit.jsx";
@@ -52,6 +53,68 @@ function fmt(v, f) {
   return String(Math.round(v * 100) / 100);
 }
 
+// ป้ายเล็กๆ หนึ่งอัน — ใช้บอกหมวดหมู่กับความหลบได้
+function Chip({ icon, text, tone }) {
+  const col = tone === "good" ? C.green : tone === "bad" ? C.red : C.dim;
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: col,
+      border: `1px solid ${tone ? col : C.line}`, borderRadius: 5, padding: "3px 7px",
+      background: C.panel2, whiteSpace: "nowrap",
+    }}>
+      {icon && <span style={{ fontSize: 11 }}>{icon}</span>}{text}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------
+// สรุปคร่าวๆ — อ่านจบในสองบรรทัด ว่าท่านี้ทำอะไรและหลบได้ไหม
+// รายละเอียดทั้งหมดอยู่หลังปุ่ม "ดูรายละเอียด"
+// ---------------------------------------------------------------
+function SkillBrief({ sk, rank }) {
+  const cat = categoryOf(sk);
+  const dg = dodgeOf(sk);
+  const r = Math.max(0, (rank || 1) - 1);
+  // ตัวเลขที่คนอยากรู้ก่อนเสมอ — แรงแค่ไหน กดได้ทุกกี่วินาที ไกลแค่ไหน
+  const quick = [];
+  if (Array.isArray(sk.dmg) && sk.dmg[r] > 0) quick.push([tr("ดาเมจ"), Math.round(sk.dmg[r])]);
+  if (Array.isArray(sk.heal) && sk.heal[r] > 0) quick.push([tr("ฮีล"), Math.round(sk.heal[r])]);
+  if (Array.isArray(sk.shield) && sk.shield[r] > 0) quick.push([tr("โล่"), Math.round(sk.shield[r])]);
+  const cd = sk.cdByRank ? sk.cdByRank[r] : sk.cd;
+  if (cd > 0) quick.push([tr("คูลดาวน์"), (Math.round(cd * 100) / 100) + "s"]);
+  if (sk.range > 0 && sk.range < 9000) quick.push([tr("ระยะ"), sk.range]);
+  else if (sk.radius > 0) quick.push([tr("รัศมี"), sk.radius]);
+
+  return (
+    <div>
+      <div style={{
+        background: "#101A2C", border: `1px solid ${C.line}`, borderLeft: `3px solid ${sk.ult ? C.gold : C.blue}`,
+        borderRadius: 7, padding: "10px 12px", marginBottom: 8,
+      }}>
+        <div style={{ fontSize: 14, lineHeight: 1.75, color: C.ink }}>{skillSentence(sk)}</div>
+      </div>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 8 }}>
+        {cat && <Chip icon={cat.icon} text={tr(cat.th)} />}
+        {dg.dodge !== null && dg.label && (
+          <Chip icon={dg.dodge ? "🟢" : "🔴"} text={tr(dg.label)} tone={dg.dodge ? "good" : "bad"} />
+        )}
+        {sk.ult && <Chip text={tr("ท่าไม้ตาย")} />}
+      </div>
+
+      {quick.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 16px", marginBottom: 8 }}>
+          {quick.map(([k, v]) => (
+            <span key={k} style={{ fontSize: 12.5, color: C.dim }}>
+              {k} <span style={{ fontFamily: MONO, color: C.ink, fontWeight: 700 }}>{v}</span>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SkillBody({ sk, rank }) {
   const max = MAX_RANK(sk);
   const rows = rankedRows(sk);
@@ -60,15 +123,15 @@ function SkillBody({ sk, rank }) {
   const flags = flagLines(sk);
   const gains = nextRankGain(sk, rank);
   const subs = subSkills(sk);
+  const dg = dodgeOf(sk);
 
   return (
     <div>
-      <div style={{
-        background: "#101A2C", border: `1px solid ${C.line}`, borderLeft: `3px solid ${sk.ult ? C.gold : C.blue}`,
-        borderRadius: 7, padding: "10px 12px", marginBottom: 10,
-      }}>
-        <div style={{ fontSize: 14, lineHeight: 1.75, color: C.ink }}>{skillSentence(sk)}</div>
-      </div>
+      {dg.why && (
+        <div style={{ fontSize: 12, color: dg.dodge ? C.green : C.red, marginBottom: 8, lineHeight: 1.6 }}>
+          {dg.dodge ? "🟢 " : "🔴 "}{tr(dg.why)}
+        </div>
+      )}
       <div style={{ fontSize: 12, color: C.dim, marginBottom: 8 }}>{skillShape(sk)}</div>
 
       {rank > 0 && rank < max && gains.length > 0 && (
@@ -187,6 +250,9 @@ function StatBoard({ stats, level }) {
 
 
 export function SkillModal({ view, onPick, onClose }) {
+  // เปิดค้างไว้ข้ามการสลับ Q/W/E/R — คนที่อยากดูละเอียดมักอยากดูทุกท่า
+  // ต้องประกาศก่อน return null ทุกอัน ไม่งั้นผิดกฎ hook ของ React
+  const [open, setOpen] = React.useState(false);
   if (!view) return null;
   const ch = CHAMPIONS[view.champId];
   if (!ch) return null;
@@ -242,7 +308,17 @@ export function SkillModal({ view, onPick, onClose }) {
               </span>
             </div>
             <div style={{ height: 8 }} />
-            <SkillBody sk={sk} rank={rank} />
+            <SkillBrief sk={sk} rank={rank} />
+            <button
+              onClick={() => setOpen((v) => !v)}
+              style={{
+                width: "100%", marginBottom: open ? 10 : 2, padding: "8px 10px", borderRadius: 7,
+                background: C.panel2, color: C.blue, border: `1px solid ${C.line}`,
+                fontFamily: SANS, fontSize: 12.5, fontWeight: 700, cursor: "pointer",
+              }}>
+              {open ? tr("▲ ย่อรายละเอียด") : tr("▼ ดูรายละเอียดทั้งหมด")}
+            </button>
+            {open && <SkillBody sk={sk} rank={rank} />}
 
             {view.onUpgrade && (
               <button

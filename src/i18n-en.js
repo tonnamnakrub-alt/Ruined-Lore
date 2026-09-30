@@ -3306,4 +3306,56 @@ export const DICT = {
    "s of knock-up per 1 excess move speed",
  "วิ ต่อความเร็วเดินจาก AP 100 → เวลาลอย":
    "s of knock-up per 100 AP worth of move speed",
+ "ลูกกระสุน":
+   "Projectile",
+ "ลำแสง":
+   "Beam",
+ "วงกลมบนพื้น":
+   "Ground circle",
+ "โซนค้างที่":
+   "Lingering zone",
+ "ดาเมจรอบตัว":
+   "Damage around you",
+ "พุ่งเข้าชน":
+   "Dash in",
+ "ติดออโต้":
+   "Rides your auto",
+ "เล็งตัวเดียว":
+   "Single target",
+ "ช่วยเพื่อน":
+   "Helps allies",
+ "สิ่งก่อสร้าง":
+   "Structure",
+ "สองร่าง":
+   "Two forms",
+ "ลูกกระสุน — หลบได้":
+   "Projectile — dodgeable",
+ "ลำแสง — หลบได้":
+   "Beam — dodgeable",
+ "มีหน่วง — หลบได้":
+   "Delayed — dodgeable",
+ "โซนค้างที่ — เดินออกได้":
+   "Lingering zone — walk out of it",
+ "ลงทันที — หลบไม่ได้":
+   "Instant — cannot be dodged",
+ "หลบได้":
+   "Dodgeable",
+ "หลบไม่ได้":
+   "Cannot be dodged",
+ "ลูกวิ่งด้วยความเร็ว {0} เดินออกจากแนวได้":
+   "The shot travels at {0} — you can walk out of its path",
+ "ลำแสงวิ่งด้วยความเร็ว {0} เดินออกจากแนวได้":
+   "The beam travels at {0} — you can walk out of its path",
+ "หน่วง {0} วิ ก่อนลง เห็นวงแล้วเดินออกทัน":
+   "Lands {0}s after it is cast — you can see the circle and step out",
+ "วงค้างอยู่กับที่ เดินออกได้ตลอดเวลาที่มันอยู่":
+   "The zone stays put — you can walk out of it at any time",
+ "ลงทันทีที่กด ไม่มีลูกให้หลบและไม่มีหน่วงให้เดินออก":
+   "Lands the moment it is cast — no travel time and no delay to step out of",
+ "ร่างหนึ่งลงทันทีที่กด":
+   "One of its two forms lands instantly",
+ "▼ ดูรายละเอียดทั้งหมด":
+   "▼ Show full details",
+ "▲ ย่อรายละเอียด":
+   "▲ Hide details",
 };
