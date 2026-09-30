@@ -40,6 +40,7 @@ const SHAPES = {
   pulse: "คลื่นเป็นจังหวะ",
   // ---- ท่าของตัวละคร Patch 0.3 ----
   combo: "คอมโบสามจังหวะ",
+  comboStep: "จังหวะคอมโบ",
   damageStash: "สะสมดาเมจแล้วจุดระเบิด",
   skyward: "กระโดดลอยหลบ",
   carriage: "ล่องหนแล้วเปิดตัว",
@@ -96,6 +97,7 @@ const RANKED = [
   ["armDmg", "ดาเมจต่อแขน", "n"],
   ["heal", "ฮีล", "n"],
   ["shield", "โล่", "n"],
+  ["pctMissingHp", "บวกตามเลือดที่เป้าหายไป", "pct"],
   ["hp", "เลือดที่ได้", "n"],
   ["pctMaxHp", "ดาเมจตาม Max HP เป้า", "pct"],
   ["slamPctMaxHp", "ดาเมจฟาดตาม Max HP", "pct"],
@@ -136,6 +138,7 @@ const FLAT = [
   ["armLen", "ความยาวแขน", "n"],
   ["armWidth", "ความกว้างแขน", "n"],
   ["dashRange", "ระยะพุ่ง", "n"],
+  ["backstep", "ดีดถอยหลังออก", "n"],
   ["dashSpeed", "ความเร็วพุ่ง", "n"],
   ["grabRange", "ระยะจับ", "n"],
   ["engageRange", "ระยะเข้าปะทะ", "n"],
@@ -204,7 +207,7 @@ const FLAT = [
   ["widthMax", "ความกว้างสูงสุด", "n"],
   ["burstAt", "ระเบิดที่วินาทีที่", "sec"],
   ["burstPct", "ระเบิดเป็น % ของโล่", "pct"],
-  ["evade", "โอกาสหลบ", "pct"],
+  ["evade", "หลบทุกอย่างได้", "sec"],
   ["res", "เกราะ/ต้านเวทของสิ่งก่อสร้าง", "n"],
   ["hitDmg", "ดาเมจตอนชน", "n"],
   ["msDur", "ความเร็วเดินอยู่นาน", "sec"],
@@ -283,7 +286,7 @@ const RATIOS = [
   // ---- ฮีล ----
   ["healBonusHp", "Bonus HP → ฮีล", "pct"],
   ["healAp", "AP → ฮีล", "pct"],
-  ["healPct", "ดาเมจที่ทำได้ → ฮีลคืน", "pct"],
+  ["healPct", "โล่ที่กางไว้ → ฮีลคืนให้ตัวเอง", "pct"],
   ["healPctDealt", "ดาเมจที่ท่านี้ทำได้ → ฮีลคืน", "rank"],
   ["allyPct", "ดาเมจที่เพื่อนกินมา → ฮีลและโล่ให้เพื่อน", "pct"],
   // ---- สิ่งก่อสร้าง ----
@@ -359,7 +362,7 @@ export function rankedRows(sk) {
     out.push({ key, label: tr(label), fmt, values: v, flat: same });
   }
   // คูลดาวน์: ถ้าไม่มี cdByRank ใช้ cd เดี่ยว
-  if (!sk.cdByRank && typeof sk.cd === "number") {
+  if (!sk.cdByRank && typeof sk.cd === "number" && !(sk.oncePerFight && !sk.cd)) {
     out.push({ key: "cd", label: tr("คูลดาวน์"), fmt: "sec", values: [sk.cd], flat: true });
   }
   return out;
@@ -430,6 +433,13 @@ export function nextRankGain(sk, rank) {
 export function subSkills(sk) {
   if (!sk) return [];
   const out = [];
+  // คอมโบ: แต่ละจังหวะมีดาเมจและสเกลของตัวเอง ต้องแยกเป็นท่าย่อยถึงจะเห็นตัวเลข
+  if (Array.isArray(sk.steps)) {
+    sk.steps.forEach((st, i) => out.push({
+      tag: tr("จังหวะ {0}", i + 1),
+      sk: { ...st, type: "comboStep", key: sk.key, magic: sk.magic },
+    }));
+  }
   if (sk.light) out.push({ tag: tr("ร่างแสง"), sk: { ...sk.light, key: sk.key, cd: sk.cd, cdByRank: sk.cdByRank } });
   if (sk.shadow) out.push({ tag: tr("ร่างเงา"), sk: { ...sk.shadow, key: sk.key, cd: sk.cd, cdByRank: sk.cdByRank } });
   return out;
@@ -451,7 +461,9 @@ export function skillTitle(sk) {
 function actionClause(sk) {
   const r = sk.range, rad = sk.radius, w = sk.width;
   switch (sk.type) {
-    case "aoeSelf": return tr("ระเบิดรอบตัวรัศมี {0} หน่วย", rad || 0);
+    case "aoeSelf": return sk.halfCircle
+      ? tr("กวาดเป็นครึ่งวงด้านหน้าตัวเอง หันไปทางเป้า รัศมี {0} หน่วย", rad || 0)
+      : tr("ระเบิดรอบตัวรัศมี {0} หน่วย", rad || 0);
     case "aoeGround": return tr("เล็งลงพื้นในระยะ {0} ระเบิดเป็นวงรัศมี {1} หน่วย", r || 0, rad || 0);
     case "line":
       // แยกให้ชัดว่าเป็นของที่ลอยไป (หลบได้ กำแพงกินได้) หรือพื้นที่ที่แยกออกไปทันที
@@ -462,7 +474,9 @@ function actionClause(sk) {
     case "cone": return tr("กวาดเป็นกรวยด้านหน้าไกล {0} หน่วย", r || 0);
     case "targeted": return tr("ล็อกเป้าหมายเดียวในระยะ {0} หน่วย", r || 0);
     case "dash": return tr("พุ่งไปข้างหน้า {0} หน่วย", sk.dashRange || r || 0);
-    case "blinkDash": return tr("วาร์ปไปที่จุดหมายในระยะ {0} หน่วย", r || 0);
+    case "blinkDash": return sk.evade
+      ? tr("วาร์ปไปที่จุดหมายในระยะ {0} หน่วย แล้วหลบทุกอย่างได้อีก {1} วิหลังลง", r || 0, sk.evade)
+      : tr("วาร์ปไปที่จุดหมายในระยะ {0} หน่วย", r || 0);
     case "blinkBehind":
       return tr("วาร์ปข้ามไปโผล่หลังเป้าในระยะ {0} หน่วย ห่างจากหลังมันอีก {1} หน่วย", r || 0, sk.behind || 0);
     case "crossDash": return tr("พุ่งทะลุเป็นรูปกากบาทไกล {0} หน่วย", sk.armLen || r || 0);
@@ -470,7 +484,9 @@ function actionClause(sk) {
     case "chargedBeam": return tr("ชาร์จลำแสงแล้วยิงออกไปไกล {0} หน่วย", r || 0);
     case "grabSlam": return tr("คว้าศัตรูในระยะ {0} แล้วฟาดลงพื้น", sk.grabRange || r || 0);
     case "skyfall": return tr("กระโดดขึ้นฟ้าแล้วร่วงลงใส่จุดเป้าหมายในระยะ {0} หน่วย", r || 0);
-    case "submerge": return tr("มุดลงไปใต้พื้น แล้วโผล่ขึ้นที่จุดเป้าหมายในระยะ {0} หน่วย", r || 0);
+    case "submerge": return tr(
+      "มุดลงใต้พื้น ระหว่างมุดแตะไม่ได้และไม่กินดาเมจเลย แล้วโผล่ขึ้นที่จุดเป้าหมายในระยะ {0} หน่วย — พอโผล่พ้นพื้นก็กลับมาโดนตีได้ทันที ก่อนจะทุบพื้นรัศมี {1} หน่วยยกทุกคนในวงลอย",
+      r || 0, rad || 0);
     case "cage": return tr("สร้างกรงล้อมรัศมี {0} หน่วย ขังศัตรูที่อยู่ข้างใน", rad || 0);
     case "barrage": return sk.ammoMax
       ? tr("ยิงกระสุนลงพื้นในระยะ {0} หน่วย เก็บกระสุนได้ {1} นัด", r || 0, sk.ammoMax)
@@ -499,7 +515,10 @@ function actionClause(sk) {
       if (sk.pet) more.push(tr("ยักษ์ที่อัญเชิญไว้ได้โล่ ความเร็วเดิน และความเร็วโจมตีด้วย"));
       if (sk.gainStack) more.push(tr("ได้สแตกพาสซีฟทันที {0}", sk.gainStack));
       if (sk.ambushAs) more.push(tr("พอเผยตัวออกมาได้ความเร็วโจมตีก้อนใหญ่ {0} วิ", sk.ambushDur || 3));
-      return [tr("บัฟตัวเอง"), ...more].join(" · ");
+      const head = !more.length && Array.isArray(sk.shield)
+        ? tr("กางโล่คลุมตัวเอง {0} วิ", sk.dur || 0)
+        : tr("บัฟตัวเอง");
+      return [head, ...more].join(" · ");
     }
     case "teamHeal": return tr("ฮีลเพื่อนทั้งทีมพร้อมกัน");
     case "allyHot": return tr("ฮีลเพื่อนต่อเนื่องทีละนิด");
@@ -525,14 +544,35 @@ function actionClause(sk) {
     case "coneKnock": return tr("กระแทกคลื่นเป็นกรวยด้านหน้าไกล {0} หน่วย", r || 0);
     case "meteorStorm": return tr("ตรึงตัวเองแล้วเรียกอุกกาบาตใส่ศัตรูทุกคนบนสนามทีละระลอก");
     case "bloodStorm": return tr("แผ่พายุโลหิตรอบตัวรัศมี {0} หน่วย กัดทุกคนในวงทุก {1} วิ", rad || 0, sk.every || 0.5);
-    case "absorbReflect": return tr("กางเกราะดูดซับดาเมจ แล้วสะท้อนกลับ");
-    case "pulse": return tr("ปล่อยคลื่นเป็นจังหวะรอบตัวรัศมี {0} หน่วย", rad || 0);
-    case "burstShield": return tr("กางโล่ แล้วระเบิดออกเมื่อโล่หมด");
+    case "absorbReflect": return tr(
+      "อมตะ {0} วิ โดนอะไรก็ไม่เข้า · เอาดาเมจที่ตัวเองกินมาใน {1} วิที่ผ่านมาบวกกับที่กินระหว่างอมตะมาเป็นทุน · พอหมดเวลาก็ระเบิดทุนนั้นออกเป็นกรวย {2} องศาไกล {3} หน่วยไปทางเป้าที่จ้องอยู่ · เพื่อนในรัศมีเดียวกันได้ฮีลและโล่ตามดาเมจที่ตัวเขาเองเพิ่งกินไป",
+      sk.dur || 0, sk.lookback || 0, sk.angle || 0, sk.radius || 0);
+    case "pulse": return sk.hits
+      ? tr("ปล่อยคลื่นรอบตัวรัศมี {0} หน่วย {1} ระลอก ห่างกันระลอกละ {2} วิ รวม {3} วิ", rad || 0, sk.hits, sk.every || 0, sk.dur || 0)
+      : tr("ปล่อยคลื่นเป็นจังหวะรอบตัวรัศมี {0} หน่วย", rad || 0);
+    case "burstShield": return tr(
+      "กางโล่คลุมตัวเอง {0} วิ · พอโล่แตกหรือหมดเวลา (แล้วแต่อะไรมาก่อน) โล่ก้อนนั้นระเบิดใส่ศัตรูรอบตัวรัศมี {1} หน่วยเป็น {2}% ของขนาดโล่ แล้วฮีลคืนให้ตัวเองอีก {3}% ของขนาดโล่",
+      sk.dur || 0, sk.radius || 0, Math.round((sk.burstPct || 0) * 100), Math.round((sk.healPct || 0) * 100));
     case "dual": return tr("มีสองร่าง สลับใช้คนละผล");
     // ---- ท่าของตัวละคร Patch 0.3 ----
     case "combo": {
       const n = (sk.steps || []).length;
-      return tr("คอมโบ {0} จังหวะ กดต่อกันภายใน {1} วิ — แต่ละจังหวะต้องออโต้ให้โดนก่อนถึงจะกดท่าถัดไปได้", n, sk.window || 5);
+      // จังหวะสุดท้ายไม่มี needAuto จะเหมาว่า "ทุกจังหวะ" ไม่ได้ (lore.js:103)
+      const gate = (sk.steps || []).filter((st) => st.needAuto).length;
+      return tr("คอมโบ {0} จังหวะ กดต่อกันภายใน {1} วิ — {2} จังหวะแรกต้องออโต้ให้โดนก่อน ถึงจะปลดล็อกจังหวะถัดไป จังหวะสุดท้ายกดต่อได้เลย", n, sk.window || 5, gate);
+    }
+    case "comboStep": {
+      const bits = [];
+      if (sk.dashRange) bits.push(tr("พุ่งเข้าหาเป้าไกลสุด {0} หน่วย แล้วแทงเป้านั้นหนึ่งที", sk.dashRange));
+      else if (sk.radius) bits.push(tr("กวาดดาบเป็นครึ่งวงด้านหน้ารัศมี {0} หน่วย โดนทุกคนในวง", sk.radius));
+      else bits.push(tr("ฟันเป้าเดี่ยวในระยะ {0} หน่วย", sk.range || 0));
+      if (sk.pctMissingHp) bits.push(tr("บวกดาเมจตามเลือดที่เป้าหายไปแล้ว"));
+      if (sk.backstep) bits.push(tr("แล้วดีดตัวถอยออกจากเป้า {0} หน่วย", sk.backstep));
+      // needAuto อยู่ที่จังหวะนี้ = จังหวะ "ถัดไป" ถูกล็อกจนกว่าออโต้จะโดน (lore.js:103)
+      bits.push(sk.needAuto
+        ? tr("กดจังหวะถัดไปไม่ได้จนกว่าออโต้จะโดนอีกครั้ง")
+        : tr("เป็นจังหวะปิดคอมโบ กดจบแล้ววนกลับไปจังหวะแรก"));
+      return bits.join(" · ");
     }
     case "damageStash": return tr("ทุกดาเมจที่ลงเป้าถูกจดไว้ {0} วิ แล้วกดสั่งระเบิดยอดสะสมทั้งหมดในระยะ {1} หน่วย", sk.stashDur || 3, r || 0);
     case "skyward": return tr("กระโดดลอยขึ้นฟ้า {0} วิ แตะไม่ได้และไม่กินดาเมจ แล้วลงพื้นพร้อมความเร็วเดิน", sk.airTime || 0.75);
@@ -579,8 +619,13 @@ function timingClause(sk) {
   if (sk.maxCharge) out.push(tr("ชาร์จได้ถึง {0} วิ", sk.maxCharge));
   if (sk.waves) {
     // waves มีสองแบบ — ตัวเลขจำนวนระลอกไล่ตามแรงก์ กับตารางบรรยายแต่ละระลอกทีละก้อน
-    const w = Array.isArray(sk.waves) ? sk.waves[Math.max(0, (sk.rank || 1) - 1)] : sk.waves;
-    const n = typeof w === "number" ? w : sk.waves.length;
+    const arr = Array.isArray(sk.waves) ? sk.waves : null;
+    const nums = arr && arr.every((x) => typeof x === "number") ? arr : null;
+    let n;
+    if (!nums) n = arr ? arr.length : sk.waves;
+    else if (sk.rank) n = nums[Math.max(0, sk.rank - 1)];
+    // ยังไม่รู้แรงก์ (หน้าข้อมูลสกิล) — โชว์ทุกขั้นแทนที่จะแอบใช้ขั้นแรกเงียบๆ
+    else n = nums.every((x) => x === nums[0]) ? nums[0] : nums.join("/");
     out.push(tr("ยิง {0} ระลอก ห่างกันระลอกละ {1} วิ", n, sk.every));
   }
   if (sk.telegraph) out.push(tr("มีวงเตือนบนพื้นก่อนตก {0} วิ", sk.telegraph));
@@ -617,10 +662,13 @@ function ccClause(sk) {
 }
 
 // ท่อนที่สี่: ช่วยฝั่งเรายังไง
+const SHIELD_SAID = new Set(["burstShield", "guardBurst", "canopy", "selfBuff"]);
+
 function supportClause(sk) {
   const out = [];
-  if (sk.heal || sk.healPct) out.push(tr("ฮีลให้เป้าหมาย"));
-  if (sk.shield) out.push(tr("กางโล่ให้"));
+  const said = SHIELD_SAID.has(sk.type);
+  if (!said && (sk.heal || sk.healPct)) out.push(tr("ฮีลให้เป้าหมาย"));
+  if (!said && sk.shield) out.push(tr("กางโล่ให้"));
   if (sk.drain) out.push(tr("ดูดเลือดคืน {0}% ของดาเมจที่ลง", Math.round(sk.drain * 100)));
   if (sk.cleanse) out.push(tr("ล้างสถานะติดตัวออก"));
   if (sk.slowImmune) out.push(tr("กันสโลว์ระหว่างใช้"));

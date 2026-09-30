@@ -18,10 +18,11 @@ export const SKILL_CATS = [
     types: ["line", "wave", "sledge"] },
   { key: "slash", icon: "🗡", th: "แนวยาวลงทันที", desc: "กินทั้งแนวในเฟรมเดียว ไม่มีลูกให้หลบ",
     types: [] },
-  { key: "beam", icon: "🔦", th: "ลำแสง", desc: "ยิงเป็นแนวยาว ชาร์จได้",
+  // ไม่ใช่ลำแสง — ทั้งสองชนิดนี้ push ลูกเข้า state.projectiles จริง ลำแสงเป็นแค่เอฟเฟกต์ภาพ
+  { key: "beam", icon: "🔋", th: "ชาร์จยิง", desc: "ง้างค้างไว้แล้วยิงเป็นลูกที่บินไป ชาร์จนานยิ่งไกลและกว้าง",
     types: ["chargedBeam", "rangeCharge"] },
   { key: "ground", icon: "⭕", th: "วงกลมบนพื้น", desc: "วางแล้วหน่วงก่อนระเบิด",
-    types: ["aoeGround", "meteorStorm", "wonderland", "teaGarden", "starfall", "skyfall", "globalStrike", "barrage"] },
+    types: ["aoeGround", "meteorStorm", "wonderland", "teaGarden", "starfall", "skyfall", "globalStrike", "barrage", "submerge"] },
   { key: "zone", icon: "🟣", th: "โซนค้างที่", desc: "อยู่กับที่ เดินออกได้",
     types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex"] },
   { key: "self", icon: "💥", th: "ดาเมจรอบตัว", desc: "ระเบิดออกจากตัวทันที",
@@ -37,7 +38,7 @@ export const SKILL_CATS = [
   { key: "single", icon: "🎯", th: "เล็งตัวเดียว", desc: "เลือกเป้าแล้วลงทันที",
     types: ["targeted", "judgment", "rebound"] },
   { key: "buffself", icon: "🔵", th: "บัฟตัวเอง", desc: "ไม่ทำดาเมจเอง",
-    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "submerge", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield"] },
+    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield"] },
   { key: "buffally", icon: "💚", th: "ช่วยเพื่อน", desc: "ฮีล โล่ หรือบัฟให้เพื่อน",
     types: ["allyHot", "teamHeal", "allyBlink", "allyRush", "canopy", "guardBurst", "arbor"] },
   { key: "build", icon: "🧱", th: "สิ่งก่อสร้าง", desc: "วางของหรือเรียกตัวช่วยที่ถูกทุบได้",
@@ -68,18 +69,20 @@ const ZONE_TYPES = new Set([
 const NODMG_TYPES = new Set([
   "selfBuff", "allyHot", "teamHeal", "allyBlink", "allyRush", "canopy",
   "mistform", "skyward", "rampBuff", "mask", "markNext", "lastStand",
-  "absorbReflect", "submerge", "vampForm", "formShift", "zephyr", "damageStash",
+  "absorbReflect", "vampForm", "formShift", "zephyr", "damageStash",
   "blinkDash",   // LUCH E ร่างแสง — วาร์ปเฉยๆ ไม่มีดาเมจ
 ]);
 // ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง — เดินออกก่อนถึงเวลาได้
 //   pulse       LUCH Q ร่างเงา — เข้าคิว state.pulses สามระลอกใน 1.5 วิ
 //   burstShield LUCH W ร่างเงา — u.pendingBurst ระเบิดหลังโล่หมดอายุ 3 วิ
-const DEFERRED_TYPES = new Set(["pulse", "burstShield"]);
+//   submerge    ARIEL E — มุดน้ำแล้วโผล่ขึ้นมาทุบทีหลัง เข้าคิว state.submerges
+const DEFERRED_TYPES = new Set(["pulse", "burstShield", "submerge"]);
 // หน่วงที่ฝังอยู่ในโค้ด ไม่ได้ประกาศในข้อมูล
 const CODED_DELAY = { barrage: 0.75 };
 // ลูกกระสุนโดยปริยาย ไม่ประกาศความเร็วก็ใช้ BASE.projSpeed 1350
 const DEFAULT_PROJ = new Set(["line", "wave"]);
-const BEAM_TYPES = new Set(["chargedBeam", "snipe", "snipeCharge", "shredWave", "rangeCharge"]);
+// ชนิดที่ต้องง้างก่อนยิง แต่สุดท้ายก็เป็นลูกกระสุนเหมือนกัน
+const CHARGED_TYPES = new Set(["chargedBeam", "snipe", "snipeCharge", "shredWave", "rangeCharge"]);
 
 const travel = (sk) => {
   if (sk.instant) return 0;
@@ -104,8 +107,13 @@ export function categoryOf(sk) {
 // ---------------------------------------------------------------
 const CAT_BY_KEY = Object.fromEntries(SKILL_CATS.map((c) => [c.key, c]));
 
+// ท่าที่บัฟตัวเองอยู่ในโค้ดเอนจิน ไม่มีฟิลด์ในข้อมูลให้จับ
+//   submerge  ARIEL E — มุดน้ำแล้วได้ untargetable กับ invuln ระหว่างมุด
+const SELF_BUFF_IN_CODE = new Set(["submerge", "pulse"]);
+
 function extraKeys(sk) {
   const k = new Set();
+  if (SELF_BUFF_IN_CODE.has(sk.type)) k.add("buffself");
   const dmg = Array.isArray(sk.dmg) || Array.isArray(sk.sweepDmg) || Array.isArray(sk.hitDmg)
     || Array.isArray(sk.aoeDmg) || Array.isArray(sk.burstDmg);
   // เคลื่อนที่เข้าไปเอง
@@ -126,8 +134,8 @@ function extraKeys(sk) {
   if (sk.angle && sk.count) k.add("cone");
   // ทิ้งพื้นที่ไว้หลังลง
   if (sk.groundBurn || sk.pool || sk.zoneBleed) k.add("zone");
-  // เรียกของหรือตัวช่วยที่ถูกทุบได้
-  if (sk.pet) k.add("build");
+  // ไม่ติดป้ายสิ่งก่อสร้างจากฟิลด์ pet เฉยๆ เพราะ JACK E แค่บัฟยักษ์ที่ JACK R เรียกมา
+  // หมวดนี้มาจากชนิดของท่าอย่างเดียว (summonGiant / wall / bunker)
   // โล่หรือบัฟให้ตัวเอง
   if (sk.aegis || sk.castShield || sk.dualShield || (sk.shield && !sk.share && !sk.targets)) k.add("buffself");
   // ฮีลหรือโล่ให้เพื่อน
@@ -189,11 +197,10 @@ export function dodgeOf(sk) {
 
   const v = travel(sk);
   if (v > 0) {
-    const beam = BEAM_TYPES.has(t);
-    return { dodge: true, kind: beam ? "beam" : "projectile",
-      label: beam ? "ลำแสง — หลบได้" : "ลูกกระสุน — หลบได้",
-      why: beam ? tr("ลำแสงวิ่งด้วยความเร็ว {0} เดินออกจากแนวได้", v)
-        : tr("ลูกวิ่งด้วยความเร็ว {0} เดินออกจากแนวได้", v) };
+    const charged = CHARGED_TYPES.has(t);
+    return { dodge: true, kind: charged ? "beam" : "projectile",
+      label: "ลูกกระสุน — หลบได้",
+      why: tr("ลูกวิ่งด้วยความเร็ว {0} เดินออกจากแนวได้", v) };
   }
   const w = wait(sk);
   if (w > 0) {

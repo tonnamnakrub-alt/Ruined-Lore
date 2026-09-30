@@ -3368,4 +3368,48 @@ export const DICT = {
    "The damage is queued up, not applied on cast — you can walk away before it lands",
  "แนวยาวลงทันที":
    "Instant line",
+
+ // ---- รอบตรวจคำบรรยายให้ตรงเกมจริง (Patch 0.5 Adjust Ability) ----
+ "จังหวะคอมโบ":
+   "Combo step",
+ "บวกตามเลือดที่เป้าหายไป":
+   "Scales with the target's missing HP",
+ "ดีดถอยหลังออก":
+   "Backstep distance",
+ "หลบทุกอย่างได้":
+   "Dodges everything for",
+ "โล่ที่กางไว้ → ฮีลคืนให้ตัวเอง":
+   "Shield size → self-heal",
+ "จังหวะ {0}":
+   "Step {0}",
+ "คอมโบ {0} จังหวะ กดต่อกันภายใน {1} วิ — {2} จังหวะแรกต้องออโต้ให้โดนก่อน ถึงจะปลดล็อกจังหวะถัดไป จังหวะสุดท้ายกดต่อได้เลย":
+   "A {0}-step combo chained within {1}s — the first {2} steps each need an auto to land before the next unlocks; the last step follows straight on",
+ "พุ่งเข้าหาเป้าไกลสุด {0} หน่วย แล้วแทงเป้านั้นหนึ่งที":
+   "Dashes up to {0} units to the target, then runs them through once",
+ "กวาดดาบเป็นครึ่งวงด้านหน้ารัศมี {0} หน่วย โดนทุกคนในวง":
+   "Sweeps a half-circle {0} units in front of you, hitting everyone inside",
+ "ฟันเป้าเดี่ยวในระยะ {0} หน่วย":
+   "Strikes a single target within {0} units",
+ "บวกดาเมจตามเลือดที่เป้าหายไปแล้ว":
+   "adds damage based on the target's missing HP",
+ "แล้วดีดตัวถอยออกจากเป้า {0} หน่วย":
+   "then springs back {0} units away from them",
+ "กดจังหวะถัดไปไม่ได้จนกว่าออโต้จะโดนอีกครั้ง":
+   "the next step stays locked until another auto lands",
+ "เป็นจังหวะปิดคอมโบ กดจบแล้ววนกลับไปจังหวะแรก":
+   "the closing step — after this the combo resets to step one",
+ "มุดลงใต้พื้น ระหว่างมุดแตะไม่ได้และไม่กินดาเมจเลย แล้วโผล่ขึ้นที่จุดเป้าหมายในระยะ {0} หน่วย — พอโผล่พ้นพื้นก็กลับมาโดนตีได้ทันที ก่อนจะทุบพื้นรัศมี {1} หน่วยยกทุกคนในวงลอย":
+   "Submerges — untargetable and immune to all damage while under — then surfaces at a target spot within {0} units. Surfacing drops both protections at once, and a moment later the slam lands in a {1}-unit radius, knocking everyone in it up",
+ "กวาดเป็นครึ่งวงด้านหน้าตัวเอง หันไปทางเป้า รัศมี {0} หน่วย":
+   "Sweeps a half-circle in front of you, facing your target, {0} units across",
+ "วาร์ปไปที่จุดหมายในระยะ {0} หน่วย แล้วหลบทุกอย่างได้อีก {1} วิหลังลง":
+   "Blinks to a spot within {0} units, then dodges everything for {1}s after landing",
+ "ปล่อยคลื่นรอบตัวรัศมี {0} หน่วย {1} ระลอก ห่างกันระลอกละ {2} วิ รวม {3} วิ":
+   "Pulses around you in a {0}-unit radius, {1} times, {2}s apart, over {3}s",
+ "กางโล่คลุมตัวเอง {0} วิ":
+   "Shields you for {0}s",
+ "กางโล่คลุมตัวเอง {0} วิ · พอโล่แตกหรือหมดเวลา (แล้วแต่อะไรมาก่อน) โล่ก้อนนั้นระเบิดใส่ศัตรูรอบตัวรัศมี {1} หน่วยเป็น {2}% ของขนาดโล่ แล้วฮีลคืนให้ตัวเองอีก {3}% ของขนาดโล่":
+   "Shields you for {0}s · when the shield breaks or the timer runs out, whichever comes first, it detonates on enemies within {1} units for {2}% of the shield's size, and heals you back for another {3}% of it",
+ "อมตะ {0} วิ โดนอะไรก็ไม่เข้า · เอาดาเมจที่ตัวเองกินมาใน {1} วิที่ผ่านมาบวกกับที่กินระหว่างอมตะมาเป็นทุน · พอหมดเวลาก็ระเบิดทุนนั้นออกเป็นกรวย {2} องศาไกล {3} หน่วยไปทางเป้าที่จ้องอยู่ · เพื่อนในรัศมีเดียวกันได้ฮีลและโล่ตามดาเมจที่ตัวเขาเองเพิ่งกินไป":
+   "Invulnerable for {0}s, nothing gets through · banks the damage you took over the last {1}s plus everything eaten during those {0}s · when it ends the bank fires back as a {2}° cone reaching {3} units toward whoever you are facing · allies inside that same radius are healed and shielded for a share of the damage they themselves just took",
 };

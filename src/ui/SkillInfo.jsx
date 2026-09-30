@@ -196,7 +196,10 @@ function SkillBody({ sk, rank }) {
           <div style={{ fontSize: 13, fontWeight: 700, color: C.gold, marginBottom: 5 }}>
             {s.tag} · {s.sk.th}
           </div>
-          <div style={{ fontSize: 12, color: C.dim, marginBottom: 6 }}>{skillShape(s.sk)}</div>
+          <div style={{ fontSize: 12, color: C.ink, marginBottom: 6, lineHeight: 1.5 }}>{skillSentence(s.sk)}</div>
+          {ratioLine(s.sk) && (
+            <div style={{ fontSize: 12, color: C.gold, marginBottom: 6, fontFamily: MONO }}>{ratioLine(s.sk)}</div>
+          )}
           {rankedRows(s.sk).map((r) => <RankRow key={r.key} row={r} rank={rank} max={MAX_RANK(sk)} />)}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "2px 14px", marginTop: 5 }}>
             {flatRows(s.sk).map((f) => (
@@ -205,6 +208,16 @@ function SkillBody({ sk, rank }) {
               </span>
             ))}
           </div>
+          {flagLines(s.sk).length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 6 }}>
+              {flagLines(s.sk).map((f) => (
+                <span key={f} style={{
+                  fontSize: 10, color: C.gold, border: `1px solid ${C.line}`,
+                  borderRadius: 4, padding: "2px 6px", background: C.panel2,
+                }}>{f}</span>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>

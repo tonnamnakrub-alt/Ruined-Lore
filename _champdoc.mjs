@@ -12,7 +12,7 @@ import { CHAMPIONS, lanesOf } from "./src/data/champions.js";
 import { LANE_INFO } from "./src/data/lanes.js";
 import { SKILL_CATS, categoriesOf, categoryOf, dodgeOf } from "./src/game/skill-kind.js";
 import {
-  MAX_RANK, flatRows, rankedRows, ratioLine, skillSentence, skillShape, skillTitle,
+  MAX_RANK, flagLines, flatRows, rankedRows, ratioLine, skillSentence, skillShape, skillTitle, subSkills,
 } from "./src/game/skill-desc.js";
 
 setLang("th");   // เอกสารในรีโปเป็นภาษาไทย
@@ -232,6 +232,27 @@ function skillBlock(sk) {
   } else if (sk.pierce && sk.falloff != null) {
     out.push("", `> **ทะลุผ่านได้** · เป้าถัดไปรับดาเมจเหลือ **${Math.round(sk.falloff * 100)}%** ต่อคน` +
       (sk.falloffFloor != null ? ` (ไม่ต่ำกว่า ${Math.round(sk.falloffFloor * 100)}%)` : ""));
+  }
+
+  // ท่าย่อย — สองร่างของ LUCH และสามจังหวะของ ELLA Q
+  // ดาเมจจริงอยู่ในนี้ทั้งหมด ถ้าไม่พิมพ์ออกมาเอกสารก็ว่างเปล่า
+  for (const sub of subSkills(sk)) {
+    const ss = sub.sk;
+    out.push("", `> **${esc(sub.tag)} · ${esc(ss.th || "")}**`);
+    const sent = skillSentence(ss);
+    if (sent) out.push(">", "> " + esc(sent));
+    const sr = rankedRows(ss).filter((r) => !r.flat && r.values.length > 1);
+    for (const r of sr) {
+      const vals = Array.from({ length: max }, (_, i) => fmt(r.values[i], r.fmt));
+      out.push(">", `> ${esc(r.label)} — ${vals.join(" / ")}`);
+    }
+    const sb = [];
+    for (const r of rankedRows(ss).filter((r) => r.flat)) sb.push(esc(r.label) + " " + fmt(r.values[0], r.fmt));
+    for (const r of flatRows(ss)) sb.push(esc(r.label) + " " + esc(r.value));
+    const sratio = ratioLine(ss);
+    if (sratio) sb.push("สเกล " + esc(sratio));
+    for (const f of flagLines(ss)) sb.push(esc(f));
+    if (sb.length) out.push(">", "> " + sb.join(" · "));
   }
   return out.join("\n");
 }
