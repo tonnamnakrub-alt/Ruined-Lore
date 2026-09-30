@@ -23,17 +23,19 @@ export const SKILL_CATS = [
   { key: "zone", icon: "🟣", th: "โซนค้างที่", desc: "อยู่กับที่ เดินออกได้",
     types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex"] },
   { key: "self", icon: "💥", th: "ดาเมจรอบตัว", desc: "ระเบิดออกจากตัวทันที",
-    types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest"] },
+    types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest", "pulse"] },
   { key: "cone", icon: "🔺", th: "กรวยด้านหน้า", desc: "กวาดเป็นกรวยออกจากตัว",
     types: ["cone", "coneKnock", "coneVolley", "channelCone", "thornCone"] },
   { key: "dash", icon: "🏃", th: "พุ่งเข้าชน", desc: "เคลื่อนที่เข้าใส่แล้วลงดาเมจ",
-    types: ["dash", "chargeDash", "crossDash", "steerDash", "deltaDash", "lungeSweep", "chargeFling", "grabSlam", "blinkBehind", "carriage", "zephyr", "combo"] },
+    types: ["dash", "chargeDash", "crossDash", "steerDash", "deltaDash", "lungeSweep", "chargeFling", "blinkBehind", "carriage", "zephyr", "combo", "blinkDash"] },
+  { key: "lock", icon: "🔒", th: "จับล็อกเป้า", desc: "ล็อกเป้าแล้วขังไว้ เป้าดิ้นไม่หลุด",
+    types: ["grabSlam", "dismissal"] },
   { key: "onhit", icon: "⚔️", th: "ติดออโต้", desc: "พ่วงการโจมตีปกติครั้งถัดไป",
     types: ["onHit", "markNext", "pommel", "sledge"] },
   { key: "single", icon: "🎯", th: "เล็งตัวเดียว", desc: "เลือกเป้าแล้วลงทันที",
-    types: ["targeted", "judgment", "dismissal", "rebound"] },
+    types: ["targeted", "judgment", "rebound"] },
   { key: "buffself", icon: "🔵", th: "บัฟตัวเอง", desc: "ไม่ทำดาเมจเอง",
-    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "submerge", "absorbReflect", "damageStash", "mistform", "skyward"] },
+    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "submerge", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield"] },
   { key: "buffally", icon: "💚", th: "ช่วยเพื่อน", desc: "ฮีล โล่ หรือบัฟให้เพื่อน",
     types: ["allyHot", "teamHeal", "allyBlink", "allyRush", "canopy", "guardBurst", "arbor"] },
   { key: "build", icon: "🧱", th: "สิ่งก่อสร้าง", desc: "วางของหรือเรียกตัวช่วยที่ถูกทุบได้",
@@ -65,7 +67,12 @@ const NODMG_TYPES = new Set([
   "selfBuff", "allyHot", "teamHeal", "allyBlink", "allyRush", "canopy",
   "mistform", "skyward", "rampBuff", "mask", "markNext", "lastStand",
   "absorbReflect", "submerge", "vampForm", "formShift", "zephyr", "damageStash",
+  "blinkDash",   // LUCH E ร่างแสง — วาร์ปเฉยๆ ไม่มีดาเมจ
 ]);
+// ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง — เดินออกก่อนถึงเวลาได้
+//   pulse       LUCH Q ร่างเงา — เข้าคิว state.pulses สามระลอกใน 1.5 วิ
+//   burstShield LUCH W ร่างเงา — u.pendingBurst ระเบิดหลังโล่หมดอายุ 3 วิ
+const DEFERRED_TYPES = new Set(["pulse", "burstShield"]);
 // หน่วงที่ฝังอยู่ในโค้ด ไม่ได้ประกาศในข้อมูล
 const CODED_DELAY = { barrage: 0.75 };
 // ลูกกระสุนโดยปริยาย ไม่ประกาศความเร็วก็ใช้ BASE.projSpeed 1350
@@ -74,7 +81,9 @@ const BEAM_TYPES = new Set(["chargedBeam", "snipe", "snipeCharge", "shredWave", 
 
 const travel = (sk) => {
   if (sk.instant) return 0;
-  const v = sk.projSpeed || sk.speed || sk.lungeSpeed || 0;
+  // lungeSpeed ไม่นับ — นั่นคือความเร็วที่ "คนร่ายพุ่งเข้าไปหา" ไม่ใช่ลูกที่เป้าหลบได้
+  // เคยนับรวมไว้ ทำให้ KAZEM R (จับล็อกเป้า) ถูกติดป้ายว่าหลบได้ ซึ่งผิด
+  const v = sk.projSpeed || sk.speed || 0;
   if (v) return v;
   return DEFAULT_PROJ.has(sk.type) ? 1350 : 0;
 };
@@ -91,13 +100,20 @@ export function dodgeOf(sk) {
   if (t === "dual") {
     const a = dodgeOf({ ...sk.light, key: sk.key });
     const b = dodgeOf({ ...sk.shadow, key: sk.key });
+    // ร่างไหนหลบไม่ได้ ก็ถือว่าท่านี้หลบไม่ได้ เพราะผู้เล่นเลือกร่างได้เอง
     if (a.dodge === false || b.dodge === false) {
-      return { dodge: false, kind: "instant", label: "หลบไม่ได้",
-        why: "ร่างหนึ่งลงทันทีที่กด" };
+      return { dodge: false, kind: "instant", label: "หลบไม่ได้", why: "ร่างหนึ่งลงทันทีที่กด" };
     }
-    return { dodge: true, kind: a.kind, label: "หลบได้", why: "สองร่าง — " + a.why };
+    // ทั้งสองร่างไม่ทำดาเมจ = ท่าบัฟล้วน ไม่เกี่ยวกับการหลบ
+    if (a.dodge === null && b.dodge === null) return { dodge: null, kind: "none", label: "", why: "" };
+    const hit = a.dodge === true ? a : b;
+    return { dodge: true, kind: hit.kind, label: hit.label, why: "สองร่าง — " + hit.why };
   }
   if (NODMG_TYPES.has(t)) return { dodge: null, kind: "none", label: "", why: "" };
+  if (DEFERRED_TYPES.has(t)) {
+    return { dodge: true, kind: "delay", label: "ลงทีหลัง — หลบได้",
+      why: "ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง เดินออกก่อนถึงเวลาได้" };
+  }
 
   const v = travel(sk);
   if (v > 0) {

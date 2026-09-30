@@ -3358,4 +3358,6 @@ export const DICT = {
    "▼ Show full details",
  "▲ ย่อรายละเอียด":
    "▲ Hide details",
+ "จำนวนสะเก็ดที่กวาด":
+   "Fragments",
 };
