@@ -3360,4 +3360,10 @@ export const DICT = {
    "▲ Hide details",
  "จำนวนสะเก็ดที่กวาด":
    "Fragments",
+ "จับล็อกเป้า":
+   "Target lock",
+ "ลงทีหลัง — หลบได้":
+   "Delayed — dodgeable",
+ "ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง เดินออกก่อนถึงเวลาได้":
+   "The damage is queued up, not applied on cast — you can walk away before it lands",
 };

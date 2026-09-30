@@ -10,7 +10,7 @@ import fs from "fs";
 import { setLang } from "./src/i18n.js";
 import { CHAMPIONS, lanesOf } from "./src/data/champions.js";
 import { LANE_INFO } from "./src/data/lanes.js";
-import { dodgeOf } from "./_dodgeclass.mjs";
+import { SKILL_CATS, categoryOf, dodgeOf } from "./src/game/skill-kind.js";
 import {
   MAX_RANK, flatRows, rankedRows, ratioLine, skillSentence, skillShape, skillTitle,
 } from "./src/game/skill-desc.js";
@@ -181,9 +181,16 @@ function skillBlock(sk) {
   out.push(`**${sk.key} · ${esc(skillTitle(sk) || sk.th)}**${shape ? "  — *" + esc(shape) + "*" : ""}`);
   const sentence = skillSentence(sk);
   if (sentence) out.push("", esc(sentence));
-  // หลบได้ไหม — ลูกกระสุนกับลำแสงเดินออกจากแนวได้ ส่วนท่าที่ลงทันทีหนีไม่พ้น
+  // แถบป้าย — หมวดหมู่กับความหลบได้ อ่านจบในบรรทัดเดียว
+  // ต้องมีสัญลักษณ์นำ ไม่งั้นกวาดตาหาไม่เจอว่าท่าไหนอยู่หมวดอะไร
+  const cat = categoryOf(sk);
   const dg = dodgeOf(sk);
-  if (dg.label) out.push("", `${dg.label} — ${esc(dg.why)}`);
+  const chips = [];
+  if (cat) chips.push(`${cat.icon} **${esc(cat.th)}**`);
+  if (dg.label) chips.push(`${dg.dodge ? "🟢" : "🔴"} **${esc(dg.label)}**`);
+  if (sk.ult) chips.push("⭐ **ท่าไม้ตาย**");
+  if (chips.length) out.push("", chips.join(" · "));
+  if (dg.why) out.push("", `<sub>${esc(dg.why)}</sub>`);
 
   const ranked = rankedRows(sk).filter((r) => !r.flat && r.values.length > 1);
   if (ranked.length) {
@@ -308,8 +315,27 @@ doc.push(`- **เลเวล 13** คือเลเวลที่ใช้เ
 doc.push(`- **อันดับในเกม** คือค่านั้นอยู่อันดับที่เท่าไหร่จาก ${ALL.length} ตัว — อันดับ 1 คือสูงสุด ใช้ดูว่าค่านั้นสูงหรือต่ำจริงไหม`);
 doc.push("- **ขั้น 1-5** คือขั้นของสกิล ท่าไม้ตายมีแค่ 3 ขั้น");
 doc.push("- **สเกล** คือส่วนที่บวกเพิ่มตามพลังเวท (AP) หรือพลังโจมตีส่วนเกิน (Bonus AD) ที่ซื้อมา");
+doc.push("- ทุกท่ามีแถบป้ายบอก **หมวดหมู่** กับ **หลบได้ไหม** — ตารางสัญลักษณ์อยู่ท้ายหัวข้อนี้");
 doc.push("  ตัวอย่างที่คิดให้ดูใช้ **AP 250** กับ **Bonus AD 120** ซึ่งเป็นระดับตอนออกของครบ");
 doc.push("- **ชุดสกิลมี** อ่านจากฟิลด์จริงในข้อมูล ไม่ได้เขียนเดา ใช้ดูคร่าวๆ ว่าตัวนี้ทำอะไรได้บ้าง");
+doc.push("");
+doc.push("### สัญลักษณ์หมวดสกิล");
+doc.push("");
+doc.push("| | หมวด | หมายถึง |");
+doc.push("|:-:|---|---|");
+for (const c of SKILL_CATS) {
+  const n = ALL.reduce((t, ch) => t + ch.skills.filter((sk) => (categoryOf(sk) || {}).key === c.key).length, 0);
+  if (!n) continue;
+  doc.push(`| ${c.icon} | **${c.th}** | ${c.desc} · ${n} ท่า |`);
+}
+doc.push("");
+doc.push("| | ความหลบได้ | หมายถึง |");
+doc.push("|:-:|---|---|");
+doc.push("| 🟢 | **หลบได้** | มีลูกบิน มีหน่วงก่อนลง หรือเป็นโซนที่เดินออกได้ |");
+doc.push("| 🔴 | **หลบไม่ได้** | ลงทันทีที่กด ไม่ว่าเดินเร็วแค่ไหนก็หนีไม่พ้น |");
+doc.push("| ⭐ | **ท่าไม้ตาย** | มีแค่ 3 ขั้น |");
+doc.push("");
+doc.push("> จำแนกจากโค้ดในเอนจินจริง ไม่ได้ดูจากชื่อชนิดสกิล — ตรวจซ้ำได้ด้วย `node _dodgeaudit.mjs`");
 if (WR) {
   doc.push(`- **ผลวัดตัวต่อตัว** มาจาก \`node _champwr.mjs ${WR.seeds} ${WR.level}\` — ทุกตัวพบกันหมด`);
   doc.push(`  ของ เลเวล และค่าสถานะนักแข่งเท่ากันทุกฝ่าย สลับสีครึ่งหนึ่ง ตัวละ **${WR.fightsEach} ไฟต์**`);

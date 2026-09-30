@@ -99,7 +99,7 @@ function SkillBrief({ sk, rank }) {
         {dg.dodge !== null && dg.label && (
           <Chip icon={dg.dodge ? "🟢" : "🔴"} text={tr(dg.label)} tone={dg.dodge ? "good" : "bad"} />
         )}
-        {sk.ult && <Chip text={tr("ท่าไม้ตาย")} />}
+        {sk.ult && <Chip icon="⭐" text={tr("ท่าไม้ตาย")} />}
       </div>
 
       {quick.length > 0 && (
