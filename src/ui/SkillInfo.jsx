@@ -3,7 +3,7 @@ import { CHAMPIONS } from "../data/champions.js";
 import {
   MAX_RANK, flagLines, flatRows, nextRankGain, rankedRows, ratioLine, skillSentence, skillShape, skillTitle, subSkills,
 } from "../game/skill-desc.js";
-import { categoryOf, dodgeOf } from "../game/skill-kind.js";
+import { categoriesOf, dodgeOf } from "../game/skill-kind.js";
 import { tr } from "../i18n.js";
 import { mini } from "./chrome.jsx";
 import { Panel } from "./kit.jsx";
@@ -72,7 +72,7 @@ function Chip({ icon, text, tone }) {
 // รายละเอียดทั้งหมดอยู่หลังปุ่ม "ดูรายละเอียด"
 // ---------------------------------------------------------------
 function SkillBrief({ sk, rank }) {
-  const cat = categoryOf(sk);
+  const cats = categoriesOf(sk);
   const dg = dodgeOf(sk);
   const r = Math.max(0, (rank || 1) - 1);
   // ตัวเลขที่คนอยากรู้ก่อนเสมอ — แรงแค่ไหน กดได้ทุกกี่วินาที ไกลแค่ไหน
@@ -95,7 +95,7 @@ function SkillBrief({ sk, rank }) {
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 8 }}>
-        {cat && <Chip icon={cat.icon} text={tr(cat.th)} />}
+        {cats.map((c) => <Chip key={c.key} icon={c.icon} text={tr(c.th)} />)}
         {dg.dodge !== null && dg.label && (
           <Chip icon={dg.dodge ? "🟢" : "🔴"} text={tr(dg.label)} tone={dg.dodge ? "good" : "bad"} />
         )}

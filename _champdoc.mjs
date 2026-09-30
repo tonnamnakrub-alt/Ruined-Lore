@@ -10,7 +10,7 @@ import fs from "fs";
 import { setLang } from "./src/i18n.js";
 import { CHAMPIONS, lanesOf } from "./src/data/champions.js";
 import { LANE_INFO } from "./src/data/lanes.js";
-import { SKILL_CATS, categoryOf, dodgeOf } from "./src/game/skill-kind.js";
+import { SKILL_CATS, categoriesOf, categoryOf, dodgeOf } from "./src/game/skill-kind.js";
 import {
   MAX_RANK, flatRows, rankedRows, ratioLine, skillSentence, skillShape, skillTitle,
 } from "./src/game/skill-desc.js";
@@ -183,10 +183,9 @@ function skillBlock(sk) {
   if (sentence) out.push("", esc(sentence));
   // แถบป้าย — หมวดหมู่กับความหลบได้ อ่านจบในบรรทัดเดียว
   // ต้องมีสัญลักษณ์นำ ไม่งั้นกวาดตาหาไม่เจอว่าท่าไหนอยู่หมวดอะไร
-  const cat = categoryOf(sk);
   const dg = dodgeOf(sk);
   const chips = [];
-  if (cat) chips.push(`${cat.icon} **${esc(cat.th)}**`);
+  for (const cat of categoriesOf(sk)) chips.push(`${cat.icon} **${esc(cat.th)}**`);
   if (dg.label) chips.push(`${dg.dodge ? "🟢" : "🔴"} **${esc(dg.label)}**`);
   if (sk.ult) chips.push("⭐ **ท่าไม้ตาย**");
   if (chips.length) out.push("", chips.join(" · "));
@@ -324,7 +323,7 @@ doc.push("");
 doc.push("| | หมวด | หมายถึง |");
 doc.push("|:-:|---|---|");
 for (const c of SKILL_CATS) {
-  const n = ALL.reduce((t, ch) => t + ch.skills.filter((sk) => (categoryOf(sk) || {}).key === c.key).length, 0);
+  const n = ALL.reduce((t, ch) => t + ch.skills.filter((sk) => categoriesOf(sk).some((x) => x.key === c.key)).length, 0);
   if (!n) continue;
   doc.push(`| ${c.icon} | **${c.th}** | ${c.desc} · ${n} ท่า |`);
 }

@@ -3366,4 +3366,6 @@ export const DICT = {
    "Delayed — dodgeable",
  "ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง เดินออกก่อนถึงเวลาได้":
    "The damage is queued up, not applied on cast — you can walk away before it lands",
+ "แนวยาวลงทันที":
+   "Instant line",
 };

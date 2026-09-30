@@ -15,7 +15,9 @@ import { tr } from "../i18n.js";
 // หมวดหมู่ เรียงจาก "ยิงออกไปไกล" มาหา "ออกจากตัว" แล้วจบที่ท่าที่ไม่ทำดาเมจ
 export const SKILL_CATS = [
   { key: "proj", icon: "🏹", th: "ลูกกระสุน", desc: "ยิงออกไปแล้วบินไปหาเป้า",
-    types: ["line", "wave"] },
+    types: ["line", "wave", "sledge"] },
+  { key: "slash", icon: "🗡", th: "แนวยาวลงทันที", desc: "กินทั้งแนวในเฟรมเดียว ไม่มีลูกให้หลบ",
+    types: [] },
   { key: "beam", icon: "🔦", th: "ลำแสง", desc: "ยิงเป็นแนวยาว ชาร์จได้",
     types: ["chargedBeam", "rangeCharge"] },
   { key: "ground", icon: "⭕", th: "วงกลมบนพื้น", desc: "วางแล้วหน่วงก่อนระเบิด",
@@ -31,7 +33,7 @@ export const SKILL_CATS = [
   { key: "lock", icon: "🔒", th: "จับล็อกเป้า", desc: "ล็อกเป้าแล้วขังไว้ เป้าดิ้นไม่หลุด",
     types: ["grabSlam", "dismissal"] },
   { key: "onhit", icon: "⚔️", th: "ติดออโต้", desc: "พ่วงการโจมตีปกติครั้งถัดไป",
-    types: ["onHit", "markNext", "pommel", "sledge"] },
+    types: ["onHit", "markNext", "pommel"] },
   { key: "single", icon: "🎯", th: "เล็งตัวเดียว", desc: "เลือกเป้าแล้วลงทันที",
     types: ["targeted", "judgment", "rebound"] },
   { key: "buffself", icon: "🔵", th: "บัฟตัวเอง", desc: "ไม่ทำดาเมจเอง",
@@ -91,6 +93,76 @@ const wait = (sk) => (sk.delay || 0) + (sk.telegraph || 0) + (CODED_DELAY[sk.typ
 
 export function categoryOf(sk) {
   return CAT_OF[sk && sk.type] || null;
+}
+
+// ---------------------------------------------------------------
+// ท่าหนึ่งมักมีหลายส่วนในท่าเดียว — ARTHUR E พุ่งเข้าไป กวาดรอบตัว แล้วได้โล่
+// จัดหมวดเดียวจึงบอกไม่ครบ ที่นี่คืนทุกหมวดที่ท่านั้นมีจริง
+//
+// หมวดแรกคือหมวดหลัก (มาจากชนิดของท่า) ที่เหลืออ่านจากฟิลด์ในข้อมูล
+// ไม่ได้เดาจากชื่อท่า — ถ้าไม่มีฟิลด์นั้นก็ไม่ติดป้ายนั้น
+// ---------------------------------------------------------------
+const CAT_BY_KEY = Object.fromEntries(SKILL_CATS.map((c) => [c.key, c]));
+
+function extraKeys(sk) {
+  const k = new Set();
+  const dmg = Array.isArray(sk.dmg) || Array.isArray(sk.sweepDmg) || Array.isArray(sk.hitDmg)
+    || Array.isArray(sk.aoeDmg) || Array.isArray(sk.burstDmg);
+  // เคลื่อนที่เข้าไปเอง
+  if (sk.dashRange || sk.dashSpeed || sk.blinkRange || sk.lungeRange) k.add("dash");
+  // ล็อกเป้าไว้
+  if (sk.lockTime || sk.grabRange || sk.suppress) k.add("lock");
+  // ลูกที่บินไป — ลำแสงก็เป็นลูกที่บินอยู่แล้ว ไม่ต้องติดซ้ำ
+  const pk = (CAT_OF[sk.type] || {}).key;
+  if ((sk.projSpeed || sk.speed) && !sk.instant && pk !== "beam") k.add("proj");
+  // วงระเบิดรอบตัวหรือรอบจุดที่ลง
+  if (dmg && (sk.sweepRadius || sk.hitRadius || sk.radiusByRank || sk.burstRadius || sk.aoeDmg
+    || sk.cleaveRadius)) k.add("self");
+  // ท่าที่หมวดหลักไม่ใช่พื้นที่อยู่แล้ว แต่มี radius กับดาเมจ = มีวงกระแทกตอนลงด้วย
+  //   KAZEM E พุ่งชนแล้วระเบิดรัศมี 250 · JACK R ทุบพื้นก่อนยักษ์ยืนขึ้น
+  const primary = (CAT_OF[sk.type] || {}).key;
+  if (dmg && sk.radius && ["dash", "lock", "build", "onhit", "single"].includes(primary)) k.add("self");
+  // กรวย
+  if (sk.angle && sk.count) k.add("cone");
+  // ทิ้งพื้นที่ไว้หลังลง
+  if (sk.groundBurn || sk.pool || sk.zoneBleed) k.add("zone");
+  // เรียกของหรือตัวช่วยที่ถูกทุบได้
+  if (sk.pet) k.add("build");
+  // โล่หรือบัฟให้ตัวเอง
+  if (sk.aegis || sk.castShield || sk.dualShield || (sk.shield && !sk.share && !sk.targets)) k.add("buffself");
+  // ฮีลหรือโล่ให้เพื่อน
+  if (sk.share || sk.targets || sk.allyPct || sk.allyResPct) k.add("buffally");
+  return k;
+}
+
+export function categoriesOf(sk) {
+  if (!sk) return [];
+  const out = [];
+  const seen = new Set();
+  const push = (c) => { if (c && !seen.has(c.key)) { seen.add(c.key); out.push(c); } };
+
+  // instant ทับหมวดลูกกระสุน — TOTSAKAN Q เป็นแนวยาวที่กินทั้งแนวในเฟรมเดียว
+  // ไม่มีลูกให้หลบ จึงเรียกว่าลูกกระสุนไม่ได้
+  const primary = categoryOf(sk);
+  push(sk.instant && primary && primary.key === "proj" ? CAT_BY_KEY.slash : primary);
+
+  if (sk.type === "combo" && Array.isArray(sk.steps)) {
+    // คอมโบ — แต่ละจังหวะคนละรูปทรง ดูให้ครบทุกจังหวะ
+    for (const st of sk.steps) {
+      if (st.dashRange) push(CAT_BY_KEY.dash);
+      if (st.radius || st.halfCircle) push(CAT_BY_KEY.self);
+      if (st.backstep) push(CAT_BY_KEY.dash);
+    }
+  }
+  if (sk.type === "dual") {
+    for (const form of [sk.light, sk.shadow]) {
+      if (!form) continue;
+      push(categoryOf(form));
+      for (const key of extraKeys(form)) push(CAT_BY_KEY[key]);
+    }
+  }
+  for (const key of extraKeys(sk)) push(CAT_BY_KEY[key]);
+  return out;
 }
 
 // คืน { dodge, kind, label, why }
