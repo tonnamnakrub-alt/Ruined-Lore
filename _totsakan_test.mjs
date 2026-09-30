@@ -24,7 +24,7 @@ const mk = (lane, id, extra) => ({
 
 // ---- สเตตัสพื้นฐาน ----
 {
-  const want = { hp: 640, hpG: 108, hp5: 8.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05, ms: 340, range: 175 };
+  const want = { hp: 640, hpG: 108, hp5: 8.5, hp5G: 0.85, ad: 66, adG: 4.0, armor: 38, armorG: 4.2, mr: 32, mrG: 2.05, ms: 330, range: 175 };
   const bad = Object.entries(want).filter(([k, v]) => C[k] !== v);
   t("สเตตัสพื้นฐานตรงสเปค", bad.length === 0, bad.length ? bad.map(([k, v]) => k + " " + C[k] + "≠" + v).join(" ") : "ครบทุกค่า");
   t("สายการเล่นเป็น Juggernaut", C.role === "Juggernaut", C.role);

@@ -69,13 +69,18 @@ const sk = (u, k) => u.skills.find((x) => x.key === k);
     "ไม่คริ " + Math.round(cfg.nonCritPct * 100) + "% · คริ " + Math.round(cfg.pct * 100) + "%");
 
   const { st, me, foe } = duel("HOOD", "KAZEM", 16, [big[2]]);
-  me.crit = 0;                       // ตัดคริออกให้เหลือแต่ออโต้ธรรมดา
   me.x = foe.x - 300; me.y = foe.y;
   foe.maxHp = 1e9; foe.hp = 1e9;
-  let g = 0;
-  while (g++ < 60 * 6 && me.shots < 2) step(st);
-  for (let i = 0; i < 30; i++) step(st);
-  const bleeds = st.dots.filter((d) => d.hoodBleed && d.ownerId === me.id);
+  // ต้องกดคริเป็นศูนย์ทุกเฟรม เพราะ step() คิด u.crit ใหม่จากของทุกรอบ
+  // ตั้งครั้งเดียวไม่พอ แล้วจะได้เลือดไหลจากทางคริแทนที่จะเป็นทางออโต้ธรรมดา
+  // และดูให้ยาวพอ ไม่ผูกกับหน้าต่างเวลาแคบๆ ที่ขยับตามความเร็วเดินของทั้งสองฝั่ง
+  let seen = 0;
+  for (let i = 0; i < 60 * 12; i++) {
+    step(st);
+    me.crit = 0;
+    seen = Math.max(seen, st.dots.filter((d) => d.hoodBleed && d.ownerId === me.id).length);
+  }
+  const bleeds = { length: seen };
   t("ออโต้ธรรมดาทิ้งเลือดไหลไว้", bleeds.length > 0, bleeds.length + " ชั้น");
   t("HOOD ระยะโจมตีขึ้นเป็น 575", CHAMPIONS.HOOD.range === 575, CHAMPIONS.HOOD.range + " หน่วย");
 }
