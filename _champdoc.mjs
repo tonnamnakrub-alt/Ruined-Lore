@@ -10,6 +10,7 @@ import fs from "fs";
 import { setLang } from "./src/i18n.js";
 import { CHAMPIONS, lanesOf } from "./src/data/champions.js";
 import { LANE_INFO } from "./src/data/lanes.js";
+import { dodgeOf } from "./_dodgeclass.mjs";
 import {
   MAX_RANK, flatRows, rankedRows, ratioLine, skillSentence, skillShape, skillTitle,
 } from "./src/game/skill-desc.js";
@@ -180,6 +181,9 @@ function skillBlock(sk) {
   out.push(`**${sk.key} · ${esc(skillTitle(sk) || sk.th)}**${shape ? "  — *" + esc(shape) + "*" : ""}`);
   const sentence = skillSentence(sk);
   if (sentence) out.push("", esc(sentence));
+  // หลบได้ไหม — ลูกกระสุนกับลำแสงเดินออกจากแนวได้ ส่วนท่าที่ลงทันทีหนีไม่พ้น
+  const dg = dodgeOf(sk);
+  if (dg.label) out.push("", `${dg.label} — ${esc(dg.why)}`);
 
   const ranked = rankedRows(sk).filter((r) => !r.flat && r.values.length > 1);
   if (ranked.length) {
