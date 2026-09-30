@@ -124,6 +124,25 @@ const cast = (st, u, key, target) => {
     "เลเวล 1 = " + lo.toFixed(0) + " · เลเวล 13 = " + hi.toFixed(0));
 }
 
+// ---- คำบรรยายต้องไม่ฝังค่าสถานะฐานที่ขัดกับข้อมูลจริง
+// รอบลดความเร็วเดินทำให้พาสซีฟ ARIEL ค้างอยู่ที่ "ค่าฐาน 345" ทั้งที่ลดเป็น 330 แล้ว
+// โค้ดอ่าน u.champ.ms ถูกอยู่ ผิดแค่ข้อความ ซึ่งไม่มีอะไรจับได้เลย
+{
+  const bad = [];
+  for (const c of Object.values(CHAMPIONS)) {
+    const texts = [(c.passive && c.passive.desc) || ""];
+    for (const s of c.skills) texts.push(s.desc || "");
+    for (const t of texts) {
+      // เลขสามหลักช่วง 300-400 ที่อยู่ใกล้คำว่าความเร็วเดินหรือค่าฐาน = น่าจะหมายถึง ms
+      for (const m of t.matchAll(/(?:ความเร็วเดิน|ค่าฐาน)[^·]{0,24}?\b(3\d\d)\b/g)) {
+        if (Number(m[1]) !== c.ms) bad.push(c.id + " เขียน " + m[1] + " แต่ ms จริงคือ " + c.ms);
+      }
+    }
+  }
+  t("คำบรรยายไม่ฝังความเร็วเดินที่ขัดกับข้อมูล", bad.length === 0,
+    bad.length ? bad.join(" · ") : "ตรวจครบ 25 ตัว ไม่มีที่ขัดกัน");
+}
+
 // ---- สรุป
 let bad = 0;
 for (const [n, ok, d] of out) {
