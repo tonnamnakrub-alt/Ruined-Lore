@@ -3,3 +3,4 @@ node_modules/
 _wr*.txt
 _wr*.err
 _boot.txt
+_refresh.done
