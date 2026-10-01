@@ -3540,4 +3540,89 @@ export const DICT = {
    "any weasel still alive repeats the half-circle sweep from where it stands",
  "น้องที่ยังไม่ตายยิงเป็นเส้นตรงซ้ำท่านี้จากจุดที่ตัวเองยืนด้วย":
    "any weasel still alive repeats the straight line from where it stands",
+
+ // ---- หน้าสถิติจากแมตช์ที่คนเล่นจริง ----
+ "สถิติจากแมตช์ที่เล่นจบจริง — ตัวไหนเลนไหนออกของอะไรแล้วชนะ":
+   "Stats from matches you actually finished — who, which lane, what they built, and whether it won",
+ "สถิติจากการเล่นจริง":
+   "Match stats",
+ "ทุกแมตช์ที่เล่นจบจะถูกจดไว้ในเครื่องนี้เอง — เล่นตัวอะไร เลนไหน ออกของอะไร แพ้หรือชนะ":
+   "Every match you finish is written down on this machine — who you played, which lane, what you built, and whether you won",
+ "ตัวเลขบาลานซ์ที่ใช้อยู่ทุกวันนี้มาจากบอทตีกันเองล้วน สมุดนี้คือฝั่งที่มาจากคนจริง":
+   "Every balance number in use today comes from bots fighting each other. This log is the side that comes from real play",
+ "เฉพาะเจอคนจริง":
+   "Versus people only",
+ "รวมแมตช์เจอบอท":
+   "Including bot matches",
+ "เฉพาะแพตช์ {0}":
+   "Patch {0} only",
+ "ทุกแพตช์รวมกัน":
+   "All patches together",
+ "กำลังรวมข้อมูลจาก {0} แพตช์เข้าด้วยกัน ({1}) — ตัวเลขที่ได้อ่านไม่ได้ เพราะค่าพลังเปลี่ยนไปแล้วระหว่างนั้น":
+   "Mixing data from {0} patches ({1}) — the result cannot be read, because the numbers themselves changed in between",
+ "แมตช์ที่จด":
+   "Matches logged",
+ "อัตราชนะของคุณ":
+   "Your win rate",
+ "ค่าคลาดเคลื่อน":
+   "Margin of error",
+ "ค่าคลาดเคลื่อนยังกว้างกว่าเกณฑ์ 47-53 ที่ใช้ตัดสิน — ต้องเก็บถึงราว {0} แมตช์ถึงจะแคบพอ เอาไปปรับตัวเลขได้":
+   "The margin is still wider than the 47-53 band used to judge — you need roughly {0} matches before it is tight enough to tune from",
+ "ยังไม่มีแมตช์ที่ตรงกับตัวกรองนี้ — เล่นให้จบสักแมตช์แล้วกลับมาดู":
+   "No matches match this filter yet — finish one and come back",
+ "ยังน้อยเกินไป":
+   "too few",
+ "ลงเล่น":
+   "Played",
+ "ชนะไฟต์เลน":
+   "Lane fights won",
+ "เลเวลเฉลี่ย":
+   "Avg level",
+ "ชนะ = อัตราชนะของทั้งแมตช์ ซึ่งตัวละครทั้งห้าในทีมได้เท่ากันหมด ใช้ตัดสินตัวเดียวไม่ได้":
+   "Win = the whole match's win rate, which all five champions on the team share — it cannot judge one of them",
+ "ชนะไฟต์เลน = อัตราชนะเฉพาะไฟต์ในเลนของตัวเอง ตัวนี้แยกตัวละครออกจากทีมได้ สรุปทางขวาจึงตัดสินจากช่องนี้":
+   "Lane fights won = win rate in that champion's own lane only. This one separates the champion from the team, so the verdict on the right is judged from it",
+ "เอาข้อมูลออกไปใช้":
+   "Taking the data out",
+ "สมุดเก็บอยู่ในเบราว์เซอร์เครื่องนี้เท่านั้น ล้างข้อมูลเบราว์เซอร์แล้วหาย — ส่งออกเก็บไว้บ้าง":
+   "The log lives only in this browser and is lost if you clear site data — export it now and then",
+ "นำเข้าไฟล์จากเครื่องอื่นได้ด้วย แถวที่ซ้ำกันจะถูกข้ามให้เอง":
+   "You can import a file from another machine too; duplicate rows are skipped for you",
+ "ส่งออก {0} แมตช์":
+   "Export {0} matches",
+ "นำเข้าไฟล์":
+   "Import a file",
+ "ลบทั้งหมด":
+   "Delete everything",
+ "ส่งออก {0} แมตช์แล้ว":
+   "Exported {0} matches",
+ "นำเข้าไม่สำเร็จ — {0}":
+   "Import failed — {0}",
+ "นำเข้าเพิ่ม {0} แมตช์ · ข้ามที่ซ้ำ {1}":
+   "Imported {0} matches · skipped {1} duplicates",
+ "ลบสมุดบันทึกทั้งหมด {0} แมตช์ กู้คืนไม่ได้":
+   "Delete the whole log of {0} matches? This cannot be undone",
+ "ลบสมุดแล้ว":
+   "Log deleted",
+ "อ่าน JSON ไม่ออก":
+   "could not parse the JSON",
+ "ไม่ใช่ไฟล์สมุดบันทึกแมตช์":
+   "not a match log file",
+
+ "ตัวละคร":
+   "Champion",
+ "เลน":
+   "Lane",
+ "สรุป":
+   "Verdict",
+ "กำลังดี":
+   "right where it should be",
+ "ปรับเล็กน้อย":
+   "needs a small nudge",
+ "แรงไป":
+   "too strong",
+ "อ่อนไป":
+   "too weak",
+ "ยังไม่ชัด":
+   "not clear yet",
 };

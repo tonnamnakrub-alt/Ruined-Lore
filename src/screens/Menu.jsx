@@ -40,6 +40,7 @@ export function MenuScreen(ctx) {
       <MenuButton title="ITEM" sub={tr("คลังไอเทมทุกชิ้น สูตรคราฟต์ และค่าสถานะ")} onClick={() => setPhase("ITEMBOOK")} />
       <MenuButton title="PATCH NOTES" sub={tr("อะไรเปลี่ยนบ้างในแพตช์ล่าสุด · ย้อนดูแพตช์เก่าได้")} onClick={() => setPhase("PATCH")} />
       <MenuButton title="ECONOMY" sub={tr("เงินและ XP คิดยังไง — นิสัยเลนเจอกัน ป่า ศพ พาสซีฟเลน ทุกตัวเลข")} onClick={() => ctx.openEconomy("MENU")} />
+      <MenuButton title="MATCH STATS" sub={tr("สถิติจากแมตช์ที่เล่นจบจริง — ตัวไหนเลนไหนออกของอะไรแล้วชนะ")} onClick={() => setPhase("MATCHLOG")} />
       <MenuButton title="SETTING" sub={tr("ความเร็วไฟต์ เส้นระยะโจมตี และรีเซ็ตแมตช์")} onClick={() => setPhase("SETTING")} />
 
       <div style={{ marginTop: 14, fontSize: 10.5, color: C.dim, fontFamily: MONO, lineHeight: 1.7 }}>

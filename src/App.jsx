@@ -41,6 +41,9 @@ import { autoRanks, canRank, emptyRanks, pointsSpent } from "./engine/skill-rank
 import { step } from "./engine/step.js";
 import { levelProgress, mulberry32 } from "./engine/util.js";
 import { summarizeFight } from "./game/report.js";
+import { appendMatch, buildRecord } from "./game/matchlog.js";
+import { LATEST_PATCH, patchLabel } from "./data/patches.js";
+import { MatchLogScreen } from "./screens/MatchLog.jsx";
 import { CHARS, MAX_ROUNDS, POINTS, STAT_CAP, STAT_DESC, STAT_SHORT, WINS_NEEDED, emptyStats, makeRoster, randomSpread, toDef } from "./game/roster.js";
 import { Arena } from "./ui/Arena.jsx";
 import { Practice } from "./ui/Practice.jsx";
@@ -1114,7 +1117,21 @@ export function App() {
     setFoeLastStances({ ...plan.foeStances });
     if (!drawn) setStreak({ me: nextStreak(streak.me, iWon), foe: nextStreak(streak.foe, !iWon) });
     if (net.on && net.role === "watch") { setRound((r) => r + 1); setPhase("WATCH"); return; }
-    setPhase(ns.me >= mode.wins || ns.foe >= mode.wins || round >= mode.maxRounds ? "MATCH_OVER" : "RESULT");
+    const hitTarget = ns.me >= mode.wins || ns.foe >= mode.wins;
+    const over = hitTarget || round >= mode.maxRounds;
+    // จดสมุดตรงนี้ ไม่ใช่ในหน้าผล เพราะหน้าผล render ซ้ำได้หลายรอบแล้วจะได้แถวซ้ำ
+    // คนนั่งดูไม่ได้เล่นเอง จึงไม่จด (คืนค่าไปตั้งแต่บรรทัดบน)
+    if (over) {
+      // closeRound ถูกเรียกจากปุ่มในหน้าเลน หลังดูครบทุกไฟต์แล้ว
+      // history จึงลงครบทุกไฟต์ของแมตช์ตั้งแต่ก่อนถึงบรรทัดนี้
+      appendMatch(buildRecord({
+        patch: patchLabel(LATEST_PATCH), mode: mode.id, pvp: !!net.on,
+        diff: net.on ? null : diffId, draftStyle, teamStyle,
+        rounds: round, score: ns, me: nextMe, foe: nextFoe,
+        history, mySide, endedBy: hitTarget ? "wins" : "rounds",
+      }));
+    }
+    setPhase(over ? "MATCH_OVER" : "RESULT");
   }
 
   function nextRound() {
@@ -1170,6 +1187,7 @@ export function App() {
     if (phase === "STORE") return StoreScreen(ctx);
     if (phase === "ITEMBOOK") return ItemBookScreen(ctx);
     if (phase === "PATCH") return PatchScreen(ctx);
+    if (phase === "MATCHLOG") return MatchLogScreen(ctx);
     if (phase === "ECONOMY") return EconomyScreen(ctx);
     if (phase === "ONLINE") return OnlineScreen(ctx);
     if (phase === "WATCH") return WatchScreen(ctx);
