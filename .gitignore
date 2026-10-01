@@ -2,3 +2,4 @@ node_modules/
 .claude/orig-*.html
 _wr*.txt
 _wr*.err
+_boot.txt
