@@ -10,6 +10,7 @@
 import fs from "fs";
 import { setLang, tr } from "./src/i18n.js";
 import { CATEGORIES, ITEMS, ITEM_BY_ID, itemCats } from "./src/data/items.js";
+import { LATEST_PATCH, patchLabel } from "./src/data/patches.js";
 import { PRICE, CODED_PASSIVE as CODED } from "./_itemprice.mjs";
 import { itemDesc } from "./src/ui/item-desc.js";
 
@@ -68,6 +69,8 @@ doc.push("# ไอเทมทั้งหมด");
 doc.push("");
 doc.push(`**${ITEMS.length} ชิ้น** · Tier 3 มี ${ITEMS.filter((i) => i.tier === 3).length} ชิ้น`);
 doc.push("");
+doc.push("> **แพตช์ " + patchLabel(LATEST_PATCH) + "** (ลงวันที่ " + LATEST_PATCH.date + ")"
+  + " · สร้างเอกสารเมื่อ " + new Date().toISOString().slice(0, 10) + "  ");
 doc.push("> ไฟล์นี้สร้างอัตโนมัติจาก `src/data/items.js` ด้วยคำสั่ง `node _itemdoc.mjs`  ");
 doc.push("> คำอธิบายใช้ชุดเดียวกับที่โชว์ในร้านค้าในเกม ตัวเลขจึงตรงกับที่เอนจินใช้จริงเสมอ");
 doc.push("");
