@@ -9,6 +9,7 @@
 import fs from "fs";
 import { setLang } from "./src/i18n.js";
 import { CHAMPIONS, lanesOf } from "./src/data/champions.js";
+import { LATEST_PATCH, patchLabel } from "./src/data/patches.js";
 import { LANE_INFO } from "./src/data/lanes.js";
 import { SKILL_CATS, categoriesOf, categoryOf, dodgeOf } from "./src/game/skill-kind.js";
 import {
@@ -324,6 +325,8 @@ doc.push("# ตัวละครทั้งหมด");
 doc.push("");
 doc.push(`**${ALL.length} ตัว · ${skillCount} สกิล**`);
 doc.push("");
+doc.push("> **แพตช์ " + patchLabel(LATEST_PATCH) + "** (ลงวันที่ " + LATEST_PATCH.date + ")"
+  + " · สร้างเอกสารเมื่อ " + new Date().toISOString().slice(0, 10) + "  ");
 doc.push("> ไฟล์นี้สร้างอัตโนมัติจาก `src/data/champions.js` ด้วยคำสั่ง `node _champdoc.mjs`  ");
 doc.push("> คำอธิบายสกิลใช้ชุดเดียวกับที่โชว์ในเกม ตัวเลขจึงตรงกับที่เอนจินคิดจริงเสมอ  ");
 doc.push("> ปรับบาลานซ์แล้วรันใหม่ ไม่ต้องไล่แก้มือทีละตัว");

@@ -223,11 +223,14 @@ export function shopFor(c, enemies, rand, noise = 10) {
     );
     if (!goals.length) break;
 
-    // รองเท้าถูกและคุ้มเสมอ แต่ไม่ควรซื้อก่อนของใหญ่ชิ้นแรก
-    // (ADC ใส่รองเท้าโดยไม่กินช่อง เลยซื้อได้ตั้งแต่แรก)
+    // รองเท้าเคยได้ +100 ซึ่งบนสเกลที่เทอมอื่นอยู่ราว 10-70 เท่ากับบังคับซื้อ
+    // บอทจึงใส่รองเท้า 100% ทุกแมตช์ไม่ว่าความเร็วเดินฐานจะเป็นเท่าไหร่
+    // ข้อมูลจากบอทเลยตอบไม่ได้เลยว่ารองเท้าคุ้มไหม — ปลดออกให้แข่งคะแนนตามปกติ
+    // เหลือไว้แค่สองข้อที่เป็นกฎ ไม่ใช่ความชอบ:
+    //   มีรองเท้าแล้วซื้อซ้ำไม่ได้ · ยังไม่มีของใหญ่สักชิ้นก็ชะลอไว้ก่อน
     const coreCount = cur.items.filter((i) => i.tier === 3).length;
-    const wantBoots = !cur.items.some((x) => x.kind === "boots") &&
-      (cur.lane === "ADC" || coreCount >= 1);
+    const hasBoots = cur.items.some((x) => x.kind === "boots");
+    const bootsOk = cur.lane === "ADC" || coreCount >= 1;
 
     // อันดับความอยากได้ = ความชอบตามสาย + คะแนนแก้ทางทีมตรงข้าม
     // สัดส่วนของอึดที่ถืออยู่ตอนนี้ เทียบกับที่สายนี้ควรจะมี
@@ -241,7 +244,7 @@ export function shopFor(c, enemies, rand, noise = 10) {
 
     const want = (i) => {
       const rank = taste.findIndex((k) => i.cat === k || (i.also && i.also.includes(k)));
-      const boots = i.kind === "boots" ? (wantBoots ? 100 : -100) : 0;
+      const boots = i.kind !== "boots" ? 0 : hasBoots ? -100 : bootsOk ? 0 : -40;
       const sp = itemSplit(i);
       // ชิ้นที่ดึงสัดส่วนเข้าหาเป้าหมายได้คะแนนบวก ชิ้นที่ยิ่งถ่างออกได้คะแนนลบ
       const fit = needDef * ((sp.def - sp.off) / sp.tot) * 46;
@@ -301,16 +304,17 @@ export function recommendedFor(champId, lane, n = 6) {
     const critPull = pf.needsCrit && i.crit && critHave < 0.6 ? 40 + i.crit * 60 : 0;
     return (taste.length - rank) * 10 + mix * 30 + i.cost * 0.05 + critPull;
   };
-  const boots = pool.filter((i) => i.kind === "boots").sort((a, b) => score(b, 0) - score(a, 0))[0];
+  // เดิมแยกรองเท้าออกมาแล้ว splice ยัดเป็นชิ้นที่สองเสมอ ไม่ว่าคะแนนจะเป็นเท่าไหร่
+  // ตอนนี้ให้อยู่ในกองเดียวกับของใหญ่ แล้วแข่งคะแนนกันตามปกติ
   // เลือกทีละชิ้น เพื่อให้คะแนนของชิ้นถัดไปรู้ว่าเก็บคริมาได้เท่าไหร่แล้ว
-  const cores = pool.filter((i) => i.kind !== "boots");
   const out = [];
   let critHave = 0;
-  const room = Math.max(1, n - (boots ? 1 : 0));
-  while (out.length < room && out.length < cores.length) {
+  while (out.length < n && out.length < pool.length) {
     let best = null, bestS = -Infinity;
-    for (const i of cores) {
+    for (const i of pool) {
       if (out.includes(i)) continue;
+      // รองเท้าใส่ได้คู่เดียว และไม่ควรมาเป็นชิ้นแรกก่อนของใหญ่
+      if (i.kind === "boots" && (out.some((x) => x.kind === "boots") || out.length === 0)) continue;
       const s = score(i, critHave);
       if (s > bestS) { bestS = s; best = i; }
     }
@@ -318,7 +322,5 @@ export function recommendedFor(champId, lane, n = 6) {
     out.push(best);
     critHave += best.crit || 0;
   }
-  // รองเท้าแทรกเป็นชิ้นที่สองเสมอ — ของใหญ่ชิ้นแรกก่อน แล้วค่อยรองเท้า
-  if (boots) out.splice(1, 0, boots);
   return { role: pf.role, items: out.slice(0, n) };
 }
