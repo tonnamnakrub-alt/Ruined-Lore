@@ -32,6 +32,13 @@ export function popDagger(state, u, target) {
 
 // fragments, Monochrome's magic rider, and Double Cross's empowered hit
 export function onAutoLanded(state, u, target) {
+  // 0.5: ออโต้ที่ลงดึงเวลาชาร์จกระสุนของท่าที่ใช้กระสุนให้มาถึงเร็วขึ้น
+  // คริดึงมากกว่า — เป็นวินาทีตรงๆ ไม่ใช่สัดส่วนแบบ cdCutOnHit
+  for (const x of (u.skills || [])) {
+    if (!x.ammoMax || x.rechargeAt == null) continue;
+    const cut = state.critThisHit ? (x.rechargeCutOnCrit || 0) : (x.rechargeCutOnAuto || 0);
+    if (cut > 0) x.rechargeAt = Math.max(state.t, x.rechargeAt - cut);
+  }
   vfx(state, { kind: "flash", x: target.x, y: target.y, r: 34, color: u.team === "blue" ? "140,190,255" : "255,150,155", dur: 0.18 });
   // Achilles' Talaria: every basic attack also deals a slice of the target's max HP,
   // as whichever damage type the attacker itself leans toward

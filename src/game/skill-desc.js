@@ -171,6 +171,8 @@ const FLAT = [
   ["charges", "ชาร์จเก็บได้", "n"],
   ["ammoMax", "กระสุนสูงสุด", "n"],
   ["rechargeTime", "เวลาชาร์จกระสุน", "sec"],
+  ["rechargeCutOnAuto", "ออโต้ที่ลงดึงเวลาชาร์จให้เร็วขึ้น", "sec"],   // on-hit.js
+  ["rechargeCutOnCrit", "ออโต้ที่คริดึงเวลาชาร์จให้เร็วขึ้น", "sec"],
   ["cast", "เวลาร่าย", "sec"],
   ["delay", "หน่วงก่อนลง", "sec"],
   ["dur", "อยู่นาน", "sec"],
@@ -321,6 +323,7 @@ const RATIOS = [
   ["shieldMaxHp", "Max HP → โล่", "pct"],
   ["healMaxHp", "Max HP → ฮีล", "pct"],
   ["bleedSlowPerAp", "AP 100 → สโลว์จากเลือดไหล", "per100p"],
+  ["auraSlowPerAp", "AP 100 → สโลว์จากออร่า", "per100p"],
   ["execPerBad", "Bonus AD 100 → เกณฑ์ประหาร", "per100p"],
   ["selfStacks", "ต่อสแตกที่สะสมไว้ → ดาเมจ", "flat"],
   ["enemyMaxHp", "เลือดสูงสุดของเป้า → ดาเมจ", "pct"],

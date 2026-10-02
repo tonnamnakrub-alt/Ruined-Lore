@@ -156,6 +156,17 @@ export function fireLoreSkill(state, u, sk, target, prec, aim) {
         until: state.t + sk.life, next: state.t + sk.every, every: sk.every, sk, rank: r,
       });
       vfx(state, { kind: "ring", x: cx, y: cy, r: sk.radius * sc, color: "232,163,61", grow: 0.4, dur: 0.8 });
+      // 0.5: คูลดาวน์เริ่มนับหลังตะกร้าหมดอายุ ไม่ใช่ตอนกด
+      // ไม่งั้นคูลดาวน์ 7.5 วิกับอายุ 7.5 วิจะทับกันพอดี วางซ้อนได้ไม่มีช่องว่าง
+      if (sk.cdAfterDur) {
+        const own = (u.skills || []).find((x) => x.key === sk.key);
+        // กันบวกซ้ำในทิกเดียวกัน — ทางเรียกมาถึงที่นี่ได้มากกว่าหนึ่งครั้งต่อหนึ่งทิก
+        // (วัดแล้วได้ 22.5 = 7.5 x 3 ก่อนจะใส่ตัวกันนี้)
+        if (own && own.cdAfterAt !== state.t) {
+          own.cdLeft += sk.life;
+          own.cdAfterAt = state.t;
+        }
+      }
       return true;
     }
 
@@ -1035,14 +1046,18 @@ export function tickLore(state, dt) {
     if (!alive) {
       if (u) {
         const sk = b.sk;
-        const dmg = sk.burstDmg[b.rank] + sk.burstBadRatio * u.bonusAd + sk.burstBonusHp * (u.bonusHp || 0);
+        // 0.5: ถอดดาเมจตอนบ้านพังออกแล้ว เหลือแต่สโลว์
+        // ข้อมูลไม่มี burstDmg อีกต่อไป จึงต้องไม่อ่านแบบไม่เช็ก
+        const dmg = sk.burstDmg
+          ? sk.burstDmg[b.rank] + (sk.burstBadRatio || 0) * u.bonusAd + (sk.burstBonusHp || 0) * (u.bonusHp || 0)
+          : 0;
         const rad = sk.burstRadius * skillScale(u);
         vfx(state, { kind: "shock", x: b.x, y: b.y, r: rad, color: "232,163,61", dur: 0.7 });
         const prev = state.dmgSrc;
         state.dmgSrc = skillLabel(u, sk);
         for (const e of enemiesOf(state, u)) {
           if (Math.hypot(e.x - b.x, e.y - b.y) > rad + e.radius) continue;
-          applyDamage(state, u, e, dmg, false);
+          if (dmg > 0) applyDamage(state, u, e, dmg, false);
           addBuff(e, { type: "slow", v: sk.burstSlow, until: state.t + sk.burstSlowDur }, state.t);
         }
         state.dmgSrc = prev;
@@ -1186,8 +1201,16 @@ export function arthurAegis(state, source, dmg, magic, trueDmg) {
   const cfg = source.champ && source.champ.aegis;
   if (!cfg || magic || !(dmg > 0)) return;
   // อัตราแปลงไต่ตามเลเวลแทนที่จะคงที่ทั้งเกม
-  const base = cfg.pct + (cfg.pctPerLevel || 0) * ((source.level || 1) - 1);
-  const pct = source.hp / source.maxHp < cfg.hpBelow ? cfg.lowPct : base;
+  // 0.5: ค่าตามขั้นเลเวล (tiers) ถ้าประกาศไว้ ไม่งั้นใช้แบบไต่ต่อเลเวลเดิม
+  const tier = (arr) => {
+    if (!Array.isArray(arr) || !Array.isArray(cfg.tiers)) return null;
+    let v = arr[0];
+    for (let i = 0; i < cfg.tiers.length; i++) if ((source.level || 1) >= cfg.tiers[i]) v = arr[i];
+    return v;
+  };
+  const base = tier(cfg.pctByTier) ?? (cfg.pct + (cfg.pctPerLevel || 0) * ((source.level || 1) - 1));
+  const low = tier(cfg.lowPctByTier) ?? cfg.lowPct;
+  const pct = source.hp / source.maxHp < cfg.hpBelow ? low : base;
   const cap = source.maxHp * cfg.cap;
   const add = dmg * pct;
   source.aegisShield = Math.min(cap, (source.aegisShield || 0) + add);

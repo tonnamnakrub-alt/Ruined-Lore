@@ -44,7 +44,11 @@ function landAuto(state, u, target) {
     if (u.hasItem("asc")) addBuff(target, { type: "slow", v: 0.20, until: state.t + 1 }, state.t);
     // HOOD passive — คริไม่ระเบิดทีเดียว ส่วนเกินกลายเป็นเลือดไหลแทน
     if (u.champ.critBleed) {
-      hoodBleed(state, u, target, critBonus * (1 - motCut) * AUTO_DMG);
+      // 0.5: fromDealt — เลือดไหลคิดจากดาเมจที่ลงจริง ไม่ใช่ส่วนเกินที่คริควรได้
+      // คริจึงไม่ได้เลือดไหลมากกว่าออโต้ธรรมดาอีก เป้ากินแค่ 100% AD เหมือนกัน
+      hoodBleed(state, u, target, u.champ.critBleed.fromDealt
+        ? u.ad * AUTO_DMG
+        : critBonus * (1 - motCut) * AUTO_DMG);
       atkDmg = u.ad;
     }
   }

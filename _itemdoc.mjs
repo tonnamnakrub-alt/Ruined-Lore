@@ -50,6 +50,49 @@ const unpricedOf = (it) => UNPRICED.filter((k) => it[k] != null);
 let WR = null;
 try { WR = JSON.parse(fs.readFileSync("item-wr.json", "utf8")); } catch { WR = null; }
 const wrOf = (id) => (WR ? WR.rows.find((r) => r.id === id) : null);
+
+// ---------------------------------------------------------------
+// คำตัดสินรายชิ้น — เกณฑ์เดียวกับฝั่งตัวละครแต่อ่านจาก "เหนือฐาน"
+//
+// เหนือฐานคือแต้มที่ได้เพิ่มเมื่อฝั่งหนึ่งได้ของชิ้นนี้เกินมาฟรีๆ
+// ของฟรีย่อมช่วยอยู่แล้ว ค่าที่ควรเป็นจึงไม่ใช่ 0 แต่เป็นค่ากลางของสายนั้น
+// เทียบกับค่ากลางของสาย ไม่ใช่เทียบกับ 50 ไม่งั้นทุกชิ้นจะดูแรงเกินหมด
+// ---------------------------------------------------------------
+const BAND_FINE_I = 4;      // ห่างจากกลางสายไม่เกินเท่านี้ = กำลังดี
+const BAND_SMALL_I = 9;     // เกินเท่านี้ = ต้องแก้จริงจัง
+
+function catMid(cat) {
+  if (!WR) return null;
+  const c = (WR.cats || []).find((x) => x.cat === cat);
+  return c ? c.edge : null;
+}
+
+function itemVerdict(it) {
+  const r = wrOf(it.id);
+  if (!r) return null;
+  const mid = catMid(r.cat);
+  if (mid == null) return null;
+  const d = r.edge - mid;
+  const ad = Math.abs(d);
+  const unsure = ad < (WR.margin || 11) ? " *(ยังไม่ชัด)*" : "";
+  // ความคุ้มช่วยบอกว่าปัญหาอยู่ที่ค่าสถานะหรืออยู่ที่พาสซีฟ
+  const w = CODED.has(it.id) ? null : worth(it);
+  const where = w == null ? "พาสซีฟ (ของชิ้นนี้ไม่มีค่าสถานะให้ตีราคา)"
+    : w >= 115 ? "ค่าสถานะ — ความคุ้ม " + w + "% สูงเกินราคาอยู่แล้ว"
+      : w <= 85 ? "พาสซีฟ — ค่าสถานะคุ้มแค่ " + w + "% ที่เหลือมาจากพาสซีฟ"
+        : "ค่าสถานะหรือพาสซีฟก็ได้ (ความคุ้ม " + w + "% ปกติ)";
+
+  if (ad <= BAND_FINE_I) return ["✅ กำลังดี", "ไม่ต้องแตะ"];
+  if (ad <= BAND_SMALL_I) {
+    return d > 0
+      ? ["⚪ สูงกว่ากลางสายเล็กน้อย" + unsure, "กดเบาๆ ที่" + where]
+      : ["⚪ ต่ำกว่ากลางสายเล็กน้อย" + unsure, "บัฟเบาๆ ที่" + where];
+  }
+  const need = (ad - BAND_SMALL_I).toFixed(1);
+  return d > 0
+    ? ["🔴 แรงเกินกลางสาย" + unsure, "ต้องกดลงอีกราว " + need + " แต้ม — กดที่" + where]
+    : ["🟡 อ่อนกว่ากลางสาย" + unsure, "ต้องบัฟขึ้นอีกราว " + need + " แต้ม — บัฟที่" + where];
+}
 const edgeStr = (id) => {
   const r = wrOf(id);
   if (!r) return "—";
@@ -80,6 +123,9 @@ doc.push("");
 doc.push("- **ความคุ้ม** = มูลค่าค่าสถานะที่ได้ หารด้วยราคาที่จ่าย · **100% คือคุ้มพอดี**");
 doc.push("  ราคาต่อหน่วยอ้างอิงจากชิ้นส่วน Tier 1 ที่ให้ค่านั้นล้วนๆ (เช่น 7g ต่อ 10 AD)");
 doc.push("- ของที่ขึ้น **`พาสซีฟเขียนมือ`** ตีราคาแบบนี้ไม่ได้ เพราะพลังจริงไม่ได้อยู่ในค่าสถานะ — ช่องความคุ้มจะเว้นไว้");
+doc.push("- **สรุป** บอกว่าชิ้นนี้ควรแตะไหม โดยเทียบช่องเหนือฐานกับค่ากลางของสายตัวเอง ไม่ใช่เทียบกับ 50%");
+doc.push("  เพราะของฟรีย่อมช่วยให้ชนะอยู่แล้ว ค่าที่ควรเป็นจึงเป็นค่ากลางของสาย");
+doc.push("  รายชื่อชิ้นที่ควรแตะรวมไว้ในหัวข้อ **สรุปเฉพาะชิ้นที่ควรแตะ**");
 doc.push("- ของที่ขึ้น **⚠️ ไม่ได้ตีราคา** คือมีฟิลด์ที่ให้พลังจริงแต่ตารางราคาไม่รู้จัก");
 doc.push("  **ความคุ้มของพวกนี้ต่ำกว่าความจริง** อย่าเอาไปตัดสินว่าของอ่อน");
 doc.push("");
@@ -140,14 +186,49 @@ if (WR) {
   // ---- อันดับรายชิ้น ----
   doc.push("## Tier 3 เรียงตามผลวัดในสนาม");
   doc.push("");
-  doc.push("| # | ไอเทม | สาย | ราคา | ชนะ | เหนือฐาน | ความคุ้ม |");
-  doc.push("|---:|---|---|---:|---:|---:|---:|");
+  doc.push("| # | ไอเทม | สาย | ราคา | ชนะ | เหนือฐาน | กลางสาย | ความคุ้ม | สรุป |");
+  doc.push("|---:|---|---|---:|---:|---:|---:|---:|---|");
   WR.rows.forEach((r, i) => {
     const it = ITEM_BY_ID[r.id];
     const w = !it ? "—" : CODED.has(it.id) ? "`พาสซีฟเขียนมือ`" : worth(it) + "%" + (unpricedOf(it).length ? " ⚠️" : "");
+    const mid = catMid(r.cat);
+    const v = it ? itemVerdict(it) : null;
     doc.push("| " + (i + 1) + " | " + esc(r.name) + " `" + r.id + "` | " + r.cat + " | " + r.cost + "g | " +
-      r.wr.toFixed(1) + "% | **" + (r.edge >= 0 ? "+" : "") + r.edge.toFixed(1) + "** | " + w + " |");
+      r.wr.toFixed(1) + "% | **" + (r.edge >= 0 ? "+" : "") + r.edge.toFixed(1) + "** | " +
+      (mid == null ? "—" : (mid >= 0 ? "+" : "") + mid.toFixed(1)) + " | " + w + " | " +
+      (v ? esc(v[0]) : "—") + " |");
   });
+  doc.push("");
+
+  // ---- สรุปเฉพาะชิ้นที่ควรแตะ — แบบเดียวกับที่ CHAMPIONS.md ทำให้ตัวละคร
+  const touch = ITEMS.filter((i) => i.tier === 3)
+    .map((it) => [it, itemVerdict(it), wrOf(it.id)])
+    .filter(([, v]) => v && !v[0].startsWith("✅"))
+    .sort((a, b) => {
+      const ea = Math.abs(a[2].edge - (catMid(a[2].cat) || 0));
+      const eb = Math.abs(b[2].edge - (catMid(b[2].cat) || 0));
+      return eb - ea;
+    });
+  doc.push("## สรุปเฉพาะชิ้นที่ควรแตะ");
+  doc.push("");
+  doc.push("คัดมาแต่ชิ้นที่ห่างจากค่ากลางของสายตัวเองเกิน " + BAND_FINE_I + " แต้ม เรียงจากห่างมากสุด");
+  doc.push("");
+  doc.push("ชิ้นที่ขึ้น *(ยังไม่ชัด)* คือห่างไม่เกินค่าคลาดเคลื่อน **±" + WR.margin.toFixed(1) + "**");
+  doc.push("ทิศทางน่าจะถูก แต่ขนาดยังเชื่อไม่ได้ — ปรับได้แต่อย่าปรับแรง");
+  doc.push("");
+  if (!touch.length) {
+    doc.push("ไม่มีชิ้นไหนห่างจากกลางสายเกินเกณฑ์");
+  } else {
+    doc.push("| ไอเทม | สาย | ราคา | เหนือฐาน | กลางสาย | สรุป | ควรทำอะไร |");
+    doc.push("|---|---|---:|---:|---:|---|---|");
+    for (const [it, v, r] of touch) {
+      const mid = catMid(r.cat);
+      doc.push("| **" + esc(nameOf(it)) + "** `" + it.id + "` | " + r.cat + " | " + it.cost + "g | " +
+        (r.edge >= 0 ? "+" : "") + r.edge.toFixed(1) + " | " +
+        (mid == null ? "—" : (mid >= 0 ? "+" : "") + mid.toFixed(1)) + " | " +
+        esc(v[0]) + " | " + esc(v[1]) + " |");
+    }
+  }
   doc.push("");
 }
 
@@ -189,12 +270,14 @@ for (const cat of CATEGORIES) {
   doc.push(`### ${esc(tr(cat.th))} (${cat.id}) — ${list.length} ชิ้น`);
   doc.push("");
   const showWr = WR && it3(cat.id);
-  doc.push("| ไอเทม | ราคา | ความคุ้ม |" + (showWr ? " เหนือฐาน |" : "") + " ค่าสถานะและพาสซีฟ | สร้างจาก |");
-  doc.push("|---|---:|---:|" + (showWr ? "---:|" : "") + "---|---|");
+  doc.push("| ไอเทม | ราคา | ความคุ้ม |" + (showWr ? " เหนือฐาน | สรุป |" : "") + " ค่าสถานะและพาสซีฟ | สร้างจาก |");
+  doc.push("|---|---:|---:|" + (showWr ? "---:|---|" : "") + "---|---|");
   for (const it of list) {
     const w = CODED.has(it.id) ? "`พาสซีฟเขียนมือ`" : worth(it) + "%" + (unpricedOf(it).length ? " ⚠️" : "");
     const th = thaiOf(it);
-    doc.push(`| **${esc(nameOf(it))}** \`${it.id}\`${th ? "<br>" + esc(th) : ""} | ${it.cost}g | ${w} |${showWr ? " " + edgeStr(it.id) + " |" : ""} ${esc(itemDesc(it))} | ${esc(recipe(it)) || "—"} |`);
+    const v = itemVerdict(it);
+    const vCell = showWr ? " " + edgeStr(it.id) + " | " + (v ? esc(v[0]) : "—") + " |" : "";
+    doc.push(`| **${esc(nameOf(it))}** \`${it.id}\`${th ? "<br>" + esc(th) : ""} | ${it.cost}g | ${w} |${vCell} ${esc(itemDesc(it))} | ${esc(recipe(it)) || "—"} |`);
   }
   doc.push("");
 }

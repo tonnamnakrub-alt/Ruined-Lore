@@ -27,10 +27,10 @@ export const LORE_CHAMPIONS = {
       { key: "Q", th: "Midnight Waltz", type: "combo", cast: 0.2, window: 5,
         cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true,
         steps: [
-          { th: "Dash & Pierce", dashRange: 350, dmg: [40, 65, 90, 115, 140], apRatio: 0.35, needAuto: true },
+          { th: "Dash & Pierce", dashRange: 350, dmg: [70, 100, 130, 160, 190], apRatio: 0.45, needAuto: true },
           { th: "Crescent Sweep", radius: 325, halfCircle: true, dmg: [60, 95, 130, 165, 200], apRatio: 0.55, needAuto: true },
           { th: "Grand Finale & Rebound", range: 250, backstep: 375,
-            dmg: [50, 80, 110, 140, 170], apRatio: 0.45, pctMissingHp: [0.08, 0.09, 0.10, 0.11, 0.12] },
+            dmg: [75, 100, 125, 150, 175], apRatio: 0.5, pctMissingHp: [0.1, 0.115, 0.13, 0.145, 0.16] },
         ] },
       // สะสมดาเมจที่ทำใส่เป้าไว้ 3 วิ แล้วสั่งระเบิดทีเดียว
       { key: "W", th: "Chimes of Fate", type: "damageStash", range: 750, stashDur: 3.0, cast: 0.25,
@@ -68,19 +68,19 @@ export const LORE_CHAMPIONS = {
         atkCut: [0.05, 0.075, 0.10, 0.125, 0.15] },
       // ตะกร้าเสบียง — ฮีลและบัฟทุก 2 วิ รวม 5 ระลอก
       { key: "W", th: "Grandmother's Care", type: "basketZone", range: 750, radius: 750,
-        life: 10, every: 2, cast: 0.3, cd: 18, cdByRank: [18, 17, 16, 15, 14],
+        life: 7.5, every: 1.5, cast: 0.3, cd: 7.5, cdByRank: [7.5, 7.5, 7.5, 7.5, 7.5],
         // แต่ละระลอกดูแลได้แค่กี่คน — เรียงจากคนที่เลือดพร่องที่สุดก่อน
         targets: [3, 3, 3, 3, 3],
-        heal: [100, 125, 150, 175, 200], apRatio: 0.20,
+        heal: [150, 180, 210, 240, 270], apRatio: 0.4,
         adBuff: [10, 15, 20, 25, 30], adPerAp: 0.03, apBuff: [16, 22, 28, 34, 40], apPerAp: 0.05,
-        buffDur: 5 },
+        buffDur: 5, cdAfterDur: true },
       { key: "E", th: "Woodland Sprint", type: "allyRush", range: 700, cast: 0.2,
-        cd: 13, cdByRank: [13, 12, 11, 10, 9],
-        msBuff: [0.30, 0.35, 0.40, 0.45, 0.50], msPerAp: 0.03 / 100, dur: 3.0, ghost: true },
+        cd: 8, cdByRank: [8, 8, 8, 8, 8],
+        msBuff: [0.3, 0.325, 0.35, 0.375, 0.4], msPerAp: 0.03 / 100, dur: 3.5, ghost: true },
       // ออร่าขยายผลบัฟของเรา และขยายผลดีบัฟที่อยู่บนศัตรู
       { key: "R", th: "What Big Eyes You Have!", type: "truthAura", ult: true, cast: 0.3,
-        cd: 55, cdByRank: [55, 50, 45], radius: 650, dur: 7,
-        amp: [0.25, 0.35, 0.45], ampPerAp: 0.05 / 100 },
+        cd: 55, cdByRank: [50, 47.5, 45], radius: 650, dur: 5,
+        amp: [0.25, 0.3, 0.35], ampPerAp: 0.05 / 100 },
     ],
   },
 
@@ -93,8 +93,8 @@ export const LORE_CHAMPIONS = {
     hp: 580, hpG: 95, hp5: 7.0, hp5G: 0.7, ad: 56, adG: 3.1, armor: 32, armorG: 3.8, mr: 32, mrG: 2.05,
     as: 0.67, asG: 0.027, ms: 330, range: 150,
     // สะสมสแตกจากการร่ายสกิล แล้วใช้สแตกพุ่งทะลวงตอนออโต้
-    starlight: { max: 3, dur: 6, range: 300, through: 200, width: 120,
-      base: 25, perLevel: (140 - 25) / 17, apRatio: 0.40 },
+    starlight: { max: 3, dur: 6, range: 300, through: 200, width: 100,
+      base: 15, perLevel: 5, apRatio: 0.35 },
     passive: { th: "Starlight Piercing",
       desc: "ร่ายสกิล Q/W/E/R หรือเดินตัดพายุ Q ได้ 1 สแตก สูงสุด 3 สแตก อยู่ได้ 6 วิ · มีสแตกแล้วออโต้จะล็อกเป้าได้ไกลถึง 400 และพุ่งทะลวงไปหยุดหลังเป้า 300 หน่วย · ศัตรูทุกตัวในแนวพุ่ง (กว้าง 120) กินดาเมจเวท 25 ที่เลเวล 1 ไล่ถึง 140 ที่เลเวล 18 (+40% AP)" },
     skills: [
@@ -102,7 +102,7 @@ export const LORE_CHAMPIONS = {
       { key: "Q", th: "Astral Squall", type: "vortex", range: 750, projSpeed: 750, width: 150,
         cast: 0.25, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6], magic: true, gainStack: 1,
         dmg: [50, 80, 110, 140, 170], apRatio: 0.40,
-        slowByRank: [0.30, 0.35, 0.40, 0.45, 0.50], slowDur: 1.5,
+        slowByRank: [0.25, 0.25, 0.25, 0.25, 0.25], slowDur: 1.5,
         zoneDur: 3.0, zoneRadius: 250, every: 0.5,
         tickDmg: [15, 25, 35, 45, 55], tickApRatio: 0.10,
         popDmg: [50, 80, 110, 140, 170], popApRatio: 0.40, popRadius: 250 },
@@ -138,9 +138,9 @@ export const LORE_CHAMPIONS = {
     skills: [
       // กระบองฟาดพื้นแล้วดินแยกเป็นร่องพุ่งไปข้างหน้า — โดนทั้งแนวพร้อมกันทันที ไม่ใช่ของที่ลอยไป
       // ร่องที่แยกออกลุกเป็นเพลิงค้างไว้ ใครยืนทับก็ไหม้ต่อ
-      { key: "Q", th: "Asura Cleave", type: "line", range: 650, width: 260, instant: true, pierce: true,
+      { key: "Q", th: "Asura Cleave", type: "line", range: 450, width: 300, instant: true, pierce: true,
         cast: 0.3, cd: 7, cdByRank: [7, 7, 7, 7, 7],
-        dmg: [50, 80, 110, 140, 170], badRatio: 0.75,
+        dmg: [90, 110, 130, 150, 170], badRatio: 0.75,
         groundBurn: { dur: 3, every: 0.5, dmg: [8, 13, 18, 23, 28], badRatio: 0.08 },
         slowBase: 0.15, slowPerLevel: 0.01, dur: 1.5 },
       // ออร่าโทสะ — กดพลังโจมตีของศัตรูรอบตัว แล้วเร่งตัวเองให้เดินเร็วขึ้นตีเร็วขึ้น
@@ -162,7 +162,7 @@ export const LORE_CHAMPIONS = {
         dmg: [200, 325, 450], badRatio: 0.90, selfBonusHp: 0.10, airborne: 1.25,
         // ตัวโตขึ้นตามจำนวนแขน ระยะออโต้ก็ยืดตามขนาดตัว
         arms: { per: 2, max: 10, amp: [0.03, 0.04, 0.05], dur: 10, size: 1.35, rangePct: 0.35 } },
-    ],
+    ], itemAmpAll: true
   },
 
   // =============================================================
@@ -172,10 +172,10 @@ export const LORE_CHAMPIONS = {
     id: "HOOD", skillPriority: ["Q", "W", "E"], missile: 1700, windup: 0.32, value: 1.35,
     th: "ฮูด", role: "Marksman", lane: "ADC", melee: false,
     hp: 570, hpG: 92, hp5: 5.5, hp5G: 0.6, ad: 58, adG: 3.4, armor: 28, armorG: 3.5, mr: 30, mrG: 1.3,
-    as: 0.658, asG: 0.021, ms: 325, range: 575,
+    as: 0.658, asG: 0.021, ms: 325, range: 550,
     // คริไม่ระเบิดทีเดียว — ส่วนเกินกลายเป็นเลือดไหล ซ้อนได้ 5 ชั้น
     // nonCritPct — ออโต้ที่ไม่คริก็ทิ้งเลือดไหลไว้เหมือนกัน คิดจากดาเมจที่ลงจริง
-    critBleed: { pct: 1.75, nonCritPct: 1.2, dur: 3, every: 0.5, maxStacks: 5 },
+    critBleed: { pct: 1.2, nonCritPct: 1.2, dur: 5, every: 1, maxStacks: 5, fromDealt: true },
     passive: { th: "Lacerating Precision",
       desc: "ออโต้ที่ติดคริไม่ทำดาเมจคริทันที (เป้ากินแค่ 100% AD) แต่ส่วนเกินที่ควรได้จะกลายเป็นเลือดไหล 175% ของส่วนเกินนั้น จ่ายทุก 0.5 วิ ตลอด 3 วิ · ออโต้ที่ไม่คริก็ทิ้งเลือดไหลเหมือนกัน คิดเป็น 120% ของดาเมจออโต้ครั้งนั้น · ซ้อนได้สูงสุด 5 ชั้น แต่ละชั้นนับเวลาและดาเมจแยกกัน" },
     skills: [
@@ -191,7 +191,7 @@ export const LORE_CHAMPIONS = {
         cd: 20, cdByRank: [20, 19, 18, 17, 16],
         burstAs: [0.70, 0.85, 1.00, 1.15, 1.30], burstDur: 2.0,
         holdAs: [0.25, 0.275, 0.30, 0.325, 0.35], holdDur: 3.0 },
-      { key: "E", th: "Flare of the Greenwood", type: "sightZone", range: 1500, radius: 350,
+      { key: "E", th: "Flare of the Greenwood", type: "sightZone", range: 0, radius: 1000,
         life: 5, revealDur: 2, cast: 0.25, cd: 20, cdByRank: [20, 18.5, 16, 14.5, 13] },
       { key: "R", th: "Rain of Ruin", type: "aoeGround", range: 1150, radius: 450, delay: 0.65,
         cast: 0.3, ult: true, cd: 50, cdByRank: [50, 45, 40],
@@ -219,10 +219,10 @@ export const LORE_CHAMPIONS = {
         cast: 0.25, cd: 6, cdByRank: [6, 6, 6, 6, 6],
         dmg: [120, 160, 200, 240, 280], apRatio: 0.75, magic: true },
       // ไข่ทองคำ — สโลว์รอบตัวระหว่างรอ แล้วค่อยระเบิด
-      { key: "W", th: "Golden Egg Trap", type: "aoeGround", range: 750, radius: 325, delay: 3.5,
+      { key: "W", th: "Golden Egg Trap", type: "aoeGround", range: 750, radius: 325, delay: 3,
         cast: 0.25, cd: 10, cdByRank: [10, 9.5, 9, 8.5, 8],
         dmg: [150, 200, 250, 300, 350], apRatio: 0.80, magic: true,
-        auraSlow: [0.40, 0.425, 0.45, 0.475, 0.50] },
+        auraSlow: [0.35, 0.35, 0.35, 0.35, 0.35], auraSlowPerAp: 0.001 },
       { key: "E", th: "Song of the Golden Harp", type: "selfBuff", cast: 0.2, dur: 4,
         cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
         shield: [100, 140, 180, 220, 260], apRatio: 0.40,
@@ -262,11 +262,11 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Duelist's Bounty & Nine Lives",
       desc: "ตราประทับท้าดวลศัตรูหนึ่งตัวตอนเริ่มไฟต์ — ทำดาเมจใส่เป้านั้นแรงขึ้น 15% (+1% ต่อ Bonus AD ทุก 40) และทั้งคู่จะล็อกเป้าหากันก่อนเสมอ · เก็บศพหรือช่วยเก็บเป้าที่มีตรา ได้เงินเพิ่ม 30% · ถ้าพุสส์ตายตอนเป้ายังไม่ตาย จะล่องหนแตะไม่ได้ 2 วิ แล้วฟื้นด้วยเลือด 30% (ตราหายไปทันที) · เลือกเป้าแล้วเปลี่ยนไม่ได้อีก 2 ยก · สังหารเป้าที่มีตราได้แล้ว ต้องสังหารเป้าที่มีตราตัวอื่นอีก 2 ครั้งก่อนจึงจะประทับตราตัวเดิมได้อีก" },
     skills: [
-      { key: "Q", th: "Shadow Lunge", type: "blinkBehind", range: 550, behind: 120, cast: 0.15,
+      { key: "Q", th: "Shadow Lunge", type: "blinkBehind", range: 350, behind: 120, cast: 0.15,
         cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
         dmg: [70, 105, 140, 175, 210], badRatio: 0.80, backSlow: 0.40, backSlowDur: 1.5 },
       // ยืนแทงรัว 6 ระลอกเป็นกรวย ยกเลิกเองได้
-      { key: "W", th: "Rapier Flurry", type: "channelCone", range: 550, angle: 45,
+      { key: "W", th: "Rapier Flurry", type: "channelCone", range: 350, angle: 30,
         ticks: 6, every: 0.25, cast: 0.1, selfRoot: true,
         cd: 7, cdByRank: [7, 7, 7, 7, 7],
         dmg: [20, 35, 50, 65, 80], badRatio: 0.25 },
@@ -277,7 +277,7 @@ export const LORE_CHAMPIONS = {
         ambushAs: [0.40, 0.50, 0.60, 0.70, 0.80], ambushDur: 3.0 },
       // ฟันกระเด้ง 5 ครั้ง แตะไม่ได้ตลอดท่า โดนซ้ำตัวเดิมเหลือ 30%
       { key: "R", th: "Omni-Flourish", type: "bounceSlash", ult: true, cast: 0,
-        cd: 55, cdByRank: [55, 45, 35], range: 600, hits: 5, bounceRange: 450, repeatMul: 0.30,
+        cd: 55, cdByRank: [55, 45, 35], range: 450, hits: 5, bounceRange: 450, repeatMul: 0.30,
         every: 0.18, dmg: [70, 110, 150], badRatio: 0.45 },
     ],
   },
@@ -295,7 +295,7 @@ export const LORE_CHAMPIONS = {
     passive: { th: "Static Discharge",
       desc: "ออร่าไฟฟ้ารัศมี 400 รอบตัว · ทุก 2 วิ ประจุฟาดศัตรู 1 ตัวในระยะ (เล็งแชมเปี้ยนก่อน) ดาเมจเวท 15 ที่เลเวล 1 ไล่ถึง 83 ที่เลเวล 18 (+15% AP) (+2% Bonus HP)" },
     skills: [
-      { key: "Q", th: "Thunder Horn Charge", type: "dash", range: 600, dashSpeed: 800, engageRange: 0,
+      { key: "Q", th: "Thunder Horn Charge", type: "dash", range: 600, dashSpeed: 450, engageRange: 0,
         cast: 0.15, cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10], magic: true,
         dmg: [100, 140, 180, 220, 260], apRatio: 0.40, selfMaxHp: 0.05,
         landStunByRank: [0.8, 1.0, 1.2, 1.4, 1.6] },
@@ -305,8 +305,8 @@ export const LORE_CHAMPIONS = {
         msBuff: [0.15, 0.175, 0.20, 0.225, 0.25], msDur: 2.5, msDecay: true,
         overcharge: true },
       // คำรามเป็นกรวย 3 ระลอกติด
-      { key: "E", th: "Crackling Roar", type: "coneVolley", range: 550, angle: 60,
-        ticks: 3, every: 0.25, cast: 0.2, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5], magic: true,
+      { key: "E", th: "Crackling Roar", type: "coneVolley", range: 400, angle: 60,
+        ticks: 3, every: 0.4, cast: 0.2, cd: 7, cdByRank: [7, 6.5, 6, 5.5, 5], magic: true,
         dmg: [30, 50, 70, 90, 110], apRatio: 0.20,
         slowByRank: [0.20, 0.25, 0.30, 0.35, 0.40], slowDur: 1.0 },
       // พายุฟาด 5 ระลอก ระลอกละ 3 ตัว + สแตกกระตุกสตัน
@@ -357,9 +357,9 @@ export const LORE_CHAMPIONS = {
         knockup: 1.25 },
       // บ้านอิฐล้อมตัวเอง — เพื่อนข้างในไม่กินดาเมจ ศัตรูเข้าไม่ได้
       { key: "R", th: "The Wolf-Proof Bunker", type: "bunker", ult: true, cast: 0.3,
-        cd: 60, cdByRank: [60, 55, 50], radius: 750, life: 15, knockback: 200,
+        cd: 60, cdByRank: [60, 55, 50], radius: 500, life: 15, knockback: 200,
         hp: [1500, 2500, 3500], hpBonusHp: 0.70, res: [40, 60, 80], resRatio: 0.75,
-        burstRadius: 400, burstDmg: [150, 250, 350], burstBadRatio: 0.60, burstBonusHp: 0.10,
+        burstRadius: 400, 
         burstSlow: 0.50, burstSlowDur: 1.5 },
     ],
   },
@@ -373,7 +373,7 @@ export const LORE_CHAMPIONS = {
     hp: 625, hpG: 98, hp5: 8.0, hp5G: 0.75, ad: 64, adG: 3.6, armor: 36, armorG: 4.0, mr: 32, mrG: 2.05,
     as: 0.665, asG: 0.019, ms: 330, range: 175,
     // ดาเมจกายภาพและดาเมจจริงที่ทำได้ แปลงเป็นโล่
-    aegis: { pct: 0.10, pctPerLevel: 0.005, lowPct: 0.15, hpBelow: 0.30, dur: 2.5, cap: 0.25 },
+    aegis: { pct: 0.05, lowPct: 0.1, hpBelow: 0.30, dur: 2.5, cap: 0.25, tiers: [1, 7, 13], lowPctByTier: [0.1, 0.15, 0.2], pctByTier: [0.05, 0.075, 0.1] },
     passive: { th: "Excalibur's Aegis",
       desc: "ดาเมจกายภาพและดาเมจจริงที่อาเธอร์ทำได้ทุกแหล่ง แปลงเป็นโล่ 15% ของยอดนั้น · โล่อยู่ 3.5 วิ สะสมทับได้ไม่เกิน 30% ของ Max HP · เลือดต่ำกว่า 50% อัตราแปลงขึ้นเป็น 25%" },
     skills: [
@@ -381,16 +381,16 @@ export const LORE_CHAMPIONS = {
       { key: "Q", th: "Sovereign's Edge", type: "onHit", charges: 1, window: 4, cast: 0,
         cd: 6, cdByRank: [6, 6, 6, 6, 6],
         dmg: [20, 40, 60, 80, 100], badRatio: 0.50,
-        cleaveRadius: 250, cleaveRatio: [0.35, 0.40, 0.45, 0.50, 0.55],
+        cleaveRadius: 250, cleaveRatio: [0.25, 0.275, 0.3, 0.325, 0.35],
         doubleAbove: 0.50 },
       // กดได้แม้ติด CC — สวนกลับด้วยการหมุนฟันรอบตัวและตัดเวลา CC ครึ่งหนึ่ง
       { key: "W", th: "Pommel Strike & Retribution", type: "pommel", range: 250, cast: 0.15,
-        cd: 14, cdByRank: [14, 13, 12, 11, 10],
+        cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
         dmg: [50, 80, 110, 140, 170], badRatio: 0.50,
         whirlRadius: 325, whirlDmg: [60, 100, 140, 180, 220], whirlBadRatio: 0.65, ccCut: 0.5 },
       // พุ่งเส้นตรงแล้วฟันครึ่งวง โดนทั้งสองจังหวะได้ตีเร็วและโล่
-      { key: "E", th: "Knight's Lunge", type: "lungeSweep", dashRange: 450, dashSpeed: 900,
-        sweepRadius: 300, cast: 0.1, cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
+      { key: "E", th: "Knight's Lunge", type: "lungeSweep", dashRange: 450, dashSpeed: 500,
+        sweepRadius: 200, cast: 0.1, cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
         dmg: [40, 65, 90, 115, 140], badRatio: 0.40,
         sweepDmg: [60, 95, 130, 165, 200], sweepBadRatio: 0.60,
         dualAs: [0.40, 0.50, 0.60, 0.70, 0.80], dualShield: [80, 130, 180, 230, 280],
@@ -398,8 +398,8 @@ export const LORE_CHAMPIONS = {
       // ดาเมจจริงก้อนใหญ่ แล้วประหารถ้าเลือดเหลือต่ำกว่าเกณฑ์
       { key: "R", th: "Judgment of the Round Table", type: "judgment", ult: true, cast: 0.3,
         cd: 55, cdByRank: [55, 50, 45], range: 450,
-        dmg: [175, 300, 450], badRatio: 0, enemyMissingHp: 0.30,
-        execAt: [0.15, 0.20, 0.25], execPerBad: 0.01 / 35,
+        dmg: [250, 400, 650], badRatio: 0, enemyMissingHp: 0.25,
+        
         killMs: 0.40, killMsDur: 3.0 },
     ],
   },

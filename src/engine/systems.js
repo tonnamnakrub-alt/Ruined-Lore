@@ -344,7 +344,10 @@ export function tickZonesAndSnipes(state) {
       // ไข่ทองคำของ JACK — ระหว่างรอระเบิด ประกายทองสโลว์ศัตรูที่ยืนใกล้ไว้ก่อน
       const aura = z.skill && z.skill.auraSlow;
       if (aura) {
-        const av = aura[Math.max(0, (z.skill.rank || 1) - 1)];
+        // 0.5: +10% ต่อ AP 100 — ต้องหาเจ้าของโซนก่อนเพราะ AP อยู่ที่ตัวคนวาง
+        const owner = state.units.find((x) => x.id === z.ownerId);
+        const perAp = (z.skill.auraSlowPerAp || 0) * ((owner && owner.ap) || 0);
+        const av = aura[Math.max(0, (z.skill.rank || 1) - 1)] + perAp;
         for (const e of state.units) {
           if (!e.alive || e.team === z.team) continue;
           if (Math.hypot(e.x - z.x, e.y - z.y) > z.r + e.radius) continue;

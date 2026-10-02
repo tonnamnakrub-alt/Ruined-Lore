@@ -87,7 +87,9 @@ export function tickKlaeder(state, u, dt) {
 export function castGuardBurst(state, u, sk) {
   const r = Math.max(0, sk.rank - 1);
   u.shield = 0;
-  grantShield(u, sk.shield[r] + (sk.shieldBad || 0) * u.bonusAd + (sk.shieldBonusHp || 0) * (u.bonusHp || 0));
+  grantShield(u, sk.shield[r] + (sk.shieldBad || 0) * u.bonusAd
+    + (sk.shieldBonusHp || 0) * (u.bonusHp || 0)
+    + (sk.shieldMaxHp || 0) * (u.maxHp || 0));
   u.buffs.push({ type: "shield", v: 1, until: state.t + sk.dur });
   u.flourish = { at: state.t + sk.burstAt, sk };
   vfx(state, { kind: "aura", id: u.id, r: u.radius + 34, color: "232,163,61", dur: sk.dur });

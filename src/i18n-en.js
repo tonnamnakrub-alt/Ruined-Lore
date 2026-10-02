@@ -3625,4 +3625,12 @@ export const DICT = {
    "too weak",
  "ยังไม่ชัด":
    "not clear yet",
+
+ // ---- Patch 0.5 รอบบาลานซ์ ----
+ "ออโต้ที่ลงดึงเวลาชาร์จให้เร็วขึ้น":
+   "Each auto that lands pulls the recharge in by",
+ "ออโต้ที่คริดึงเวลาชาร์จให้เร็วขึ้น":
+   "A critical auto pulls the recharge in by",
+ "AP 100 → สโลว์จากออร่า":
+   "AP 100 → aura slow",
 };

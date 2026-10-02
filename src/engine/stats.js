@@ -209,6 +209,14 @@ export function deriveStats(unitDef) {
     const bAs = ch.as * (1 + ch.asG * g);
     atkSpeed += Math.max(0, atkSpeed - bAs) * iamp;
     tenacity = Math.min(0.9, tenacity * (1 + iamp));
+    // 0.5: itemAmpAll — ขยายของที่มาจากไอเทมล้วนๆ ด้วย
+    // สี่ตัวนี้ไม่มีค่าฐานของตัวละครเลย ทั้งก้อนจึงมาจากไอเทม ไม่ต้องหักฐานออก
+    if (ch.itemAmpAll) {
+      omnivampFlat += omnivampFlat * iamp;
+      moveSpeed += Math.max(0, moveSpeed - ch.ms) * iamp;
+      arPen += arPen * iamp;
+      mrPen += mrPen * iamp;
+    }
   }
 
   // พาสซีฟมิด — Adaptive Force เพิ่มตามเลเวล 3/5/8/12% ที่เลเวล 1/6/11/16

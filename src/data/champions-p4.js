@@ -26,8 +26,8 @@ export const P4_CHAMPIONS = {
 
     // ---- พาสซีฟ: มีดที่ปักค้างอยู่บนตัวเป้า ----
     // สโลว์ 5 ขั้นในเอกสารไม่มีแรงก์ให้อิง เลยผูกกับเลเวล 1/5/9/13/17
-    daggers: { need: 5, dur: 6, base: 45, perLevel: (190 - 45) / 17, badRatio: 0.65,
-      slow: [0.20, 0.225, 0.25, 0.275, 0.30], slowDur: 1.25,
+    daggers: { need: 5, dur: 6, base: 95, perLevel: (190 - 45) / 17, badRatio: 0.65,
+      slow: [0.20, 0.225, 0.25, 0.275, 0.30], slowDur: 5,
       tiers: [1, 5, 9, 13, 17] },
     passive: { th: "Stitched Melodrama",
       desc: "ออโต้ทุกครั้งปักมีดสั้นคาไว้บนตัวเป้า 1 เล่ม อยู่ได้ 6 วิ (ปักซ้ำต่ออายุใหม่ทั้งกอง) · ครบ 5 เล่มเมื่อไหร่ มีดทั้งกองระเบิดพร้อมกัน ดาเมจกายภาพ 45 ที่เลเวล 1 ไล่ถึง 190 ที่เลเวล 18 (+65% Bonus AD) พร้อมสโลว์ 20-30% นาน 1.25 วิ แล้วสแตกรีเซ็ตเป็นศูนย์ทันที" },
@@ -37,9 +37,9 @@ export const P4_CHAMPIONS = {
       // เอกสารให้ระยะ 850 และเป็นกระสุนบินจริง แต่ท่ารูปกรวยในเกมนี้เป็นการกวาดทันที
       // 850 แบบกวาดทันทีคือโพคฟรีเกินไปสำหรับตัวที่มีระยะออโต้ 550 อยู่แล้ว เลยลงมาที่ 800
       // ดาเมจต่อเล่มก็ลดจาก 60-200 เหลือ 50-170 ด้วยเหตุผลเดียวกัน (โดนครบสามเล่มคือ 1.7 เท่า)
-      { key: "Q", th: "Tri-Blade Fan", type: "cone", range: 800, count: 3, angle: 90, falloff: 0.35,
+      { key: "Q", th: "Tri-Blade Fan", type: "cone", range: 600, count: 3, angle: 90, falloff: 0.35,
         cast: 0.2, cd: 8, cdByRank: [8, 7.5, 7, 6.5, 6],
-        dmg: [50, 80, 110, 140, 170], badRatio: 0.55,
+        dmg: [80, 100, 120, 140, 160], badRatio: 0.75,
         stickPerHit: 1 },
 
       // ---- W · หน้ากากสามอารมณ์ ----
@@ -55,7 +55,7 @@ export const P4_CHAMPIONS = {
 
       // ---- E · กระชากมีดทั้งกองกลับมา ----
       { key: "E", th: "Maestro's Rebound", type: "rebound", range: 1100, width: 120, cast: 0.25,
-        cd: 12, cdByRank: [12, 11.5, 11, 10.5, 10],
+        cd: 10, cdByRank: [10, 10, 10, 10, 10],
         ripDmg: [20, 30, 40, 50, 60], ripBadRatio: 0.25,
         dmg: [40, 65, 90, 115, 140], badRatio: 0.40 },
 
@@ -92,9 +92,9 @@ export const P4_CHAMPIONS = {
 
     skills: [
       // ---- Q · รากพุ่งใต้ดินแล้วกระชากเข้ามาครึ่งทาง ----
-      { key: "Q", th: "Grasping Roots", type: "line", range: 900, width: 150, projSpeed: 1600,
+      { key: "Q", th: "Grasping Roots", type: "line", range: 900, width: 150, projSpeed: 1200,
         cast: 0.25, cd: 9, cdByRank: [9, 8.5, 8, 7.5, 7], magic: true,
-        dmg: [100, 140, 180, 220, 260], apRatio: 0.50, selfMaxHp: 0.06, landStun: 0.5,
+        dmg: [100, 140, 180, 220, 260], apRatio: 0.50, selfMaxHp: 0.06, landStun: 1,
         // กระชากเข้ามา 50% ของระยะห่าง ณ เสี้ยววินาทีที่โดน
         pullHalf: 0.5 },
 
@@ -102,7 +102,7 @@ export const P4_CHAMPIONS = {
       { key: "W", th: "Bramble Overgrowth", type: "thornCone", range: 550, angle: 60, delay: 0.5,
         cast: 0.25, cd: 11, cdByRank: [11, 10.5, 10, 9.5, 9], magic: true,
         dmg: [100, 145, 190, 235, 290], apRatio: 0.45, selfMaxHp: 0.06,
-        root: [1.0, 1.2, 1.4, 1.6, 1.8] },
+        root: [1.2, 1.4, 1.6, 1.8, 2] },
 
       // ---- E · โล่คู่ที่แบ่งดาเมจกัน ----
       { key: "E", th: "Canopy of Shared Life", type: "canopy", range: 700, cast: 0.25, dur: 4,
@@ -161,9 +161,9 @@ export const P4_CHAMPIONS = {
         mirror: "line", mirrorWidth: 80 },
 
       // ---- W · ฟันครึ่งวงกลมสองจังหวะติด ----
-      { key: "W", th: "Twin Whirl-Scythes", type: "twinCleave", radius: 325, cast: 0.15,
-        cd: 9, cdByRank: [9, 8.5, 8, 7.5, 7], gap: 0.2,
-        dmg: [45, 70, 95, 120, 145], badRatio: 0.50,
+      { key: "W", th: "Twin Whirl-Scythes", type: "twinCleave", radius: 250, cast: 0.15,
+        cd: 6, cdByRank: [6, 6, 6, 6, 6], gap: 0.2,
+        dmg: [80, 110, 140, 170, 200], badRatio: 0.6,
         bothSlow: 0.35, slowDur: 1.5, mirror: "cleave" },
 
       // ---- E · ล่องหนก่อน แล้วค่อยกดซ้ำเพื่อพุ่ง ----
@@ -177,9 +177,9 @@ export const P4_CHAMPIONS = {
       // ---- R · โดมพายุที่ลบตัวตนคามาจิออกจากสนาม ----
       // เอกสารให้คูลดาวน์ 100/85/70 ลงมาที่ 75/65/55 ด้วยเหตุผลเดียวกับ R ของแฟนทอม
       { key: "R", th: "Kamaitachi's Domain", type: "domain", ult: true, cast: 0.25,
-        cd: 75, cdByRank: [75, 65, 55], range: 500, radius: 400, dur: 3.0,
+        cd: 20, cdByRank: [20, 17.5, 15], range: 500, radius: 400, dur: 3.0,
         waves: 6, every: 0.5,
-        dmg: [30, 50, 70], badRatio: 0.25 },
+        dmg: [35, 70, 105], badRatio: 0.4 },
     ],
   },
 };
