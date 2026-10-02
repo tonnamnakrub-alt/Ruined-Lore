@@ -115,15 +115,18 @@ async function playRounds(maxSteps = 3000) {
   let lastScore = "", stuck = 0;
   for (let s = 0; s < maxSteps; s++) {
     const sc = await screen();
-    if (/Won the match|Lost the match/i.test(sc)) return { ok: true, steps: s };
+    // จอจบแมตช์เขียนว่า "Match lost" / "Match won" ไม่ใช่ "Lost the match"
+    // ตัวจับเดิมไม่เจอ แล้วไปจบด้วยอาการค้าง ทำให้เล่นแมตช์ถัดไปไม่ได้
+    if (/Match won|Match lost|Won the match|Lost the match/i.test(sc)) return { ok: true, steps: s };
 
-    // ---- ร้านค้า: ซื้อตามแผนถ้าเงินถึง ไม่ถึงก็เก็บชิ้นส่วนใต้แผนไปก่อน
-    // ชิ้นส่วนขึ้นเป็นปุ่มแยกหน้าตา "└ Boar Tusk 7g" — ตอนแรกไม่ได้กดเลย
-    // ทีมจึงไม่มีของสักชิ้นแล้วแพ้ 0-11 ทุกแมตช์
-    if (/Build plan|Buy from plan/i.test(sc)) {
-      await clickAll(/^Buy from plan:/i, 12);
-      await clickAll(/^└ .+ \d+g$/u, 30);
-      await clickAll(/^Buy from plan:/i, 12);
+    // ---- ร้านค้า: อัพสกิลให้ครบ แล้วกดปุ่มซื้อตามที่แนะนำที่เพิ่งเพิ่มเข้าเกม
+    // ตรรกะเดียวกับที่ฝั่งศัตรูใช้ (shopFor) จึงออกของทันกันจริง
+    // สามรอบก่อนหน้าไล่กดชิ้นส่วนเอง ได้แต่ของ Tier 1/2 คนละสูตร ไม่เคยปิด Tier 3
+    if (/Build plan|Buy from plan|Buy recommended/i.test(sc)) {
+      await clickAll(/^Auto$/i, 8);
+      await clickAll(/^Suggest lane stances and jungle$/i, 2);
+      await clickAll(/^Buy recommended for the whole team$/i, 3);
+      await clickAll(/^Buy for me$/i, 8);
     }
     if (await click(/^(Start round \d+|Start the decider)$/i, 250)) { stuck = 0; continue; }
 

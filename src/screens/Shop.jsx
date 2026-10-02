@@ -21,7 +21,7 @@ import { C, MONO, SANS } from "../ui/theme.js";
 import { Bar, Label } from "../ui/widgets.jsx";
 
 export function ShopPhase(ctx) {
-  const { net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy, setDuelLane } = ctx;
+  const { autoBuy, autoBuyTeam, autoStances, net, netReadyUp, formOpen, setFormOpen, addRank, buy, foe, openSkill, scoutOpen, setScoutOpen, openRecipe, openShop, resetRanks, round, score, sell, sellValue, setOpenRecipe, setOpenShop, setShopCat, setTeam, setTeamStyle, shopCat, slotsUsed, startFight, team, teamStyle, mode, wide, shopItem, setShopItem, shopQuery, setShopQuery, favsOf, toggleFav, moveFav, clearFavs, streak, openStats, stances, setStances, jungle, setJungle, lastStances, foeIntel, buyUndo, undoBuy, setDuelLane } = ctx;
 
   // ออนไลน์: กดพร้อมแล้ว = ส่งทีมและคำสั่งให้อีกฝั่งไปแล้ว ห้ามแก้อะไรอีกจนกว่าไฟต์จะเริ่ม
   // เดิมยังกดเปลี่ยนนิสัยเลน ซื้อของ อัพสกิลได้ต่อ แต่อีกเครื่องได้แค่ของตอนกดพร้อม
@@ -109,6 +109,10 @@ export function ShopPhase(ctx) {
                     <span style={{ fontFamily: MONO, fontSize: 10, color: left > 0 ? C.gold : C.dim }}>{tr("เหลือ {0} แต้ม", left)}</span>
                     <button onClick={() => resetRanks(idx)}
                       style={{ marginLeft: "auto", ...mini(), width: "auto", padding: "0 8px", fontSize: 10 }}>{tr("อัตโนมัติ")}</button>
+                    <button onClick={() => autoBuy(idx)}
+                      style={{ ...mini(), width: "auto", padding: "0 8px", fontSize: 10, color: C.green }}>
+                      {tr("ซื้อให้")}
+                    </button>
                   </div>
                   <div style={{ display: "flex", gap: 4 }}>
                     {(CHAMPIONS[c.champId] ? CHAMPIONS[c.champId].skills : []).map((sk) => {
@@ -558,6 +562,20 @@ export function ShopPhase(ctx) {
             </div>
           ) : null}
         </div>
+
+        {/* ซื้อให้ทั้งทีมในปุ่มเดียว — ใช้ตรรกะเดียวกับที่ฝั่งศัตรูใช้
+            วางไว้เหนือปุ่มออกไปสู้ เพราะเป็นสิ่งสุดท้ายที่ควรทำก่อนเริ่มยก */}
+        <button onClick={() => autoStances()}
+          style={{ ...btn(C.panel2), color: C.blue, border: `1px solid ${C.line}`,
+            fontSize: 12.5, padding: "9px 4px", marginBottom: 7 }}>
+          {tr("แนะนำนิสัยเลนและป่า")}
+        </button>
+
+        <button onClick={() => autoBuyTeam()}
+          style={{ ...btn(C.panel2), color: C.green, border: `1px solid ${C.line}`,
+            fontSize: 12.5, padding: "9px 4px", marginBottom: 7 }}>
+          {tr("ซื้อตามที่แนะนำให้ทั้งทีม")}
+        </button>
 
         <button onClick={() => { if (net && net.on) { if (!netReadyUp()) startFight(); } else startFight(); }}
           disabled={!!(net && net.on && net.waiting)}

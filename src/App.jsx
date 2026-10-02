@@ -442,6 +442,46 @@ export function App() {
     dropFav(idx, item.id);
   }
 
+  // ---- แนะนำนิสัยเลน — ใช้ตรรกะเดียวกับที่ฝั่งศัตรูใช้ (botStances/botJungle)
+  // skill = 1 คือคิดเต็มที่ทุกเลน ไม่มีท่อนสุ่มทิ้งแบบที่บอทระดับง่ายมี
+  function autoStances() {
+    const next = botStances(rand, team, foe, 1, round);
+    setStances(next);
+    const j = botJungle(rand, team, foe, next, lastStances, 1, round);
+    setJungle(j && j.lane ? j : { lane: null, crew: [] });
+  }
+
+  // ---- ซื้อตามที่แนะนำ — ใช้ตรรกะเดียวกับที่ฝั่งศัตรูใช้ (shopFor)
+  // noise 0 เพราะผู้เล่นกดเองแล้ว ไม่ต้องใส่ความลังเลแบบบอท
+  // shopFor ซื้อให้ในตัวโดยเคารพเงินและช่องของ คืนตัวละครที่ของเพิ่มแล้ว
+  function autoBuy(idx) {
+    const live = (liveRef.current && liveRef.current.team ? liveRef.current.team : team);
+    const before = live[idx];
+    if (!before || !before.champId) return;
+    const after = shopFor(before, foe, rand, 0);
+    if ((after.items || []).length === (before.items || []).length) return;   // ซื้ออะไรไม่ได้เลย
+    setBuyUndo((u) => [
+      ...u.slice(-19),
+      { idx, gold: before.gold, items: [...(before.items || [])], favs: [...(favs[idx] || [])],
+        name: tr("ซื้อตามที่แนะนำ") },
+    ]);
+    setTeam((t) => t.map((c, i) => (i === idx ? after : c)));
+  }
+
+  // ซื้อให้ครบทั้งทีมในครั้งเดียว — คิดทีละคนต่อเนื่องกัน
+  // เก็บสถานะก่อนซื้อของทุกคนไว้เป็นก้อนเดียว กด undo ครั้งเดียวย้อนได้ทั้งทีม
+  function autoBuyTeam() {
+    const live = (liveRef.current && liveRef.current.team ? liveRef.current.team : team);
+    const snapshot = live.map((c, i) => ({
+      idx: i, gold: c.gold, items: [...(c.items || [])], favs: [...(favs[i] || [])],
+    }));
+    const next = live.map((c) => (c.champId ? shopFor(c, foe, rand, 0) : c));
+    const bought = next.reduce((a, c, i) => a + ((c.items || []).length - (live[i].items || []).length), 0);
+    if (!bought) return;
+    setBuyUndo((u) => [...u.slice(-19), { team: snapshot, name: tr("ซื้อตามที่แนะนำทั้งทีม") }]);
+    setTeam(next);
+  }
+
   // PUSS — โค้ชสั่งเองว่ายกนี้จะไปท้าดวลเลนไหนของอีกฝั่ง
   // กดซ้ำเลนเดิม = ยกเลิกคำสั่ง กลับไปให้เขาเลือกเป้าที่อันตรายที่สุดเอง
   // เนิร์ฟ: เลือกแล้วติดคูลดาวน์การเลือก 2 ยก · เป้าที่เพิ่งเก็บไปเลือกซ้ำไม่ได้
@@ -455,6 +495,21 @@ export function App() {
   }
 
   function undoBuy() {
+    // ก้อนจากปุ่มซื้อทั้งทีมเก็บสถานะของทุกคนไว้ ย้อนทีเดียวพร้อมกัน
+    const top = buyUndo[buyUndo.length - 1];
+    if (top && top.team) {
+      setTeam((t) => t.map((c, i) => {
+        const s = top.team.find((x) => x.idx === i);
+        return s ? { ...c, gold: s.gold, items: [...s.items] } : c;
+      }));
+      setFavs((f) => {
+        const n = { ...f };
+        for (const s of top.team) n[s.idx] = [...s.favs];
+        return n;
+      });
+      setBuyUndo((u) => u.slice(0, -1));
+      return;
+    }
     setBuyUndo((u) => {
       if (!u.length) return u;
       const last = u[u.length - 1];
@@ -1149,7 +1204,7 @@ export function App() {
     addRank, arenaDrawRef, bump, buy, clearOne, draftPool,
     fightRef, focusId, foe, heldChamp, nextRound,
     openRecipe, openShop, phase, planCatState, planIdx, quickStart,
-    rand, ready, resetRanks, restartMatch, result, rollAll,
+    autoBuy, autoBuyTeam, autoStances, rand, ready, resetRanks, restartMatch, result, rollAll,
     formOpen, setFormOpen,
     net, netStart, netStartWatch, netJoin, netAccept, netAcceptSlot, netReset, netBegin, netReadyUp,
     netStartRoom, netJoinRoom, netSetLink,

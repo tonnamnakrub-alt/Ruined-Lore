@@ -3633,4 +3633,17 @@ export const DICT = {
    "A critical auto pulls the recharge in by",
  "AP 100 → สโลว์จากออร่า":
    "AP 100 → aura slow",
+
+ // ---- ซื้อตามที่แนะนำ (ฝั่งผู้เล่น) ----
+ "ซื้อตามที่แนะนำ":
+   "Buy recommended",
+ "ซื้อตามที่แนะนำทั้งทีม":
+   "Buy recommended for the whole team",
+ "ซื้อตามที่แนะนำให้ทั้งทีม":
+   "Buy recommended for the whole team",
+ "ซื้อให้":
+   "Buy for me",
+
+ "แนะนำนิสัยเลนและป่า":
+   "Suggest lane stances and jungle",
 };
