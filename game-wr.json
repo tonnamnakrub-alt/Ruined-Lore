@@ -1,1021 +1,1109 @@
 {
- "games": 10,
+ "games": 300,
  "mode": "LONG",
  "diff": "ปกติ",
- "roundsPerMatch": 34.3,
- "ties": 0,
- "avgGamesEach": 4,
- "margin": 47,
+ "roundsPerMatch": 39.5,
+ "ties": 3,
+ "avgGamesEach": 120,
+ "margin": 8.9,
  "rows": [
   {
-   "id": "TOTSAKAN",
-   "wr": 100,
-   "games": 2,
-   "kills": 6.5,
-   "deaths": 5,
-   "kda": 1.9,
-   "dmg": 27321,
-   "took": 20838,
-   "heal": 3845,
-   "level": 17,
-   "items": 2,
-   "lane": "TOP",
-   "role": "Juggernaut",
-   "ph": {
-    "early": {
-     "fights": 8,
-     "wr": 50,
-     "margin": 34.6,
-     "level": 4.6,
-     "items": 0,
-     "dmg": 965,
-     "heal": 41
-    },
-    "mid": {
-     "fights": 16,
-     "wr": 56.3,
-     "margin": 24.5,
-     "level": 11.2,
-     "items": 0.9,
-     "dmg": 1614,
-     "heal": 137
-    },
-    "late": {
-     "fights": 10,
-     "wr": 80,
-     "margin": 31,
-     "level": 15.8,
-     "items": 2,
-     "dmg": 2110,
-     "heal": 518
-    }
-   }
-  },
-  {
-   "id": "PUSS",
-   "wr": 100,
-   "games": 1,
-   "kills": 13,
-   "deaths": 1,
-   "kda": 24,
-   "dmg": 22248,
-   "took": 16863,
-   "heal": 1311,
-   "level": 13,
-   "items": 2,
-   "lane": "JUNGLE",
-   "role": "Assassin",
-   "ph": {
-    "early": {
-     "fights": 8,
-     "wr": 100,
-     "margin": 34.6,
-     "level": 4.9,
-     "items": 0.1,
-     "dmg": 976,
-     "heal": 86
-    },
-    "mid": {
-     "fights": 6,
-     "wr": 83.3,
-     "margin": 40,
-     "level": 8.8,
-     "items": 1.2,
-     "dmg": 1249,
-     "heal": 62
-    },
-    "late": {
-     "fights": 4,
-     "wr": 100,
-     "margin": 49,
-     "level": 12.5,
-     "items": 2,
-     "dmg": 1737,
-     "heal": 63
-    }
-   }
-  },
-  {
    "id": "PINO",
-   "wr": 88.9,
-   "games": 9,
-   "kills": 5.22,
-   "deaths": 6.11,
-   "kda": 5.51,
-   "dmg": 21321,
-   "took": 23452,
-   "heal": 65086,
+   "wr": 74.5,
+   "games": 192,
+   "kills": 5.33,
+   "deaths": 9.78,
+   "kda": 3.16,
+   "dmg": 23577,
+   "took": 34931,
+   "heal": 70110,
    "level": 16,
-   "items": 2.9,
+   "items": 2.8,
    "lane": "SUPPORT",
    "role": "Enchanter",
    "ph": {
     "early": {
-     "fights": 55,
-     "wr": 78.2,
-     "margin": 13.2,
-     "level": 4.3,
+     "fights": 1079,
+     "wr": 65.7,
+     "margin": 3,
+     "level": 4.4,
      "items": 0.2,
-     "dmg": 605,
-     "heal": 1289
+     "dmg": 670,
+     "heal": 1594
     },
     "mid": {
-     "fights": 61,
-     "wr": 83.6,
-     "margin": 12.5,
-     "level": 10.6,
-     "items": 2.1,
-     "dmg": 997,
-     "heal": 2296
+     "fights": 1304,
+     "wr": 69.1,
+     "margin": 2.7,
+     "level": 10.1,
+     "items": 1.6,
+     "dmg": 928,
+     "heal": 2593
     },
     "late": {
-     "fights": 43,
-     "wr": 69.8,
-     "margin": 14.9,
+     "fights": 1494,
+     "wr": 58,
+     "margin": 2.5,
      "level": 14.3,
      "items": 2.6,
-     "dmg": 1099,
-     "heal": 4010
-    }
-   }
-  },
-  {
-   "id": "KAZEM",
-   "wr": 80,
-   "games": 5,
-   "kills": 13,
-   "deaths": 5,
-   "kda": 3.72,
-   "dmg": 30458,
-   "took": 23699,
-   "heal": 11425,
-   "level": 15,
-   "items": 2,
-   "lane": "TOP",
-   "role": "Bruiser AD",
-   "ph": {
-    "early": {
-     "fights": 42,
-     "wr": 81,
-     "margin": 15.1,
-     "level": 4.6,
-     "items": 0.2,
-     "dmg": 1068,
-     "heal": 309
-    },
-    "mid": {
-     "fights": 38,
-     "wr": 68.4,
-     "margin": 15.9,
-     "level": 10.3,
-     "items": 1.3,
-     "dmg": 1633,
-     "heal": 577
-    },
-    "late": {
-     "fights": 28,
-     "wr": 53.6,
-     "margin": 18.5,
-     "level": 13.8,
-     "items": 1.9,
-     "dmg": 1621,
-     "heal": 793
-    }
-   }
-  },
-  {
-   "id": "FAUSTUS",
-   "wr": 66.7,
-   "games": 9,
-   "kills": 9.11,
-   "deaths": 13.78,
-   "kda": 1.1,
-   "dmg": 28139,
-   "took": 26212,
-   "heal": 269,
-   "level": 13.1,
-   "items": 2.1,
-   "lane": "MID",
-   "role": "Artillery Mage",
-   "ph": {
-    "early": {
-     "fights": 54,
-     "wr": 46.3,
-     "margin": 13.3,
-     "level": 4.1,
-     "items": 0.1,
-     "dmg": 780,
-     "heal": 11
-    },
-    "mid": {
-     "fights": 65,
-     "wr": 52.3,
-     "margin": 12.2,
-     "level": 9.3,
-     "items": 1,
-     "dmg": 1203,
-     "heal": 11
-    },
-    "late": {
-     "fights": 45,
-     "wr": 44.4,
-     "margin": 14.6,
-     "level": 12.8,
-     "items": 2,
-     "dmg": 1468,
-     "heal": 10
-    }
-   }
-  },
-  {
-   "id": "YODAKA",
-   "wr": 66.7,
-   "games": 3,
-   "kills": 7.33,
-   "deaths": 6,
-   "kda": 3.83,
-   "dmg": 20088,
-   "took": 14372,
-   "heal": 815,
-   "level": 11,
-   "items": 1.7,
-   "lane": "JUNGLE",
-   "role": "Assassin",
-   "ph": {
-    "early": {
-     "fights": 27,
-     "wr": 100,
-     "margin": 18.9,
-     "level": 3.7,
-     "items": 0,
-     "dmg": 647,
-     "heal": 14
-    },
-    "mid": {
-     "fights": 24,
-     "wr": 70.8,
-     "margin": 20,
-     "level": 7.3,
-     "items": 0.5,
-     "dmg": 948,
-     "heal": 60
-    },
-    "late": {
-     "fights": 15,
-     "wr": 80,
-     "margin": 25.3,
-     "level": 10.3,
-     "items": 1.3,
-     "dmg": 1336,
-     "heal": 43
-    }
-   }
-  },
-  {
-   "id": "JACK",
-   "wr": 66.7,
-   "games": 3,
-   "kills": 11.33,
-   "deaths": 16.33,
-   "kda": 1.27,
-   "dmg": 36324,
-   "took": 34083,
-   "heal": 3835,
-   "level": 14.3,
-   "items": 2.3,
-   "lane": "MID",
-   "role": "Burst Mage",
-   "ph": {
-    "early": {
-     "fights": 19,
-     "wr": 47.4,
-     "margin": 22.5,
-     "level": 4.4,
-     "items": 0,
-     "dmg": 606,
-     "heal": 12
-    },
-    "mid": {
-     "fights": 19,
-     "wr": 47.4,
-     "margin": 22.5,
-     "level": 9.3,
-     "items": 1.1,
-     "dmg": 1056,
-     "heal": 10
-    },
-    "late": {
-     "fights": 19,
-     "wr": 57.9,
-     "margin": 22.5,
-     "level": 13.2,
-     "items": 2.3,
-     "dmg": 1499,
-     "heal": 284
-    }
-   }
-  },
-  {
-   "id": "ARTHUR",
-   "wr": 66.7,
-   "games": 3,
-   "kills": 9.67,
-   "deaths": 7.67,
-   "kda": 1.74,
-   "dmg": 39096,
-   "took": 31518,
-   "heal": 11904,
-   "level": 18,
-   "items": 2.7,
-   "lane": "TOP",
-   "role": "Diver",
-   "ph": {
-    "early": {
-     "fights": 18,
-     "wr": 77.8,
-     "margin": 23.1,
-     "level": 5.1,
-     "items": 0.2,
-     "dmg": 1154,
-     "heal": 301
-    },
-    "mid": {
-     "fights": 25,
-     "wr": 56,
-     "margin": 19.6,
-     "level": 12.1,
-     "items": 1.5,
-     "dmg": 2221,
-     "heal": 668
-    },
-    "late": {
-     "fights": 22,
-     "wr": 27.3,
-     "margin": 20.9,
-     "level": 17.4,
-     "items": 2.8,
-     "dmg": 1862,
-     "heal": 618
-    }
-   }
-  },
-  {
-   "id": "PHANTOM",
-   "wr": 60,
-   "games": 5,
-   "kills": 12.2,
-   "deaths": 8.4,
-   "kda": 2.21,
-   "dmg": 26482,
-   "took": 21888,
-   "heal": 740,
-   "level": 13.8,
-   "items": 2.4,
-   "lane": "ADC",
-   "role": "Marksman",
-   "ph": {
-    "early": {
-     "fights": 31,
-     "wr": 45.2,
-     "margin": 17.6,
-     "level": 4.1,
-     "items": 0.1,
-     "dmg": 1153,
-     "heal": 49
-    },
-    "mid": {
-     "fights": 33,
-     "wr": 51.5,
-     "margin": 17.1,
-     "level": 9.8,
-     "items": 1.7,
-     "dmg": 1911,
-     "heal": 46
-    },
-    "late": {
-     "fights": 19,
-     "wr": 36.8,
-     "margin": 22.5,
-     "level": 12.3,
-     "items": 2.4,
-     "dmg": 1768,
-     "heal": 35
-    }
-   }
-  },
-  {
-   "id": "LUCH",
-   "wr": 50,
-   "games": 8,
-   "kills": 11.5,
-   "deaths": 10,
-   "kda": 2.05,
-   "dmg": 31934,
-   "took": 29450,
-   "heal": 4448,
-   "level": 13.3,
-   "items": 1.9,
-   "lane": "TOP",
-   "role": "Skirmisher",
-   "ph": {
-    "early": {
-     "fights": 64,
-     "wr": 54.7,
-     "margin": 12.3,
-     "level": 3.9,
-     "items": 0.1,
-     "dmg": 849,
-     "heal": 92
-    },
-    "mid": {
-     "fights": 58,
-     "wr": 67.2,
-     "margin": 12.9,
-     "level": 8.7,
-     "items": 0.8,
-     "dmg": 1202,
-     "heal": 149
-    },
-    "late": {
-     "fights": 40,
-     "wr": 72.5,
-     "margin": 15.5,
-     "level": 12.4,
-     "items": 1.8,
-     "dmg": 1735,
-     "heal": 229
-    }
-   }
-  },
-  {
-   "id": "ARIEL",
-   "wr": 50,
-   "games": 2,
-   "kills": 10,
-   "deaths": 10.5,
-   "kda": 1.52,
-   "dmg": 30264,
-   "took": 40695,
-   "heal": 1824,
-   "level": 15,
-   "items": 2,
-   "lane": "MID",
-   "role": "Battle Mage",
-   "ph": {
-    "early": {
-     "fights": 13,
-     "wr": 53.8,
-     "margin": 27.2,
-     "level": 5,
-     "items": 0.1,
-     "dmg": 798,
-     "heal": 23
-    },
-    "mid": {
-     "fights": 14,
-     "wr": 42.9,
-     "margin": 26.2,
-     "level": 10.1,
-     "items": 1.4,
-     "dmg": 1319,
-     "heal": 67
-    },
-    "late": {
-     "fights": 19,
-     "wr": 63.2,
-     "margin": 22.5,
-     "level": 14.8,
-     "items": 2,
-     "dmg": 1668,
-     "heal": 127
-    }
-   }
-  },
-  {
-   "id": "ALUCARD",
-   "wr": 50,
-   "games": 4,
-   "kills": 8.25,
-   "deaths": 7,
-   "kda": 3.71,
-   "dmg": 27711,
-   "took": 30834,
-   "heal": 7881,
-   "level": 12.5,
-   "items": 1.8,
-   "lane": "JUNGLE",
-   "role": "Diver",
-   "ph": {
-    "early": {
-     "fights": 32,
-     "wr": 84.4,
-     "margin": 17.3,
-     "level": 4,
-     "items": 0,
-     "dmg": 915,
-     "heal": 171
-    },
-    "mid": {
-     "fights": 32,
-     "wr": 71.9,
-     "margin": 17.3,
-     "level": 8.1,
-     "items": 0.8,
-     "dmg": 977,
-     "heal": 380
-    },
-    "late": {
-     "fights": 35,
-     "wr": 91.4,
-     "margin": 16.6,
-     "level": 11.5,
-     "items": 1.7,
-     "dmg": 1438,
-     "heal": 397
-    }
-   }
-  },
-  {
-   "id": "PETER",
-   "wr": 50,
-   "games": 6,
-   "kills": 9.83,
-   "deaths": 9,
-   "kda": 1.93,
-   "dmg": 36766,
-   "took": 36659,
-   "heal": 1798,
-   "level": 14,
-   "items": 2.3,
-   "lane": "ADC",
-   "role": "Marksman",
-   "ph": {
-    "early": {
-     "fights": 32,
-     "wr": 31.3,
-     "margin": 17.3,
-     "level": 3.7,
-     "items": 0.1,
-     "dmg": 1179,
-     "heal": 63
-    },
-    "mid": {
-     "fights": 47,
-     "wr": 42.6,
-     "margin": 14.3,
-     "level": 9.2,
-     "items": 1.3,
-     "dmg": 1679,
-     "heal": 63
-    },
-    "late": {
-     "fights": 33,
-     "wr": 66.7,
-     "margin": 17.1,
-     "level": 13.8,
-     "items": 2.6,
-     "dmg": 3150,
-     "heal": 177
+     "dmg": 907,
+     "heal": 2975
     }
    }
   },
   {
    "id": "HOOD",
-   "wr": 50,
-   "games": 4,
-   "kills": 29.75,
-   "deaths": 9.25,
-   "kda": 4.14,
-   "dmg": 61212,
-   "took": 40265,
-   "heal": 2206,
-   "level": 15.5,
-   "items": 2.5,
+   "wr": 60.8,
+   "games": 171,
+   "kills": 23.68,
+   "deaths": 12.5,
+   "kda": 2.77,
+   "dmg": 65665,
+   "took": 41241,
+   "heal": 3678,
+   "level": 15.8,
+   "items": 2.4,
    "lane": "ADC",
    "role": "Marksman",
    "ph": {
     "early": {
-     "fights": 24,
-     "wr": 66.7,
-     "margin": 20,
-     "level": 4.3,
+     "fights": 955,
+     "wr": 58.1,
+     "margin": 3.2,
+     "level": 4.4,
      "items": 0.3,
-     "dmg": 1532,
-     "heal": 71
+     "dmg": 1608,
+     "heal": 91
     },
     "mid": {
-     "fights": 29,
-     "wr": 65.5,
-     "margin": 18.2,
-     "level": 9.8,
-     "items": 1.6,
-     "dmg": 3175,
-     "heal": 113
+     "fights": 1163,
+     "wr": 59.1,
+     "margin": 2.9,
+     "level": 10,
+     "items": 1.7,
+     "dmg": 2619,
+     "heal": 145
     },
     "late": {
-     "fights": 19,
-     "wr": 68.4,
-     "margin": 22.5,
-     "level": 13.1,
-     "items": 2.5,
-     "dmg": 3296,
-     "heal": 120
+     "fights": 1293,
+     "wr": 57.9,
+     "margin": 2.7,
+     "level": 14.5,
+     "items": 2.4,
+     "dmg": 3224,
+     "heal": 165
     }
    }
   },
   {
-   "id": "STEIN",
-   "wr": 50,
-   "games": 2,
-   "kills": 2,
-   "deaths": 5,
-   "kda": 1.8,
-   "dmg": 16486,
-   "took": 23282,
-   "heal": 36169,
-   "level": 17.5,
-   "items": 2,
-   "lane": "SUPPORT",
-   "role": "Warden",
-   "ph": {
-    "early": {
-     "fights": 16,
-     "wr": 56.3,
-     "margin": 24.5,
-     "level": 4.7,
-     "items": 0.1,
-     "dmg": 419,
-     "heal": 967
-    },
-    "mid": {
-     "fights": 12,
-     "wr": 66.7,
-     "margin": 28.3,
-     "level": 12.2,
-     "items": 0.8,
-     "dmg": 859,
-     "heal": 1847
-    },
-    "late": {
-     "fights": 12,
-     "wr": 66.7,
-     "margin": 28.3,
-     "level": 17.3,
-     "items": 1.8,
-     "dmg": 1330,
-     "heal": 2892
-    }
-   }
-  },
-  {
-   "id": "C.HOOK",
-   "wr": 40,
-   "games": 5,
-   "kills": 20.4,
-   "deaths": 12,
-   "kda": 2.52,
-   "dmg": 43954,
-   "took": 34130,
-   "heal": 2210,
-   "level": 14.4,
-   "items": 2.2,
-   "lane": "ADC",
-   "role": "Marksman",
-   "ph": {
-    "early": {
-     "fights": 29,
-     "wr": 62.1,
-     "margin": 18.2,
-     "level": 3.8,
-     "items": 0.2,
-     "dmg": 1075,
-     "heal": 74
-    },
-    "mid": {
-     "fights": 32,
-     "wr": 62.5,
-     "margin": 17.3,
-     "level": 9.9,
-     "items": 1.5,
-     "dmg": 1981,
-     "heal": 99
-    },
-    "late": {
-     "fights": 29,
-     "wr": 55.2,
-     "margin": 18.2,
-     "level": 12.8,
-     "items": 2.1,
-     "dmg": 1985,
-     "heal": 83
-    }
-   }
-  },
-  {
-   "id": "H.S.B",
-   "wr": 40,
-   "games": 5,
-   "kills": 6.4,
-   "deaths": 9.4,
-   "kda": 1.64,
-   "dmg": 18946,
-   "took": 25787,
-   "heal": 4048,
-   "level": 14.4,
-   "items": 1.8,
-   "lane": "SUPPORT",
-   "role": "Warden",
-   "ph": {
-    "early": {
-     "fights": 28,
-     "wr": 28.6,
-     "margin": 18.5,
-     "level": 3.7,
-     "items": 0,
-     "dmg": 796,
-     "heal": 33
-    },
-    "mid": {
-     "fights": 36,
-     "wr": 44.4,
-     "margin": 16.3,
-     "level": 10.1,
-     "items": 0.9,
-     "dmg": 856,
-     "heal": 123
-    },
-    "late": {
-     "fights": 26,
-     "wr": 53.8,
-     "margin": 19.2,
-     "level": 12.9,
-     "items": 1.9,
-     "dmg": 1601,
-     "heal": 572
-    }
-   }
-  },
-  {
-   "id": "TRISTAN",
-   "wr": 25,
-   "games": 4,
-   "kills": 7.5,
-   "deaths": 11,
-   "kda": 1.39,
-   "dmg": 39258,
-   "took": 46815,
-   "heal": 10010,
-   "level": 16.3,
-   "items": 1.8,
-   "lane": "TOP",
-   "role": "Skirmisher",
-   "ph": {
-    "early": {
-     "fights": 26,
-     "wr": 42.3,
-     "margin": 19.2,
-     "level": 5.2,
-     "items": 0.1,
-     "dmg": 707,
-     "heal": 46
-    },
-    "mid": {
-     "fights": 36,
-     "wr": 61.1,
-     "margin": 16.3,
-     "level": 11.3,
-     "items": 0.9,
-     "dmg": 1512,
-     "heal": 309
-    },
-    "late": {
-     "fights": 19,
-     "wr": 52.6,
-     "margin": 22.5,
-     "level": 15.2,
-     "items": 1.6,
-     "dmg": 1795,
-     "heal": 870
-    }
-   }
-  },
-  {
-   "id": "KAMACHI",
-   "wr": 20,
-   "games": 5,
-   "kills": 4,
-   "deaths": 11,
-   "kda": 1.13,
-   "dmg": 14679,
-   "took": 19492,
-   "heal": 1562,
-   "level": 10.6,
-   "items": 1.2,
+   "id": "YODAKA",
+   "wr": 58.6,
+   "games": 111,
+   "kills": 10.59,
+   "deaths": 8.68,
+   "kda": 3.11,
+   "dmg": 30497,
+   "took": 26430,
+   "heal": 1439,
+   "level": 13.5,
+   "items": 2.1,
    "lane": "JUNGLE",
    "role": "Assassin",
    "ph": {
     "early": {
-     "fights": 35,
-     "wr": 62.9,
-     "margin": 16.6,
-     "level": 3.5,
+     "fights": 806,
+     "wr": 76.3,
+     "margin": 3.5,
+     "level": 4,
      "items": 0,
-     "dmg": 524,
-     "heal": 32
+     "dmg": 662,
+     "heal": 30
     },
     "mid": {
-     "fights": 45,
-     "wr": 51.1,
-     "margin": 14.6,
-     "level": 7.3,
-     "items": 0.4,
-     "dmg": 812,
-     "heal": 100
+     "fights": 887,
+     "wr": 72.3,
+     "margin": 3.3,
+     "level": 8.5,
+     "items": 0.8,
+     "dmg": 1097,
+     "heal": 47
     },
     "late": {
-     "fights": 17,
-     "wr": 64.7,
-     "margin": 23.8,
-     "level": 10.1,
-     "items": 1.2,
-     "dmg": 1090,
-     "heal": 128
+     "fights": 887,
+     "wr": 76.4,
+     "margin": 3.3,
+     "level": 12.3,
+     "items": 1.9,
+     "dmg": 1461,
+     "heal": 71
     }
    }
   },
   {
-   "id": "LAURA",
-   "wr": 16.7,
-   "games": 6,
-   "kills": 6.83,
-   "deaths": 7.5,
-   "kda": 1.6,
-   "dmg": 16965,
-   "took": 20957,
-   "heal": 2516,
-   "level": 12.8,
+   "id": "PUSS",
+   "wr": 57.6,
+   "games": 85,
+   "kills": 11.79,
+   "deaths": 7.41,
+   "kda": 4.12,
+   "dmg": 31381,
+   "took": 36474,
+   "heal": 3101,
+   "level": 13.3,
    "items": 2,
-   "lane": "MID",
-   "role": "Battle Mage",
+   "lane": "JUNGLE",
+   "role": "Assassin",
    "ph": {
     "early": {
-     "fights": 42,
-     "wr": 54.8,
-     "margin": 15.1,
-     "level": 4.5,
-     "items": 0.1,
-     "dmg": 793,
-     "heal": 97
+     "fights": 657,
+     "wr": 83.9,
+     "margin": 3.8,
+     "level": 3.9,
+     "items": 0,
+     "dmg": 741,
+     "heal": 62
     },
     "mid": {
-     "fights": 39,
-     "wr": 53.8,
-     "margin": 15.7,
-     "level": 9.3,
-     "items": 1.1,
-     "dmg": 1063,
-     "heal": 187
+     "fights": 715,
+     "wr": 78,
+     "margin": 3.7,
+     "level": 8.1,
+     "items": 0.8,
+     "dmg": 1083,
+     "heal": 119
     },
     "late": {
-     "fights": 20,
-     "wr": 75,
-     "margin": 21.9,
-     "level": 12.4,
-     "items": 2.1,
-     "dmg": 1352,
-     "heal": 185
+     "fights": 720,
+     "wr": 83.3,
+     "margin": 3.7,
+     "level": 12,
+     "items": 1.8,
+     "dmg": 1441,
+     "heal": 146
+    }
+   }
+  },
+  {
+   "id": "ARTHUR",
+   "wr": 54.4,
+   "games": 57,
+   "kills": 12.04,
+   "deaths": 9.11,
+   "kda": 1.8,
+   "dmg": 42047,
+   "took": 30092,
+   "heal": 10227,
+   "level": 18.6,
+   "items": 2.4,
+   "lane": "TOP",
+   "role": "Diver",
+   "ph": {
+    "early": {
+     "fights": 343,
+     "wr": 56.6,
+     "margin": 5.3,
+     "level": 5.2,
+     "items": 0.1,
+     "dmg": 1052,
+     "heal": 214
+    },
+    "mid": {
+     "fights": 399,
+     "wr": 58.9,
+     "margin": 4.9,
+     "level": 11.9,
+     "items": 1.2,
+     "dmg": 1926,
+     "heal": 505
+    },
+    "late": {
+     "fights": 501,
+     "wr": 52.7,
+     "margin": 4.4,
+     "level": 17.1,
+     "items": 2.2,
+     "dmg": 2356,
+     "heal": 575
+    }
+   }
+  },
+  {
+   "id": "ALUCARD",
+   "wr": 52,
+   "games": 125,
+   "kills": 9.81,
+   "deaths": 8.41,
+   "kda": 3.51,
+   "dmg": 31702,
+   "took": 39078,
+   "heal": 8030,
+   "level": 13.3,
+   "items": 1.9,
+   "lane": "JUNGLE",
+   "role": "Diver",
+   "ph": {
+    "early": {
+     "fights": 938,
+     "wr": 84.4,
+     "margin": 3.2,
+     "level": 3.9,
+     "items": 0,
+     "dmg": 743,
+     "heal": 148
+    },
+    "mid": {
+     "fights": 1026,
+     "wr": 75.6,
+     "margin": 3.1,
+     "level": 8.2,
+     "items": 0.8,
+     "dmg": 1030,
+     "heal": 272
+    },
+    "late": {
+     "fights": 1136,
+     "wr": 80.9,
+     "margin": 2.9,
+     "level": 12.1,
+     "items": 1.7,
+     "dmg": 1395,
+     "heal": 380
     }
    }
   },
   {
    "id": "KLAEDER",
-   "wr": 0,
-   "games": 2,
-   "kills": 3.5,
-   "deaths": 11.5,
-   "kda": 0.83,
-   "dmg": 19807,
-   "took": 26390,
-   "heal": 7502,
-   "level": 16,
-   "items": 1.5,
+   "wr": 51.7,
+   "games": 60,
+   "kills": 5.23,
+   "deaths": 7.85,
+   "kda": 1.27,
+   "dmg": 26498,
+   "took": 29906,
+   "heal": 15019,
+   "level": 17.8,
+   "items": 1.9,
    "lane": "TOP",
    "role": "Vanguard",
    "ph": {
     "early": {
-     "fights": 18,
-     "wr": 16.7,
-     "margin": 23.1,
-     "level": 3.9,
+     "fights": 353,
+     "wr": 37.4,
+     "margin": 5.2,
+     "level": 5,
      "items": 0,
-     "dmg": 599,
-     "heal": 25
+     "dmg": 749,
+     "heal": 27
     },
     "mid": {
-     "fights": 13,
-     "wr": 38.5,
-     "margin": 27.2,
-     "level": 10.8,
-     "items": 0.6,
-     "dmg": 880,
-     "heal": 109
+     "fights": 436,
+     "wr": 50.9,
+     "margin": 4.7,
+     "level": 11.3,
+     "items": 0.9,
+     "dmg": 1163,
+     "heal": 270
     },
     "late": {
-     "fights": 12,
-     "wr": 58.3,
-     "margin": 28.3,
-     "level": 14.4,
-     "items": 1.3,
-     "dmg": 1450,
-     "heal": 1095
+     "fights": 513,
+     "wr": 59.3,
+     "margin": 4.3,
+     "level": 16.4,
+     "items": 1.8,
+     "dmg": 1511,
+     "heal": 1453
     }
    }
   },
   {
-   "id": "ALICE",
-   "wr": 0,
-   "games": 2,
-   "kills": 0.5,
-   "deaths": 11.5,
-   "kda": 0.39,
-   "dmg": 8177,
-   "took": 16055,
-   "heal": 18683,
-   "level": 11,
-   "items": 1,
+   "id": "H.S.B",
+   "wr": 51.2,
+   "games": 86,
+   "kills": 8.78,
+   "deaths": 9.87,
+   "kda": 2.4,
+   "dmg": 29990,
+   "took": 32406,
+   "heal": 8582,
+   "level": 15.7,
+   "items": 2,
    "lane": "SUPPORT",
-   "role": "Controller",
+   "role": "Warden",
    "ph": {
     "early": {
-     "fights": 10,
-     "wr": 0,
-     "margin": 31,
-     "level": 3.2,
-     "items": 0,
-     "dmg": 567,
-     "heal": 831
+     "fights": 490,
+     "wr": 49.4,
+     "margin": 4.4,
+     "level": 4.4,
+     "items": 0.1,
+     "dmg": 901,
+     "heal": 31
     },
     "mid": {
-     "fights": 17,
-     "wr": 11.8,
-     "margin": 23.8,
-     "level": 8.2,
-     "items": 0.5,
-     "dmg": 555,
-     "heal": 1524
+     "fights": 640,
+     "wr": 53.6,
+     "margin": 3.9,
+     "level": 9.9,
+     "items": 1.2,
+     "dmg": 1138,
+     "heal": 107
     },
     "late": {
-     "fights": 3,
-     "wr": 100,
-     "margin": 56.6,
-     "level": 11.3,
+     "fights": 695,
+     "wr": 57.8,
+     "margin": 3.7,
+     "level": 14.2,
+     "items": 2,
+     "dmg": 1521,
+     "heal": 779
+    }
+   }
+  },
+  {
+   "id": "JACK",
+   "wr": 50.7,
+   "games": 152,
+   "kills": 9.89,
+   "deaths": 12.22,
+   "kda": 1.33,
+   "dmg": 29842,
+   "took": 27556,
+   "heal": 3727,
+   "level": 15.1,
+   "items": 2.4,
+   "lane": "MID",
+   "role": "Burst Mage",
+   "ph": {
+    "early": {
+     "fights": 911,
+     "wr": 57.6,
+     "margin": 3.2,
+     "level": 4.2,
+     "items": 0.1,
+     "dmg": 702,
+     "heal": 12
+    },
+    "mid": {
+     "fights": 1025,
+     "wr": 53.3,
+     "margin": 3.1,
+     "level": 9.4,
+     "items": 1.2,
+     "dmg": 1185,
+     "heal": 22
+    },
+    "late": {
+     "fights": 1281,
+     "wr": 50.8,
+     "margin": 2.7,
+     "level": 13.7,
+     "items": 2.2,
+     "dmg": 1537,
+     "heal": 333
+    }
+   }
+  },
+  {
+   "id": "LAURA",
+   "wr": 50.6,
+   "games": 160,
+   "kills": 8.93,
+   "deaths": 10.8,
+   "kda": 1.4,
+   "dmg": 26462,
+   "took": 31566,
+   "heal": 4339,
+   "level": 14.3,
+   "items": 2.3,
+   "lane": "MID",
+   "role": "Battle Mage",
+   "ph": {
+    "early": {
+     "fights": 983,
+     "wr": 47.4,
+     "margin": 3.1,
+     "level": 4,
+     "items": 0.1,
+     "dmg": 644,
+     "heal": 57
+    },
+    "mid": {
+     "fights": 1166,
+     "wr": 56.9,
+     "margin": 2.9,
+     "level": 9.1,
      "items": 1,
-     "dmg": 416,
-     "heal": 1052
+     "dmg": 1146,
+     "heal": 200
+    },
+    "late": {
+     "fights": 1133,
+     "wr": 58.7,
+     "margin": 2.9,
+     "level": 13.2,
+     "items": 2.1,
+     "dmg": 1396,
+     "heal": 261
+    }
+   }
+  },
+  {
+   "id": "STEIN",
+   "wr": 50.6,
+   "games": 85,
+   "kills": 4.69,
+   "deaths": 8.54,
+   "kda": 2.34,
+   "dmg": 22956,
+   "took": 36610,
+   "heal": 61665,
+   "level": 16,
+   "items": 2.3,
+   "lane": "SUPPORT",
+   "role": "Warden",
+   "ph": {
+    "early": {
+     "fights": 514,
+     "wr": 52.3,
+     "margin": 4.3,
+     "level": 4.5,
+     "items": 0.1,
+     "dmg": 653,
+     "heal": 1347
+    },
+    "mid": {
+     "fights": 575,
+     "wr": 51.1,
+     "margin": 4.1,
+     "level": 9.9,
+     "items": 1.1,
+     "dmg": 829,
+     "heal": 2452
+    },
+    "late": {
+     "fights": 711,
+     "wr": 57.2,
+     "margin": 3.7,
+     "level": 14.4,
+     "items": 2.1,
+     "dmg": 1218,
+     "heal": 3263
+    }
+   }
+  },
+  {
+   "id": "KAZEM",
+   "wr": 49.7,
+   "games": 149,
+   "kills": 14.52,
+   "deaths": 9.35,
+   "kda": 2.62,
+   "dmg": 41753,
+   "took": 34903,
+   "heal": 17565,
+   "level": 16.3,
+   "items": 2.1,
+   "lane": "TOP",
+   "role": "Bruiser AD",
+   "ph": {
+    "early": {
+     "fights": 1007,
+     "wr": 69.1,
+     "margin": 3.1,
+     "level": 4.7,
+     "items": 0.1,
+     "dmg": 932,
+     "heal": 307
+    },
+    "mid": {
+     "fights": 1139,
+     "wr": 66.5,
+     "margin": 2.9,
+     "level": 10.3,
+     "items": 1,
+     "dmg": 1419,
+     "heal": 593
+    },
+    "late": {
+     "fights": 1220,
+     "wr": 66.2,
+     "margin": 2.8,
+     "level": 14.6,
+     "items": 1.9,
+     "dmg": 1849,
+     "heal": 840
+    }
+   }
+  },
+  {
+   "id": "TOTSAKAN",
+   "wr": 49.4,
+   "games": 77,
+   "kills": 9.95,
+   "deaths": 8.53,
+   "kda": 1.67,
+   "dmg": 36415,
+   "took": 33158,
+   "heal": 6531,
+   "level": 17.9,
+   "items": 2,
+   "lane": "TOP",
+   "role": "Juggernaut",
+   "ph": {
+    "early": {
+     "fights": 477,
+     "wr": 54.5,
+     "margin": 4.5,
+     "level": 5.2,
+     "items": 0.1,
+     "dmg": 940,
+     "heal": 42
+    },
+    "mid": {
+     "fights": 505,
+     "wr": 55.8,
+     "margin": 4.4,
+     "level": 11.8,
+     "items": 1.1,
+     "dmg": 1687,
+     "heal": 187
+    },
+    "late": {
+     "fights": 546,
+     "wr": 56.4,
+     "margin": 4.2,
+     "level": 16.6,
+     "items": 1.9,
+     "dmg": 2125,
+     "heal": 604
+    }
+   }
+  },
+  {
+   "id": "PHANTOM",
+   "wr": 49.3,
+   "games": 146,
+   "kills": 13.49,
+   "deaths": 13.26,
+   "kda": 1.89,
+   "dmg": 45630,
+   "took": 47034,
+   "heal": 3814,
+   "level": 15.4,
+   "items": 2.2,
+   "lane": "ADC",
+   "role": "Marksman",
+   "ph": {
+    "early": {
+     "fights": 832,
+     "wr": 42.5,
+     "margin": 3.4,
+     "level": 4.3,
+     "items": 0.2,
+     "dmg": 1033,
+     "heal": 77
+    },
+    "mid": {
+     "fights": 1058,
+     "wr": 49.5,
+     "margin": 3,
+     "level": 9.5,
+     "items": 1.4,
+     "dmg": 1617,
+     "heal": 137
+    },
+    "late": {
+     "fights": 1210,
+     "wr": 52.1,
+     "margin": 2.8,
+     "level": 13.9,
+     "items": 2.2,
+     "dmg": 1961,
+     "heal": 172
+    }
+   }
+  },
+  {
+   "id": "FAUSTUS",
+   "wr": 48.8,
+   "games": 123,
+   "kills": 7.64,
+   "deaths": 11.5,
+   "kda": 1.16,
+   "dmg": 26623,
+   "took": 25701,
+   "heal": 578,
+   "level": 14.3,
+   "items": 2.3,
+   "lane": "MID",
+   "role": "Artillery Mage",
+   "ph": {
+    "early": {
+     "fights": 759,
+     "wr": 52.3,
+     "margin": 3.6,
+     "level": 4.2,
+     "items": 0.1,
+     "dmg": 753,
+     "heal": 11
+    },
+    "mid": {
+     "fights": 870,
+     "wr": 49.3,
+     "margin": 3.3,
+     "level": 9.2,
+     "items": 1.1,
+     "dmg": 1224,
+     "heal": 23
+    },
+    "late": {
+     "fights": 938,
+     "wr": 48.3,
+     "margin": 3.2,
+     "level": 13.4,
+     "items": 2.2,
+     "dmg": 1480,
+     "heal": 41
+    }
+   }
+  },
+  {
+   "id": "NIAN",
+   "wr": 48.1,
+   "games": 104,
+   "kills": 10.81,
+   "deaths": 10.05,
+   "kda": 1.61,
+   "dmg": 38035,
+   "took": 34569,
+   "heal": 11136,
+   "level": 16.9,
+   "items": 2.3,
+   "lane": "TOP",
+   "role": "Vanguard",
+   "ph": {
+    "early": {
+     "fights": 626,
+     "wr": 52.7,
+     "margin": 3.9,
+     "level": 4.8,
+     "items": 0.1,
+     "dmg": 859,
+     "heal": 23
+    },
+    "mid": {
+     "fights": 760,
+     "wr": 56.6,
+     "margin": 3.6,
+     "level": 10.8,
+     "items": 1.2,
+     "dmg": 1573,
+     "heal": 218
+    },
+    "late": {
+     "fights": 807,
+     "wr": 59.1,
+     "margin": 3.4,
+     "level": 15.8,
+     "items": 2.2,
+     "dmg": 2237,
+     "heal": 1097
+    }
+   }
+  },
+  {
+   "id": "LUCH",
+   "wr": 47.6,
+   "games": 168,
+   "kills": 12.6,
+   "deaths": 11.56,
+   "kda": 1.83,
+   "dmg": 42250,
+   "took": 39924,
+   "heal": 7175,
+   "level": 16.6,
+   "items": 2.1,
+   "lane": "TOP",
+   "role": "Skirmisher",
+   "ph": {
+    "early": {
+     "fights": 1097,
+     "wr": 63.2,
+     "margin": 3,
+     "level": 4.8,
+     "items": 0.1,
+     "dmg": 936,
+     "heal": 95
+    },
+    "mid": {
+     "fights": 1280,
+     "wr": 57.9,
+     "margin": 2.7,
+     "level": 10.6,
+     "items": 1,
+     "dmg": 1445,
+     "heal": 182
+    },
+    "late": {
+     "fights": 1356,
+     "wr": 60.5,
+     "margin": 2.7,
+     "level": 15.2,
+     "items": 2,
+     "dmg": 1874,
+     "heal": 431
+    }
+   }
+  },
+  {
+   "id": "TRISTAN",
+   "wr": 47.5,
+   "games": 99,
+   "kills": 8.04,
+   "deaths": 8.3,
+   "kda": 1.64,
+   "dmg": 35298,
+   "took": 39244,
+   "heal": 13493,
+   "level": 18.1,
+   "items": 2,
+   "lane": "TOP",
+   "role": "Skirmisher",
+   "ph": {
+    "early": {
+     "fights": 614,
+     "wr": 41.5,
+     "margin": 4,
+     "level": 5.3,
+     "items": 0.1,
+     "dmg": 706,
+     "heal": 44
+    },
+    "mid": {
+     "fights": 735,
+     "wr": 54.4,
+     "margin": 3.6,
+     "level": 11.5,
+     "items": 0.9,
+     "dmg": 1378,
+     "heal": 349
+    },
+    "late": {
+     "fights": 841,
+     "wr": 57.7,
+     "margin": 3.4,
+     "level": 16.7,
+     "items": 1.9,
+     "dmg": 2089,
+     "heal": 1129
+    }
+   }
+  },
+  {
+   "id": "ELLA",
+   "wr": 46.9,
+   "games": 98,
+   "kills": 13.8,
+   "deaths": 9.77,
+   "kda": 3.15,
+   "dmg": 35459,
+   "took": 30539,
+   "heal": 2031,
+   "level": 13.2,
+   "items": 2.1,
+   "lane": "JUNGLE",
+   "role": "Assassin",
+   "ph": {
+    "early": {
+     "fights": 740,
+     "wr": 78.9,
+     "margin": 3.6,
+     "level": 3.6,
+     "items": 0,
+     "dmg": 697,
+     "heal": 42
+    },
+    "mid": {
+     "fights": 803,
+     "wr": 76.5,
+     "margin": 3.5,
+     "level": 8.2,
+     "items": 0.8,
+     "dmg": 1185,
+     "heal": 71
+    },
+    "late": {
+     "fights": 838,
+     "wr": 77.9,
+     "margin": 3.4,
+     "level": 12.1,
+     "items": 1.9,
+     "dmg": 1633,
+     "heal": 97
+    }
+   }
+  },
+  {
+   "id": "ARIEL",
+   "wr": 46.7,
+   "games": 105,
+   "kills": 7.34,
+   "deaths": 13.3,
+   "kda": 1.12,
+   "dmg": 28528,
+   "took": 35366,
+   "heal": 872,
+   "level": 14.6,
+   "items": 2.2,
+   "lane": "MID",
+   "role": "Battle Mage",
+   "ph": {
+    "early": {
+     "fights": 647,
+     "wr": 38.8,
+     "margin": 3.9,
+     "level": 4.1,
+     "items": 0,
+     "dmg": 587,
+     "heal": 15
+    },
+    "mid": {
+     "fights": 782,
+     "wr": 47.2,
+     "margin": 3.5,
+     "level": 8.9,
+     "items": 0.9,
+     "dmg": 991,
+     "heal": 35
+    },
+    "late": {
+     "fights": 884,
+     "wr": 55.5,
+     "margin": 3.3,
+     "level": 13.1,
+     "items": 2,
+     "dmg": 1454,
+     "heal": 45
+    }
+   }
+  },
+  {
+   "id": "C.HOOK",
+   "wr": 43.2,
+   "games": 148,
+   "kills": 16.02,
+   "deaths": 12.51,
+   "kda": 2.13,
+   "dmg": 52981,
+   "took": 39452,
+   "heal": 2942,
+   "level": 15.2,
+   "items": 2.3,
+   "lane": "ADC",
+   "role": "Marksman",
+   "ph": {
+    "early": {
+     "fights": 817,
+     "wr": 45.3,
+     "margin": 3.4,
+     "level": 4.1,
+     "items": 0.2,
+     "dmg": 1181,
+     "heal": 80
+    },
+    "mid": {
+     "fights": 989,
+     "wr": 52.9,
+     "margin": 3.1,
+     "level": 9.5,
+     "items": 1.5,
+     "dmg": 2004,
+     "heal": 118
+    },
+    "late": {
+     "fights": 1140,
+     "wr": 56.8,
+     "margin": 2.9,
+     "level": 13.9,
+     "items": 2.3,
+     "dmg": 2806,
+     "heal": 141
+    }
+   }
+  },
+  {
+   "id": "PETER",
+   "wr": 42.2,
+   "games": 135,
+   "kills": 14.04,
+   "deaths": 11.25,
+   "kda": 2.28,
+   "dmg": 46860,
+   "took": 41942,
+   "heal": 3296,
+   "level": 15.6,
+   "items": 2.3,
+   "lane": "ADC",
+   "role": "Marksman",
+   "ph": {
+    "early": {
+     "fights": 764,
+     "wr": 53,
+     "margin": 3.5,
+     "level": 4.4,
+     "items": 0.2,
+     "dmg": 1287,
+     "heal": 78
+    },
+    "mid": {
+     "fights": 964,
+     "wr": 54.3,
+     "margin": 3.2,
+     "level": 9.8,
+     "items": 1.5,
+     "dmg": 1919,
+     "heal": 144
+    },
+    "late": {
+     "fights": 1124,
+     "wr": 52.7,
+     "margin": 2.9,
+     "level": 14.2,
+     "items": 2.3,
+     "dmg": 2327,
+     "heal": 168
+    }
+   }
+  },
+  {
+   "id": "KAMACHI",
+   "wr": 38.5,
+   "games": 96,
+   "kills": 10.23,
+   "deaths": 10.55,
+   "kda": 2.44,
+   "dmg": 30404,
+   "took": 33592,
+   "heal": 2453,
+   "level": 12.7,
+   "items": 1.8,
+   "lane": "JUNGLE",
+   "role": "Assassin",
+   "ph": {
+    "early": {
+     "fights": 719,
+     "wr": 75,
+     "margin": 3.7,
+     "level": 3.8,
+     "items": 0,
+     "dmg": 648,
+     "heal": 48
+    },
+    "mid": {
+     "fights": 815,
+     "wr": 70.8,
+     "margin": 3.4,
+     "level": 7.9,
+     "items": 0.7,
+     "dmg": 1102,
+     "heal": 95
+    },
+    "late": {
+     "fights": 798,
+     "wr": 78.2,
+     "margin": 3.5,
+     "level": 11.8,
+     "items": 1.7,
+     "dmg": 1590,
+     "heal": 128
     }
    }
   },
   {
    "id": "PIROSKA",
-   "wr": 0,
-   "games": 5,
-   "kills": 2.2,
-   "deaths": 13.4,
-   "kda": 0.73,
-   "dmg": 13367,
-   "took": 25441,
-   "heal": 12844,
-   "level": 12.8,
-   "items": 1.8,
+   "wr": 30.7,
+   "games": 166,
+   "kills": 6.14,
+   "deaths": 13.56,
+   "kda": 1.65,
+   "dmg": 22828,
+   "took": 35780,
+   "heal": 21689,
+   "level": 14.8,
+   "items": 2.2,
    "lane": "SUPPORT",
    "role": "Enchanter",
    "ph": {
     "early": {
-     "fights": 30,
-     "wr": 30,
-     "margin": 17.9,
-     "level": 3.6,
-     "items": 0,
-     "dmg": 576,
-     "heal": 593
+     "fights": 933,
+     "wr": 38.9,
+     "margin": 3.2,
+     "level": 4.2,
+     "items": 0.1,
+     "dmg": 672,
+     "heal": 631
     },
     "mid": {
-     "fights": 38,
-     "wr": 31.6,
-     "margin": 15.9,
-     "level": 8.3,
-     "items": 0.7,
-     "dmg": 682,
-     "heal": 666
+     "fights": 1141,
+     "wr": 43.6,
+     "margin": 2.9,
+     "level": 9.3,
+     "items": 1.1,
+     "dmg": 806,
+     "heal": 835
     },
     "late": {
-     "fights": 31,
-     "wr": 41.9,
-     "margin": 17.6,
-     "level": 11.5,
-     "items": 1.6,
-     "dmg": 763,
-     "heal": 682
+     "fights": 1287,
+     "wr": 49.6,
+     "margin": 2.7,
+     "level": 13.7,
+     "items": 2.2,
+     "dmg": 1021,
+     "heal": 999
+    }
+   }
+  },
+  {
+   "id": "ALICE",
+   "wr": 26.5,
+   "games": 102,
+   "kills": 4.42,
+   "deaths": 11.95,
+   "kda": 1.91,
+   "dmg": 19328,
+   "took": 29161,
+   "heal": 36142,
+   "level": 15.1,
+   "items": 2.3,
+   "lane": "SUPPORT",
+   "role": "Controller",
+   "ph": {
+    "early": {
+     "fights": 560,
+     "wr": 36.8,
+     "margin": 4.1,
+     "level": 4.2,
+     "items": 0.1,
+     "dmg": 593,
+     "heal": 811
+    },
+    "mid": {
+     "fights": 747,
+     "wr": 45.6,
+     "margin": 3.6,
+     "level": 9.3,
+     "items": 1,
+     "dmg": 797,
+     "heal": 1444
+    },
+    "late": {
+     "fights": 830,
+     "wr": 54.2,
+     "margin": 3.4,
+     "level": 13.9,
+     "items": 2.3,
+     "dmg": 941,
+     "heal": 1931
     }
    }
   }
@@ -1026,21 +1114,21 @@
    "th": "ต้นเกม",
    "from": 1,
    "to": 12,
-   "fights": 661
+   "fights": 18621
   },
   {
    "key": "mid",
    "th": "กลางเกม",
    "from": 13,
    "to": 26,
-   "fights": 735
+   "fights": 21924
   },
   {
    "key": "late",
    "th": "เลทเกม",
    "from": 27,
    "to": 51,
-   "fights": 520
+   "fights": 24183
   }
  ]
 }
