@@ -67,6 +67,8 @@ if (await click(/^SETTING/, 250)) {
 const LANE = /^(TOP|JUNGLE|MID|ADC|SUPPORT)\b/;
 
 async function startMatch() {
+  // จบแมตช์แล้วจอผลมีปุ่ม "New roster" — ต้องผ่านปุ่มนั้นก่อน ย้อน ‹ เฉยๆ ไม่ได้
+  await click(/^New roster$/i, 350);
   for (let i = 0; i < 8; i++) {
     if (/Choose a mode and play/i.test(await screen())) break;
     if (!(await click(/^‹$/, 110))) break;
@@ -76,13 +78,17 @@ async function startMatch() {
   await click(/^Start — build your roster/);
   await click(/^(Random \+ start|Start)$/, 350);
 
-  // เลือกห้าตัว
-  for (let k = 0; k < 5; k++) {
+  // เลือกหนึ่งตัวต่อเลน โดยสุ่มจากตัวที่ลงเลนนั้นได้
+  // เรียงตามลำดับเลนให้ตรงกับลำดับช่องในหน้าจัดตำแหน่ง
+  for (const tab of ["Top", "Jungle", "Mid", "ADC", "Support"]) {
+    if (!(await click(new RegExp("^" + tab + "$"), 140))) continue;
     const l = await btns();
-    const gi = l.findIndex((x) => /^[A-Z][A-Z.]{2,8} (TOP|JUNGLE|MID|ADC|SUPPORT)/.test(x.t));
-    if (gi < 0) break;
-    await clickAt(gi, 80);
-    if (!(await click(/^Add to team$/i, 80))) break;
+    const picks = l.map((x, i) => [x, i])
+      .filter(([x]) => !x.off && /^[A-Z][A-Z.]{2,8} (TOP|JUNGLE|MID|ADC|SUPPORT)/.test(x.t));
+    if (!picks.length) continue;
+    const r = picks[Math.floor(Math.random() * picks.length)];
+    await clickAt(r[1], 80);
+    await click(/^Add to team$/i, 80);
   }
   if (!(await click(/^Go to lanes$/i, 250))) throw new Error("กด Go to lanes ไม่ได้");
 
