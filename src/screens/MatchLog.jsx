@@ -2,7 +2,7 @@ import React from "react";
 import { tr } from "../i18n.js";
 import { CHAMPIONS } from "../data/champions.js";
 import { ITEM_BY_ID } from "../data/items.js";
-import { LATEST_PATCH, patchLabel } from "../data/patches.js";
+import { BUILD_LABEL } from "../data/patches.js";
 import { aggregate, clearLog, exportText, importText, readLog, writeLog } from "../game/matchlog.js";
 import { Shell, btn, card } from "../ui/chrome.jsx";
 import { C, MONO } from "../ui/theme.js";
@@ -39,7 +39,7 @@ function MatchLogView({ ctx }) {
   const [note, setNote] = React.useState("");
   const fileRef = React.useRef(null);
 
-  const here = patchLabel(LATEST_PATCH);
+  const here = BUILD_LABEL;
   const a = aggregate(rows, { pvpOnly, patch: thisPatch ? here : null });
   const margin = a.margin || 0;
 

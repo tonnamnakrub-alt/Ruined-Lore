@@ -42,7 +42,7 @@ import { step } from "./engine/step.js";
 import { levelProgress, mulberry32 } from "./engine/util.js";
 import { summarizeFight } from "./game/report.js";
 import { appendMatch, buildRecord } from "./game/matchlog.js";
-import { LATEST_PATCH, patchLabel } from "./data/patches.js";
+import { BUILD_LABEL } from "./data/patches.js";
 import { MatchLogScreen } from "./screens/MatchLog.jsx";
 import { CHARS, MAX_ROUNDS, POINTS, STAT_CAP, STAT_DESC, STAT_SHORT, WINS_NEEDED, emptyStats, makeRoster, randomSpread, toDef } from "./game/roster.js";
 import { Arena } from "./ui/Arena.jsx";
@@ -1125,7 +1125,7 @@ export function App() {
       // closeRound ถูกเรียกจากปุ่มในหน้าเลน หลังดูครบทุกไฟต์แล้ว
       // history จึงลงครบทุกไฟต์ของแมตช์ตั้งแต่ก่อนถึงบรรทัดนี้
       appendMatch(buildRecord({
-        patch: patchLabel(LATEST_PATCH), mode: mode.id, pvp: !!net.on,
+        patch: BUILD_LABEL, mode: mode.id, pvp: !!net.on,
         diff: net.on ? null : diffId, draftStyle, teamStyle,
         rounds: round, score: ns, me: nextMe, foe: nextFoe,
         history, mySide, endedBy: hitTarget ? "wins" : "rounds",

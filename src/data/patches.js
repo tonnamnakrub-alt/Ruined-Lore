@@ -1725,6 +1725,11 @@ export const PATCHES = [
 
 export const LATEST_PATCH = PATCHES[0];
 
+// งานที่ทำหลังแพตช์ล่าสุดแต่ยังไม่ออกเป็นเลขแพตช์ — นับเป็น Prototype ทั้งก้อน
+// ห้ามขยับเป็น 0.5 จนกว่าจะมี entry 0.5 ใน PATCHES จริงๆ
+// เอกสารและสมุดบันทึกแมตช์อ้างค่านี้ จะได้ไม่ประทับว่าเป็น 0.4 ทั้งที่เกมเลย 0.4 ไปแล้ว
+export const BUILD_LABEL = "Prototype";
+
 
 // "0.1 C" — ตัวเลขคือแพตช์ ตัวอักษรคือรอบแก้ย่อยในแพตช์เดียวกัน
 export function patchLabel(p) {
