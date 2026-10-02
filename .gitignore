@@ -4,3 +4,6 @@ _wr*.txt
 _wr*.err
 _boot.txt
 _refresh.done
+_play*.txt
+_played-matchlog.json
+_probe_*.png
