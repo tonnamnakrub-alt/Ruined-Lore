@@ -113,7 +113,10 @@ export function buildRecord({
   patch, mode, pvp, diff, draftStyle, teamStyle,
   rounds, score, me, foe, history, mySide, endedBy, seed,
 }) {
+  // เสมอเกิดขึ้นจริงได้ — RUSH เพดาน 21 ยก ถ้าไม่มีใครถึง 11 ก็จบที่ 10-10
+  // เดิมนับเสมอเป็นแพ้ ทำให้อัตราชนะที่คิดได้ต่ำกว่าความจริง
   const won = score.me > score.foe;
+  const drawn = score.me === score.foe;
   return {
     v: LOG_VERSION,
     at: Date.now(),
@@ -127,6 +130,7 @@ export function buildRecord({
     rounds: rounds || 0,
     score: [score.me, score.foe],
     won,
+    drawn,
     // ชนะยังไง — ถึงเป้าก่อน หรือหมดยกแล้วแต้มนำ
     endedBy: endedBy || null,
     me: side(me),
@@ -165,7 +169,9 @@ export function aggregate(rows, opts) {
   // อัตราชนะ "ไฟต์เลนของตัวเอง" จึงเป็นสัญญาณที่แยกตัวละครออกจากทีมได้จริง
 
   for (const r of use) {
+    // เสมอให้ครึ่งแต้ม แบบเดียวกับที่ _gamewr.mjs คิด
     if (r.won) wins++;
+    else if (r.drawn) wins += 0.5;
     for (const c of r.me || []) {
       const key = c.champ + "|" + c.lane;
       if (!champs[key]) champs[key] = { champ: c.champ, lane: c.lane, n: 0, w: 0, lvl: 0, fights: 0, fw: 0, k: 0, d: 0, a: 0 };

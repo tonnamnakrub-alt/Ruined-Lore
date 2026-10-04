@@ -58,6 +58,23 @@ const mk = (won) => buildRecord({
     "LAURA ตาย " + r.champs.LAURA.d + " · KAZEM ตาย " + r.champs.KAZEM.d);
 }
 
+// ---- เสมอต้องไม่ถูกนับเป็นแพ้
+// RUSH เพดาน 21 ยก ถ้าไม่มีใครถึง 11 ก็จบที่ 10-10 ได้จริง
+// เจอตอนเล่นจริง 11 แมตช์ มีสองแมตช์จบ 10-10 แล้วถูกจดว่าแพ้
+{
+  const drew = buildRecord({ patch: "Prototype", mode: "RUSH", pvp: false, diff: "NORMAL",
+    score: { me: 10, foe: 10 }, me: [], foe: [], history: [], mySide: "blue", endedBy: "rounds" });
+  t("เสมอไม่ถูกจดว่าชนะ", drew.won === false, "won=" + drew.won);
+  t("เสมอถูกทำเครื่องหมายว่าเสมอ", drew.drawn === true, "drawn=" + drew.drawn);
+  const lose = buildRecord({ patch: "Prototype", mode: "RUSH", pvp: false, diff: "NORMAL",
+    score: { me: 4, foe: 11 }, me: [], foe: [], history: [], mySide: "blue", endedBy: "wins" });
+  t("แพ้ยังเป็นแพ้ ไม่ใช่เสมอ", lose.won === false && lose.drawn === false, "drawn=" + lose.drawn);
+  // สรุปผลต้องให้เสมอครึ่งแต้ม ไม่ใช่ศูนย์
+  const a = aggregate([drew, drew, lose, lose]);
+  t("เสมอได้ครึ่งแต้มในอัตราชนะ", Math.abs(a.wr - 25) < 0.01,
+    "2 เสมอ 2 แพ้ = " + a.wr.toFixed(1) + "% (ถ้านับเสมอเป็นแพ้จะได้ 0%)");
+}
+
 // ---- ระดับบอทต้องเก็บเฉพาะ PvE
 {
   const r = buildRecord({ patch: "0.5", mode: "LONG", pvp: false, diff: "HARD",

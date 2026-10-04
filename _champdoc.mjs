@@ -112,6 +112,10 @@ try {
 // ตารางดวลเดี่ยว (champ-wr.json) อธิบายผลแพ้ชนะจริงได้แค่ 2% จึงใช้ตัดสินใจไม่ได้
 // ที่นี่จึงอ่าน game-wr.json เป็นหลัก แล้วสรุปให้เลยว่าแต่ละตัวควรปรับทางไหน
 // ---------------------------------------------------------------
+let PW = null;
+try { PW = JSON.parse(fs.readFileSync("play-wr.json", "utf8")); } catch { PW = null; }
+const playOf = (id) => (PW ? PW.champs.find((c) => c.champ === id) : null);
+
 let GW = null;
 try {
   GW = JSON.parse(fs.readFileSync("game-wr.json", "utf8"));
@@ -370,7 +374,105 @@ if (WR) {
 doc.push("");
 
 if (GW) {
-  doc.push("## ภาพรวมบาลานซ์ — ตัวไหนควรปรับ");
+  // ---- ลำดับการแก้ จัดตามความมั่นใจ ไม่ใช่ตามขนาดส่วนต่าง ----
+if (GW && PW) {
+  const m = GW.margin || 8.9;
+  const BAND = 3;            // เกณฑ์ของโปรเจกต์: 47-53 คือไม่ต้องแตะ
+  const rank = [], conflict = [];
+  for (const r of GW.rows) {
+    const simOff = r.wr - 50;
+    // เกณฑ์เข้ารายการมาจากแมตช์เต็มเท่านั้น (300 แมตช์) เพราะเป็นชุดที่สถิติแน่นพอ
+    // เล่นจริง 24 แมตช์ใช้ยืนยันทิศทาง ไม่ใช้สั่งแก้เอง
+    // ต่างจาก 50 ไม่เกินเกณฑ์ 47-53 หรือต้องขยับน้อยกว่า 1 แต้ม = ไม่ต้องแตะ
+    if (Math.abs(simOff) - BAND < 1) continue;
+    const p = playOf(r.id);
+    // ไฟต์น้อยกว่า 20 ค่าคลาดเคลื่อนกว้างกว่าตัวเลขเอง ถือว่ายังไม่มีข้อมูล
+    const MINF = 20;
+    const rel = p && p.laneRel != null && p.fights >= MINF ? p.laneRel : null;
+    const simSure = Math.abs(simOff) > m;
+    // เล่นจริงบอกทิศเดียวกันไหม — ถือว่า "บอก" เมื่อห่างจากศูนย์เกิน 3 แต้ม
+    const says = rel == null ? 0 : Math.abs(rel) <= 3 ? 0 : Math.sign(rel);
+    const same = says !== 0 && says === Math.sign(simOff);
+    const opposite = says !== 0 && says !== Math.sign(simOff);
+    if (opposite && simSure) { conflict.push({ r, p, simOff, rel }); continue; }
+    rank.push({ r, p, simOff, simSure, rel, same });
+  }
+  // ชั้น 1 แมตช์เต็มชัด + เล่นจริงยืนยันทิศเดียวกัน
+  // ชั้น 2 แมตช์เต็มชัดแต่เล่นจริงเงียบ หรือแมตช์เต็มยังไม่พ้นค่าคลาดเคลื่อน
+  const tier = (x) => (x.simSure && x.same ? 1 : 2);
+  rank.sort((a, b) => tier(a) - tier(b) || Math.abs(b.simOff) - Math.abs(a.simOff));
+
+  doc.push("## ลำดับการแก้ — เริ่มที่นี่");
+  doc.push("");
+  doc.push("จัดตาม **ความมั่นใจ** ไม่ใช่ตามขนาดส่วนต่าง เพราะตัวที่ส่วนต่างใหญ่แต่วัดมาจากตัวอย่างเล็ก");
+  doc.push("ปรับไปแล้วมักเด้งกลับ ส่วนตัวที่สองวิธีเห็นตรงกันคือตัวที่ปรับแล้วขยับจริง");
+  doc.push("");
+  doc.push("| วัดจาก | วิธี | หน่วยที่อ่าน |");
+  doc.push("|---|---|---|");
+  doc.push("| แมตช์เต็ม | `node _gamewr.mjs 300` บอทสู้บอท | อัตราชนะแมตช์ · ±" + m.toFixed(1) + " |");
+  doc.push("| เล่นจริง | `node _play.mjs` กดผ่านหน้าจอ " + PW.matches + " แมตช์ | ชนะไฟต์เลนเทียบค่ากลางของเลนตัวเอง |");
+  doc.push("");
+  doc.push("ค่ากลางชนะไฟต์ต่อเลนจากการเล่นจริง: " +
+    Object.entries(PW.laneMid).map(([k, v]) => "**" + k + "** " + v + "%").join(" · "));
+  doc.push("");
+  doc.push("เทียบกับค่ากลางของเลนตัวเอง ไม่ใช่เทียบ 50% เพราะจังเกิลเลือกเข้าแกงก์เฉพาะไฟต์ที่ได้เปรียบ");
+  doc.push("อัตราชนะไฟต์ของทั้งกลุ่มจึงถูกดันขึ้น เทียบข้ามเลนไม่มีความหมาย");
+  doc.push("");
+
+  const row = (x) => {
+    const dir = x.simOff > 0 ? "กดลง" : "บัฟขึ้น";
+    const need = Math.max(0, Math.abs(x.simOff) - 3).toFixed(1);
+    const relTxt = x.rel == null
+      ? (x.p && x.p.fights ? "ไฟต์น้อยเกินไป (" + x.p.fights + ")" : "ยังไม่ได้เล่น")
+      : (x.rel >= 0 ? "+" : "") + x.rel.toFixed(1) + " (" + x.p.fights + " ไฟต์ ±" + x.p.margin + ")";
+    // เล่นจริงชี้คนละทางกับแมตช์เต็ม แต่แมตช์เต็มยังไม่พ้นค่าคลาดเคลื่อน
+    // ไม่ถึงขั้นเรียกว่าขัดกัน แต่ต้องเตือนไว้ ไม่งั้นอ่านแล้วเข้าใจผิด
+    const warn = x.rel != null && Math.abs(x.rel) > 3 && Math.sign(x.rel) !== Math.sign(x.simOff)
+      ? "<br><sub>เล่นจริงชี้ทางตรงข้าม — วัดเพิ่มก่อนปรับ</sub>" : "";
+    return "| **[" + x.r.id + "](#" + x.r.id.toLowerCase().replace(/[^a-z0-9]/g, "") + ")** | " +
+      x.r.lane + " | " + x.r.wr.toFixed(1) + "% | " + relTxt + " | **" + dir + " ~" + need + " แต้ม**" + warn + " |";
+  };
+
+  for (const [t, title, note] of [
+    [1, "ชั้น 1 — สองวิธีเห็นตรงกัน แก้ก่อน", "แมตช์เต็มพ้นค่าคลาดเคลื่อน และเล่นจริงชี้ทิศเดียวกัน · เล่นจริงยังเป็นแค่ตัวยืนยันทิศ ยังไม่พ้นค่าคลาดเคลื่อนของตัวเอง (ต้องราว 200 แมตช์)"],
+    [2, "ชั้น 2 — แมตช์เต็มเห็น แต่เล่นจริงยังไม่ยืนยัน", "เล่นจริง 24 แมตช์ยังเงียบหรือยังไม่พ้นค่าคลาดเคลื่อนของตัวเอง ปรับได้แต่อย่าปรับแรง แล้ววัดซ้ำ"],
+  ]) {
+    const list = rank.filter((x) => tier(x) === t);
+    if (!list.length) continue;
+    doc.push("### " + title);
+    doc.push("");
+    doc.push(note);
+    doc.push("");
+    doc.push("| ตัวละคร | เลน | แมตช์เต็ม | เล่นจริง (เทียบเลน) | ควรทำ |");
+    doc.push("|---|---|---:|---:|---|");
+    for (const x of list) doc.push(row(x));
+    doc.push("");
+  }
+
+  if (conflict.length) {
+    doc.push("### สองวิธีขัดกัน — อย่าแตะจนรู้ว่าทำไม");
+    doc.push("");
+    doc.push("ตัวพวกนี้วิธีหนึ่งบอกอ่อน อีกวิธีบอกแรง ปรับตามวิธีใดวิธีหนึ่งมีโอกาสพลาดสูง");
+    doc.push("");
+    doc.push("| ตัวละคร | เลน | แมตช์เต็ม | เล่นจริง (เทียบเลน) | อ่านได้ว่า |");
+    doc.push("|---|---|---:|---:|---|");
+    for (const x of conflict) {
+      const why = x.simOff < 0 && x.rel > 0
+        ? "ชนะไฟต์ในเลนตัวเองได้ แต่ทีมยังแพ้แมตช์ — ปัญหาไม่ได้อยู่ที่พลังตัวเอง"
+        : "แพ้ไฟต์ในเลนตัวเอง แต่ทีมชนะแมตช์ — ตัวนี้ได้ประโยชน์จากทีม ไม่ใช่จากตัวเอง";
+      doc.push("| **" + x.r.id + "** | " + x.r.lane + " | " + x.r.wr.toFixed(1) + "% | " +
+        (x.rel >= 0 ? "+" : "") + x.rel.toFixed(1) + " | " + why + " |");
+    }
+    doc.push("");
+  }
+
+  doc.push("ที่ไม่อยู่ในสามตารางนี้ = **ไม่ต้องแตะ** ทั้งสองวิธีไม่เห็นว่าผิดปกติ");
+  doc.push("");
+  doc.push("---");
+  doc.push("");
+}
+
+doc.push("## ภาพรวมบาลานซ์ — ตัวไหนควรปรับ");
   doc.push("");
   doc.push(`วัดจาก **${GW.games} แมตช์เต็ม** ตั้งแต่ดราฟต์จนจบ · ตัวละราว ${GW.avgGamesEach} แมตช์ · ±${GW.margin} แต้ม`);
   doc.push("");

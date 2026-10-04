@@ -169,6 +169,22 @@ async function playRounds(maxSteps = 3000) {
   return { ok: false, why: "เดินเกิน " + maxSteps + " ก้าว", h: (await screen()).slice(0, 160) };
 }
 
+const LOGFILE = "_played-matchlog.json";
+
+// รวมกับที่เคยเล่นไว้ ตัดแถวซ้ำด้วยเวลาจบแมตช์บวกแต้ม
+function saveRows(rows) {
+  let old = [];
+  try {
+    const j = JSON.parse(fs.readFileSync(LOGFILE, "utf8"));
+    if (Array.isArray(j.rows)) old = j.rows;
+  } catch { /* ยังไม่มีไฟล์ก็ไม่เป็นไร */ }
+  const seen = new Set(old.map((r) => r.at + ":" + (r.score || []).join("-")));
+  const add = rows.filter((r) => r && r.at && !seen.has(r.at + ":" + (r.score || []).join("-")));
+  const all = old.concat(add);
+  fs.writeFileSync(LOGFILE, JSON.stringify({ kind: "sideline.matchlog", v: 1, rows: all }, null, 1));
+  return all.length;
+}
+
 const readLog = () => page.evaluate(() => {
   try { return JSON.parse(localStorage.getItem("sideline.matchlog") || "[]"); } catch { return []; }
 });
@@ -185,8 +201,11 @@ for (let g = 0; g < GAMES; g++) {
     console.log("แมตช์ " + (g + 1) + "/" + GAMES + " · " +
       (r.ok ? "จบใน " + r.steps + " ก้าว" : "ไม่จบ: " + r.why) +
       " · สมุด " + rows.length + " แถว" +
-      (last ? " · " + (last.won ? "ชนะ" : "แพ้") + " " + last.score.join("-") +
+      (last ? " · " + (last.won ? "ชนะ" : last.drawn ? "เสมอ" : "แพ้") + " " + last.score.join("-") +
         " ยก " + last.rounds + " · " + last.me.map((c) => c.champ).join(",") : ""));
+    // เขียนลงไฟล์ทุกแมตช์ รวมกับไฟล์เดิมด้วย
+    // รันถูกหยุดกลางทางมาแล้วครั้งหนึ่ง ข้อมูล 11 แมตช์หายทั้งชุด
+    saveRows(rows);
     if (!r.ok) {
       console.log("   จอ: " + r.h);
       if (r.on) console.log("   กดได้: " + r.on.join(" | "));
@@ -212,9 +231,7 @@ if (rows.length) {
   console.log("  ชนะเลน: " + JSON.stringify(r.lanes));
   console.log("  รายตัว: " + Object.entries(r.champs).map(([k, v]) =>
     k + " " + v.k + "/" + v.d + "/" + v.a + " ชนะไฟต์ " + v.won + "/" + v.fights).join(" · "));
-  fs.writeFileSync("_played-matchlog.json",
-    JSON.stringify({ kind: "sideline.matchlog", v: 1, rows }, null, 1));
-  console.log("\nเขียน _played-matchlog.json แล้ว (นำเข้าในหน้า MATCH STATS ได้)");
+  console.log("\nรวมในไฟล์ " + LOGFILE + " ทั้งหมด " + saveRows(rows) + " แมตช์ (นำเข้าในหน้า MATCH STATS ได้)");
 }
 console.log("error: " + (errs.length ? errs.slice(0, 3).join(" / ") : "ไม่มี"));
 await b.close();

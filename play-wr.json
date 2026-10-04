@@ -1,0 +1,301 @@
+{
+ "source": "เล่นผ่านหน้าจอจริงด้วย _play.mjs (ผู้เล่นใช้ปุ่มช่วยซื้อของและนิสัยเลน)",
+ "matches": 24,
+ "wins": 11,
+ "draws": 2,
+ "losses": 11,
+ "playerWr": 50,
+ "playerMargin": 20,
+ "roundsPerMatch": 16.8,
+ "laneMid": {
+  "ADC": 53.2,
+  "SUPPORT": 53.2,
+  "MID": 60.6,
+  "JUNGLE": 87.1,
+  "TOP": 54.6
+ },
+ "champs": [
+  {
+   "champ": "H.S.B",
+   "matches": 12,
+   "matchWr": 58.3,
+   "fights": 93,
+   "fightWr": 48.4,
+   "laneRel": -5.2,
+   "margin": 10.2,
+   "lanes": {
+    "SUPPORT": 8,
+    "TOP": 4
+   }
+  },
+  {
+   "champ": "PHANTOM",
+   "matches": 9,
+   "matchWr": 33.3,
+   "fights": 76,
+   "fightWr": 48.7,
+   "laneRel": -4.5,
+   "margin": 11.2,
+   "lanes": {
+    "ADC": 9
+   }
+  },
+  {
+   "champ": "STEIN",
+   "matches": 9,
+   "matchWr": 55.6,
+   "fights": 69,
+   "fightWr": 55.1,
+   "laneRel": 1.2,
+   "margin": 11.8,
+   "lanes": {
+    "SUPPORT": 5,
+    "TOP": 4
+   }
+  },
+  {
+   "champ": "C.HOOK",
+   "matches": 9,
+   "matchWr": 44.4,
+   "fights": 68,
+   "fightWr": 58.8,
+   "laneRel": 5.7,
+   "margin": 11.9,
+   "lanes": {
+    "ADC": 9
+   }
+  },
+  {
+   "champ": "LUCH",
+   "matches": 8,
+   "matchWr": 50,
+   "fights": 58,
+   "fightWr": 74.1,
+   "laneRel": 1,
+   "margin": 12.9,
+   "lanes": {
+    "TOP": 4,
+    "JUNGLE": 4
+   }
+  },
+  {
+   "champ": "KAZEM",
+   "matches": 6,
+   "matchWr": 66.7,
+   "fights": 56,
+   "fightWr": 89.3,
+   "laneRel": 8.5,
+   "margin": 13.1,
+   "lanes": {
+    "JUNGLE": 5,
+    "TOP": 1
+   }
+  },
+  {
+   "champ": "YODAKA",
+   "matches": 6,
+   "matchWr": 33.3,
+   "fights": 52,
+   "fightWr": 73.1,
+   "laneRel": 0.2,
+   "margin": 13.6,
+   "lanes": {
+    "MID": 3,
+    "JUNGLE": 3
+   }
+  },
+  {
+   "champ": "FAUSTUS",
+   "matches": 6,
+   "matchWr": 33.3,
+   "fights": 46,
+   "fightWr": 50,
+   "laneRel": -10.6,
+   "margin": 14.4,
+   "lanes": {
+    "MID": 6
+   }
+  },
+  {
+   "champ": "KLAEDER",
+   "matches": 5,
+   "matchWr": 20,
+   "fights": 45,
+   "fightWr": 57.8,
+   "laneRel": 3.1,
+   "margin": 14.6,
+   "lanes": {
+    "TOP": 5
+   }
+  },
+  {
+   "champ": "NIAN",
+   "matches": 5,
+   "matchWr": 60,
+   "fights": 44,
+   "fightWr": 59.1,
+   "laneRel": 0.1,
+   "margin": 14.8,
+   "lanes": {
+    "MID": 4,
+    "TOP": 1
+   }
+  },
+  {
+   "champ": "LAURA",
+   "matches": 5,
+   "matchWr": 20,
+   "fights": 40,
+   "fightWr": 80,
+   "laneRel": 19.4,
+   "margin": 15.5,
+   "lanes": {
+    "MID": 5
+   }
+  },
+  {
+   "champ": "ELLA",
+   "matches": 5,
+   "matchWr": 20,
+   "fights": 39,
+   "fightWr": 87.2,
+   "laneRel": 0.1,
+   "margin": 15.7,
+   "lanes": {
+    "JUNGLE": 5
+   }
+  },
+  {
+   "champ": "JACK",
+   "matches": 5,
+   "matchWr": 60,
+   "fights": 37,
+   "fightWr": 62.2,
+   "laneRel": 1.5,
+   "margin": 16.1,
+   "lanes": {
+    "MID": 5
+   }
+  },
+  {
+   "champ": "ALICE",
+   "matches": 5,
+   "matchWr": 40,
+   "fights": 34,
+   "fightWr": 41.2,
+   "laneRel": -12,
+   "margin": 16.8,
+   "lanes": {
+    "SUPPORT": 5
+   }
+  },
+  {
+   "champ": "TRISTAN",
+   "matches": 4,
+   "matchWr": 25,
+   "fights": 34,
+   "fightWr": 47.1,
+   "laneRel": -7.6,
+   "margin": 16.8,
+   "lanes": {
+    "TOP": 4
+   }
+  },
+  {
+   "champ": "PIROSKA",
+   "matches": 3,
+   "matchWr": 0,
+   "fights": 33,
+   "fightWr": 60.6,
+   "laneRel": 7.4,
+   "margin": 17.1,
+   "lanes": {
+    "SUPPORT": 3
+   }
+  },
+  {
+   "champ": "HOOD",
+   "matches": 4,
+   "matchWr": 75,
+   "fights": 32,
+   "fightWr": 56.3,
+   "laneRel": 3.1,
+   "margin": 17.3,
+   "lanes": {
+    "ADC": 4
+   }
+  },
+  {
+   "champ": "ALUCARD",
+   "matches": 3,
+   "matchWr": 66.7,
+   "fights": 31,
+   "fightWr": 87.1,
+   "laneRel": 0,
+   "margin": 17.6,
+   "lanes": {
+    "JUNGLE": 3
+   }
+  },
+  {
+   "champ": "KAMACHI",
+   "matches": 4,
+   "matchWr": 50,
+   "fights": 30,
+   "fightWr": 73.3,
+   "laneRel": -13.8,
+   "margin": 17.9,
+   "lanes": {
+    "JUNGLE": 4
+   }
+  },
+  {
+   "champ": "PINO",
+   "matches": 3,
+   "matchWr": 100,
+   "fights": 20,
+   "fightWr": 70,
+   "laneRel": 16.8,
+   "margin": 21.9,
+   "lanes": {
+    "SUPPORT": 3
+   }
+  },
+  {
+   "champ": "PETER",
+   "matches": 2,
+   "matchWr": 50,
+   "fights": 14,
+   "fightWr": 42.9,
+   "laneRel": -10.3,
+   "margin": 26.2,
+   "lanes": {
+    "ADC": 2
+   }
+  },
+  {
+   "champ": "ARTHUR",
+   "matches": 1,
+   "matchWr": 0,
+   "fights": 8,
+   "fightWr": 50,
+   "laneRel": -4.6,
+   "margin": 34.6,
+   "lanes": {
+    "TOP": 1
+   }
+  },
+  {
+   "champ": "ARIEL",
+   "matches": 1,
+   "matchWr": 100,
+   "fights": 5,
+   "fightWr": 40,
+   "laneRel": -20.6,
+   "margin": 43.8,
+   "lanes": {
+    "MID": 1
+   }
+  }
+ ]
+}
