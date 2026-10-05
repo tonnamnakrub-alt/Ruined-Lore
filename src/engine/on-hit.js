@@ -1,4 +1,5 @@
 import { tr } from "../i18n.js";
+import { popBrand } from "./lore-p6.js";
 import { applyDamage, grantShield, healUnit, skillPower } from "./damage.js";
 import { addBuff, addBuffUnique, dist, skillLabel, vfx, addFrag, withSrc } from "./state-util.js";
 import { supportOnHitBonus } from "./support.js";
@@ -32,6 +33,8 @@ export function popDagger(state, u, target) {
 
 // fragments, Monochrome's magic rider, and Double Cross's empowered hit
 export function onAutoLanded(state, u, target) {
+  // 0.6 HELSING — ออโต้ที่ลงเป้าที่ติดตราประทับจะลบตราแล้วระเบิดดาเมจเพิ่ม
+  if (u.champ && u.champ.hunterBrand) popBrand(state, u, target);
   // 0.5: ออโต้ที่ลงดึงเวลาชาร์จกระสุนของท่าที่ใช้กระสุนให้มาถึงเร็วขึ้น
   // คริดึงมากกว่า — เป็นวินาทีตรงๆ ไม่ใช่สัดส่วนแบบ cdCutOnHit
   for (const x of (u.skills || [])) {

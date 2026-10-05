@@ -11,6 +11,7 @@ import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { canopyShare, stickDagger } from "./lore-p4.js";
+import { brandTarget } from "./lore-p6.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -70,7 +71,9 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   const frail = 1 + (target.pigFrail || 0);
   // ตราขยายดาเมจของ Ariadne และตราเวทของ Mímir
   const itemAmp = loreItemAmp(state, source, target, magic);
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp
+  // 0.6 HELSING R — คนที่ถูกขังอยู่ในกรงทำดาเมจได้น้อยลงตลอดเวลาที่อยู่ในวง
+  const caged = 1 - (source && source.outCut ? source.outCut : 0);
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp * caged
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
@@ -230,6 +233,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     if (!isAuto && source.champ.beanstalk && /^[QWER] /.test(String(state.dmgSrc || ""))) jackSeed(state, source, target);
     // PHANTOM Q — มีดที่บินไปโดนแต่ละเล่มปักคาไว้หนึ่งเล่ม (E ไม่ปักเพิ่ม R ปักเองสามเล่ม)
     if (!isAuto && source.champ.daggers && /^Q /.test(String(state.dmgSrc || ""))) stickDagger(state, source, target, 1);
+    // 0.6 HELSING — สกิลทุกท่าที่ลงศัตรูแปะตราประทับ (ออโต้ไม่แปะ ออโต้เป็นตัวจุดระเบิด)
+    if (!isAuto && !state.popping && source.champ.hunterBrand) brandTarget(state, source, target);
     // NIAN — ทุกดาเมจจากสกิลของเหนียนสะสมประจุกระตุกสตัน
     if (!isAuto && source.champ.staticAura && /^[QWER] /.test(String(state.dmgSrc || ""))) nianJolt(state, source, target);
     // เอฟเฟกต์ของไอเทมชุด Patch 0.3 ที่ผูกกับการทำดาเมจ
@@ -429,6 +434,8 @@ export function grantShield(u, amount) {
 
 
 export function healUnit(state, u, amount) {
+  // 0.6 HELSING R — ในกรงฟื้นเลือดไม่ได้เลย ไม่ใช่หักเป็นสัดส่วนแบบ antiheal
+  if (u && u.noHeal) return 0;
   const cut = hasBuff(u, "antiheal") ? 1 - buffSum(u, "antiheal") : 1;
   const amp = 1 + (u.healAmp || 0);
   const src = state.srcUnit || u;

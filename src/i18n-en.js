@@ -3646,4 +3646,49 @@ export const DICT = {
 
  "แนะนำนิสัยเลนและป่า":
    "Suggest lane stances and jungle",
+
+ // ---- Patch 0.6 ตัวละครใหม่ ----
+ "แวนเฮลซิง":
+   "Van Helsing",
+ "สกิลทุกท่าที่โดนศัตรูแปะตราประทับไว้ 4 วิ · ออโต้ที่ลงเป้าที่ติดตราจะลบตราแล้วระเบิดดาเมจกายภาพเพิ่ม 20 ที่เลเวล 1 ไล่ถึง 105 ที่เลเวล 18 (+35% Bonus AD) บวกอีก 6/8/10/12% ของเลือดที่เป้าหายไปแล้ว (ที่เลเวล 1/6/11/16) — ยิ่งเป้าใกล้ตายยิ่งเจ็บ":
+   "Every skill that lands brands the target for 4s · an auto into a branded target strips the brand and detonates extra physical damage, 20 at level 1 rising to 105 at level 18 (+35% bonus AD), plus 6/8/10/12% of the target's missing HP (at levels 1/6/11/16) — the closer they are to death, the harder it hits",
+ "วาร์ปแล้วติดอาวุธ":
+   "Blink, then an empowered auto",
+ "พุ่งชนแล้วขังเดี่ยว":
+   "Collision dash into a solo lock",
+ "สลายร่างเป็นหมอกแตะไม่ได้ {0} วิ แล้วไปโผล่ที่จุดเป้าในระยะ {1} หน่วย ระเบิดรอบจุดที่โผล่รัศมี {2} หน่วย · หลังจากนั้นออโต้ครั้งถัดไปภายใน {3} วิจะกลายเป็นพุ่งเข้าหาเป้าไกลถึง {4} หน่วยแล้วกวาดครึ่งวงด้านหน้ารัศมี {5} หน่วย":
+   "Dissolves into untargetable mist for {0}s, then surfaces at a spot within {1} units and bursts in a {2}-unit radius · for the next {3}s the following auto becomes a dash of up to {4} units into the target, then a half-circle sweep {5} units across",
+ "พุ่งเป็นเส้นตรงไกล {0} หน่วย ชนแชมเปี้ยนตัวแรกแล้วถีบตัวเองดีดถอยหลัง {1} หน่วย · จากนั้นกางกรงรัศมี {2} หน่วยขังเป้าตัวนั้นไว้คนเดียว ออกนอกขอบ {3} หน่วยไม่ได้แม้จะพุ่งหรือวาร์ป · คนอื่นเดินผ่านเข้าออกได้ตามปกติ":
+   "Dashes {0} units in a straight line; on hitting the first enemy champion he kicks off them and springs {1} units back · then a {2}-unit cage locks that one target in, with a {3}-unit boundary they cannot dash or blink past · everyone else walks through freely",
+ "ถีบตัวเองดีดถอยหลัง":
+   "Springs back",
+ "ระยะพุ่งเข้าฟันกวาด":
+   "Sweep dash range",
+ "รัศมีฟันกวาดครึ่งวง":
+   "Half-circle sweep radius",
+ "ขอบเขตที่เป้าออกไม่ได้":
+   "Boundary the target cannot cross",
+ "ตัดฮีลนาน":
+   "Healing cut lasts",
+ "ติดอาวุธให้ออโต้นาน":
+   "Auto stays empowered for",
+ "ลดดาเมจที่เป้าทำได้":
+   "Cuts the target's damage output",
+ "ตัดการฟื้นฟูเลือดของเป้า":
+   "Cuts the target's healing",
+ "เป้าในวงฟื้นเลือดไม่ได้เลย ไม่ว่าจากฮีล ดูดเลือด หรือฟื้นเอง":
+   "a target inside gets no healing at all — not from heals, lifesteal or regeneration",
+ "Hunter's Brand":
+   "Hunter's Brand",
+ "Stake Driver":
+   "Stake Driver",
+ "Consecrated Volley":
+   "Consecrated Volley",
+ "Phantom Shift & Reaping Arc":
+   "Phantom Shift & Reaping Arc",
+ "Inquisitor's Iron Maiden":
+   "Inquisitor's Iron Maiden",
+
+ "เส้นตรงหยุดที่ตัวแรก":
+   "Line, stops on the first hit",
 };

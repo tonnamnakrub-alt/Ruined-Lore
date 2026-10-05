@@ -6,6 +6,7 @@ import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
+import { popBrand, reapAuto, tickP6 } from "./lore-p6.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -33,6 +34,9 @@ export const DT = 1 / 60;
 // ทั้งฝั่ง AI และฝั่งที่ผู้เล่นคุมเองต้องเรียกตัวนี้ตัวเดียว ไม่งั้นของที่ผูกกับออโต้
 // จะทำงานแค่ฝั่งเดียวเหมือนที่เคยเป็นมา
 function landAuto(state, u, target) {
+  // 0.6 HELSING E — ออโต้ครั้งถัดไปหลังวาร์ปกลายเป็นพุ่งเข้าฟันกวาดครึ่งวง
+  // กินการออโต้ครั้งนี้ไปทั้งก้อน จึงต้องออกก่อนคิดดาเมจออโต้ปกติ
+  if (u.reapArmed && reapAuto(state, u, target)) return;
   let atkDmg = u.ad;
   let didCrit = false;
   if (u.crit > 0 && u.rng() < u.crit) {
@@ -1141,6 +1145,7 @@ export function step(state) {
   state.castQueue.length = 0;
 
   tickNewSystems(state);
+  tickP6(state, dt);
   tickDashes(state);
   tickGrabs(state);
   tickHurls(state);
@@ -1208,6 +1213,10 @@ export function step(state) {
         }
       }
       if (p.slow) u.buffs.push({ type: "slow", v: p.slow, until: state.t + (p.dur || 1.5) });
+      // 0.6: กระสุนที่พาการตัดฮีลมา ติดสถานะให้เป้าตอนลง
+      if (p.antiheal) {
+        u.buffs.push({ type: "antiheal", v: p.antiheal, until: state.t + (p.antihealDur || 3) });
+      }
       if (p.charm && owner) applyCharm(state, owner, u, p.charm, p.charmSlow);
       if (p.polymorph && owner) applyPolymorph(state, owner, u, p.polymorph, p.polySlow || 0.4);
       // Gleipnir's Binding Shackles: the first champion it touches gets leashed to the caster

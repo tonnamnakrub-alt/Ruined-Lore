@@ -11,6 +11,7 @@ import { alliesOf, enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 import { fireLoreSkill, gainStar } from "./lore.js";
 import { fireP4Skill } from "./lore-p4.js";
+import { fireP6Skill } from "./lore-p6.js";
 
 
 // ครอบ fireSkillEffect ไว้ เพื่อติดป้าย "ดาเมจนี้มาจากสกิลไหน" ให้ทุกอย่างที่สกิลนี้ปล่อยออกไป
@@ -115,7 +116,11 @@ function fireSkillEffect(state, u, sk, target, prec) {
         width: sk.width, pierce: !!sk.pierce, falloff: sk.falloff, root: sk.root, daggerBleed: sk.daggerBleed,
         landStun: sk.landStun,
         pullHalf: sk.pullHalf,
-        slow: sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow, dur: sk.dur,
+        slow: sk.slowByRank ? sk.slowByRank[Math.max(0, sk.rank - 1)] : sk.slow,
+        // ท่าที่ระบุอายุสโลว์แยก (slowDur) ใช้ค่านั้น ไม่งั้นใช้ dur ของท่าเหมือนเดิม
+        dur: sk.slowDur != null ? sk.slowDur : sk.dur,
+        // 0.6: กระสุนพาการตัดฮีลไปด้วยได้ เดิมมีแต่ท่าที่ไม่ใช่กระสุนที่ทำได้
+        antiheal: sk.antiheal, antihealDur: sk.antihealDur,
         charm: sk.charm ? sk.charm[Math.max(0, sk.rank - 1)] : 0, charmSlow: sk.charmSlow,
         polymorph: sk.polymorph ? sk.polymorph[Math.max(0, sk.rank - 1)] : 0, polySlow: sk.polySlow,
         life: sk.range / (sk.projSpeed || BASE.projSpeed * 1.15), hitIds: [],
@@ -737,9 +742,11 @@ function fireSkillEffect(state, u, sk, target, prec) {
       break;
     }
     default: {
-      // ท่าของตัวละคร Patch 0.3 อยู่ใน engine/lore.js · Patch 0.4 อยู่ใน engine/lore-p4.js
+      // ท่าของตัวละคร Patch 0.3 อยู่ใน engine/lore.js · 0.4 อยู่ใน lore-p4.js · 0.6 อยู่ใน lore-p6.js
       if (!fireLoreSkill(state, u, sk, target, prec, { missX, missY, ang })) {
-        fireP4Skill(state, u, sk, target, prec, { missX, missY, ang });
+        if (!fireP6Skill(state, u, sk, target)) {
+          fireP4Skill(state, u, sk, target, prec, { missX, missY, ang });
+        }
       }
       break;
     }

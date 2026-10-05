@@ -1,6 +1,7 @@
 import { C } from "../ui/theme.js";
 import { LORE_CHAMPIONS } from "./champions-lore.js";
 import { P4_CHAMPIONS } from "./champions-p4.js";
+import { P6_CHAMPIONS } from "./champions-p6.js";
 
 
 const CORE_CHAMPIONS = {
@@ -349,7 +350,7 @@ const CORE_CHAMPIONS = {
 
 
 // ตัวละครทั้งหมดในเกม — ชุดเดิม 12 ตัว บวกชุด Patch 0.3 อีก 10 ตัว บวกชุด Patch 0.4
-export const CHAMPIONS = { ...CORE_CHAMPIONS, ...LORE_CHAMPIONS, ...P4_CHAMPIONS };
+export const CHAMPIONS = { ...CORE_CHAMPIONS, ...LORE_CHAMPIONS, ...P4_CHAMPIONS, ...P6_CHAMPIONS };
 
 
 // เลนที่ตัวนี้ลงได้ทั้งหมด — เลนถนัดมาก่อน แล้วตามด้วยเลนรอง
