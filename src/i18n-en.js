@@ -3935,4 +3935,109 @@ export const DICT = {
    " (burning ground)",
  "ปลุกพายุไฟบรรพกาล":
    "calls up a primordial firestorm",
+ // ---- แพตช์โน้ตของรายการ Prototype ----
+ "ตัวละครใหม่ห้าตัว · รอบบาลานซ์ · และกลไกที่ประกาศไว้แต่ไม่เคยทำงาน":
+   "Five new champions · a balance pass · and mechanics that were declared but never ran",
+ "ห้าตัวใหม่เข้าสนามครบ — เฮลซิง วูล์ฟ อนันซี โคสเช อิฟริต · และรอบเก็บกวาดกลไกที่ข้อมูลประกาศไว้แต่ไม่มีโค้ดไหนอ่าน":
+   "All five new champions are in — Helsing, Wolf, Anansi, Koschei and Ifrit · plus a sweep through mechanics the data declared but no code ever read",
+ "ยังไม่ติดเลขแพตช์":
+   "No patch number yet",
+ "ก้อนนี้คือทุกอย่างที่ทำหลัง 0.4 แต่ยังไม่ออกเป็นเลขแพตช์ จึงขึ้นเป็น Prototype · สมุดบันทึกแมตช์ก็ประทับคำนี้เหมือนกัน":
+   "This block is everything done after 0.4 that has not shipped under a patch number yet, so it shows as Prototype · the match log stamps the same word",
+ "HELSING (แวนเฮลซิง) — มือปราบอสูรแห่งจันทราสีเลือด · Assassin · JUNGLE/MID":
+   "HELSING (Van Helsing) — Inquisitor of the Crimson Moon · Assassin · JUNGLE/MID",
+ "นักล่าที่ทุกอย่างหมุนรอบตราประทับ — สกิลแปะตรา ออโต้จุดระเบิดตรา ยิ่งเป้าเลือดน้อยยิ่งเจ็บ":
+   "A hunter whose whole kit revolves around his brand — skills apply it, auto-attacks detonate it, and the more wounded the target the more it hurts",
+ "พาสซีฟ Hunter's Brand — สกิลทุกท่า (Q W E R) ที่โดนศัตรูแปะตรา 4 วิ · ออโต้ที่ลงเป้าที่ติดตราจะลบตราแล้วระเบิดดาเมจกายภาพ 20 ที่เลเวล 1 ไล่ถึง 105 ที่เลเวล 18 (+35% Bonus AD) บวกอีก 6/8/10/12% ของเลือดที่หายไปของเป้า (ที่เลเวล 1/6/11/16)":
+   "Passive Hunter's Brand — every skill (Q W E R) that hits an enemy brands them for 4s · an auto-attack on a branded target consumes the brand and bursts for 20 physical at level 1 rising to 105 at level 18 (+35% Bonus AD), plus 6/8/10/12% of the target's missing health (at levels 1/6/11/16)",
+ "Q Stake Driver — ลิ่มเงินพุ่งเป็นเส้นตรงไกล 750 กว้าง 80 หยุดที่ตัวแรก · ดาเมจกายภาพ 75/110/145/180/215 (+80% Bonus AD) · คูลดาวน์ 7/6.5/6/5.5/5 วิ":
+   "Q Stake Driver — a silver stake flies 750 units in a straight line, 80 wide, stopping on the first target · 75/110/145/180/215 physical (+80% Bonus AD) · cooldown 7/6.5/6/5.5/5s",
+ "W Consecrated Volley — หน้าไม้ทะลุทั้งแนวไกล 700 · ดาเมจกายภาพ 60/95/130/165/200 (+60% Bonus AD) · สโลว์ 30/32.5/35/37.5/40% นาน 2 วิ และตัดฮีล 40% นาน 5 วิ":
+   "W Consecrated Volley — a crossbow volley pierces the whole line out to 700 · 60/95/130/165/200 physical (+60% Bonus AD) · slows 30/32.5/35/37.5/40% for 2s and cuts healing by 40% for 5s",
+ "E Phantom Shift & Reaping Arc — สลายเป็นหมอก แตะไม่ได้ 0.25 วิ แล้วโผล่ที่จุดเป้าไกล 350 ระเบิดรัศมี 150 (30/45/60/75/90 +25% Bonus AD) · ออโต้ครั้งถัดไปกลายเป็นพุ่งเข้าหาเป้าไกล 350 แล้วกวาดครึ่งวง 180 องศารัศมี 350 (50/80/110/140/170 +65% Bonus AD)":
+   "E Phantom Shift & Reaping Arc — dissolves into mist, untargetable for 0.25s, then appears at a point up to 350 away and bursts in a 150 radius (30/45/60/75/90 +25% Bonus AD) · his next auto-attack becomes a dash up to 350 into the target followed by a 180-degree cleave of radius 350 (50/80/110/140/170 +65% Bonus AD)",
+ "R Inquisitor's Iron Maiden — พุ่งเป็นเส้นตรง 500 ชนแชมเปี้ยนตัวแรกแล้วถีบตัวเองดีดถอย 250 · ดาเมจ 100/200/300 (+50% Bonus AD) · กางกรงรัศมี 250 ขังเป้าคนเดียวไว้ 2.5/3/3.5 วิ ออกนอกขอบ 375 ไม่ได้แม้จะพุ่งหรือวาร์ป · ในกรงฟื้นเลือดไม่ได้เลย 100% และดาเมจที่เป้าทำได้ลดลง 10/12.5/15% · คนอื่นเดินผ่านเข้าออกได้ตามปกติ":
+   "R Inquisitor's Iron Maiden — dashes 500 in a straight line, kicks off the first enemy champion hit and springs back 250 · 100/200/300 physical (+50% Bonus AD) · then cages that one target in a 250 radius for 2.5/3/3.5s; they cannot leave the 375 boundary even by dashing or blinking · inside the cage they cannot be healed at all (100% cut) and the damage they deal drops 10/12.5/15% · everyone else walks in and out freely",
+ "WOLF (วูล์ฟ) — อสูรหมาป่าผู้กระหายเลือด · Skirmisher · JUNGLE":
+   "WOLF — the blood-hungry werebeast · Skirmisher · JUNGLE",
+ "ยิ่งเป้าเลือดน้อยยิ่งแรงทุกทาง แล้วปิดไฟต์ด้วยการกินซากศพเพื่อรีเซ็ตสกิลทั้งชุด":
+   "The lower his target's health, the stronger he gets in every way — then he closes the fight by eating a corpse to reset his whole kit",
+ "พาสซีฟ Bloodfrenzy — ตีเป้าที่เลือดต่ำกว่า 50% ได้สามอย่างพร้อมกัน: ดาเมจกายภาพ +12/16/20/24% · ความเร็วโจมตี +30/45/60/75% · ดูดเลือด 15/20/25/30% ของดาเมจที่ทำได้ (ขั้นตามเลเวล 1/6/11/16)":
+   "Passive Bloodfrenzy — against a target below 50% health he gets all three at once: +12/16/20/24% physical damage · +30/45/60/75% attack speed · and 15/20/25/30% of the damage dealt back as health (tiers at levels 1/6/11/16)",
+ "Q Mutilating Fang — ติดออโต้ครั้งถัดไป รีเซ็ตจังหวะตีทันที · ดาเมจ 35/65/95/125/155 (+75% AD) · ฉีกเกราะ 15/17.5/20/22.5/25% และตัดฮีล 40% นาน 3.5 วิ":
+   "Q Mutilating Fang — arms his next auto-attack and resets the attack timer immediately · 35/65/95/125/155 (+75% AD) · shreds 15/17.5/20/22.5/25% armor and cuts healing 40% for 3.5s",
+ "W Stalker's Pounce — ล่องหน 1.75 วิ · ออโต้ถัดไประหว่างล่องหน (หรือภายใน 1 วิหลังหลุด) กลายเป็นกระโจนไปตกที่จุดเป้าไกล 500 ทุบรัศมี 225 (70/110/150/190/230 +70% Bonus AD) มีวงเตือนบนพื้นก่อนตก 0.35 วิ · พาสซีฟของ W ให้ความเร็วเดิน +10/12.5/15/17.5/20% คูณสามถ้ามีเป้าเลือดต่ำกว่าครึ่งในระยะ 1,200":
+   "W Stalker's Pounce — goes invisible for 1.75s · his next auto while hidden (or within 1s of losing it) becomes a leap to a spot up to 500 away, slamming a 225 radius (70/110/150/190/230 +70% Bonus AD) with a warning ring on the ground 0.35s before it lands · W's passive also gives +10/12.5/15/17.5/20% move speed, tripled while a target below half health is within 1,200",
+ "E Terrifying Windup & Howl — ยืนชาร์จ 0.6 วิ (โดน Hard CC แล้วขาด) แล้วคำรามรัศมี 400 · ดาเมจ 70/110/150/190/230 (+60% Bonus AD) · ศัตรูในวงติดหวาดกลัว 1.0-1.4 วิ และดาเมจที่ทำใส่วูล์ฟลดลง 15/17.5/20/22.5/25% นาน 3.5 วิ":
+   "E Terrifying Windup & Howl — stands still winding up for 0.6s (hard CC cancels it), then howls in a 400 radius · 70/110/150/190/230 (+60% Bonus AD) · enemies inside are feared for 1.0-1.4s and the damage they deal to Wolf drops 15/17.5/20/22.5/25% for 3.5s",
+ "R Feast of the Fallen — แชมเปี้ยนศัตรูตายในระยะ 1,000 รอบตัวทิ้งซากไว้ 12 วิ กินได้ครั้งเดียวต่อซาก · กินแล้วฟื้นเลือด 80/130/180 (+8% Max HP +40% Bonus AD) รีเซ็ตคูลดาวน์ Q W E ทันที และได้ความเร็วเดิน +25% นาน 1.5 วิ · คูลดาวน์ 5 วิทุกระดับ":
+   "R Feast of the Fallen — an enemy champion dying within 1,000 units leaves a corpse for 12s, eatable once · eating one heals 80/130/180 (+8% Max HP +40% Bonus AD), instantly resets Q, W and E, and grants +25% move speed for 1.5s · 5s cooldown at every rank",
+ "ANANSI (อนันซี) — แมงมุมผู้ร้อยโครงข่ายพิภพ · Battle Mage · MID/SUPPORT":
+   "ANANSI — the spider who weaves the world's web · Battle Mage · MID/SUPPORT",
+ "ใช้กำแพงเป็นทางลัด แล้วเล่นเกมดักทางด้วยใย":
+   "Uses walls as shortcuts, then plays a trapping game with his webs",
+ "พาสซีฟ Spider's Traverse — เดินทะลุกำแพงได้ทุกชนิด ทั้งกำแพงอิฐของ H.S.B กรงของ PINO และกรงขังของ HELSING · อยู่ในเนื้อกำแพงได้ 3 วิ ครบแล้วถูกดันออกขอบที่ใกล้สุด · โดนแชมเปี้ยนศัตรูตีขณะอยู่ในกำแพง เวลาที่เหลือลดครึ่งทันที · คูลดาวน์เข้ากำแพงใหม่ 8/7/6 วิ (เลเวล 1/7/13) · ออโต้ทุกครั้งพ่วงดาเมจเวท 15 ไล่ถึง 65 (+20% AP)":
+   "Passive Spider's Traverse — walks through walls of every kind, including H.S.B's brick walls, Pino's cage and Helsing's prison · can stay inside a wall for 3s, then gets pushed out the nearest edge · being hit by an enemy champion while inside immediately halves the time left · 8/7/6s cooldown before entering again (levels 1/7/13) · every auto-attack carries 15 bonus magic damage rising to 65 (+20% AP)",
+ "Q Gourd of Wit — ทุ่มน้ำเต้าลงพื้นในระยะ 800 หน่วงวง 0.35 วิ ระเบิดรัศมี 250 · ดาเมจเวท 80/125/170/215/260 (+75% AP)":
+   "Q Gourd of Wit — slams a gourd into the ground within 800, with a 0.35s warning, bursting in a 250 radius · 80/125/170/215/260 magic (+75% AP)",
+ "W Tangled Puppetry — ยิงใยเป็นเส้นตรงไกล 850 กว้าง 110 · เส้นแรก 50/75/100/125/150 (+40% AP) สโลว์ 35% นาน 1.5 วิ แล้วเปิดให้กดซ้ำได้ใน 3.5 วิ · เส้นที่สองลงคนเดิมทำดาเมจครึ่งเดียวแล้วตรึงเท้า 1.25-1.85 วิ · ลงคนใหม่ทำดาเมจเต็ม แล้วกระชากสองคนมาชนกันกลางทาง ระเบิดใส่ทั้งคู่ 60/95/130/165/200 (+55% AP) และติดสตัน 0.75-1.15 วิ":
+   "W Tangled Puppetry — fires a web 850 units in a straight line, 110 wide · the first thread deals 50/75/100/125/150 (+40% AP) and slows 35% for 1.5s, then opens a 3.5s window for a second cast · a second thread on the same target deals half damage and roots for 1.25-1.85s · on a new target it deals full damage, then yanks the two of them together mid-way, bursting on both for 60/95/130/165/200 (+55% AP) and stunning them 0.75-1.15s",
+ "E Sticky Web Trap — พ่นกรวย 60 องศาไกล 600 ลงทันที (60/90/120/150/180 +50% AP) แล้วทิ้งผืนใยค้าง 3 วิ · คนที่ยืนในใยติดสโลว์ 35-55% · ติดตรึงพื้น ใช้สกิล Dash/Leap/Blink/Teleport ไม่ได้ · และบัฟเร่งความเร็วเดินทั้งหมดไม่มีผล":
+   "E Sticky Web Trap — sprays a 60-degree cone out to 600, landing instantly (60/90/120/150/180 +50% AP), then leaves a web patch for 3s · anyone standing in it is slowed 35-55% · grounded, so no Dash, Leap, Blink or Teleport · and every move-speed buff is nullified",
+ "R Venom of Paranoia — คลื่นพิษกว้าง 650 คลานไปข้างหน้า 1,050 ด้วยความเร็วแค่ 850 (เดินหลบได้) · ไม่ทำดาเมจเลย แต่ศัตรูที่โดนบ้าคลั่ง 1.25/1.5/1.75 วิ — ร่ายสกิลและใช้ไอเทมไม่ได้ ความเร็วโจมตี +100% แต่หันไปตีพวกเดียวกันที่ใกล้สุดในระยะ 500 · ถ้าไม่มีพวกในระยะเลย จะยืนมึนทำอะไรไม่ได้":
+   "R Venom of Paranoia — a 650-wide wave of venom creeps 1,050 units forward at only 850 speed (easy to walk away from) · it deals no damage at all, but enemies it touches go berserk for 1.25/1.5/1.75s — unable to cast skills or use items, +100% attack speed, but turning on the nearest ally within 500 · with no ally in range they stand there dazed, unable to act",
+ "KOSCHEI (โคสเช) — ทรราชผู้อยู่เหนือกาลมรณะ · Vanguard · TOP":
+   "KOSCHEI — the tyrant beyond death · Vanguard · TOP",
+ "แทงค์ที่ดาเมจสเกลตามความถึกของตัวเอง ออกของแทงค์แล้วเจ็บขึ้นตามไปด้วย":
+   "A tank whose damage scales off his own durability, so building tanky makes him hit harder too",
+ "พาสซีฟ Deathless Phylactery — ทุกครั้งที่มีแชมเปี้ยนตายในระยะ 1,000 รอบตัว ไม่ว่าศัตรูที่ถูกสังหารหรือเพื่อนที่ล้มลง ฟื้นเลือดทันที 12/16/20% ของเลือดสูงสุดตัวเอง (เลเวล 1/7/13)":
+   "Passive Deathless Phylactery — every time a champion dies within 1,000 units of him, an enemy killed or an ally falling alike, he immediately heals 12/16/20% of his own maximum health (levels 1/7/13)",
+ "Q Spectral Grasp — กะโหลกวิญญาณพุ่งเป็นเส้นไกล 750 กว้าง 120 หยุดที่แชมเปี้ยนตัวแรก · ดาเมจเวท 50/80/110/140/170 (+45% AP +5% Max HP) · และสูบเลือดคืนให้ตัวเอง 50/80/110/140/170 (+35% AP +4.5% Max HP)":
+   "Q Spectral Grasp — a spirit skull flies 750 in a straight line, 120 wide, stopping on the first enemy champion · 50/80/110/140/170 magic (+45% AP +5% Max HP) · and drains 50/80/110/140/170 health back to himself (+35% AP +4.5% Max HP)",
+ "W Tormenting Miasma — เปิดออร่ารัศมี 250 นาน 4 วิ เผาศัตรูในวงทุก 0.5 วิ รวม 8 ระลอก ระลอกละ 12/18/24/30/36 (+10% AP +1% Bonus HP) · กดตอนโล่ E ยังไม่แตกจะได้ความเร็วเดิน +20/25/30/35/40% นาน 2.5 วิ":
+   "W Tormenting Miasma — opens a 250-radius aura for 4s, burning enemies inside every 0.5s for 8 ticks of 12/18/24/30/36 (+10% AP +1% Bonus HP) · cast while E's shield still holds and he also gains +20/25/30/35/40% move speed for 2.5s",
+ "E Casket Carapace — กางโล่ 70/115/160/205/250 (+12% Max HP) นาน 4 วิ · ตราบใดที่โล่ยังไม่แตก แผ่คลื่นรัศมี 375 ทุก 1 วิ สูงสุด 4 ระลอก · ต่อระลอก 15/25/35/45/55 (+15% Bonus Armor +15% Bonus MR) สโลว์ 20-30% นาน 1 วิ และฉีกเกราะกับต้านเวท 4-8% ต่อครั้ง สะสมได้ 5 ชั้น อยู่ 3 วิ · โล่แตกก่อนครบเวลาแล้วคลื่นหยุดทันที":
+   "E Casket Carapace — a shield of 70/115/160/205/250 (+12% Max HP) for 4s · while the shield holds it pulses a 375 radius every 1s, up to 4 times · each pulse deals 15/25/35/45/55 (+15% Bonus Armor +15% Bonus MR), slows 20-30% for 1s, and shreds armor and magic resist 4-8% per hit, stacking 5 times for 3s · if the shield breaks early the pulses stop at once",
+ "R Soulseverance — แยกดวงวิญญาณออกจากชุดเกราะ 9/11/13 วิ · ร่างวิญญาณแตะไม่ได้ ไม่กินดาเมจเลย ตีธรรมดาไม่ได้ แต่ร่าย Q กับ W ได้ และได้ความเร็วเดิน +15/20/25% กับความเร่งสกิล +15/25/35 · ชุดเกราะยืนรับดาเมจแทนและเดินไล่ฟันศัตรูที่ใกล้สุดเองด้วยพลังโจมตีของโคสเช ได้เกราะและต้านเวทเพิ่ม 20/35/50 · ใช้หลอดเลือดเดียวกัน ดาเมจที่ชุดเกราะกินคือเลือดที่โคสเชเสีย · ห่างกันเกิน 900 หรือหมดเวลาแล้วรวมร่างทันที":
+   "R Soulseverance — tears his spirit out of the iron shell for 9/11/13s · the spirit is untargetable, immune to all damage and unable to auto-attack, but still casts Q and W, and gains +15/20/25% move speed and +15/25/35 ability haste · the shell stands in as the thing enemies hit and walks down the nearest enemy on its own using Koschei's attack damage, with +20/35/50 bonus armor and magic resist · they share one health pool, so damage the shell takes is health Koschei loses · going further apart than 900, or running out of time, snaps them back together",
+ "IFRIT (อิฟริต) — ญินน์เพลิงแห่งทะเลทราย · Burst Mage · MID":
+   "IFRIT — the fire djinn of the desert · Burst Mage · MID",
+ "ลดต้านเวทก่อน แล้วอัดดาเมจเวททั้งชุด — W ฉีกต้านเวท 25% แล้ว Q กับ E ที่ตามมาจึงเจ็บกว่าปกติ":
+   "Shred magic resist first, then dump the whole kit into it — W cuts 25% magic resist so the Q and E that follow hurt far more",
+ "พาสซีฟ Cinder Scourge — ทุกครั้งที่อิฟริตสร้างความเสียหาย ไม่ว่าออโต้หรือสกิล ศัตรูติดไฟเผา 3 วิ · ดาเมจเวททุก 0.5 วิ รวม 6 ระลอก ระลอกละ 3 ที่เลเวล 1 ไล่ถึง 15 ที่เลเวล 18 (+3.5% AP) · แตะซ้ำแล้วต่ออายุ 3 วิใหม่ทันที":
+   "Passive Cinder Scourge — every time Ifrit deals damage, from an auto-attack or any skill, the enemy burns for 3s · magic damage every 0.5s for 6 ticks, each tick 3 at level 1 rising to 15 at level 18 (+3.5% AP) · hitting them again refreshes the full 3s immediately",
+ "Q Pyroclastic Orb — ลูกไฟพุ่งเป็นเส้นไกล 850 กว้าง 110 ความเร็ว 1,750 · ชนแชมเปี้ยนตัวแรกก็ระเบิดที่นั่น ไม่ชนใครก็ระเบิดที่ปลายทาง รัศมี 225 · ดาเมจเวท 80/125/170/215/260 (+75% AP)":
+   "Q Pyroclastic Orb — a fire orb flies 850 in a straight line, 110 wide at 1,750 speed · it bursts on the first enemy champion it hits, or at the end of its flight if it hits no one, in a 225 radius · 80/125/170/215/260 magic (+75% AP)",
+ "W Combustive Blast — ระเบิดลงพื้นในระยะ 725 รัศมี 250 หน่วง 0.25 วิ · ดาเมจเวท 70/105/140/175/210 (+60% AP) · ฉีกต้านเวทของเป้าลง 15/17.5/20/22.5/25% นาน 3.5 วิ (ฉีกต้านเวทเท่านั้น ไม่แตะเกราะ)":
+   "W Combustive Blast — bursts the ground within 725 in a 250 radius after a 0.25s delay · 70/105/140/175/210 magic (+60% AP) · shreds the target's magic resist 15/17.5/20/22.5/25% for 3.5s (magic resist only, armor untouched)",
+ "E Trail of Cinders — ฟาดไฟเป็นแนวยาว 850 กว้าง 160 ลงทันทีในเฟรมที่กด ไม่มีลูกให้หลบ · จังหวะแรก 60/90/120/150/180 (+50% AP) · แล้วทิ้งพื้นไฟค้าง 3.5 วิ เผาคนที่ยืนทับทุก 0.5 วิ ระลอกละ 15/22.5/30/37.5/45 (+15% AP)":
+   "E Trail of Cinders — slams fire into a line 850 long and 160 wide, landing the instant it is cast with no projectile to dodge · the initial hit deals 60/90/120/150/180 (+50% AP) · it then leaves burning ground for 3.5s, searing anyone standing on it every 0.5s for 15/22.5/30/37.5/45 (+15% AP)",
+ "R Cataclysmic Firestorm — เรียกพายุไฟลงที่จุดเป้าในระยะ 700 รัศมี 425 อยู่ 5 วิ · พายุคืบคลานเข้าหาแชมเปี้ยนศัตรูที่ใกล้สุดเองด้วยความเร็ว 250 หน่วย/วิ · เผาคนในวงทุก 0.5 วิ สูงสุด 10 ระลอก ระลอกละ 30/45/60 (+15% AP) และติดสโลว์ 20/25/30% ตลอดเวลาที่ยังอยู่ข้างใน · คูลดาวน์ 50/45/40 วิ":
+   "R Cataclysmic Firestorm — calls a firestorm at a point within 700, 425 units across, lasting 5s · it creeps toward the nearest enemy champion on its own at 250 units per second · burning everyone inside every 0.5s for up to 10 ticks of 30/45/60 (+15% AP) and slowing them 20/25/30% for as long as they stay in it · cooldown 50/45/40s",
+ "กลไกที่ข้อมูลประกาศไว้แต่ไม่มีโค้ดไหนอ่าน — เก็บกวาดทั้งรอบ":
+   "Mechanics the data declared but no code ever read — swept up this round",
+ "ANANSI E ตรึงพื้น — ฟิลด์ถูกเขียนลงบนศัตรูแต่ไม่มีใครอ่าน ตรึงพื้นจึงไม่ทำงานเลยทั้งการห้ามท่าเคลื่อนที่และการล้างบัฟความเร็วเดิน · ต่อสายแล้ว และผลนี้ใช้กับทุกแหล่งที่ติดตรึงพื้น":
+   "ANANSI E grounding — the field was written onto enemies but nothing read it, so grounding did nothing at all: it neither blocked movement skills nor nullified move-speed buffs · now wired, and the effect applies to every source of grounding",
+ "ANANSI R บ้าคลั่ง — เป้าที่ต้องหันไปตีถูกคำนวณไว้ทุกทิกแต่ไม่มีใครอ่าน ติดสถานะแล้วก็ยังตีศัตรูตามปกติ · และยังขาดข้อ \"+100% ความเร็วโจมตี\" กับข้อ \"ไม่มีพวกในระยะแล้วยืนมึน\" ครบทั้งสามข้อแล้ว":
+   "ANANSI R berserk — the ally it should turn on was computed every tick but nothing read it, so a berserked enemy kept attacking normally · the \"+100% attack speed\" clause and the \"no ally in range means standing dazed\" clause were also missing · all three are in now",
+ "WOLF E ลดดาเมจศัตรู — เดิมลดดาเมจที่ศัตรูทำใส่ทุกคน และใช้เวลาเท่าเวลาหวาดกลัว (1-1.4 วิ) · แก้เป็นลดเฉพาะดาเมจที่ทำใส่วูล์ฟ และอยู่นาน 3.5 วิตามที่ออกแบบ":
+   "WOLF E damage reduction — it used to reduce the enemy's damage against everyone, and lasted only as long as the fear (1-1.4s) · now it reduces only the damage they deal to Wolf, and lasts the 3.5s it was designed for",
+ "WOLF R กินซาก — เดิมตัดคูลดาวน์ทั้งที่ท่าไม่ออก และบอทเลือกกดจากระยะศัตรูไม่ใช่จากการมีซากอยู่ใกล้ ผลคือกดทิ้งเสียคูลดาวน์เปล่า แทบไม่ได้ฮีลเลย":
+   "WOLF R devouring — it used to spend the cooldown even when the cast failed, and the bot chose it by enemy distance rather than by whether a corpse was nearby, so it was thrown away on cooldown and almost never healed",
+ "การเลือกเป้าค้างกับคนที่แตะไม่ได้นานถึง 0.8 วิ — ศัตรูยืนฟันร่างที่ตีไม่โดนทิ้งเปล่าแทนที่จะเปลี่ยนเป้า มีผลกับทั้งการล่องหน การมุดน้ำ และการแยกร่างของโคสเช":
+   "Targeting stayed locked on someone untargetable for up to 0.8s — enemies kept swinging at a body they could not hit instead of switching targets · this affected stealth, Ariel's dive and Koschei's soul split alike",
+ "บอทไม่รู้จักชนิดท่าใหม่ทั้ง 15 ชนิด จึงตกไปใช้กติกาสำรองที่คิดจากระยะโจมตีปกติ ท่ารัศมีกว้างอย่างคำรามหรือออร่าถูกกดเฉพาะตอนศัตรูประชิดมากๆ · เขียนกติกาให้ครบทุกชนิดแล้ว":
+   "The bot did not recognise any of the 15 new skill types and fell back to a rule based on basic attack range, so wide-radius skills like the howl and the auras were only cast when enemies were almost touching · every type now has its own rule",
+ "รองเท้าและระยะเดินในไฟต์":
+   "Boots and walking distance in a fight",
+ "สูตรบีบระยะเริ่มไฟต์เปลี่ยนเป็น 0.70 + 0.30 × (จำนวนตัว − 2) / 8 · เดิมบีบถึง 0.34 ที่สองคน ดวลเดี่ยวแทบไม่มีช่วงเดินเลย ตอนนี้ดวลเดี่ยวมีช่วงเดินจริงโดยไม่แตะไฟต์ห้าคน":
+   "The fight-start spacing formula is now 0.70 + 0.30 × (bodies − 2) / 8 · it used to squeeze all the way to 0.34 with two bodies, leaving a duel almost no walking phase at all; duels now have a real one without touching five-on-five",
+ "บอทไม่ถูกบังคับให้ซื้อรองเท้าอีกแล้ว ต้องเลือกเองว่าคุ้มไหม · วัดแล้วรองเท้าชนะ 28.8% เมื่อต้องแลกกับช่องของใหญ่":
+   "The bot is no longer forced to buy boots and has to decide for itself whether they are worth it · measured, boots win 28.8% when they cost a slot that could hold a big item",
+ "ฝั่งผู้เล่นได้ตัวช่วยชุดเดียวกับที่บอทมี":
+   "The player side now gets the same helpers the bot already had",
+ "ก่อนหน้านี้ฝั่งศัตรูมีทั้งคนซื้อของ คนเลือกสแตนซ์ และคนเลือกเส้นป่าให้ ส่วนฝั่งผู้เล่นไม่มีเลย · เพิ่มปุ่มซื้อของให้ทั้งทีม ซื้อให้ตัวเอง และแนะนำสแตนซ์กับเส้นป่าแล้ว":
+   "Until now the enemy side had someone buying its items, picking its stances and choosing its jungle route, while the player side had none of it · added buttons to buy for the whole team, buy for yourself, and suggest stances and the jungle route",
+ "สมุดบันทึกแมตช์ — จบแมตช์แล้วบันทึกว่าเล่นตัวอะไร เลนไหน ออกของอะไร และชนะด้วยอะไร เก็บไว้ในเครื่อง 2,000 แมตช์ล่าสุด เพื่อใช้ปรับบาลานซ์จากข้อมูลคนเล่นจริง":
+   "Match log — finishing a match now records which champion was played, in which lane, what was built and how it was won, keeping the last 2,000 matches on this machine so balance can be tuned from how people actually play",
 };
