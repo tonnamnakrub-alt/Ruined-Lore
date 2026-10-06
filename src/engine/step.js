@@ -182,7 +182,13 @@ export function step(state) {
     // Vow of Lyonesse: slow immune only lasts as long as the shield it came with does
     const shieldedImmune = u.slowImmuneUntil != null && state.t < u.slowImmuneUntil && u.shield > 0;
     const slowMul = (hasBuff(u, "slowimmune") || shieldedImmune) ? 1 : Math.max(0.2, 1 - buffSum(u, "slow") * (1 - slowResist));
-    u.msEff = (u.moveSpeed + apMs + buffSum(u, "msFlat")) * (1 + buffSum(u, "ms", state.t)) * slowMul;
+    // 0.6 ANANSI E — ติดตรึงพื้นแล้วบัฟเร่งความเร็วเดินทั้งหมดไม่มีผล (Cripple)
+    // เก็บเฉพาะส่วนที่เป็นลบไว้ ไม่งั้นการล้างบัฟจะกลายเป็นช่วยคนที่ติดสโลว์แบบ ms
+    const crippled = (u.grounded || 0) > state.t;
+    const msPct = buffSum(u, "ms", state.t);
+    const msFlat = buffSum(u, "msFlat");
+    u.msEff = (u.moveSpeed + apMs + (crippled ? Math.min(0, msFlat) : msFlat))
+      * (1 + (crippled ? Math.min(0, msPct) : msPct)) * slowMul;
     // Charm (Laura E) — ทำอะไรไม่ได้เหมือนโดนสตัน แต่ยัง "เดิน" ได้ ต่างจาก root
     u.charmed = u.buffs.find((b) => b.type === "charm" && b.until > state.t) || null;
     const locked = hasBuff(u, "stun") || hasBuff(u, "fear");

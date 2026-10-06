@@ -9,6 +9,7 @@ import { STAT_KEYS } from "./src/data/constants.js";
 import { DEFAULT_FIGHT } from "./src/data/tuning.js";
 import { buildFight } from "./src/engine/build-fight.js";
 import { applyDamage, healUnit } from "./src/engine/damage.js";
+import { addBuff } from "./src/engine/state-util.js";
 import { autoRanks } from "./src/engine/skill-ranks.js";
 import { step } from "./src/engine/step.js";
 import { toDef } from "./src/game/roster.js";
@@ -315,8 +316,50 @@ const cast = (st, u, key, target) => {
     if (o.foe.buffs.some((b2) => b2.type === "fear")) feared = true;
   }
   t("ชาร์จครบแล้วคำรามติดหวาดกลัวจริง", feared, feared ? "ติดหวาดกลัว" : "ไม่ติด");
-  t("ศัตรูที่หวาดกลัวทำดาเมจได้น้อยลง", (o.foe.outCut || 0) > 0,
-    "ลด " + ((o.foe.outCut || 0) * 100).toFixed(1) + "%");
+  // วัดดาเมจจริงที่มันตีใส่วูล์ฟ เทียบกับตอนไม่ติดสถานะ
+  const hit = (st, src, tgt) => {
+    const before = tgt.hp;
+    st.dmgSrc = "ทดสอบ";
+    applyDamage(st, src, tgt, 300, false);
+    st.dmgSrc = null;
+    const dealt = before - tgt.hp;
+    tgt.hp = before;
+    return dealt;
+  };
+  const onWolf = hit(o.st, o.foe, o.u);
+  const clean = fight("WOLF", "KAZEM", 18, 250);
+  step(clean.st);
+  const baseline = hit(clean.st, clean.foe, clean.u);
+  t("ศัตรูที่หวาดกลัวทำดาเมจใส่วูล์ฟได้น้อยลงจริง", onWolf < baseline * 0.95,
+    "ไม่ติดสถานะ " + baseline.toFixed(0) + " -> ติดสถานะ " + onWolf.toFixed(0));
+
+  // เอกสารบอกว่าลดเฉพาะดาเมจที่ทำ "ใส่ Wolf" — ใส่คนอื่นต้องไม่ลด
+  {
+    const o2 = fight2("WOLF", "KAZEM", "ARTHUR", 18, 250);
+    cast(o2.st, o2.u, "E", o2.foe);
+    for (let i = 0; i < 60 * 3; i++) {
+      step(o2.st);
+      if (o2.foe.dread) break;
+    }
+    const toWolf = hit(o2.st, o2.foe, o2.u);
+    const toMate = hit(o2.st, o2.foe, o2.mate);
+    const mateClean = hit(fight2("WOLF", "KAZEM", "ARTHUR", 18, 250).st,
+      o2.foe, o2.mate);
+    t("ลดเฉพาะดาเมจที่ทำใส่วูล์ฟ ไม่ลดใส่คนอื่น",
+      !!o2.foe.dread && Math.abs(toMate - mateClean) < 1 && toWolf < toMate,
+      "ใส่วูล์ฟ " + toWolf.toFixed(0) + " · ใส่เพื่อนของมัน " + toMate.toFixed(0));
+  }
+
+  // เอกสารบอก 3.5 วิ ซึ่งนานกว่าเวลาหวาดกลัว (1.0-1.4 วิ)
+  {
+    const o3 = fight("WOLF", "KAZEM", 18, 250);
+    cast(o3.st, o3.u, "E", o3.foe);
+    let at = -1;
+    for (let i = 0; i < 60 * 3; i++) { step(o3.st); if (o3.foe.dread) { at = o3.st.t; break; } }
+    const left = at < 0 ? 0 : o3.foe.dread.until - at;
+    t("สถานะลดดาเมจอยู่นาน 3.5 วิ ไม่ใช่เท่าเวลาหวาดกลัว",
+      Math.abs(left - 3.5) < 0.05, left.toFixed(2) + " วิ");
+  }
 }
 
 // ---- R: ไม่มีซากก็กินไม่ได้ · มีซากแล้วฟื้นเลือดและรีเซ็ตคูลดาวน์
@@ -462,6 +505,75 @@ const cast = (st, u, key, target) => {
   t("W เส้นที่สองลงเป้าเดิมติดตรึงเท้า", o.foe.buffs.some((x) => x.type === "root"),
     o.foe.buffs.some((x) => x.type === "root") ? "ติดตรึง" : "ไม่ติด");
   t("กดซ้ำแล้วหน้าต่างปิด", !o.u.webThread, o.u.webThread ? "ยังเปิด" : "ปิดแล้ว");
+}
+
+// ---- W: ยิงเส้นที่สองใส่ศัตรูคนละตัว = กระชากมาชนกัน ระเบิด และสตัน
+{
+  const o = fight2("ANANSI", "KAZEM", "ARTHUR", 18, 400);
+  o.mate.x = o.foe.x + 400; o.mate.y = o.foe.y;
+  cast(o.st, o.u, "W", o.foe);
+  // KAZEM กางโล่ให้ตัวเองได้ ดาเมจไปกินโล่ก่อนถึงเลือด จึงวัดเลือดรวมโล่
+  const tot = (x) => x.hp + (x.shield || 0);
+  const hpA = tot(o.foe), hpB = tot(o.mate);
+  const gap0 = Math.hypot(o.foe.x - o.mate.x, o.foe.y - o.mate.y);
+  castWebThread(o.st, o.u, o.u.skills.find((x) => x.key === "W"), o.mate);
+  const gap1 = Math.hypot(o.foe.x - o.mate.x, o.foe.y - o.mate.y);
+  t("ยิงคนละตัวแล้วกระชากสองคนมาชนกัน", gap1 < gap0 * 0.2,
+    "ห่าง " + gap0.toFixed(0) + " -> " + gap1.toFixed(0) + " หน่วย");
+  t("ทั้งสองตัวติดสตัน ไม่ใช่แค่ตรึงเท้า",
+    o.foe.buffs.some((b) => b.type === "stun") && o.mate.buffs.some((b) => b.type === "stun"),
+    "เป้าแรก " + (o.foe.buffs.some((b) => b.type === "stun") ? "สตัน" : "ไม่สตัน")
+    + " · เป้าสอง " + (o.mate.buffs.some((b) => b.type === "stun") ? "สตัน" : "ไม่สตัน"));
+  t("ระเบิดตอนชนลงดาเมจทั้งสองตัว", tot(o.foe) < hpA - 1 && tot(o.mate) < hpB - 1,
+    "เป้าแรก " + hpA.toFixed(0) + " -> " + tot(o.foe).toFixed(0)
+    + " · เป้าสอง " + hpB.toFixed(0) + " -> " + tot(o.mate).toFixed(0));
+  const sk = CHAMPIONS.ANANSI.skills.find((x) => x.key === "W");
+  t("ค่าระเบิดตอนชนตรงเอกสาร 60-200 (+55% AP) และสตัน 0.75-1.15 วิ",
+    sk.slamDmg[0] === 60 && sk.slamDmg[4] === 200 && sk.slamApRatio === 0.55
+    && sk.slamStun[0] === 0.75 && sk.slamStun[4] === 1.15,
+    sk.slamDmg.join("/") + " · สตัน " + sk.slamStun.join("/"));
+}
+
+// ---- W: คูลดาวน์เริ่มนับหลังกดครั้งที่สอง ไม่ใช่ตอนกดครั้งแรก
+{
+  const o = fight2("ANANSI", "KAZEM", "ARTHUR", 18, 400);
+  cast(o.st, o.u, "W", o.foe);
+  const own = o.u.skills.find((x) => x.key === "W");
+  const held = own.cdLeft;
+  castWebThread(o.st, o.u, own, o.foe);
+  const after = own.cdLeft;
+  t("คูลดาวน์ W เริ่มนับหลังกดครั้งที่สอง", after > held,
+    "ระหว่างรอกดซ้ำ " + held.toFixed(2) + " วิ -> หลังกดซ้ำ " + after.toFixed(2) + " วิ");
+}
+
+// ---- E: ตรึงพื้นต้องห้ามท่าเคลื่อนที่จริง และล้างบัฟความเร็วเดินจริง
+{
+  // ห้ามท่าเคลื่อนที่: KAZEM E เป็นท่าพุ่ง ถ้าติดตรึงพื้นต้องกดไม่ได้
+  const o = fight("ANANSI", "KAZEM", 18, 300);
+  cast(o.st, o.u, "E", o.foe);
+  let grounded = false, dashed = false;
+  for (let i = 0; i < 60 * 3; i++) {
+    step(o.st);
+    if ((o.foe.grounded || 0) > o.st.t) {
+      grounded = true;
+      if (o.foe.dashing) dashed = true;
+    }
+  }
+  t("ติดตรึงพื้นแล้วศัตรูพุ่งไม่ได้", grounded && !dashed,
+    grounded ? (dashed ? "ยังพุ่งได้" : "พุ่งไม่ได้ตามที่ควร") : "ไม่เคยติดตรึงพื้น");
+}
+{
+  // ล้างบัฟความเร็วเดิน: ใส่บัฟ ms ให้ศัตรูแล้วดูว่า msEff ขึ้นไหม
+  const o = fight("ANANSI", "KAZEM", 18, 300);
+  o.foe.grounded = o.st.t + 5;
+  addBuff(o.foe, { type: "ms", v: 0.5, until: o.st.t + 5 }, o.st.t);
+  step(o.st);
+  const crippled = o.foe.msEff;
+  const free = fight("ANANSI", "KAZEM", 18, 300);
+  addBuff(free.foe, { type: "ms", v: 0.5, until: free.st.t + 5 }, free.st.t);
+  step(free.st);
+  t("ติดตรึงพื้นแล้วบัฟเร่งความเร็วเดินไม่มีผล", crippled < free.foe.msEff * 0.9,
+    "ติดตรึงพื้น " + crippled.toFixed(0) + " · ไม่ติด " + free.foe.msEff.toFixed(0));
 }
 
 // ---- E: ผืนใยสโลว์และตรึงพื้น

@@ -79,7 +79,11 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   const itemAmp = loreItemAmp(state, source, target, magic);
   // 0.6 HELSING R — คนที่ถูกขังอยู่ในกรงทำดาเมจได้น้อยลงตลอดเวลาที่อยู่ในวง
   const caged = 1 - (source && source.outCut ? source.outCut : 0);
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * frenzy * duel * auraAmp * frail * itemAmp * caged
+  // 0.6 WOLF E — คนที่โดนคำรามทำดาเมจใส่ "วูล์ฟที่คำราม" ได้น้อยลง
+  // เฉพาะใส่คนนั้น ไม่ใช่ลดดาเมจของมันทั้งหมด
+  const dread = source && source.dread && source.dread.ownerId === target.id
+    && state.t <= source.dread.until ? 1 - source.dread.cut : 1;
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * frenzy * duel * auraAmp * frail * itemAmp * caged * dread
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {

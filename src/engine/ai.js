@@ -17,6 +17,16 @@ function midCombo(u, sk) {
 }
 
 
+// ท่าที่ "ขยับตัวคนร่าย" — ใช้ตัดสินว่าสถานะตรึงพื้นห้ามกดอะไร
+// ดูจากฟิลด์ในข้อมูลเป็นหลัก (dashRange / blinkRange / dashSpeed / lungeRange)
+// แล้วเติมชนิดที่การเคลื่อนที่ฝังอยู่ในโค้ดและไม่มีฟิลด์ให้จับ
+const MOVE_IN_CODE = new Set(["submerge", "skyfall", "pounce", "carriage", "zephyr", "mistform"]);
+function isMoveSkill(sk) {
+  if (!sk) return false;
+  if (MOVE_IN_CODE.has(sk.type)) return true;
+  return !!(sk.dashRange || sk.blinkRange || sk.dashSpeed || sk.lungeRange);
+}
+
 export function castSkills(state, u, target, d, disc, aw, prec) {
   for (const sk of activeSkills(u)) {
     // ท่าที่ล่องหนรออยู่ กดซ้ำได้เลยแม้คูลดาวน์จะยังไม่ลง
@@ -29,6 +39,8 @@ export function castSkills(state, u, target, d, disc, aw, prec) {
       use = { ...sk, ...half, key: sk.key, rank: sk.rank, cast: sk.cast, fragCost: true, isShadow: u.shadow > 0 };
     } else if (sk.shadowOnly && u.shadow <= 0) continue;
     else if (sk.fragCost && u.shadow <= 0 && u.light <= 0) continue;
+    // 0.6 ANANSI E — ติดตรึงพื้นแล้วกดท่าเคลื่อนที่ไม่ได้เลย
+    if ((u.grounded || 0) > state.t && isMoveSkill(use)) continue;
     const aim = bestSkillTarget(state, u, use, target, aw) || target;
     const ad2 = dist(u, aim);
     if (!shouldCast(state, u, use, aim, ad2, disc, aw)) continue;
@@ -303,5 +315,37 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "formShift") return nearby >= 1;
   if (sk.type === "reveal") return enemiesOf(state, u).some((e) => hasBuff(e, "stealth")) || nearby >= 2;
   if (sk.type === "snipeCharge") return d > u.range * 1.1 && d <= sk.range && nearby === 0;
+
+  // ---- Patch 0.6 ----
+  // HELSING E — วาร์ปเข้าไปแล้วติดอาวุธให้ออโต้ ใช้ได้ทั้งเข้าและหนี
+  if (sk.type === "reapShift") return d <= (sk.blinkRange || 350) + (sk.sweepRange || 350);
+  // HELSING R — พุ่งชนตัวแรกแล้วขัง คิดจากระยะพุ่ง ไม่ใช่ระยะออโต้
+  if (sk.type === "ironMaiden") return d <= (sk.dashRange || 500);
+  // WOLF W — ล่องหนแล้วกระโจน กดตอนเป้ายังไม่ประชิด จะได้ใช้ระยะกระโจนจริง
+  if (sk.type === "pounce") return d <= (sk.range || 500);
+  // WOLF E — คำรามรอบตัว คิดจากรัศมี และคุ้มกว่าถ้ามีหลายตัวในวง
+  if (sk.type === "howl") return d <= (sk.radius || 400) * 0.9 || nearby >= 2;
+  // WOLF R — กินซาก เงื่อนไขคือ "มีซากของตัวเองอยู่ในระยะ" ไม่ใช่มีศัตรูอยู่ใกล้
+  // ของเดิมตกไปที่กติกาสำรองซึ่งดูระยะศัตรู ทำให้กดทิ้งตอนไม่มีซาก เสียคูลดาวน์เปล่า
+  if (sk.type === "devour") {
+    const list = (state.lore && state.lore.carcasses) || [];
+    return list.some((c) => c.ownerId === u.id && state.t <= c.until
+      && Math.hypot(u.x - c.x, u.y - c.y) <= (sk.range || 300));
+  }
+  // ANANSI W — ใยเส้นแรกเป็นลูกกระสุน · เส้นที่สองกดต่อได้ในหน้าต่างเวลา
+  if (sk.type === "webThread") return d <= (sk.range || 850);
+  // ANANSI E — กรวยด้านหน้า
+  if (sk.type === "webField") return d <= (sk.range || 600);
+  // ANANSI R — คลื่นกว้างและช้า คุ้มตอนมีหลายตัวให้กวาด
+  if (sk.type === "berserkWave") return d <= (sk.range || 1050) && nearby >= 1;
+  // KOSCHEI Q — ลูกกระสุนที่สูบเลือดคืน ยิ่งเลือดน้อยยิ่งอยากกด
+  if (sk.type === "soulGrasp") return d <= (sk.range || 750);
+  // KOSCHEI W — ออร่ารอบตัว คิดจากรัศมี ไม่ใช่ระยะออโต้
+  if (sk.type === "miasmaAura") return d <= (sk.radius || 250) * 1.1 || nearby >= 1;
+  // KOSCHEI E — โล่กับคลื่น กดตอนกำลังจะปะทะหรือเลือดเริ่มน่าห่วง
+  if (sk.type === "casketShield") return d <= (sk.pulseRadius || 375) || hpFrac < 0.75;
+  // KOSCHEI R — แยกร่าง คุ้มตอนอยู่ในไฟต์จริง ไม่ใช่ตอนเดินเปล่า
+  if (sk.type === "soulSplit") return nearby >= 1 || d <= (sk.leash || 900) * 0.5;
+
   return d <= (sk.range || u.range);
 }

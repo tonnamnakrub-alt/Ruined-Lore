@@ -2512,7 +2512,7 @@
 
 #### E · Phantom Shift & Reaping Arc
 
-`type: "reapShift"` — จัดการที่ `engine/lore-p6.js`
+`type: "reapShift"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2534,7 +2534,7 @@
 
 #### R · Inquisitor's Iron Maiden  🟡 ท่าไม้ตาย
 
-`type: "ironMaiden"` — จัดการที่ `engine/lore-p6.js`
+`type: "ironMaiden"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 |
 |---|---|---|---|
@@ -2593,7 +2593,7 @@
 
 #### W · Stalker's Pounce
 
-`type: "pounce"` — จัดการที่ `engine/lore-p6.js`
+`type: "pounce"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2616,14 +2616,14 @@
 
 #### E · Terrifying Windup & Howl
 
-`type: "howl"` — จัดการที่ `engine/lore-p6.js`
+`type: "howl"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
 | `cdByRank` | 12 | 11.5 | 11 | 10.5 | 10 |
 | `dmg` | 70 | 110 | 150 | 190 | 230 |
 | `fearByRank` | 1 | 1.1 | 1.2 | 1.3 | 1.4 |
-| `outCutByRank` | 0.15 | 0.175 | 0.2 | 0.225 | 0.25 |
+| `dreadByRank` | 0.15 | 0.175 | 0.2 | 0.225 | 0.25 |
 
 **ค่าสเกล**  `badRatio` 60%
 
@@ -2633,11 +2633,11 @@
 |---|---|---|---|---|
 | `radius` | 400 | | `delay` | 0.6 |
 | `interrupt` | ใช่ | | `cast` | 0 |
-| `cd` ⚠️ | 12 | |  |  |
+| `cd` ⚠️ | 12 | | `dreadDur` | 3.5 |
 
 #### R · Feast of the Fallen  🟡 ท่าไม้ตาย
 
-`type: "devour"` — จัดการที่ `engine/lore-p6.js`
+`type: "devour"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 |
 |---|---|---|---|
@@ -2690,7 +2690,7 @@
 
 #### W · Tangled Puppetry
 
-`type: "webThread"` — จัดการที่ `engine/lore-p6.js`
+`type: "webThread"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2698,8 +2698,10 @@
 | `dmg` | 50 | 75 | 100 | 125 | 150 |
 | `secondDmg` | 25 | 37.5 | 50 | 62.5 | 75 |
 | `rootByRank` | 1.25 | 1.4 | 1.55 | 1.7 | 1.85 |
+| `slamDmg` | 60 | 95 | 130 | 165 | 200 |
+| `slamStun` | 0.75 | 0.85 | 0.95 | 1.05 | 1.15 |
 
-**ค่าสเกล**  `apRatio` 40% · `secondApRatio` 0.2
+**ค่าสเกล**  `apRatio` 40% · `secondApRatio` 0.2 · `slamApRatio` 0.55
 
 **ดาเมจจริงที่แรงก์สูงสุด (ค่าอ้างอิง):** `270`  =  150 + 120 (AP)
 
@@ -2709,11 +2711,11 @@
 | `projSpeed` | 1750 | | `cast` | 0.25 |
 | `cd` ⚠️ | 13 | | `window` | 3.5 |
 | `magic` | ใช่ | | `slow` | 35% |
-| `slowDur` | 1.5 | |  |  |
+| `slowDur` | 1.5 | | `cdAfterWindow` | ใช่ |
 
 #### E · Sticky Web Trap
 
-`type: "webField"` — จัดการที่ `engine/lore-p6.js`
+`type: "webField"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2734,7 +2736,7 @@
 
 #### R · Venom of Paranoia  🟡 ท่าไม้ตาย
 
-`type: "berserkWave"` — จัดการที่ `engine/lore-p6.js`
+`type: "berserkWave"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 |
 |---|---|---|---|
@@ -2766,7 +2768,7 @@
 
 #### Q · Spectral Grasp
 
-`type: "soulGrasp"` — จัดการที่ `engine/lore-p6.js`
+`type: "soulGrasp"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2787,7 +2789,7 @@
 
 #### W · Tormenting Miasma
 
-`type: "miasmaAura"` — จัดการที่ `engine/lore-p6.js`
+`type: "miasmaAura"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2806,7 +2808,7 @@
 
 #### E · Casket Carapace
 
-`type: "casketShield"` — จัดการที่ `engine/lore-p6.js`
+`type: "casketShield"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 | แรงก์ 4 | แรงก์ 5 |
 |---|---|---|---|---|---|
@@ -2827,7 +2829,7 @@
 
 #### R · Soulseverance  🟡 ท่าไม้ตาย
 
-`type: "soulSplit"` — จัดการที่ `engine/lore-p6.js`
+`type: "soulSplit"` — จัดการที่ `engine/ai.js`, `engine/lore-p6.js`
 
 | ฟิลด์ | แรงก์ 1 | แรงก์ 2 | แรงก์ 3 |
 |---|---|---|---|

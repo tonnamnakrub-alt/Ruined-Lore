@@ -3867,4 +3867,17 @@ export const DICT = {
    "merges back into the iron shell",
  "สายวิญญาณขาด ถูกกระชากกลับเข้าชุดเกราะ":
    "the spirit thread snapped and yanked him back into the shell",
+ // ---- Patch 0.6 แก้ให้ตรงเอกสาร ----
+ "ดาเมจตอนร่างกระแทกกัน":
+   "Damage when the two bodies collide",
+ "สตันตอนร่างกระแทกกัน":
+   "Stun on collision",
+ "AP ของระเบิดตอนชน":
+   "AP on the collision burst",
+ "ลดดาเมจที่ศัตรูทำใส่ตัวเองนาน":
+   "Enemy damage against him is reduced for",
+ "คูลดาวน์เริ่มนับหลังกดครั้งที่สอง ไม่ใช่ตอนกดครั้งแรก":
+   "the cooldown starts after the second cast, not the first",
+ "ยิงใยเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย เส้นแรกติดสโลว์ · กดซ้ำได้อีกครั้งภายใน {2} วิ — เส้นที่สองลงคนเดิมจะทำดาเมจครึ่งเดียวแล้วตรึงเท้ามันไว้ · ลงคนใหม่จะทำดาเมจเต็ม แล้วกระชากสองคนนั้นมาชนกันกลางทาง ระเบิดใส่ทั้งคู่และติดสตัน":
+   "Fires a web in a straight line {0} units long and {1} wide; the first thread slows · it can be cast again within {2}s — a second thread on the same target deals half damage and roots it · on a new target it deals full damage, then yanks the two of them together mid-way, bursting on both and stunning them",
 };

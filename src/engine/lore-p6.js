@@ -167,6 +167,14 @@ export function spiderOnHit(state, u, e) {
 // ---------------------------------------------------------------
 // ANANSI W — ใยสองเส้น
 // ---------------------------------------------------------------
+// เอกสารบอกว่าคูลดาวน์ของ W เริ่มนับ "หลังการร่ายครั้งที่ 2 สิ้นสุด หรือเมื่อ
+// หมดเวลา 3.5 วินาที" ไม่ใช่ตอนกดครั้งแรก จึงต้องกดคูลดาวน์เองสองที่
+function startWebCd(u, sk, state) {
+  const own = (u.skills || []).find((x) => x.key === sk.key) || sk;
+  const r = Math.max(0, (own.rank || 1) - 1);
+  own.cdLeft = own.cdByRank ? own.cdByRank[r] : (own.cd || 0);
+}
+
 export function castWebThread(state, u, sk, target) {
   if (!target) return;
   const second = u.webThread && state.t <= u.webThread.until;
@@ -178,26 +186,39 @@ export function castWebThread(state, u, sk, target) {
     applyDamage(state, u, target, dmg, true);
     addBuff(target, { type: "slow", v: sk.slow, until: state.t + (sk.slowDur || 1.5) }, state.t);
     u.webThread = { until: state.t + (sk.window || 3.5), targetId: target.id, sk, rank: sk.rank };
+    // ยังไม่ให้คูลดาวน์เดิน จะเริ่มนับตอนกดครั้งที่สองหรือตอนหน้าต่างหมดอายุ
+    if (sk.cdAfterWindow) {
+      const own = (u.skills || []).find((x) => x.key === sk.key);
+      if (own) own.cdLeft = (sk.window || 3.5) + 0.05;
+    }
   } else {
     const w = u.webThread;
-    const dmg = sk.secondDmg[r] + (sk.secondApRatio || 0) * (u.ap || 0);
-    applyDamage(state, u, target, dmg, true);
-    if (target.id === w.targetId) {
-      // เป้าเดิม — ตรึงเท้า
+    const first = state.units.find((x) => x.id === w.targetId && x.alive);
+    if (target.id === w.targetId || !first) {
+      // เป้าเดิม — ดาเมจครึ่งเดียวของดอกแรก แล้วตรึงเท้า
+      const half = sk.secondDmg[r] + (sk.secondApRatio || 0) * (u.ap || 0);
+      applyDamage(state, u, target, half, true);
       addBuff(target, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
     } else {
-      // เป้าใหม่ — ดึงสองตัวเข้าหากันที่จุดกึ่งกลาง
-      const first = state.units.find((x) => x.id === w.targetId && x.alive);
-      if (first) {
-        const mx = (first.x + target.x) / 2, my = (first.y + target.y) / 2;
-        place(first, mx, my);
-        place(target, mx, my);
-        applyDamage(state, u, first, dmg, true);
-        addBuff(first, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
-        addBuff(target, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
+      // เป้าคนใหม่ — กินดาเมจเต็มเท่าดอกแรก
+      const full = sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0);
+      applyDamage(state, u, target, full, true);
+      // กระชากทั้งคู่มาชนกันที่จุดกึ่งกลาง
+      const mx = (first.x + target.x) / 2, my = (first.y + target.y) / 2;
+      place(first, mx, my);
+      place(target, mx, my);
+      // ระเบิดตอนร่างกระแทกกัน ลงทั้งสองตัว แล้วติดสตัน
+      const slam = (sk.slamDmg ? sk.slamDmg[r] : 0) + (sk.slamApRatio || 0) * (u.ap || 0);
+      const stun = sk.slamStun ? sk.slamStun[r] : 0;
+      for (const e of [first, target]) {
+        if (slam > 0) applyDamage(state, u, e, slam, true);
+        if (stun > 0) addBuff(e, { type: "stun", v: 1, until: state.t + stun }, state.t);
       }
+      vfx(state, { kind: "shock", x: mx, y: my, r: 150, color: "230,220,255", dur: 0.4 });
     }
     u.webThread = null;
+    // คูลดาวน์เพิ่งเริ่มนับตอนนี้ ไม่ใช่ตอนกดครั้งแรก
+    if (sk.cdAfterWindow) startWebCd(u, sk, state);
   }
   state.dmgSrc = prev;
   vfx(state, { kind: "beam", x: u.x, y: u.y, x2: target.x, y2: target.y, w: 10, color: "230,220,255", dur: 0.3 });
@@ -399,9 +420,12 @@ export function howlLand(state, u, sk, rank) {
     if (dist(u, e) > sk.radius + e.radius) continue;
     applyDamage(state, u, e, dmg, false);
     addBuff(e, { type: "fear", v: 1, until: state.t + sk.fearByRank[r] }, state.t);
-    // ลดดาเมจที่เป้าทำได้ตลอดเวลาที่หวาดกลัว ใช้ช่องเดียวกับกรงของเฮลซิง
-    e.outCut = Math.max(e.outCut || 0, sk.outCutByRank[r]);
-    e.outCutUntil = state.t + sk.fearByRank[r];
+    // ลดดาเมจที่เป้าทำ "ใส่ Wolf" เท่านั้น และอยู่นาน 3.5 วิ ไม่ผูกกับเวลาหวาดกลัว
+    // ใช้ช่องของตัวเอง ไม่ใช่ outCut ที่ลดดาเมจของเป้าใส่ทุกคน
+    const cut = sk.dreadByRank ? sk.dreadByRank[r] : 0;
+    if (cut > 0 && !(e.dread && e.dread.cut > cut && state.t <= e.dread.until)) {
+      e.dread = { ownerId: u.id, cut, until: state.t + (sk.dreadDur || 3.5) };
+    }
   }
   state.dmgSrc = prev;
   vfx(state, { kind: "shock", x: u.x, y: u.y, r: sk.radius, color: "180,60,60", dur: 0.6 });
@@ -655,6 +679,14 @@ export function tickP6(state, dt) {
   // ชุดเกราะที่ KOSCHEI R ทิ้งไว้
   lore.shells = lore.shells.filter((sh) => tickShell(state, sh, dt));
 
+  // หน้าต่างกดซ้ำของ ANANSI W หมดอายุ — คูลดาวน์เริ่มนับตอนนี้
+  for (const u of state.units) {
+    if (!u.webThread || state.t <= u.webThread.until) continue;
+    const sk = u.webThread.sk;
+    u.webThread = null;
+    if (sk && sk.cdAfterWindow) startWebCd(u, sk, state);
+  }
+
   // ซากศพหมดอายุ
   lore.carcasses = lore.carcasses.filter((c) => state.t <= c.until);
 
@@ -662,6 +694,7 @@ export function tickP6(state, dt) {
   // (กรงของเฮลซิงใช้ช่องเดียวกัน แต่กรงคืนค่าเองตอนหมดอายุ)
   for (const u of state.units) {
     if (u.outCutUntil && state.t > u.outCutUntil) { u.outCut = 0; u.outCutUntil = 0; }
+    if (u.dread && state.t > u.dread.until) u.dread = null;
   }
 
   // กรงขังเดี่ยว — ดึงเป้ากลับเข้าขอบ และติดสถานะที่ทำให้มันเสียเปรียบในวง
@@ -695,7 +728,8 @@ export function fireP6Skill(state, u, sk, target) {
     case "ironMaiden": castIronMaiden(state, u, sk, target); return true;
     case "pounce": castPounce(state, u, sk); return true;
     case "howl": castHowl(state, u, sk); return true;
-    case "devour": castDevour(state, u, sk); return true;
+    // คืนค่าตามจริง ไม่มีซากให้กิน = ท่าไม่ออก คูลดาวน์ต้องไม่เดิน
+    case "devour": return castDevour(state, u, sk);
     case "webThread": castWebThread(state, u, sk, target); return true;
     case "webField": castWebField(state, u, sk, target); return true;
     case "berserkWave": castBerserkWave(state, u, sk, target); return true;
