@@ -195,6 +195,8 @@ export function deriveStats(unitDef) {
   // TOTSAKAN — พาสซีฟดึงค่าสถานะจากไอเทมออกมาได้มากกว่าคนอื่น
   // คิดเฉพาะ "ส่วนที่มาจากไอเทม" เท่านั้น ค่าฐานของตัวละครไม่โดนคูณ
   // สเปคใหม่: ไต่ขึ้นทุกเลเวล 7% + 0.75% ต่อเลเวล (เลเวล 1 = 7.75% · 18 = 20.5% · 20 = 22%)
+  // 0.6 WOLF W พาสซีฟ — ความเร็วเดินที่คิดไว้ใน step.js (ขึ้นกับว่ามีเป้าเลือดน้อยอยู่ใกล้ไหม)
+  if (unitDef.scentMs) moveSpeed *= 1 + unitDef.scentMs;
   const iamp = (ch.itemAmp || 0) + (ch.itemAmpPerLevel || 0) * lvl;
   if (iamp) {
     const bAd = ch.ad + ch.adG * g;

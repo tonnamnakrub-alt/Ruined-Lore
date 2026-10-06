@@ -6,7 +6,7 @@ import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
-import { popBrand, reapAuto, tickP6 } from "./lore-p6.js";
+import { dropCarcass, frenzyAsBonus, howlLand, popBrand, pounceAuto, reapAuto, scentTick, tickP6 } from "./lore-p6.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -37,6 +37,8 @@ function landAuto(state, u, target) {
   // 0.6 HELSING E — ออโต้ครั้งถัดไปหลังวาร์ปกลายเป็นพุ่งเข้าฟันกวาดครึ่งวง
   // กินการออโต้ครั้งนี้ไปทั้งก้อน จึงต้องออกก่อนคิดดาเมจออโต้ปกติ
   if (u.reapArmed && reapAuto(state, u, target)) return;
+  // 0.6 WOLF W — ออโต้ครั้งถัดไปหลังล่องหนกลายเป็นกระโจนลงพื้นที่
+  if (u.pounceArmed && pounceAuto(state, u, target)) return;
   let atkDmg = u.ad;
   let didCrit = false;
   if (u.crit > 0 && u.rng() < u.crit) {
@@ -159,6 +161,9 @@ export function step(state) {
     u.atkLock = Math.max(0, u.atkLock - dt);
     // เพดานล่างกันความเร็วโจมตีติดลบ — 1/asEff ที่ติดลบจะทำให้ตีได้ทุกเฟรม
     u.asEff = Math.max(0.15, u.atkSpeed * (1 + buffSum(u, "as")));
+    // 0.6 WOLF Bloodfrenzy — ความเร็วโจมตีเพิ่มตอนมีเป้าเลือดต่ำกว่าครึ่งอยู่ในระยะตี
+    // เงื่อนไขขึ้นกับเป้า ไม่ใช่ตัวเอง จึงคิดที่นี่ทุกทิก ไม่ใช่ใน stats.js
+    if (u.champ && u.champ.bloodfrenzy) u.asEff *= 1 + frenzyAsBonus(state, u);
     // AP/AH ที่บัฟเพิ่มได้ชั่วคราว (Saraswati's Flowing Veena) — คิดจากค่าฐานทุกเฟรม
     u.ap = ((u.baseAp || 0) + buffSum(u, "apFlat")) * (1 + buffSum(u, "apPct"));
     u.ah = (u.baseAh || 0) + buffSum(u, "ahFlat");
@@ -228,6 +233,8 @@ export function step(state) {
     tickLastStand(state, u);
     tickLoreUnit(state, u, dt);
     tickP4Unit(state, u, dt);
+    // 0.6 WOLF W พาสซีฟ — ความเร็วเดินขึ้นกับว่ามีเป้าเลือดน้อยอยู่ใกล้ไหม
+    scentTick(state, u);
     tickLoreItems(state, u, dt);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
@@ -1083,6 +1090,14 @@ export function step(state) {
     if (!u.alive || hasBuff(u, "stun") || hasBuff(u, "fear") || outsideRoot || u.charmed) {
       u.channeling = null;
       u.buffs = u.buffs.filter((b) => !SELF.includes(b.tag));
+      continue;
+    }
+    // 0.6 WOLF E — ชาร์จครบแล้วคำรามออกผลรอบตัว
+    if (ch.howl) {
+      if (state.t >= ch.until) {
+        howlLand(state, u, ch.skill, ch.rank);
+        u.channeling = null;
+      }
       continue;
     }
     // แชนแนลของตัวละครชุด Patch 0.3/0.4 มีคนเดินจังหวะให้เองใน lore.js / lore-p4.js

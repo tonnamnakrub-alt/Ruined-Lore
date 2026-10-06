@@ -11,7 +11,7 @@ import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { canopyShare, stickDagger } from "./lore-p4.js";
-import { brandTarget } from "./lore-p6.js";
+import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain } from "./lore-p6.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -65,6 +65,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   // Jack's Giantbane Harp: ตีแรงขึ้นใส่ศัตรูที่เลือดยังมากกว่าครึ่ง
   const healthy = source && source.healthyAmp && target.maxHp > 0
     && target.hp / target.maxHp > source.healthyAmp.hpAbove ? 1 + source.healthyAmp.amp : 1;
+  // 0.6 WOLF Bloodfrenzy — ตรงข้ามกับ healthy ข้างบน คือตีเป้าที่เลือดน้อยแล้วแรงขึ้น
+  const frenzy = magic ? 1 : frenzyAmp(source, target);
   // Patch 0.3 — ตราท้าดวลของ PUSS · ออร่าขยายดีบัฟของ PIROSKA · ขั้นบ้านอิฐของ H.S.B
   const duel = duelAmp(source, target);
   const auraAmp = debuffAmpOf(target);
@@ -73,7 +75,7 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   const itemAmp = loreItemAmp(state, source, target, magic);
   // 0.6 HELSING R — คนที่ถูกขังอยู่ในกรงทำดาเมจได้น้อยลงตลอดเวลาที่อยู่ในวง
   const caged = 1 - (source && source.outCut ? source.outCut : 0);
-  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * duel * auraAmp * frail * itemAmp * caged
+  let dmg = DMG_MUL * (amount * mit + riders) * vulnerable * autoCut * hpAmp * giant * healthy * frenzy * duel * auraAmp * frail * itemAmp * caged
     * (1 + Math.max(0, (state.t - state.rampStart) / state.rampScale));
   // Oath of the Dioscuri: คนที่ผูกไว้รับแทน 10% ก่อนโล่ของเป้าจะทำงาน
   if (!state.oodSplitting && dmg > 0) {
@@ -141,6 +143,9 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   state.fx.push({ x: target.x, y: target.y - 40, t: state.t, kind: "num", text: String(Math.round(dmg)),
     color: trueDmg ? "#FFFFFF" : magic ? "#B08CFF" : "#FFD08A" });
   target.hp -= dmg;
+  // 0.6 WOLF Bloodfrenzy — ดูดเลือดคืนจากดาเมจที่ลงเป้าเลือดน้อย
+  // ต้องคิดหลังหักเลือดแล้ว เพราะต้องรู้ยอดดาเมจที่ลงจริง
+  if (source && source.champ && source.champ.bloodfrenzy) frenzyDrain(state, source, target, dmg);
   target.lastHitAt = state.t;
   // บันทึกดาเมจที่เพิ่งกินไป — R ของ Luch เอาของ 3 วิล่าสุดมาสะท้อนคืน (ตัดของเก่าทิ้งใน step.js)
   (target.tookLog = target.tookLog || []).push([state.t, dmg]);
@@ -325,6 +330,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     }
     target.hp = 0;
     target.alive = false;
+    // 0.6 WOLF R พาสซีฟ — แชมเปี้ยนที่ตายใกล้ Wolf ทิ้งซากไว้ให้กิน
+    dropCarcass(state, target);
     if (source && source.centaurBleed) cbcCleanse(state, source);
     if (source) {
       // นับคนช่วยของศพนี้ก่อน เพราะเงินช่วยสังหารขึ้นกับว่ามีคนช่วยกี่คน

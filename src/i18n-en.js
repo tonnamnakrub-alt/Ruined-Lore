@@ -3691,4 +3691,52 @@ export const DICT = {
 
  "เส้นตรงหยุดที่ตัวแรก":
    "Line, stops on the first hit",
+
+ // ---- Patch 0.6 WOLF ----
+ "วูล์ฟ":
+   "Wolf",
+ "ตอนตีศัตรูที่เลือดต่ำกว่า 50% ได้สามอย่างพร้อมกัน — ดาเมจกายภาพแรงขึ้น 12/16/20/24% · ความเร็วโจมตี +30/45/60/75% · และดูดเลือดคืน 15/20/25/30% ของดาเมจที่ทำได้ (ขั้นตามเลเวล 1/6/11/16)":
+   "Against an enemy below 50% health he gets all three at once — 12/16/20/24% more physical damage, +30/45/60/75% attack speed, and 15/20/25/30% of the damage dealt back as health (tiers at levels 1/6/11/16)",
+ "ล่องหนแล้วกระโจน":
+   "Stealth, then a pounce",
+ "ชาร์จแล้วคำรามรอบตัว":
+   "Wind up, then howl all around",
+ "กินซากศพฟื้นตัว":
+   "Devours a carcass to recover",
+ "ล่องหน {0} วิ · ออโต้ครั้งถัดไประหว่างล่องหน (หรือภายใน {1} วิหลังหลุด) จะกลายเป็นกระโจนลอยข้ามไปตกที่จุดเป้าไกลถึง {2} หน่วย ทุบพื้นรัศมี {3} หน่วย — มีวงเตือนบนพื้นก่อนตก {4} วิ เดินออกได้":
+   "Goes invisible for {0}s · the next auto while hidden (or within {1}s of losing it) becomes a leap to a spot up to {2} units away, slamming a {3}-unit radius — a ring warns on the ground {4}s before it lands, so it can be walked out of",
+ "ยืนนิ่งชาร์จ {0} วิ (โดน Hard CC แล้วขาด) แล้วคำรามรอบตัวรัศมี {1} หน่วย ศัตรูที่ยังอยู่ในวงติดหวาดกลัว เดินเปะปะหนีออกจากตัว และทำดาเมจได้น้อยลงตลอดเวลาที่กลัว":
+   "Stands still winding up for {0}s (hard CC cancels it), then howls in a {1}-unit radius · enemies still inside are feared, stumbling away from him, and deal less damage for as long as the fear lasts",
+ "กินซากศพที่อยู่ในระยะ {0} หน่วย — ซากเกิดขึ้นเองเมื่อมีแชมเปี้ยนศัตรูตายในระยะ {1} หน่วยรอบตัว อยู่ได้ {2} วิ กินได้ครั้งเดียวต่อซาก · กินแล้วฟื้นเลือดและรีเซ็ตคูลดาวน์ Q W E ทันที":
+   "Devours a carcass within {0} units — carcasses appear on their own when an enemy champion dies within {1} units of him, last {2}s, and can each be eaten once · eating one heals him and instantly resets Q, W and E",
+ "กดต่อได้หลังหลุดล่องหนอีก":
+   "Still usable after stealth ends for",
+ "ระยะที่ได้กลิ่นเป้าเลือดน้อย":
+   "Range he smells a wounded target",
+ "ระยะที่คนตายแล้วทิ้งซาก":
+   "Range a death leaves a carcass",
+ "ซากศพอยู่นาน":
+   "A carcass lasts",
+ "หวาดกลัว":
+   "Fear",
+ "ความเร็วเดินจากพาสซีฟ":
+   "Move speed from the passive",
+ "นับเป็นเป้าเลือดน้อยเมื่อต่ำกว่า":
+   "Counts as wounded below",
+ "Bonus AD → ฮีล":
+   "Bonus AD → heal",
+ "คูณความเร็วเดินเมื่อมีเป้าเลือดน้อย":
+   "Move speed multiplier near a wounded target",
+ "รีเซ็ตจังหวะโจมตีปกติทันทีที่กด":
+   "resets the auto-attack timer the moment it is cast",
+ "Bloodfrenzy":
+   "Bloodfrenzy",
+ "Mutilating Fang":
+   "Mutilating Fang",
+ "Stalker's Pounce":
+   "Stalker's Pounce",
+ "Terrifying Windup & Howl":
+   "Terrifying Windup & Howl",
+ "Feast of the Fallen":
+   "Feast of the Fallen",
 };
