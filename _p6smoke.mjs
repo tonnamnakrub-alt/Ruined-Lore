@@ -32,6 +32,7 @@ const NEW = [
   ["WOLF", "JUNGLE"],
   ["ANANSI", "MID"],
   ["KOSCHEI", "TOP"],
+  ["IFRIT", "MID"],
 ];
 const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"];
 

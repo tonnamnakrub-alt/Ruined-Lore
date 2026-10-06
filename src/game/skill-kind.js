@@ -15,7 +15,7 @@ import { tr } from "../i18n.js";
 // หมวดหมู่ เรียงจาก "ยิงออกไปไกล" มาหา "ออกจากตัว" แล้วจบที่ท่าที่ไม่ทำดาเมจ
 export const SKILL_CATS = [
   { key: "proj", icon: "🏹", th: "ลูกกระสุน", desc: "ยิงออกไปแล้วบินไปหาเป้า",
-    types: ["line", "wave", "sledge", "webThread", "berserkWave", "soulGrasp"] },
+    types: ["line", "wave", "sledge", "webThread", "berserkWave", "soulGrasp", "fireOrb"] },
   { key: "slash", icon: "🗡", th: "แนวยาวลงทันที", desc: "กินทั้งแนวในเฟรมเดียว ไม่มีลูกให้หลบ",
     types: [] },
   // ไม่ใช่ลำแสง — ทั้งสองชนิดนี้ push ลูกเข้า state.projectiles จริง ลำแสงเป็นแค่เอฟเฟกต์ภาพ
@@ -24,7 +24,7 @@ export const SKILL_CATS = [
   { key: "ground", icon: "⭕", th: "วงกลมบนพื้น", desc: "วางแล้วหน่วงก่อนระเบิด",
     types: ["aoeGround", "meteorStorm", "wonderland", "teaGarden", "starfall", "skyfall", "globalStrike", "barrage", "submerge"] },
   { key: "zone", icon: "🟣", th: "โซนค้างที่", desc: "อยู่กับที่ เดินออกได้",
-    types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex", "miasmaAura", "casketShield"] },
+    types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex", "miasmaAura", "casketShield", "cinderTrail", "firestorm"] },
   { key: "self", icon: "💥", th: "ดาเมจรอบตัว", desc: "ระเบิดออกจากตัวทันที",
     types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest", "pulse", "howl"] },
   { key: "cone", icon: "🔺", th: "กรวยด้านหน้า", desc: "กวาดเป็นกรวยออกจากตัว",
@@ -59,14 +59,14 @@ const INSTANT_TYPES = new Set([
   "judgment", "dismissal", "asuraSlam", "twinCleave", "bounceSlash",
   "globalStrike", "combo", "rebound",
   "vortex", "domain", "bladeTempest", "carriage",
-  "reapShift", "ironMaiden", "webField",
+  "reapShift", "ironMaiden", "webField", "cinderTrail",
 ]);
 const ZONE_TYPES = new Set([
   "aoeGround", "meteorStorm", "wonderland", "teaGarden", "basketZone",
   "truthAura", "wrathAura", "cage", "sightZone", "bunker", "wall",
   "bloodStorm", "tempest", "starfall", "guardBurst", "thornCone", "arbor",
   "summonGiant", "skyfall",
-  "miasmaAura", "casketShield",
+  "miasmaAura", "casketShield", "firestorm",
 ]);
 const NODMG_TYPES = new Set([
   "selfBuff", "allyHot", "teamHeal", "allyBlink", "allyRush", "canopy",

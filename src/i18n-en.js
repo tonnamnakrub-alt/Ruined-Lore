@@ -3880,4 +3880,59 @@ export const DICT = {
    "the cooldown starts after the second cast, not the first",
  "ยิงใยเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย เส้นแรกติดสโลว์ · กดซ้ำได้อีกครั้งภายใน {2} วิ — เส้นที่สองลงคนเดิมจะทำดาเมจครึ่งเดียวแล้วตรึงเท้ามันไว้ · ลงคนใหม่จะทำดาเมจเต็ม แล้วกระชากสองคนนั้นมาชนกันกลางทาง ระเบิดใส่ทั้งคู่และติดสตัน":
    "Fires a web in a straight line {0} units long and {1} wide; the first thread slows · it can be cast again within {2}s — a second thread on the same target deals half damage and roots it · on a new target it deals full damage, then yanks the two of them together mid-way, bursting on both and stunning them",
+ // ---- Patch 0.6 IFRIT ----
+ "อิฟริต":
+   "Ifrit",
+ "Cinder Scourge":
+   "Cinder Scourge",
+ "Pyroclastic Orb":
+   "Pyroclastic Orb",
+ "Combustive Blast":
+   "Combustive Blast",
+ "Trail of Cinders":
+   "Trail of Cinders",
+ "Cataclysmic Firestorm":
+   "Cataclysmic Firestorm",
+ "ทุกครั้งที่อิฟริตสร้างความเสียหาย ไม่ว่าจากออโต้หรือสกิลใด ศัตรูจะติดไฟเผา 3 วิ — ทำดาเมจเวททุก 0.5 วิ รวม 6 ระลอก ระลอกละ 3 ที่เลเวล 1 ไล่ถึง 15 ที่เลเวล 18 (+3.5% AP) · แตะซ้ำแล้วต่ออายุ 3 วิใหม่ทันที":
+   "Every time Ifrit deals damage, from an auto-attack or any skill, the enemy burns for 3s — magic damage every 0.5s for 6 ticks, each tick 3 at level 1 rising to 15 at level 18 (+3.5% AP) · hitting them again refreshes the full 3s immediately",
+ "ลูกไฟระเบิดเป็นวง":
+   "Fire orb that bursts",
+ "พรมไฟแนวยาว":
+   "Carpet of fire",
+ "พายุไฟไล่เป้า":
+   "Firestorm that hunts",
+ "ยิงลูกไฟเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย — ชนแชมเปี้ยนตัวแรกก็ระเบิดที่นั่น ไม่ชนใครก็ระเบิดที่ปลายทาง เป็นวงรัศมี {2} หน่วย":
+   "Throws a fire orb in a straight line {0} units long and {1} wide — it bursts on the first enemy champion it hits, or at the end of its flight if it hits no one, in a {2}-unit radius",
+ "ฟาดไฟลงพื้นเป็นแนวยาว {0} กว้าง {1} หน่วย ลงทันทีในเฟรมที่กด ไม่มีลูกให้หลบ · แล้วทิ้งพื้นไฟค้างไว้ {2} วิ เผาคนที่ยืนทับทุก {3} วิ":
+   "Slams fire into the ground in a line {0} units long and {1} wide, landing the instant it is cast with no projectile to dodge · it then leaves burning ground for {2}s, searing anyone standing on it every {3}s",
+ "เรียกพายุไฟลงที่จุดเป้าในระยะ {0} หน่วย รัศมี {1} หน่วย อยู่ {2} วิ · พายุคืบคลานเข้าหาแชมเปี้ยนศัตรูที่ใกล้สุดเองด้วยความเร็ว {3} หน่วย/วิ เผาคนที่อยู่ในวงทุก {4} วิ และติดสโลว์ตลอดเวลาที่ยังอยู่ข้างใน":
+   "Calls down a firestorm at a point within {0} units, {1} units across, lasting {2}s · it creeps toward the nearest enemy champion on its own at {3} units per second, burning everyone inside every {4}s and slowing them for as long as they stay in it",
+ "ดาเมจพื้นไฟต่อระลอก":
+   "Burning ground damage per tick",
+ "ดาเมจพายุต่อระลอก":
+   "Firestorm damage per tick",
+ "สโลว์ในพายุ":
+   "Slow inside the storm",
+ "ฉีกต้านเวท":
+   "Magic resist shred",
+ "ฉีกต้านเวทนาน":
+   "Magic resist shred lasts",
+ "AP ต่อระลอกของพื้นไฟ":
+   "AP → burning ground per tick",
+ "AP ต่อระลอกของพายุ":
+   "AP → firestorm per tick",
+ "พื้นไฟเผาทุก":
+   "Burning ground ticks every",
+ "พายุเผาทุก":
+   "The storm ticks every",
+ "พายุเผาได้สูงสุด":
+   "Maximum storm ticks",
+ "ความเร็วที่พายุคืบคลาน":
+   "How fast the storm creeps",
+ "พาสซีฟ Cinder Scourge":
+   "Cinder Scourge passive",
+ " (พื้นไฟ)":
+   " (burning ground)",
+ "ปลุกพายุไฟบรรพกาล":
+   "calls up a primordial firestorm",
 };

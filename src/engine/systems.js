@@ -109,7 +109,11 @@ export function tickNewSystems(state) {
     }
     if (due > 0) {
       state.dmgSrc = srcOf(d, o);
-      applyDamage(state, o, t, due, d.magic, d.trueDmg);
+      // 0.6 — บอกปลายทางว่าก้อนนี้มาจาก DoT ตัวไหน
+      // ไฟของ IFRIT ต้องไม่จุดไฟซ้ำให้ตัวเอง ไม่งั้นต่ออายุไม่สิ้นสุด
+      state.dotTag = d.tag;
+      try { applyDamage(state, o, t, due, d.magic, d.trueDmg); }
+      finally { state.dotTag = null; }
       d.left = Math.max(0, d.left - due);
     }
     return !over && d.left > 0;
@@ -369,6 +373,13 @@ export function tickZonesAndSnipes(state) {
       if (!e.alive || e.team === z.team) continue;
       if (Math.hypot(e.x - z.x, e.y - z.y) <= z.r + e.radius) {
         zoneHit++;
+        // 0.6 IFRIT W — ฉีก "ต้านเวทเท่านั้น" ไม่แตะเกราะ
+        // ใช้บัฟ mrshred ที่ step.js คิดอยู่แล้ว ไม่ได้ทำระบบใหม่
+        if (z.skill && z.skill.mrShred) {
+          const zr = Math.max(0, (z.skill.rank || 1) - 1);
+          addBuff(e, { type: "mrshred", v: z.skill.mrShred[zr],
+            until: state.t + (z.skill.mrShredDur || 3.5) }, state.t);
+        }
         let dmg = z.dmg;
         if (z.skill && z.skill.soloMult) {
           const n = state.units.filter((x) => x.alive && x.team !== z.team && Math.hypot(x.x - z.x, x.y - z.y) <= z.r + x.radius).length;

@@ -346,6 +346,12 @@ export function shouldCast(state, u, sk, target, d, disc, aw) {
   if (sk.type === "casketShield") return d <= (sk.pulseRadius || 375) || hpFrac < 0.75;
   // KOSCHEI R — แยกร่าง คุ้มตอนอยู่ในไฟต์จริง ไม่ใช่ตอนเดินเปล่า
   if (sk.type === "soulSplit") return nearby >= 1 || d <= (sk.leash || 900) * 0.5;
+  // IFRIT Q — ลูกไฟระเบิดเป็นวง ยิงได้ไกลกว่าระยะออโต้มาก
+  if (sk.type === "fireOrb") return d <= (sk.range || 850);
+  // IFRIT E — ปูพรมไฟเป็นแนว คุ้มตอนมีเป้าอยู่ในแนวหรือมีหลายตัว
+  if (sk.type === "cinderTrail") return d <= (sk.range || 850) || nearby >= 1;
+  // IFRIT R — พายุไฟยักษ์ ใช้ตอนไฟต์จริง ไม่ใช่ยิงทิ้งตอนเจอตัวเดียวไกลๆ
+  if (sk.type === "firestorm") return d <= (sk.range || 700) && (nearby >= 1 || d <= 900);
 
   return d <= (sk.range || u.range);
 }

@@ -27,7 +27,7 @@ setLang("th");
 const GAMES = Number(process.argv[2] || 24);
 const DIFF = diffOf("NORMAL");
 
-const NEW = [["HELSING", "JUNGLE"], ["WOLF", "JUNGLE"], ["ANANSI", "MID"], ["KOSCHEI", "TOP"]];
+const NEW = [["HELSING", "JUNGLE"], ["WOLF", "JUNGLE"], ["ANANSI", "MID"], ["KOSCHEI", "TOP"], ["IFRIT", "MID"]];
 const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"];
 
 // ท่าที่ไม่ทำดาเมจเอง — ดูจากร่องรอยอื่นว่าถูกใช้ไหม

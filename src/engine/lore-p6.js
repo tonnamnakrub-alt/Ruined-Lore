@@ -33,11 +33,19 @@
 //           สโลว์ + ฉีกเกราะ/กันเวทสะสม 5 ชั้น · โล่แตกแล้วคลื่นหยุดทันที
 //   R       แยกร่าง — วิญญาณอมตะออกไปร่ายท่า ชุดเกราะยืนรับดาเมจแทน
 //           เลือดลดจากดาเมจที่ "ชุดเกราะ" กินเท่านั้น (หลอดเดียวกัน)
+//
+// IFRIT — ลดต้านเวทก่อน แล้วอัดดาเมจเวททั้งชุด
+//   พาสซีฟ  ทุกอย่างที่แตะศัตรูจุดไฟเผา 3 วิ (6 ระลอก) แตะซ้ำต่ออายุใหม่
+//           ใช้ระบบ state.dots ที่มีอยู่แล้ว เพราะมันต่ออายุและจ่ายเศษให้เอง
+//   Q       ลูกไฟพุ่งเป็นเส้น ระเบิดเป็นวงที่จุดที่ชน หรือที่สุดระยะถ้าไม่ชนใคร
+//   W       ระเบิดลงพื้นแล้วฉีก "ต้านเวทเท่านั้น" ไม่แตะเกราะ (บัฟ mrshred)
+//   E       ปูพรมไฟเป็นแนวยาว ลงทันที แล้วค้างเผาบนพื้น 3.5 วิ
+//   R       พายุไฟที่คืบคลานเข้าหาแชมเปี้ยนศัตรูที่ใกล้สุดเอง 250 หน่วย/วิ
 // ---------------------------------------------------------------
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { AUTO_DMG } from "../data/tuning.js";
 import { applyDamage, grantShield, healUnit } from "./damage.js";
-import { addBuff, addBuffUnique, dist, pushLog, skillLabel, vfx } from "./state-util.js";
+import { addBuff, addBuffUnique, burnDot, dist, pushLog, skillLabel, vfx } from "./state-util.js";
 import { tr } from "../i18n.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
@@ -679,6 +687,15 @@ export function tickP6(state, dt) {
   // ชุดเกราะที่ KOSCHEI R ทิ้งไว้
   lore.shells = lore.shells.filter((sh) => tickShell(state, sh, dt));
 
+  // ลูกไฟของ IFRIT Q
+  lore.orbs = lore.orbs.filter((o) => tickFireOrb(state, o, dt));
+
+  // พรมไฟของ IFRIT E
+  lore.trails = lore.trails.filter((z) => tickCinderTrail(state, z));
+
+  // พายุไฟของ IFRIT R
+  lore.firestorms = lore.firestorms.filter((f) => tickFirestorm(state, f, dt));
+
   // หน้าต่างกดซ้ำของ ANANSI W หมดอายุ — คูลดาวน์เริ่มนับตอนนี้
   for (const u of state.units) {
     if (!u.webThread || state.t <= u.webThread.until) continue;
@@ -737,6 +754,9 @@ export function fireP6Skill(state, u, sk, target) {
     case "miasmaAura": castMiasma(state, u, sk); return true;
     case "casketShield": castCasket(state, u, sk); return true;
     case "soulSplit": castSoulSplit(state, u, sk); return true;
+    case "fireOrb": castFireOrb(state, u, sk, target); return true;
+    case "cinderTrail": castCinderTrail(state, u, sk, target); return true;
+    case "firestorm": castFirestorm(state, u, sk, target); return true;
     default: return false;
   }
 }
@@ -757,11 +777,14 @@ function L(state) {
   if (!l.waves) l.waves = [];
   if (!l.grasps) l.grasps = [];
   if (!l.shells) l.shells = [];
+  if (!l.orbs) l.orbs = [];
+  if (!l.trails) l.trails = [];
+  if (!l.firestorms) l.firestorms = [];
   return l;
 }
 
 // ข้อความในปูมต้องผ่าน tr() ทั้งชื่อตัวละครและตัวประโยค ไม่งั้นหลุดเป็นไทยในโหมดอังกฤษ
-const logKoschei = (state, u, th) =>
+const logP6 = (state, u, th) =>
   pushLog(state, tr("{0} {1} {2}", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th), tr(th)));
 
 
@@ -986,7 +1009,7 @@ export function castSoulSplit(state, u, sk) {
   addBuff(u, { type: "ms", v: sk.spiritMs[r], until }, state.t);
   addBuff(u, { type: "ahFlat", v: sk.spiritAh[r], until }, state.t);
   vfx(state, { kind: "aura", id: u.id, r: u.radius + 44, color: "120,220,150", dur: sk.durByRank[r] });
-  logKoschei(state, u, "ถอดดวงจิตออกจากชุดเกราะ");
+  logP6(state, u, "ถอดดวงจิตออกจากชุดเกราะ");
 }
 
 function tickShell(state, sh, dt) {
@@ -1077,7 +1100,7 @@ export function soulSplitTick(state, u) {
     u.buffs = u.buffs.filter((b) =>
       !(b.type === "invuln" || b.type === "untargetable" || b.type === "disarm"));
     if (u.casket) u.casket.onShell = false;
-    logKoschei(state, u, far ? "สายวิญญาณขาด ถูกกระชากกลับเข้าชุดเกราะ" : "รวมร่างกลับเข้าชุดเกราะ");
+    logP6(state, u, far ? "สายวิญญาณขาด ถูกกระชากกลับเข้าชุดเกราะ" : "รวมร่างกลับเข้าชุดเกราะ");
   }
 }
 
@@ -1089,4 +1112,199 @@ export function koscheiTick(state, u) {
   soulSplitTick(state, u);
   miasmaTick(state, u);
   casketTick(state, u);
+}
+
+
+// ===============================================================
+// IFRIT
+// ===============================================================
+
+// ---------------------------------------------------------------
+// พาสซีฟ Cinder Scourge — ทุกอย่างที่แตะศัตรูจุดไฟเผาต่อเนื่อง
+//
+// ใช้ระบบ state.dots ที่มีอยู่แล้ว ไม่เขียนตัวจับเวลาใหม่ เพราะระบบนั้น
+// ต่ออายุเมื่อแปะซ้ำ จ่ายเศษที่เหลือตอนหมดเวลา และรองรับเซฟเก่าอยู่แล้ว
+//
+// ไฟของตัวเองไม่จุดไฟซ้ำ — damage.js เช็ก state.dotTag ก่อนเรียกที่นี่
+// ไม่งั้นดาเมจของ DoT จะต่ออายุตัวเองทุกระลอก กลายเป็นไฟที่ไม่มีวันดับ
+// ---------------------------------------------------------------
+export const IGNITE_TAG = "ifrit:ignite";
+
+export function igniteTarget(state, u, e) {
+  const cfg = u.champ && u.champ.cinder;
+  if (!cfg || !e || !e.alive || e.team === u.team) return;
+  const per = cfg.tickBase + cfg.tickPerLevel * ((u.level || 1) - 1)
+    + (cfg.tickApRatio || 0) * (u.ap || 0);
+  const every = cfg.every || 0.5;
+  burnDot(state, u, e, {
+    tag: IGNITE_TAG, dps: per / every, dur: cfg.dur || 3, every,
+    magic: true, src: tr("พาสซีฟ Cinder Scourge"),
+  });
+}
+
+// ---------------------------------------------------------------
+// Q Pyroclastic Orb — ลูกไฟพุ่งเป็นเส้น ระเบิดเป็นวงตรงจุดที่หยุด
+//
+// ใช้ลูกของตัวเองเพราะทางเดินลูกกระสุนกลางไม่มีช่องให้ "ระเบิดเป็นวง
+// ตอนชน หรือตอนสุดระยะถ้าไม่ชนใคร" ซึ่งเป็นหัวใจของท่านี้
+// ---------------------------------------------------------------
+export function castFireOrb(state, u, sk, target) {
+  const r = rankOf(sk);
+  const tx = target ? target.x : u.x + 1, ty = target ? target.y : u.y;
+  const d = Math.hypot(tx - u.x, ty - u.y) || 1;
+  L(state).orbs.push({
+    ownerId: u.id, team: u.team, x: u.x, y: u.y,
+    nx: (tx - u.x) / d, ny: (ty - u.y) / d,
+    left: sk.range, speed: sk.projSpeed, half: sk.width / 2, radius: sk.radius,
+    dmg: sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0),
+    label: skillLabel(u, sk),
+  });
+}
+
+function tickFireOrb(state, o, dt) {
+  const u = state.units.find((x) => x.id === o.ownerId);
+  if (!u) return false;
+  const stepLen = Math.min(o.left, o.speed * dt);
+  const px = o.x, py = o.y;
+  o.x += o.nx * stepLen;
+  o.y += o.ny * stepLen;
+  o.left -= stepLen;
+  vfx(state, { kind: "flash", x: o.x, y: o.y, r: 40, color: "255,150,60", dur: 0.12 });
+
+  // ชนแชมเปี้ยนตัวแรกที่ขวางอยู่ในช่วงที่ลูกเพิ่งวิ่งผ่าน
+  let hit = null, best = Infinity;
+  for (const e of enemiesOf(state, u)) {
+    if (Math.abs((e.x - px) * o.ny - (e.y - py) * o.nx) > o.half + e.radius) continue;
+    const along = (e.x - px) * o.nx + (e.y - py) * o.ny;
+    if (along < -e.radius || along > stepLen + e.radius) continue;
+    if (along < best) { best = along; hit = e; }
+  }
+  // ชนใครก็ระเบิดที่นั่น · ไม่ชนใครแต่สุดระยะก็ระเบิดที่ปลายทาง
+  if (hit || o.left <= 0) {
+    const cx = hit ? hit.x : o.x, cy = hit ? hit.y : o.y;
+    const prev = state.dmgSrc;
+    state.dmgSrc = o.label;
+    for (const e of enemiesOf(state, u)) {
+      if (Math.hypot(e.x - cx, e.y - cy) > o.radius + e.radius) continue;
+      applyDamage(state, u, e, o.dmg, true);
+    }
+    state.dmgSrc = prev;
+    vfx(state, { kind: "shock", x: cx, y: cy, r: o.radius, color: "255,130,50", dur: 0.45 });
+    vfx(state, { kind: "flash", x: cx, y: cy, r: o.radius * 0.7, color: "255,210,140", dur: 0.3 });
+    return false;
+  }
+  return true;
+}
+
+// ---------------------------------------------------------------
+// E Trail of Cinders — ปูพรมไฟเป็นแนวยาว ลงทันที แล้วค้างเผาบนพื้น
+// ---------------------------------------------------------------
+export function castCinderTrail(state, u, sk, target) {
+  const r = rankOf(sk);
+  const tx = target ? target.x : u.x + 1, ty = target ? target.y : u.y;
+  const d = Math.hypot(tx - u.x, ty - u.y) || 1;
+  const nx = (tx - u.x) / d, ny = (ty - u.y) / d;
+  const half = sk.width / 2;
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk);
+  // จังหวะแรกลงทันที ใครยืนอยู่ในแนวโดนเลย
+  const first = sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0);
+  for (const e of enemiesOf(state, u)) {
+    const rx = e.x - u.x, ry = e.y - u.y;
+    const along = rx * nx + ry * ny;
+    if (along < -e.radius || along > sk.range + e.radius) continue;
+    if (Math.abs(rx * -ny + ry * nx) > half + e.radius) continue;
+    applyDamage(state, u, e, first, true);
+  }
+  state.dmgSrc = prev;
+  // แล้วทิ้งไฟค้างไว้บนพื้น เผาเป็นระลอก
+  L(state).trails.push({
+    ownerId: u.id, team: u.team, x: u.x, y: u.y, nx, ny,
+    halfLen: sk.range / 2, halfW: half,
+    cx: u.x + nx * (sk.range / 2), cy: u.y + ny * (sk.range / 2),
+    until: state.t + (sk.zoneLife || 3.5), next: state.t + (sk.zoneEvery || 0.5),
+    every: sk.zoneEvery || 0.5,
+    dmg: (sk.zoneDmg ? sk.zoneDmg[r] : 0) + (sk.zoneApRatio || 0) * (u.ap || 0),
+    label: skillLabel(u, sk) + tr(" (พื้นไฟ)"),
+  });
+  vfx(state, { kind: "beam", x: u.x, y: u.y, x2: u.x + nx * sk.range, y2: u.y + ny * sk.range,
+    w: sk.width, color: "255,120,40", dur: 0.5 });
+}
+
+function tickCinderTrail(state, z) {
+  if (state.t > z.until) return false;
+  const u = state.units.find((x) => x.id === z.ownerId);
+  if (!u) return false;
+  vfx(state, { kind: "ring", x: z.cx, y: z.cy, r: z.halfW, color: "255,120,40", dur: 0.1 });
+  if (state.t < z.next) return true;
+  z.next = state.t + z.every;
+  const prev = state.dmgSrc;
+  state.dmgSrc = z.label;
+  for (const e of enemiesOf(state, u)) {
+    const rx = e.x - z.cx, ry = e.y - z.cy;
+    if (Math.abs(rx * z.nx + ry * z.ny) > z.halfLen + e.radius) continue;
+    if (Math.abs(rx * -z.ny + ry * z.nx) > z.halfW + e.radius) continue;
+    applyDamage(state, u, e, z.dmg, true);
+  }
+  state.dmgSrc = prev;
+  return true;
+}
+
+// ---------------------------------------------------------------
+// R Cataclysmic Firestorm — พายุไฟที่คืบคลานเข้าหาเป้าที่ใกล้สุดเอง
+// ---------------------------------------------------------------
+export function castFirestorm(state, u, sk, target) {
+  const r = rankOf(sk);
+  const d = target ? Math.hypot(target.x - u.x, target.y - u.y) : 0;
+  const f = Math.min(1, d > 0 ? sk.range / d : 1);
+  L(state).firestorms.push({
+    ownerId: u.id, team: u.team,
+    x: target ? u.x + (target.x - u.x) * f : u.x,
+    y: target ? u.y + (target.y - u.y) * f : u.y,
+    radius: sk.radius, speed: sk.stormSpeed, until: state.t + sk.dur,
+    next: state.t + (sk.stormEvery || 0.5), every: sk.stormEvery || 0.5,
+    left: sk.stormMax || 10,
+    dmg: (sk.stormDmg ? sk.stormDmg[r] : 0) + (sk.stormApRatio || 0) * (u.ap || 0),
+    slow: sk.stormSlow ? sk.stormSlow[r] : 0,
+    label: skillLabel(u, sk),
+  });
+  logP6(state, u, "ปลุกพายุไฟบรรพกาล");
+}
+
+function tickFirestorm(state, f, dt) {
+  if (state.t > f.until || f.left <= 0) return false;
+  const u = state.units.find((x) => x.id === f.ownerId);
+  if (!u) return false;
+
+  // คืบคลานเข้าหาแชมเปี้ยนศัตรูที่ใกล้สุด ไม่ใช่เป้าที่ร่ายใส่ตอนแรก
+  let near = null, nd = Infinity;
+  for (const e of enemiesOf(state, u)) {
+    const d = Math.hypot(e.x - f.x, e.y - f.y);
+    if (d < nd) { nd = d; near = e; }
+  }
+  if (near && nd > 1) {
+    const sp = f.speed * dt;
+    f.x = clamp(f.x + ((near.x - f.x) / nd) * sp, 60, ARENA_W - 60);
+    f.y = clamp(f.y + ((near.y - f.y) / nd) * sp, 60, ARENA_H - 60);
+  }
+
+  // สโลว์ทุกคนที่อยู่ในวง ต่ออายุสั้นๆ ทุกทิก เดินออกแล้วหมดเอง
+  for (const e of enemiesOf(state, u)) {
+    if (Math.hypot(e.x - f.x, e.y - f.y) > f.radius + e.radius) continue;
+    if (f.slow > 0) addBuff(e, { type: "slow", v: f.slow, until: state.t + 0.25 }, state.t);
+  }
+
+  vfx(state, { kind: "ring", x: f.x, y: f.y, r: f.radius, color: "255,140,60", dur: 0.12 });
+  if (state.t < f.next) return true;
+  f.next = state.t + f.every;
+  f.left -= 1;
+  const prev = state.dmgSrc;
+  state.dmgSrc = f.label;
+  for (const e of enemiesOf(state, u)) {
+    if (Math.hypot(e.x - f.x, e.y - f.y) > f.radius + e.radius) continue;
+    applyDamage(state, u, e, f.dmg, true);
+  }
+  state.dmgSrc = prev;
+  vfx(state, { kind: "shock", x: f.x, y: f.y, r: f.radius, color: "255,120,40", dur: 0.3 });
+  return true;
 }
