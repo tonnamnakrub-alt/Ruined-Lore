@@ -1018,6 +1018,8 @@ export function tickLore(state, dt) {
     // ศัตรูเดินทะลุไม่ได้ — ผลักออกไปด้านที่มันมา
     for (const e of state.units) {
       if (!e.alive || e.team === w.team) continue;
+      // 0.6 ANANSI — คนที่กำลังทะลุกำแพงไม่ถูกผลักออก
+      if (e.phasing) continue;
       const rx = e.x - w.x, ry = e.y - w.y;
       const along = rx * w.nx + ry * w.ny;
       if (Math.abs(along) > w.half) continue;

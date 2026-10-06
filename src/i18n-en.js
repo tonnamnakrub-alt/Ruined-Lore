@@ -3739,4 +3739,47 @@ export const DICT = {
    "Terrifying Windup & Howl",
  "Feast of the Fallen":
    "Feast of the Fallen",
+ // ---- Patch 0.6 ANANSI ----
+ "อนันซี":
+   "Anansi",
+ "Spider's Traverse":
+   "Spider's Traverse",
+ "Gourd of Wit":
+   "Gourd of Wit",
+ "Tangled Puppetry":
+   "Tangled Puppetry",
+ "Sticky Web Trap":
+   "Sticky Web Trap",
+ "Venom of Paranoia":
+   "Venom of Paranoia",
+ "เดินทะลุกำแพงได้ทุกชนิด — กำแพงอิฐ กรง และสิ่งกีดขวางที่แชมเปี้ยนสร้างขึ้น · อยู่ในเนื้อกำแพงได้ต่อเนื่อง 3 วิ ครบเวลาแล้วถูกดันออกขอบที่ใกล้สุด · โดนแชมเปี้ยนศัตรูตีขณะอยู่ในกำแพง เวลาที่เหลือลดลงครึ่งหนึ่งทันที · คูลดาวน์การเข้ากำแพงใหม่ 8/7/6 วิ (ที่เลเวล 1/7/13) · ออโต้ทุกครั้งพ่วงดาเมจเวท 15 ที่เลเวล 1 ไล่ถึง 65 ที่เลเวล 18 (+20% AP)":
+   "Walks through walls of every kind — brick walls, cages and any obstacle a champion builds · can stay inside the wall for 3s at a stretch, then gets pushed out the nearest edge · being hit by an enemy champion while inside immediately halves the time left · 8/7/6s cooldown before entering a wall again (at levels 1/7/13) · every auto-attack carries bonus magic damage, 15 at level 1 rising to 65 at level 18 (+20% AP)",
+ "ใยสองเส้น":
+   "Two web threads",
+ "กรวยใยเหนียว":
+   "Cone of sticky web",
+ "คลื่นพิษหลอน":
+   "Wave of hallucinogenic venom",
+ "ยิงใยเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย เส้นแรกติดสโลว์ · กดซ้ำได้อีกครั้งภายใน {2} วิ — เส้นที่สองลงคนเดิมจะตรึงเท้ามันไว้ ลงคนใหม่จะดึงสองคนนั้นเข้าหากัน":
+   "Fires a web in a straight line {0} units long and {1} wide; the first thread slows · can be cast again within {2}s — a second thread on the same target roots it, on a new target it drags the two of them together",
+ "พ่นใยเหนียวเป็นกรวยด้านหน้าไกล {0} หน่วย กว้าง {1} องศา แล้วทิ้งผืนใยค้างบนพื้น {2} วิ — คนที่ยืนในผืนใยติดสโลว์และติดตรึงพื้น":
+   "Sprays sticky web in a {1}-degree cone {0} units in front, leaving a patch on the ground for {2}s — anyone standing in it is slowed and grounded",
+ "ปล่อยคลื่นพิษกว้าง {0} หน่วยคลานไปข้างหน้า {1} หน่วยด้วยความเร็วแค่ {2} (เดินหลบได้สบาย) · ท่านี้ไม่ทำดาเมจเลย แต่ศัตรูที่โดนจะบ้าคลั่ง — ร่ายสกิลและใช้ไอเทมไม่ได้ ตีได้แรงขึ้นแต่หันไปตีพวกเดียวกันที่อยู่ใกล้สุดภายใน {3} หน่วย · ถ้าไม่มีพวกอยู่ในระยะเลย จะยืนมึนอยู่กับที่ทำอะไรไม่ได้":
+   "Breathes out a {0}-unit wide wave of venom that creeps {1} units forward at only {2} speed (easy to walk away from) · it deals no damage at all, but enemies it washes over go berserk — they cannot cast skills or use items, they attack faster, and they turn on the nearest ally within {3} units instead · with no ally in range they just stand there dazed, unable to act",
+ "ดาเมจใยเส้นที่สอง":
+   "Second thread damage",
+ "AP ของใยเส้นที่สอง":
+   "AP on the second thread",
+ "สโลว์ของผืนใยที่ค้างบนพื้น":
+   "Slow from the web patch",
+ "ผืนใยค้างบนพื้นนาน":
+   "The web patch lasts",
+ "บ้าคลั่งนาน":
+   "Berserk lasts",
+ "ระยะที่คนบ้าคลั่งมองหาพวกเดียวกันมาตี":
+   "Range a berserk enemy looks for an ally to hit",
+ "ความเร็วโจมตีที่เพิ่มระหว่างบ้าคลั่ง":
+   "Added attack speed while berserk",
+ "ติดตรึงพื้น — ใช้สกิลเคลื่อนที่ไม่ได้ และเร่งความเร็วเดินไม่ได้":
+   "grounds the target — no movement skills and no move-speed boosts",
 };

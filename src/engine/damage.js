@@ -11,7 +11,7 @@ import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { canopyShare, stickDagger } from "./lore-p4.js";
-import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain } from "./lore-p6.js";
+import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain, spiderWalkHurt } from "./lore-p6.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -143,6 +143,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
   state.fx.push({ x: target.x, y: target.y - 40, t: state.t, kind: "num", text: String(Math.round(dmg)),
     color: trueDmg ? "#FFFFFF" : magic ? "#B08CFF" : "#FFD08A" });
   target.hp -= dmg;
+  // 0.6 ANANSI — โดนแชมเปี้ยนศัตรูตีขณะอยู่ในกำแพง เวลาที่เหลือลดครึ่ง
+  if (target.phasing && source && source.champ) spiderWalkHurt(target);
   // 0.6 WOLF Bloodfrenzy — ดูดเลือดคืนจากดาเมจที่ลงเป้าเลือดน้อย
   // ต้องคิดหลังหักเลือดแล้ว เพราะต้องรู้ยอดดาเมจที่ลงจริง
   if (source && source.champ && source.champ.bloodfrenzy) frenzyDrain(state, source, target, dmg);

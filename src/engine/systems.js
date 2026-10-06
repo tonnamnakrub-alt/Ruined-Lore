@@ -70,6 +70,8 @@ export function tickNewSystems(state) {
     if (state.t < c.at) return true;
     for (const u of state.units) {
       if (!u.alive || u.dashing || u.charging) continue;
+      // 0.6 ANANSI — คนที่กำลังทะลุกำแพงเดินผ่านกรงได้
+      if (u.phasing) continue;
       // สเปคใหม่: เพื่อนของคนวางกรงเดินผ่านได้ตามปกติ ติดอยู่ข้างในเฉพาะศัตรู
       if (c.allyPass && u.team === c.team) continue;
       const dx = u.x - c.x, dy = u.y - c.y;

@@ -17,6 +17,13 @@
 //           พาสซีฟของ W ให้ความเร็วเดิน คูณสามถ้าวิ่งเข้าหาเป้าที่เลือดต่ำกว่าครึ่ง
 //   E       ชาร์จ 0.6 วิแล้วคำรามรอบตัว ติดหวาดกลัว และลดดาเมจที่ศัตรูทำได้
 //   R       กินซากศพที่เกิดจากคนตายใกล้ตัว ฟื้นเลือดแล้วรีเซ็ตคูลดาวน์ Q/W/E
+//
+// ANANSI — ใช้กำแพงเป็นทางลัด แล้วเล่นเกมดักทาง
+//   พาสซีฟ  เดินทะลุกำแพงทุกชนิด (อิฐของ H.S.B · กรงของ PINO E · กรงของ HELSING R)
+//           อยู่ในเนื้อกำแพงได้ 3 วิ โดนตีแล้วเวลาลดครึ่ง · ออโต้พ่วงดาเมจเวท
+//   W       ใยสองเส้น เส้นแรกสโลว์ เส้นที่สองลงเป้าเดิม = ตรึง · ลงเป้าใหม่ = ดึงเข้าหากัน
+//   E       พ่นกรวยแล้วทิ้งผืนใย สโลว์หนักและตรึงพื้น (ใช้ท่าเคลื่อนที่ไม่ได้)
+//   R       คลื่นช้ากว้าง ไม่ทำดาเมจ ศัตรูที่โดนหันไปตีพวกเดียวกัน
 // ---------------------------------------------------------------
 import { ARENA_H, ARENA_W } from "../data/constants.js";
 import { applyDamage } from "./damage.js";
@@ -46,6 +53,223 @@ function byTier(arr, tiers, level) {
   let v = arr[0];
   for (let i = 0; i < tiers.length; i++) if ((level || 1) >= tiers[i]) v = arr[i];
   return v;
+}
+
+// ---------------------------------------------------------------
+// ANANSI พาสซีฟ — เดินทะลุกำแพง
+//
+// รวมสิ่งกีดขวางทุกชนิดในเกมไว้ที่นี่ที่เดียว ถ้ามีชนิดใหม่ในอนาคต
+// (ผู้ใช้บอกว่าจะมีกำแพงในแมพเพิ่ม) เพิ่มที่ฟังก์ชันนี้จุดเดียวพอ
+// ---------------------------------------------------------------
+export function wallsAround(state) {
+  const out = [];
+  const lore = state.lore || {};
+  for (const w of lore.walls || []) out.push({ kind: "wall", w });
+  for (const b of lore.bunkers || []) out.push({ kind: "circle", x: b.x, y: b.y, r: b.r });
+  for (const c of state.cages || []) out.push({ kind: "ring", x: c.x, y: c.y, r: c.r });
+  for (const m of lore.maidens || []) out.push({ kind: "ring", x: m.x, y: m.y, r: m.bound });
+  return out;
+}
+
+// อยู่ในเนื้อกำแพงหรือเปล่า — ใช้ทั้งตอนนับเวลาและตอนยกเว้นการถูกผลักออก
+export function insideWall(state, u) {
+  for (const o of wallsAround(state)) {
+    if (o.kind === "wall") {
+      const w = o.w;
+      const rx = u.x - w.x, ry = u.y - w.y;
+      if (Math.abs(rx * w.nx + ry * w.ny) > w.half) continue;
+      if (Math.abs(rx * -w.ny + ry * w.nx) <= u.radius + 26) return o;
+    } else {
+      const d = Math.hypot(u.x - o.x, u.y - o.y);
+      // ขอบวงถือเป็น "เนื้อกำแพง" หนาเท่ารัศมีตัว
+      if (Math.abs(d - o.r) <= u.radius + 26) return o;
+    }
+  }
+  return null;
+}
+
+// เดินเวลาของการอยู่ในกำแพง — เรียกทุกทิกจาก step.js
+export function spiderWalkTick(state, u, dt) {
+  const cfg = u.champ && u.champ.spiderWalk;
+  if (!cfg) return;
+  const inside = insideWall(state, u);
+  if (!inside) {
+    // ออกมาแล้ว — เริ่มนับคูลดาวน์การเข้าใหม่
+    if (u.wallTime > 0) {
+      u.wallCd = state.t + byTier(cfg.cd, cfg.tiers, u.level || 1);
+      u.wallTime = 0;
+    }
+    u.phasing = false;
+    return;
+  }
+  // อยู่ในกำแพง — ทะลุได้ถ้ายังไม่หมดเวลาและไม่ติดคูลดาวน์
+  if (u.wallTime == null) u.wallTime = 0;
+  if (u.wallTime === 0 && state.t < (u.wallCd || 0)) { u.phasing = false; return; }
+  u.wallTime += dt;
+  if (u.wallTime >= cfg.maxTime) {
+    // ครบเวลา — ดันออกไปขอบที่ใกล้สุด แล้วเริ่มคูลดาวน์
+    pushOutOfWall(u, inside);
+    u.wallCd = state.t + byTier(cfg.cd, cfg.tiers, u.level || 1);
+    u.wallTime = 0;
+    u.phasing = false;
+    return;
+  }
+  u.phasing = true;
+}
+
+function pushOutOfWall(u, o) {
+  if (o.kind === "wall") {
+    const w = o.w;
+    const rx = u.x - w.x, ry = u.y - w.y;
+    const side = rx * -w.ny + ry * w.nx;
+    const push = (u.radius + 30) * (side >= 0 ? 1 : -1);
+    place(u, w.x + -w.ny * push + w.nx * (rx * w.nx + ry * w.ny),
+      w.y + w.nx * push + w.ny * (rx * w.nx + ry * w.ny));
+    return;
+  }
+  const dx = u.x - o.x, dy = u.y - o.y;
+  const d = Math.hypot(dx, dy) || 1;
+  // ดันไปฝั่งที่ตัวเองอยู่ใกล้กว่า (นอกวงหรือในวง)
+  const lim = d >= o.r ? o.r + u.radius + 30 : o.r - u.radius - 30;
+  place(u, o.x + (dx / d) * Math.max(0, lim), o.y + (dy / d) * Math.max(0, lim));
+}
+
+// โดนแชมเปี้ยนศัตรูตีขณะอยู่ในกำแพง — เวลาที่เหลือลดครึ่ง
+export function spiderWalkHurt(u) {
+  const cfg = u.champ && u.champ.spiderWalk;
+  if (!cfg || !u.phasing) return;
+  const left = cfg.maxTime - (u.wallTime || 0);
+  u.wallTime = cfg.maxTime - left * (1 - (cfg.cutOnHit || 0.5));
+}
+
+// ออโต้พ่วงดาเมจเวท
+export function spiderOnHit(state, u, e) {
+  const cfg = u.champ && u.champ.spiderWalk;
+  if (!cfg || !e || !e.alive) return;
+  const dmg = cfg.onHitBase + cfg.onHitPerLevel * ((u.level || 1) - 1) + (cfg.onHitApRatio || 0) * (u.ap || 0);
+  const prev = state.dmgSrc;
+  state.dmgSrc = "Spider's Traverse";
+  applyDamage(state, u, e, dmg, true);
+  state.dmgSrc = prev;
+}
+
+// ---------------------------------------------------------------
+// ANANSI W — ใยสองเส้น
+// ---------------------------------------------------------------
+export function castWebThread(state, u, sk, target) {
+  if (!target) return;
+  const second = u.webThread && state.t <= u.webThread.until;
+  const r = Math.max(0, sk.rank - 1);
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk);
+  if (!second) {
+    const dmg = sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0);
+    applyDamage(state, u, target, dmg, true);
+    addBuff(target, { type: "slow", v: sk.slow, until: state.t + (sk.slowDur || 1.5) }, state.t);
+    u.webThread = { until: state.t + (sk.window || 3.5), targetId: target.id, sk, rank: sk.rank };
+  } else {
+    const w = u.webThread;
+    const dmg = sk.secondDmg[r] + (sk.secondApRatio || 0) * (u.ap || 0);
+    applyDamage(state, u, target, dmg, true);
+    if (target.id === w.targetId) {
+      // เป้าเดิม — ตรึงเท้า
+      addBuff(target, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
+    } else {
+      // เป้าใหม่ — ดึงสองตัวเข้าหากันที่จุดกึ่งกลาง
+      const first = state.units.find((x) => x.id === w.targetId && x.alive);
+      if (first) {
+        const mx = (first.x + target.x) / 2, my = (first.y + target.y) / 2;
+        place(first, mx, my);
+        place(target, mx, my);
+        applyDamage(state, u, first, dmg, true);
+        addBuff(first, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
+        addBuff(target, { type: "root", v: 1, until: state.t + sk.rootByRank[r] }, state.t);
+      }
+    }
+    u.webThread = null;
+  }
+  state.dmgSrc = prev;
+  vfx(state, { kind: "beam", x: u.x, y: u.y, x2: target.x, y2: target.y, w: 10, color: "230,220,255", dur: 0.3 });
+}
+
+// ---------------------------------------------------------------
+// ANANSI E — พ่นกรวยแล้วทิ้งผืนใย
+// ---------------------------------------------------------------
+export function castWebField(state, u, sk, target) {
+  const face = target ? Math.atan2(target.y - u.y, target.x - u.x) : 0;
+  const r = Math.max(0, sk.rank - 1);
+  const half = ((sk.angle || 60) * Math.PI) / 180 / 2;
+  const dmg = sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0);
+  const prev = state.dmgSrc;
+  state.dmgSrc = skillLabel(u, sk);
+  for (const e of enemiesOf(state, u)) {
+    if (!inCone(u, e, face, half, sk.range)) continue;
+    applyDamage(state, u, e, dmg, true);
+  }
+  state.dmgSrc = prev;
+  // ผืนใยค้างบนพื้น — วางเป็นวงกลางกรวย
+  const mid = sk.range * 0.55;
+  L(state).webs.push({
+    ownerId: u.id, team: u.team,
+    x: u.x + Math.cos(face) * mid, y: u.y + Math.sin(face) * mid,
+    r: sk.range * 0.5, until: state.t + (sk.zoneLife || 3),
+    slow: sk.zoneSlow[r], grounded: !!sk.grounded,
+  });
+  vfx(state, { kind: "cone", x: u.x, y: u.y, r: sk.range, ang: face, half, color: "230,220,255", dur: 0.4 });
+}
+
+// ---------------------------------------------------------------
+// ANANSI R — คลื่นช้ากว้าง ไม่ทำดาเมจ ศัตรูที่โดนหันไปตีพวกเดียวกัน
+// ---------------------------------------------------------------
+export function castBerserkWave(state, u, sk, target) {
+  const ang = target ? Math.atan2(target.y - u.y, target.x - u.x) : 0;
+  L(state).waves.push({
+    ownerId: u.id, team: u.team, sk, rank: sk.rank,
+    x: u.x, y: u.y, nx: Math.cos(ang), ny: Math.sin(ang),
+    left: sk.range, hitIds: [],
+  });
+}
+
+function tickBerserkWave(state, w, dt) {
+  const u = state.units.find((x) => x.id === w.ownerId);
+  const sk = w.sk;
+  const r = Math.max(0, (w.rank || 1) - 1);
+  const stepLen = Math.min(w.left, (sk.projSpeed || 850) * dt);
+  w.x += w.nx * stepLen;
+  w.y += w.ny * stepLen;
+  w.left -= stepLen;
+  const halfW = (sk.width || 650) / 2;
+  if (u) {
+    for (const e of enemiesOf(state, u)) {
+      if (w.hitIds.includes(e.id)) continue;
+      const rx = e.x - w.x, ry = e.y - w.y;
+      if (Math.abs(rx * w.nx + ry * w.ny) > e.radius + 40) continue;
+      if (Math.abs(rx * -w.ny + ry * w.nx) > halfW + e.radius) continue;
+      w.hitIds.push(e.id);
+      e.berserk = { until: state.t + sk.berserkByRank[r], as: sk.berserkAs || 1, allyRange: sk.allyRange || 500 };
+      vfx(state, { kind: "ring", x: e.x, y: e.y, r: e.radius + 24, color: "150,80,200", grow: 0.5, dur: 0.5 });
+    }
+  }
+  vfx(state, { kind: "beam", x: w.x - w.nx * 20, y: w.y - w.ny * 20, x2: w.x + w.nx * 20, y2: w.y + w.ny * 20,
+    w: halfW, color: "150,80,200", dur: 0.12 });
+  return w.left > 0;
+}
+
+// บังคับให้คนที่บ้าคลั่งตีพวกเดียวกัน — เรียกทุกทิกจาก step.js
+// คืน true ถ้าจัดการยูนิตนี้ไปแล้ว (ผู้เรียกต้องไม่ให้มันทำอย่างอื่น)
+export function berserkTick(state, u) {
+  const b = u.berserk;
+  if (!b) return false;
+  if (state.t > b.until) { u.berserk = null; u.berserkTarget = null; return false; }
+  // หาพวกเดียวกันที่ใกล้สุดในระยะ
+  let best = null, bd = Infinity;
+  for (const a of state.units) {
+    if (!a.alive || a.id === u.id || a.team !== u.team) continue;
+    const d = dist(u, a);
+    if (d < bd) { bd = d; best = a; }
+  }
+  u.berserkTarget = best && bd <= b.allyRange ? best.id : null;
+  return true;
 }
 
 // ---------------------------------------------------------------
@@ -395,6 +619,25 @@ export function tickP6(state, dt) {
     return false;
   });
 
+  // คลื่นบ้าคลั่งของ ANANSI R
+  lore.waves = lore.waves.filter((w) => tickBerserkWave(state, w, dt));
+
+  // ผืนใยของ ANANSI E — สโลว์และตรึงพื้นคนที่ยืนอยู่ในวง
+  lore.webs = lore.webs.filter((z) => {
+    if (state.t > z.until) return false;
+    const owner = state.units.find((x) => x.id === z.ownerId);
+    if (owner) {
+      for (const e of enemiesOf(state, owner)) {
+        if (Math.hypot(e.x - z.x, e.y - z.y) > z.r + e.radius) continue;
+        addBuff(e, { type: "slow", v: z.slow, until: state.t + 0.3 }, state.t);
+        // ตรึงพื้น: ใช้ท่าเคลื่อนที่ไม่ได้ และเร่งความเร็วเดินไม่ได้
+        if (z.grounded) e.grounded = state.t + 0.3;
+      }
+    }
+    vfx(state, { kind: "ring", x: z.x, y: z.y, r: z.r, color: "230,220,255", dur: 0.1 });
+    return true;
+  });
+
   // ซากศพหมดอายุ
   lore.carcasses = lore.carcasses.filter((c) => state.t <= c.until);
 
@@ -436,6 +679,9 @@ export function fireP6Skill(state, u, sk, target) {
     case "pounce": castPounce(state, u, sk); return true;
     case "howl": castHowl(state, u, sk); return true;
     case "devour": castDevour(state, u, sk); return true;
+    case "webThread": castWebThread(state, u, sk, target); return true;
+    case "webField": castWebField(state, u, sk, target); return true;
+    case "berserkWave": castBerserkWave(state, u, sk, target); return true;
     default: return false;
   }
 }
@@ -452,5 +698,7 @@ function L(state) {
   if (!l.maidens) l.maidens = [];
   if (!l.pounces) l.pounces = [];
   if (!l.carcasses) l.carcasses = [];
+  if (!l.webs) l.webs = [];
+  if (!l.waves) l.waves = [];
   return l;
 }

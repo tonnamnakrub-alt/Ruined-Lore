@@ -6,7 +6,7 @@ import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
-import { dropCarcass, frenzyAsBonus, howlLand, popBrand, pounceAuto, reapAuto, scentTick, tickP6 } from "./lore-p6.js";
+import { berserkTick, dropCarcass, frenzyAsBonus, howlLand, popBrand, pounceAuto, reapAuto, scentTick, spiderWalkTick, tickP6 } from "./lore-p6.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -164,6 +164,8 @@ export function step(state) {
     // 0.6 WOLF Bloodfrenzy — ความเร็วโจมตีเพิ่มตอนมีเป้าเลือดต่ำกว่าครึ่งอยู่ในระยะตี
     // เงื่อนไขขึ้นกับเป้า ไม่ใช่ตัวเอง จึงคิดที่นี่ทุกทิก ไม่ใช่ใน stats.js
     if (u.champ && u.champ.bloodfrenzy) u.asEff *= 1 + frenzyAsBonus(state, u);
+    // 0.6 ANANSI R — เอกสารเขียนว่า "+100% ความเร็วโจมตี" จึงอ่านเป็นส่วนเพิ่ม
+    if (u.berserk && u.berserk.as) u.asEff *= 1 + u.berserk.as;
     // AP/AH ที่บัฟเพิ่มได้ชั่วคราว (Saraswati's Flowing Veena) — คิดจากค่าฐานทุกเฟรม
     u.ap = ((u.baseAp || 0) + buffSum(u, "apFlat")) * (1 + buffSum(u, "apPct"));
     u.ah = (u.baseAh || 0) + buffSum(u, "ahFlat");
@@ -235,6 +237,16 @@ export function step(state) {
     tickP4Unit(state, u, dt);
     // 0.6 WOLF W พาสซีฟ — ความเร็วเดินขึ้นกับว่ามีเป้าเลือดน้อยอยู่ใกล้ไหม
     scentTick(state, u);
+    // 0.6 ANANSI พาสซีฟ — นับเวลาที่อยู่ในเนื้อกำแพง
+    spiderWalkTick(state, u, dt);
+    // 0.6 ANANSI R — คนที่บ้าคลั่งถูกบังคับให้ตีพวกเดียวกัน
+    berserkTick(state, u);
+    if (u.berserk) {
+      // ร่ายสกิลและใช้ไอเทมไม่ได้ เหลือแค่ออโต้ใส่พวกตัวเอง
+      u.silenced = true;
+      // ไม่มีพวกให้ตีในระยะ = ยืนมึนอยู่กับที่ ทำอะไรไม่ได้เลยตลอดเวลาที่ติด
+      if (!u.berserkTarget) u.stunned = true;
+    }
     tickLoreItems(state, u, dt);
     u.blinded = hasBuff(u, "blind");
     const vf = u.buffs.find((b) => b.type === "vampform");
@@ -607,9 +619,17 @@ export function step(state) {
     }
 
     // ---- target
+    // 0.6 ANANSI R — บ้าคลั่งแล้วหันไปตีพวกเดียวกัน ทับการเลือกเป้าทุกอย่าง
+    const madAlly = u.berserkTarget
+      ? state.units.find((x) => x.id === u.berserkTarget && x.alive)
+      : null;
     const tauntBuff = u.buffs.find((b) => b.type === "taunt");
     let target;
-    if (tauntBuff && state.units.find((x) => x.id === tauntBuff.sourceId && x.alive)) {
+    if (madAlly) {
+      target = madAlly;
+      u.targetId = target.id;
+      u.retargetIn = 0.1;
+    } else if (tauntBuff && state.units.find((x) => x.id === tauntBuff.sourceId && x.alive)) {
       target = state.units.find((x) => x.id === tauntBuff.sourceId);
       u.targetId = target.id;
       u.retargetIn = 0.1;

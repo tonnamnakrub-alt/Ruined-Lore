@@ -15,7 +15,7 @@ import { tr } from "../i18n.js";
 // หมวดหมู่ เรียงจาก "ยิงออกไปไกล" มาหา "ออกจากตัว" แล้วจบที่ท่าที่ไม่ทำดาเมจ
 export const SKILL_CATS = [
   { key: "proj", icon: "🏹", th: "ลูกกระสุน", desc: "ยิงออกไปแล้วบินไปหาเป้า",
-    types: ["line", "wave", "sledge"] },
+    types: ["line", "wave", "sledge", "webThread", "berserkWave"] },
   { key: "slash", icon: "🗡", th: "แนวยาวลงทันที", desc: "กินทั้งแนวในเฟรมเดียว ไม่มีลูกให้หลบ",
     types: [] },
   // ไม่ใช่ลำแสง — ทั้งสองชนิดนี้ push ลูกเข้า state.projectiles จริง ลำแสงเป็นแค่เอฟเฟกต์ภาพ
@@ -26,19 +26,19 @@ export const SKILL_CATS = [
   { key: "zone", icon: "🟣", th: "โซนค้างที่", desc: "อยู่กับที่ เดินออกได้",
     types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex"] },
   { key: "self", icon: "💥", th: "ดาเมจรอบตัว", desc: "ระเบิดออกจากตัวทันที",
-    types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest", "pulse"] },
+    types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest", "pulse", "howl"] },
   { key: "cone", icon: "🔺", th: "กรวยด้านหน้า", desc: "กวาดเป็นกรวยออกจากตัว",
-    types: ["cone", "coneKnock", "coneVolley", "channelCone", "thornCone"] },
+    types: ["cone", "coneKnock", "coneVolley", "channelCone", "thornCone", "webField"] },
   { key: "dash", icon: "🏃", th: "พุ่งเข้าชน", desc: "เคลื่อนที่เข้าใส่แล้วลงดาเมจ",
-    types: ["dash", "chargeDash", "crossDash", "steerDash", "deltaDash", "lungeSweep", "chargeFling", "blinkBehind", "carriage", "zephyr", "combo", "blinkDash"] },
+    types: ["dash", "chargeDash", "crossDash", "steerDash", "deltaDash", "lungeSweep", "chargeFling", "blinkBehind", "carriage", "zephyr", "combo", "blinkDash", "reapShift", "pounce"] },
   { key: "lock", icon: "🔒", th: "จับล็อกเป้า", desc: "ล็อกเป้าแล้วขังไว้ เป้าดิ้นไม่หลุด",
-    types: ["grabSlam", "dismissal"] },
+    types: ["grabSlam", "dismissal", "ironMaiden"] },
   { key: "onhit", icon: "⚔️", th: "ติดออโต้", desc: "พ่วงการโจมตีปกติครั้งถัดไป",
     types: ["onHit", "markNext", "pommel"] },
   { key: "single", icon: "🎯", th: "เล็งตัวเดียว", desc: "เลือกเป้าแล้วลงทันที",
     types: ["targeted", "judgment", "rebound"] },
   { key: "buffself", icon: "🔵", th: "บัฟตัวเอง", desc: "ไม่ทำดาเมจเอง",
-    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield"] },
+    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield", "devour"] },
   { key: "buffally", icon: "💚", th: "ช่วยเพื่อน", desc: "ฮีล โล่ หรือบัฟให้เพื่อน",
     types: ["allyHot", "teamHeal", "allyBlink", "allyRush", "canopy", "guardBurst", "arbor"] },
   { key: "build", icon: "🧱", th: "สิ่งก่อสร้าง", desc: "วางของหรือเรียกตัวช่วยที่ถูกทุบได้",
@@ -59,6 +59,7 @@ const INSTANT_TYPES = new Set([
   "judgment", "dismissal", "asuraSlam", "twinCleave", "bounceSlash",
   "globalStrike", "combo", "rebound",
   "vortex", "domain", "bladeTempest", "carriage",
+  "reapShift", "ironMaiden", "webField",
 ]);
 const ZONE_TYPES = new Set([
   "aoeGround", "meteorStorm", "wonderland", "teaGarden", "basketZone",
@@ -71,6 +72,7 @@ const NODMG_TYPES = new Set([
   "mistform", "skyward", "rampBuff", "mask", "markNext", "lastStand",
   "absorbReflect", "vampForm", "formShift", "zephyr", "damageStash",
   "blinkDash",   // LUCH E ร่างแสง — วาร์ปเฉยๆ ไม่มีดาเมจ
+  "devour",      // WOLF R — กินซากศพ ฟื้นเลือดตัวเอง ไม่แตะศัตรู
 ]);
 // ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง — เดินออกก่อนถึงเวลาได้
 //   pulse       LUCH Q ร่างเงา — เข้าคิว state.pulses สามระลอกใน 1.5 วิ
@@ -133,7 +135,7 @@ function extraKeys(sk) {
   // กรวย
   if (sk.angle && sk.count) k.add("cone");
   // ทิ้งพื้นที่ไว้หลังลง
-  if (sk.groundBurn || sk.pool || sk.zoneBleed) k.add("zone");
+  if (sk.groundBurn || sk.pool || sk.zoneBleed || sk.zoneSlow) k.add("zone");
   // ไม่ติดป้ายสิ่งก่อสร้างจากฟิลด์ pet เฉยๆ เพราะ JACK E แค่บัฟยักษ์ที่ JACK R เรียกมา
   // หมวดนี้มาจากชนิดของท่าอย่างเดียว (summonGiant / wall / bunker)
   // โล่หรือบัฟให้ตัวเอง
