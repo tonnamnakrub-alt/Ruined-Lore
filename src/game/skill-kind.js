@@ -15,7 +15,7 @@ import { tr } from "../i18n.js";
 // หมวดหมู่ เรียงจาก "ยิงออกไปไกล" มาหา "ออกจากตัว" แล้วจบที่ท่าที่ไม่ทำดาเมจ
 export const SKILL_CATS = [
   { key: "proj", icon: "🏹", th: "ลูกกระสุน", desc: "ยิงออกไปแล้วบินไปหาเป้า",
-    types: ["line", "wave", "sledge", "webThread", "berserkWave"] },
+    types: ["line", "wave", "sledge", "webThread", "berserkWave", "soulGrasp"] },
   { key: "slash", icon: "🗡", th: "แนวยาวลงทันที", desc: "กินทั้งแนวในเฟรมเดียว ไม่มีลูกให้หลบ",
     types: [] },
   // ไม่ใช่ลำแสง — ทั้งสองชนิดนี้ push ลูกเข้า state.projectiles จริง ลำแสงเป็นแค่เอฟเฟกต์ภาพ
@@ -24,7 +24,7 @@ export const SKILL_CATS = [
   { key: "ground", icon: "⭕", th: "วงกลมบนพื้น", desc: "วางแล้วหน่วงก่อนระเบิด",
     types: ["aoeGround", "meteorStorm", "wonderland", "teaGarden", "starfall", "skyfall", "globalStrike", "barrage", "submerge"] },
   { key: "zone", icon: "🟣", th: "โซนค้างที่", desc: "อยู่กับที่ เดินออกได้",
-    types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex"] },
+    types: ["basketZone", "truthAura", "wrathAura", "bloodStorm", "tempest", "sightZone", "cage", "domain", "vortex", "miasmaAura", "casketShield"] },
   { key: "self", icon: "💥", th: "ดาเมจรอบตัว", desc: "ระเบิดออกจากตัวทันที",
     types: ["aoeSelf", "twinCleave", "bounceSlash", "asuraSlam", "bladeTempest", "pulse", "howl"] },
   { key: "cone", icon: "🔺", th: "กรวยด้านหน้า", desc: "กวาดเป็นกรวยออกจากตัว",
@@ -38,7 +38,7 @@ export const SKILL_CATS = [
   { key: "single", icon: "🎯", th: "เล็งตัวเดียว", desc: "เลือกเป้าแล้วลงทันที",
     types: ["targeted", "judgment", "rebound"] },
   { key: "buffself", icon: "🔵", th: "บัฟตัวเอง", desc: "ไม่ทำดาเมจเอง",
-    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield", "devour"] },
+    types: ["selfBuff", "rampBuff", "mask", "vampForm", "lastStand", "absorbReflect", "damageStash", "mistform", "skyward", "burstShield", "devour", "soulSplit"] },
   { key: "buffally", icon: "💚", th: "ช่วยเพื่อน", desc: "ฮีล โล่ หรือบัฟให้เพื่อน",
     types: ["allyHot", "teamHeal", "allyBlink", "allyRush", "canopy", "guardBurst", "arbor"] },
   { key: "build", icon: "🧱", th: "สิ่งก่อสร้าง", desc: "วางของหรือเรียกตัวช่วยที่ถูกทุบได้",
@@ -66,6 +66,7 @@ const ZONE_TYPES = new Set([
   "truthAura", "wrathAura", "cage", "sightZone", "bunker", "wall",
   "bloodStorm", "tempest", "starfall", "guardBurst", "thornCone", "arbor",
   "summonGiant", "skyfall",
+  "miasmaAura", "casketShield",
 ]);
 const NODMG_TYPES = new Set([
   "selfBuff", "allyHot", "teamHeal", "allyBlink", "allyRush", "canopy",
@@ -73,6 +74,7 @@ const NODMG_TYPES = new Set([
   "absorbReflect", "vampForm", "formShift", "zephyr", "damageStash",
   "blinkDash",   // LUCH E ร่างแสง — วาร์ปเฉยๆ ไม่มีดาเมจ
   "devour",      // WOLF R — กินซากศพ ฟื้นเลือดตัวเอง ไม่แตะศัตรู
+  "soulSplit",   // KOSCHEI R — แยกร่าง ดาเมจมาจากออโต้ของชุดเกราะ ไม่ใช่ตัวท่า
 ]);
 // ดาเมจไม่ได้ลงตอนกด แต่เข้าคิวไว้ลงทีหลัง — เดินออกก่อนถึงเวลาได้
 //   pulse       LUCH Q ร่างเงา — เข้าคิว state.pulses สามระลอกใน 1.5 วิ

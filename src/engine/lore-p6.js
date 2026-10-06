@@ -24,10 +24,21 @@
 //   W       ใยสองเส้น เส้นแรกสโลว์ เส้นที่สองลงเป้าเดิม = ตรึง · ลงเป้าใหม่ = ดึงเข้าหากัน
 //   E       พ่นกรวยแล้วทิ้งผืนใย สโลว์หนักและตรึงพื้น (ใช้ท่าเคลื่อนที่ไม่ได้)
 //   R       คลื่นช้ากว้าง ไม่ทำดาเมจ ศัตรูที่โดนหันไปตีพวกเดียวกัน
+//
+// KOSCHEI — ยืนกลางวงแล้วไม่ตาย ดาเมจสเกลตามความถึกของตัวเอง
+//   พาสซีฟ  มีแชมเปี้ยนตายในระยะ 1,000 ฟื้นเลือดทันที ไม่เลือกข้าง
+//   Q       กะโหลกพุ่งเป็นเส้น หยุดที่แชมเปี้ยนตัวแรก แล้วสูบเลือดคืน
+//   W       ออร่ารอบตัวเผาทุก 0.5 วิ · กดตอนโล่ E ยังอยู่ได้ความเร็วเดิน
+//   E       โล่ตาม Max HP · ตราบใดที่โล่ยังอยู่ แผ่คลื่นทุก 1 วิ
+//           สโลว์ + ฉีกเกราะ/กันเวทสะสม 5 ชั้น · โล่แตกแล้วคลื่นหยุดทันที
+//   R       แยกร่าง — วิญญาณอมตะออกไปร่ายท่า ชุดเกราะยืนรับดาเมจแทน
+//           เลือดลดจากดาเมจที่ "ชุดเกราะ" กินเท่านั้น (หลอดเดียวกัน)
 // ---------------------------------------------------------------
 import { ARENA_H, ARENA_W } from "../data/constants.js";
-import { applyDamage } from "./damage.js";
-import { addBuff, dist, skillLabel, vfx } from "./state-util.js";
+import { AUTO_DMG } from "../data/tuning.js";
+import { applyDamage, grantShield, healUnit } from "./damage.js";
+import { addBuff, addBuffUnique, dist, pushLog, skillLabel, vfx } from "./state-util.js";
+import { tr } from "../i18n.js";
 import { enemiesOf } from "./targeting.js";
 import { clamp } from "./util.js";
 
@@ -638,6 +649,12 @@ export function tickP6(state, dt) {
     return true;
   });
 
+  // กะโหลกวิญญาณของ KOSCHEI Q
+  lore.grasps = lore.grasps.filter((g) => tickGrasp(state, g, dt));
+
+  // ชุดเกราะที่ KOSCHEI R ทิ้งไว้
+  lore.shells = lore.shells.filter((sh) => tickShell(state, sh, dt));
+
   // ซากศพหมดอายุ
   lore.carcasses = lore.carcasses.filter((c) => state.t <= c.until);
 
@@ -682,6 +699,10 @@ export function fireP6Skill(state, u, sk, target) {
     case "webThread": castWebThread(state, u, sk, target); return true;
     case "webField": castWebField(state, u, sk, target); return true;
     case "berserkWave": castBerserkWave(state, u, sk, target); return true;
+    case "soulGrasp": castSoulGrasp(state, u, sk, target); return true;
+    case "miasmaAura": castMiasma(state, u, sk); return true;
+    case "casketShield": castCasket(state, u, sk); return true;
+    case "soulSplit": castSoulSplit(state, u, sk); return true;
     default: return false;
   }
 }
@@ -700,5 +721,338 @@ function L(state) {
   if (!l.carcasses) l.carcasses = [];
   if (!l.webs) l.webs = [];
   if (!l.waves) l.waves = [];
+  if (!l.grasps) l.grasps = [];
+  if (!l.shells) l.shells = [];
   return l;
+}
+
+// ข้อความในปูมต้องผ่าน tr() ทั้งชื่อตัวละครและตัวประโยค ไม่งั้นหลุดเป็นไทยในโหมดอังกฤษ
+const logKoschei = (state, u, th) =>
+  pushLog(state, tr("{0} {1} {2}", u.team === "blue" ? "🔵" : "🔴", tr(u.champ.th), tr(th)));
+
+
+// ===============================================================
+// KOSCHEI
+// ===============================================================
+
+// เกราะและต้านเวทส่วนที่เกินค่าฐานของตัวละครที่เลเวลนั้น
+// สูตรเดียวกับ lore-p4.js ไม่ได้เขียนใหม่ด้วยมือ
+const bonusArmorOf = (u) =>
+  Math.max(0, (u.armor || 0) - (u.champ.armor + u.champ.armorG * ((u.level || 1) - 1)));
+const bonusMrOf = (u) =>
+  Math.max(0, (u.mr || 0) - (u.champ.mr + u.champ.mrG * ((u.level || 1) - 1)));
+
+const rankOf = (sk) => Math.max(0, (sk.rank || 1) - 1);
+
+// ---------------------------------------------------------------
+// พาสซีฟ Deathless Phylactery — มีแชมเปี้ยนตายใกล้ตัวแล้วฟื้นเลือด
+//
+// เรียกจาก damage.js ตอนที่ตั้ง target.alive = false จุดเดียวกับที่ WOLF
+// ทิ้งซากศพ · ไม่เลือกข้าง เพื่อนตายก็ฟื้น ศัตรูตายก็ฟื้น ตามเอกสาร
+// ---------------------------------------------------------------
+export function phylacteryHeal(state, dead) {
+  for (const u of state.units) {
+    const cfg = u.alive && u.champ && u.champ.phylactery;
+    if (!cfg || u.id === dead.id) continue;
+    if (dist(u, dead) > cfg.range) continue;
+    const pct = byTier(cfg.heal, cfg.tiers, u.level || 1);
+    const amt = (u.maxHp || 0) * pct;
+    if (amt <= 0) continue;
+    const prev = state.dmgSrc;
+    state.dmgSrc = tr("พาสซีฟ Deathless Phylactery");
+    healUnit(state, u, amt);
+    state.dmgSrc = prev;
+    vfx(state, { kind: "aura", id: u.id, r: u.radius + 40, color: "120,220,150", dur: 0.6 });
+  }
+}
+
+// ---------------------------------------------------------------
+// Q Spectral Grasp — กะโหลกพุ่งเป็นเส้น หยุดที่แชมเปี้ยนตัวแรก
+//
+// ใช้ลูกของตัวเองไม่ใช่ state.projectiles เพราะต้องสูบเลือดคืนให้คนยิง
+// ตอนชน ซึ่งเส้นทางลูกกลางไม่มีช่องให้ผูกผลนั้น
+// ---------------------------------------------------------------
+export function castSoulGrasp(state, u, sk, target) {
+  const r = rankOf(sk);
+  const tx = target ? target.x : u.x + 1, ty = target ? target.y : u.y;
+  const d = Math.hypot(tx - u.x, ty - u.y) || 1;
+  L(state).grasps.push({
+    ownerId: u.id, team: u.team, x: u.x, y: u.y,
+    nx: (tx - u.x) / d, ny: (ty - u.y) / d,
+    left: sk.range, speed: sk.projSpeed, half: sk.width / 2,
+    dmg: sk.dmg[r] + (sk.apRatio || 0) * (u.ap || 0) + (sk.selfMaxHp || 0) * (u.maxHp || 0),
+    heal: sk.heal[r] + (sk.healApRatio || 0) * (u.ap || 0) + (sk.healMaxHp || 0) * (u.maxHp || 0),
+    label: skillLabel(u, sk),
+  });
+}
+
+function tickGrasp(state, g, dt) {
+  const u = state.units.find((x) => x.id === g.ownerId);
+  if (!u) return false;
+  const stepLen = Math.min(g.left, g.speed * dt);
+  const px = g.x, py = g.y;
+  g.x += g.nx * stepLen;
+  g.y += g.ny * stepLen;
+  g.left -= stepLen;
+  vfx(state, { kind: "flash", x: g.x, y: g.y, r: 34, color: "120,220,150", dur: 0.12 });
+
+  // หยุดที่แชมเปี้ยนศัตรูตัวแรกที่ขวางอยู่ในช่วงที่ลูกเพิ่งวิ่งผ่าน
+  let hit = null, best = Infinity;
+  for (const e of enemiesOf(state, u)) {
+    if (Math.abs((e.x - px) * g.ny - (e.y - py) * g.nx) > g.half + e.radius) continue;
+    const along = (e.x - px) * g.nx + (e.y - py) * g.ny;
+    if (along < -e.radius || along > stepLen + e.radius) continue;
+    if (along < best) { best = along; hit = e; }
+  }
+  if (hit) {
+    const prev = state.dmgSrc;
+    state.dmgSrc = g.label;
+    applyDamage(state, u, hit, g.dmg, true);
+    healUnit(state, u, g.heal);
+    state.dmgSrc = prev;
+    vfx(state, { kind: "shock", x: hit.x, y: hit.y, r: 90, color: "120,220,150", dur: 0.3 });
+    return false;
+  }
+  return g.left > 0;
+}
+
+// ---------------------------------------------------------------
+// W Tormenting Miasma — ออร่ารอบตัวที่เผาศัตรูทุก 0.5 วิ
+//
+// ผลร่วมกับ E: กดตอนที่โล่โลงยังทำงานอยู่ ได้ความเร็วเดินทันที
+// เช็กที่ u.shield > 0 ด้วย ไม่ใช่แค่เวลาของ E เพราะเอกสารเขียนว่า
+// "ขณะที่โล่ยังทำงานอยู่" — โล่แตกแล้วถือว่าไม่ทำงานแล้ว
+// ---------------------------------------------------------------
+export function castMiasma(state, u, sk) {
+  const r = rankOf(sk);
+  u.miasma = {
+    // เอกสารเขียนว่า "ทำงาน 8 ครั้งตลอด 4 วินาที" จึงนับเป็นงบจำนวนครั้ง
+    // ไม่ใช่ปล่อยให้นาฬิกาตัดสิน ซึ่งได้ 9-10 ครั้งเพราะครั้งแรกลงทันทีที่กด
+    until: state.t + sk.dur, next: state.t + sk.every, left: Math.round(sk.dur / sk.every),
+    radius: sk.radius,
+    dmg: sk.tickDmg[r] + (sk.tickApRatio || 0) * (u.ap || 0)
+      + (sk.tickBonusHp || 0) * (u.bonusHp || 0),
+    every: sk.every, label: skillLabel(u, sk),
+  };
+  if (casketOn(state, u) && sk.synergyMs) {
+    addBuffUnique(u, "koschei:miasma", { type: "ms", v: sk.synergyMs[r],
+      until: state.t + (sk.synergyMsDur || 2.5) }, state.t);
+    vfx(state, { kind: "ring", x: u.x, y: u.y, r: u.radius + 50, color: "120,220,150", grow: 1 });
+  }
+  vfx(state, { kind: "aura", id: u.id, r: sk.radius, color: "90,180,120", dur: sk.dur });
+}
+
+// โล่ของ E ยังทำงานอยู่ไหม — มีทั้งเวลาเหลือและโล่ยังไม่แตก
+function casketOn(state, u) {
+  return !!(u.casket && state.t <= u.casket.until && (u.shield || 0) > 0);
+}
+
+export function miasmaTick(state, u) {
+  const m = u.miasma;
+  if (!m) return;
+  if (state.t > m.until || m.left <= 0) { u.miasma = null; return; }
+  if (state.t < m.next) return;
+  m.next = state.t + m.every;
+  m.left -= 1;
+  // ระหว่างแยกร่าง ออร่าออกจากร่างวิญญาณ ซึ่งก็คือตัว u เอง
+  const prev = state.dmgSrc;
+  state.dmgSrc = m.label;
+  for (const e of enemiesOf(state, u)) {
+    if (dist(u, e) > m.radius + e.radius) continue;
+    applyDamage(state, u, e, m.dmg, true);
+  }
+  state.dmgSrc = prev;
+}
+
+// ---------------------------------------------------------------
+// E Casket Carapace — โล่ตาม Max HP แล้วแผ่คลื่นทุก 1 วิตราบใดที่โล่ยังอยู่
+//
+// ระหว่างแยกร่าง (R) โล่ไปกางที่ "ชุดเกราะ" แต่คลื่นออกจาก "ร่างวิญญาณ"
+// ตามที่เอกสารระบุไว้ชัด
+// ---------------------------------------------------------------
+export function castCasket(state, u, sk) {
+  const r = rankOf(sk);
+  const amt = sk.shield[r] + (sk.shieldMaxHp || 0) * (u.maxHp || 0);
+  const shell = L(state).shells.find((x) => x.ownerId === u.id);
+  if (shell) {
+    // ระหว่างแยกร่าง โล่ไปกางที่ชุดเกราะ ซึ่งถือโล่ของตัวเองไว้ในฟิลด์ shield
+    shell.shield = amt;
+  } else {
+    grantShield(u, amt);
+    // ต้องมีบัฟ "shield" กำกับไว้ ไม่งั้น step.js ล้างโล่ทิ้งในทิกถัดไป
+    addBuff(u, { type: "shield", v: 1, until: state.t + sk.dur }, state.t);
+  }
+  u.casket = {
+    until: state.t + sk.dur, next: state.t + sk.pulseEvery, left: sk.pulseMax,
+    radius: sk.pulseRadius, onShell: !!shell,
+    dmg: sk.pulseDmg[r] + (sk.pulseBonusArmor || 0) * bonusArmorOf(u)
+      + (sk.pulseBonusMr || 0) * bonusMrOf(u),
+    slow: sk.pulseSlow[r], slowDur: sk.pulseSlowDur,
+    shredPer: sk.shredPer[r], shredMax: sk.shredMaxStacks, shredDur: sk.shredDur,
+    label: skillLabel(u, sk),
+  };
+  vfx(state, { kind: "aura", id: u.id, r: u.radius + 36, color: "150,160,170", dur: sk.dur });
+}
+
+export function casketTick(state, u) {
+  const c = u.casket;
+  if (!c) return;
+  // โล่ไปอยู่ที่ชุดเกราะระหว่างแยกร่าง จึงต้องดูโล่ของชุดเกราะแทน
+  const shell = c.onShell ? L(state).shells.find((x) => x.ownerId === u.id) : null;
+  const shieldLeft = shell ? (shell.shield || 0) : (u.shield || 0);
+  if (state.t > c.until || c.left <= 0 || shieldLeft <= 0) { u.casket = null; return; }
+  if (state.t < c.next) return;
+  c.next = state.t + 1.0;
+  c.left -= 1;
+  const prev = state.dmgSrc;
+  state.dmgSrc = c.label;
+  for (const e of enemiesOf(state, u)) {
+    if (dist(u, e) > c.radius + e.radius) continue;
+    applyDamage(state, u, e, c.dmg, true);
+    addBuff(e, { type: "slow", v: c.slow, until: state.t + c.slowDur }, state.t);
+    // ฉีกเกราะและกันเวทสะสมเป็นชั้น — ชั้นเดิมถูกแทนที่ด้วยชั้นที่สูงขึ้น
+    // รูปแบบเดียวกับที่ on-hit.js ใช้ เพื่อให้ไม่ซ้อนกันเป็นหลายก้อน
+    const old = e.buffs.find((b) => b.type === "shred" && b.sourceId === u.id);
+    const stacks = Math.min(c.shredMax, ((old && old.stacks) || 0) + 1);
+    e.buffs = e.buffs.filter((b) => !(b.type === "shred" && b.sourceId === u.id));
+    addBuff(e, { type: "shred", v: c.shredPer * stacks, stacks, sourceId: u.id,
+      until: state.t + c.shredDur }, state.t);
+  }
+  state.dmgSrc = prev;
+  vfx(state, { kind: "shock", x: u.x, y: u.y, r: c.radius, color: "150,160,170", dur: 0.35 });
+}
+
+// ---------------------------------------------------------------
+// R Soulseverance — แยกร่าง
+//
+// เกมนี้ไม่มีการบังคับตัวละครด้วยมือระหว่างไฟต์ (AI เดินให้ทั้งหมด)
+// จึงแปลสเปคเป็น: ตัว u เองกลายเป็น "ร่างวิญญาณ" — แตะไม่ได้ ตีธรรมดา
+// ไม่ได้ ได้ความเร็วเดินกับความเร่งสกิล และยังร่าย Q/W ตามปกติ
+// ส่วน "ชุดเกราะ" เป็นตัวแยกใน lore.shells ที่ยืนรับดาเมจแทน
+//
+// หลอดเลือดเดียวกันทำตรงตัว: ดาเมจที่ชุดเกราะกินถูกส่งไปหัก HP ของ u จริง
+// ผ่าน applyDamage เพื่อให้ใช้สูตรลดดาเมจเดียวกับทุกอย่างในเกม
+// ไม่ใช่สูตรที่เขียนขึ้นใหม่เอง
+// ---------------------------------------------------------------
+export function castSoulSplit(state, u, sk) {
+  const r = rankOf(sk);
+  const until = state.t + sk.durByRank[r];
+  const lore = L(state);
+  lore.shells = lore.shells.filter((x) => x.ownerId !== u.id);
+  lore.shells.push({
+    ownerId: u.id, team: u.team, x: u.x, y: u.y, radius: u.radius,
+    until, res: sk.shellRes[r], swing: sk.shellSwing, reach: sk.shellReach,
+    next: state.t + sk.shellSwing, shield: 0,
+  });
+  u.soulSplit = { until, leash: sk.leash };
+  // ร่างวิญญาณ: อมตะและแตะไม่ได้ · ตีธรรมดาไม่ได้ · เร็วขึ้นและคูลดาวน์ไหลเร็วขึ้น
+  addBuff(u, { type: "invuln", v: 1, until }, state.t);
+  addBuff(u, { type: "untargetable", v: 1, until }, state.t);
+  addBuff(u, { type: "disarm", v: 1, until }, state.t);
+  addBuff(u, { type: "ms", v: sk.spiritMs[r], until }, state.t);
+  addBuff(u, { type: "ahFlat", v: sk.spiritAh[r], until }, state.t);
+  vfx(state, { kind: "aura", id: u.id, r: u.radius + 44, color: "120,220,150", dur: sk.durByRank[r] });
+  logKoschei(state, u, "ถอดดวงจิตออกจากชุดเกราะ");
+}
+
+function tickShell(state, sh, dt) {
+  const u = state.units.find((x) => x.id === sh.ownerId);
+  if (!u || !u.alive || state.t > sh.until) return false;
+  const foes = enemiesOf(state, u);
+
+  // ---- ชุดเกราะกินดาเมจแทนร่างวิญญาณ ----
+  // ใช้สำนวนเดียวกับยักษ์ของ JACK R: คิดจากดาเมจออโต้ต่อวินาทีของศัตรู
+  // ที่ยืนประชิดตัวมัน บวกลูกสกิลที่พาดผ่าน
+  for (const e of state.units) {
+    if (!e.alive || e.team === sh.team || e.stunned || e.disarmed) continue;
+    if (Math.hypot(e.x - sh.x, e.y - sh.y) > sh.radius + e.radius + 60) continue;
+    shellTakes(state, u, sh, e, (e.ad || 0) * (e.asEff || 0.6) * AUTO_DMG * dt, false);
+  }
+  for (const p of state.projectiles) {
+    if (p.team === sh.team || p.shellHit) continue;
+    if (Math.hypot(p.x - sh.x, p.y - sh.y) > sh.radius) continue;
+    p.shellHit = true;
+    const src = state.units.find((x) => x.id === p.ownerId) || null;
+    shellTakes(state, u, sh, src, p.dmg, !!p.magic);
+  }
+
+  // ---- เดินไล่ฟันแชมเปี้ยนศัตรูที่ใกล้สุดเอง ----
+  if (foes.length) {
+    const tgt = foes.reduce((a, b) =>
+      (Math.hypot(b.x - sh.x, b.y - sh.y) < Math.hypot(a.x - sh.x, a.y - sh.y) ? b : a));
+    const d = Math.hypot(tgt.x - sh.x, tgt.y - sh.y) || 1;
+    if (d > sh.reach) {
+      const sp = (u.champ.ms || 335) * dt;
+      sh.x = clamp(sh.x + ((tgt.x - sh.x) / d) * sp, 60, ARENA_W - 60);
+      sh.y = clamp(sh.y + ((tgt.y - sh.y) / d) * sp, 60, ARENA_H - 60);
+    } else if (state.t >= sh.next) {
+      sh.next = state.t + sh.swing / Math.max(0.2, 1 + (u.asEff || 0.6) - 0.6);
+      const prev = state.dmgSrc;
+      state.dmgSrc = tr("ชุดเกราะของ Soulseverance");
+      applyDamage(state, u, tgt, u.ad || 0, false, false, true);
+      state.dmgSrc = prev;
+    }
+  }
+  vfx(state, { kind: "ring", x: sh.x, y: sh.y, r: sh.radius, color: "150,160,170", grow: 0, dur: 0.1 });
+  return true;
+}
+
+// ดาเมจที่ชุดเกราะกิน ไปหัก HP ของเจ้าของจริง (หลอดเดียวกัน)
+// สลับเกราะ/ต้านเวทของเจ้าของเป็นของชุดเกราะชั่วคราว เพื่อให้โบนัสความถึก
+// ของ R มีผลจริง — step.js คิดค่าพวกนี้ใหม่ทุกทิกอยู่แล้ว การสลับจึงปลอดภัย
+function shellTakes(state, u, sh, src, amount, magic) {
+  if (amount <= 0) return;
+  // โล่ที่ E ส่งไปกางที่ชุดเกราะ ซับก่อนถึงหลอดเลือด
+  if ((sh.shield || 0) > 0) {
+    const eat = Math.min(sh.shield, amount);
+    sh.shield -= eat;
+    amount -= eat;
+    if (amount <= 0) return;
+  }
+  const ar = u.armor, mr = u.mr;
+  u.armor = ar + sh.res;
+  u.mr = mr + sh.res;
+  state.shellHit = true;
+  try { applyDamage(state, src, u, amount, magic); }
+  finally { state.shellHit = false; u.armor = ar; u.mr = mr; }
+}
+
+// ดาเมจที่เล็งมาที่ร่างวิญญาณ (โซน ออร่า อะไรที่ไม่สนว่าแตะได้ไหม)
+// ถูกส่งต่อมาที่นี่จาก damage.js แล้วไปลงที่ชุดเกราะแทน
+// คืน true ถ้ารับไว้แล้ว เพื่อให้ผู้เรียกรู้ว่าไม่ต้องทำอย่างอื่น
+export function shellAbsorb(state, source, target, amount, magic) {
+  if (!target.soulSplit) return false;
+  const sh = L(state).shells.find((x) => x.ownerId === target.id);
+  if (!sh) return false;
+  shellTakes(state, target, sh, source, amount, magic);
+  return true;
+}
+
+export function soulSplitTick(state, u) {
+  const sp = u.soulSplit;
+  if (!sp) return;
+  const sh = L(state).shells.find((x) => x.ownerId === u.id);
+  // หมดเวลา หรือวิญญาณห่างจากชุดเกราะเกินสายโยง = กระชากกลับรวมร่าง
+  const far = sh && dist(u, sh) > sp.leash;
+  if (state.t > sp.until || !sh || far) {
+    if (sh) {
+      place(u, sh.x, sh.y);
+      L(state).shells = L(state).shells.filter((x) => x.ownerId !== u.id);
+    }
+    u.soulSplit = null;
+    u.buffs = u.buffs.filter((b) =>
+      !(b.type === "invuln" || b.type === "untargetable" || b.type === "disarm"));
+    if (u.casket) u.casket.onShell = false;
+    logKoschei(state, u, far ? "สายวิญญาณขาด ถูกกระชากกลับเข้าชุดเกราะ" : "รวมร่างกลับเข้าชุดเกราะ");
+  }
+}
+
+// ---------------------------------------------------------------
+// เดินเวลาต่อยูนิตของ KOSCHEI — เรียกจาก step.js ทุกทิก
+// ---------------------------------------------------------------
+export function koscheiTick(state, u) {
+  if (!u.champ || !u.champ.phylactery) return;
+  soulSplitTick(state, u);
+  miasmaTick(state, u);
+  casketTick(state, u);
 }

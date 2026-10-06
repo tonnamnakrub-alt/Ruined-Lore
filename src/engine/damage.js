@@ -11,7 +11,7 @@ import { lastStandCatch } from "./kazem.js";
 import { arthurAegis, debuffAmpOf, duelAmp, duelTakedownGold, ellaStash, jackSeed, nianJolt, nineLivesCatch, vampReviveCatch } from "./lore.js";
 import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-items.js";
 import { canopyShare, stickDagger } from "./lore-p4.js";
-import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain, spiderWalkHurt } from "./lore-p6.js";
+import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain, phylacteryHeal, shellAbsorb, spiderWalkHurt } from "./lore-p6.js";
 import { onAliceDamage } from "./alice.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
@@ -37,8 +37,12 @@ function cbcCleanse(state, u) {
 export function applyDamage(state, source, target, amount, magic, trueDmg, isAuto) {
   // ศพไม่รับดาเมจอีก — ไม่งั้นบล็อกนับสังหารด้านล่างจะเข้าอีกรอบ แล้วแจกเครดิตซ้ำ
   if (target.alive === false) return;
-  if (hasBuff(target, "invuln") || hasBuff(target, "evade")) {
+  // 0.6 KOSCHEI R — ร่างวิญญาณอมตะ แต่หลอดเลือดร่วมกับชุดเกราะ
+  // ดาเมจที่ชุดเกราะกินถูกส่งมาที่นี่ จึงต้องผ่านด่านอมตะไปได้
+  if (!state.shellHit && (hasBuff(target, "invuln") || hasBuff(target, "evade"))) {
     if (target.absorb) target.absorb.dmg += amount;   // Theon's ult banks what it eats
+    // 0.6 KOSCHEI R — ชุดเกราะคือตัวรับดาเมจ ไม่ใช่ว่าดาเมจหายไป
+    if (target.soulSplit) shellAbsorb(state, source, target, amount, magic);
     return;
   }
   // เจาะเกราะกับเจาะต้านเวทแยกกันแล้ว ของสายกายภาพจะไม่ไปเจาะต้านเวทให้ฟรีอีก
@@ -334,6 +338,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     target.alive = false;
     // 0.6 WOLF R พาสซีฟ — แชมเปี้ยนที่ตายใกล้ Wolf ทิ้งซากไว้ให้กิน
     dropCarcass(state, target);
+    // 0.6 KOSCHEI พาสซีฟ — มีแชมเปี้ยนตายในระยะ 1,000 แล้วฟื้นเลือด ไม่เลือกข้าง
+    phylacteryHeal(state, target);
     if (source && source.centaurBleed) cbcCleanse(state, source);
     if (source) {
       // นับคนช่วยของศพนี้ก่อน เพราะเงินช่วยสังหารขึ้นกับว่ามีคนช่วยกี่คน

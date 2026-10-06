@@ -6,7 +6,7 @@ import { castSkills } from "./ai.js";
 import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
-import { berserkTick, dropCarcass, frenzyAsBonus, howlLand, popBrand, pounceAuto, reapAuto, scentTick, spiderWalkTick, tickP6 } from "./lore-p6.js";
+import { berserkTick, dropCarcass, frenzyAsBonus, howlLand, koscheiTick, popBrand, pounceAuto, reapAuto, scentTick, spiderWalkTick, tickP6 } from "./lore-p6.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -241,6 +241,8 @@ export function step(state) {
     spiderWalkTick(state, u, dt);
     // 0.6 ANANSI R — คนที่บ้าคลั่งถูกบังคับให้ตีพวกเดียวกัน
     berserkTick(state, u);
+    // 0.6 KOSCHEI — ออร่า W · คลื่นของโล่ E · และสายโยงของ R
+    koscheiTick(state, u);
     if (u.berserk) {
       // ร่ายสกิลและใช้ไอเทมไม่ได้ เหลือแค่ออโต้ใส่พวกตัวเอง
       u.silenced = true;
@@ -636,6 +638,9 @@ export function step(state) {
     } else {
       u.retargetIn -= dt;
       target = state.units.find((x) => x.id === u.targetId && x.alive);
+      // เป้าที่แตะไม่ได้แล้ว (ล่องหน · มุดน้ำ · แยกร่างของ KOSCHEI R)
+      // ต้องเลือกใหม่เดี๋ยวนี้ ไม่ใช่ค้างเล็งไว้จนครบรอบ retarget
+      if (target && target.untargetable) target = null;
       if (!target || u.retargetIn <= 0) {
         const nt = pickTarget(state, u, supAlive);
         if (nt) { u.nextTargetId = nt.id; target = nt; }

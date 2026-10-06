@@ -3782,4 +3782,89 @@ export const DICT = {
    "Added attack speed while berserk",
  "ติดตรึงพื้น — ใช้สกิลเคลื่อนที่ไม่ได้ และเร่งความเร็วเดินไม่ได้":
    "grounds the target — no movement skills and no move-speed boosts",
+ // ---- Patch 0.6 KOSCHEI ----
+ "โคสเช":
+   "Koschei",
+ "Deathless Phylactery":
+   "Deathless Phylactery",
+ "Spectral Grasp":
+   "Spectral Grasp",
+ "Tormenting Miasma":
+   "Tormenting Miasma",
+ "Casket Carapace":
+   "Casket Carapace",
+ "Soulseverance":
+   "Soulseverance",
+ "ทุกครั้งที่มีแชมเปี้ยนตายลงในระยะ 1,000 หน่วยรอบตัว — ไม่ว่าศัตรูที่ถูกสังหารหรือเพื่อนที่ล้มลง — โคสเชฟื้นเลือดทันที 12/16/20% ของเลือดสูงสุดตัวเอง (ที่เลเวล 1/7/13)":
+   "Every time a champion dies within 1,000 units of him — an enemy killed or an ally falling, either one — Koschei immediately heals 12/16/20% of his own maximum health (at levels 1/7/13)",
+ "กะโหลกสูบเลือด":
+   "Life-draining skull",
+ "ออร่าเผารอบตัว":
+   "Burning aura",
+ "โล่โลงที่แผ่คลื่น":
+   "Casket shield that pulses",
+ "แยกร่างวิญญาณ":
+   "Splits off his spirit",
+ "ยิงกะโหลกวิญญาณเป็นเส้นตรงไกล {0} กว้าง {1} หน่วย หยุดที่แชมเปี้ยนศัตรูตัวแรก · ลงแล้วสูบเลือดกลับมาให้ตัวเองด้วย":
+   "Throws a spirit skull in a straight line {0} units long and {1} wide, stopping on the first enemy champion · on hit it drains health back to himself as well",
+ "เปิดออร่ารอบตัวรัศมี {0} หน่วยนาน {1} วิ เผาศัตรูที่อยู่ในวงทุก {2} วิ รวม {3} ครั้ง · ถ้ากดตอนที่โล่จากสกิล E ยังไม่แตก จะได้ความเร็วเดินเพิ่มทันที":
+   "Opens an aura of radius {0} around himself for {1}s, burning enemies inside every {2}s for {3} pulses in total · cast while the shield from E is still unbroken, it also grants move speed immediately",
+ "กางโล่หินคุ้มตัวนาน {0} วิ · ตราบใดที่โล่ยังไม่แตก จะแผ่คลื่นรอบตัวรัศมี {1} หน่วยทุก {2} วิ สูงสุด {3} ระลอก — แต่ละระลอกทำดาเมจ ติดสโลว์ และฉีกเกราะกับต้านเวทของศัตรูสะสมได้ถึง {4} ชั้น · โล่แตกก่อนครบเวลาแล้วคลื่นหยุดทันที":
+   "Raises a stone shield around himself for {0}s · while the shield holds, it sends out a pulse of radius {1} every {2}s, up to {3} pulses — each one deals damage, slows, and shreds enemy armor and magic resist, stacking up to {4} times · if the shield breaks early the pulses stop at once",
+ "แยกดวงวิญญาณออกจากชุดเกราะนาน {0} วิ · ตัวที่คุมคือร่างวิญญาณ — แตะไม่ได้ ไม่กินดาเมจเลย ตีธรรมดาไม่ได้ แต่ร่าย Q กับ W ได้ตามปกติ และได้ความเร็วเดินกับความเร่งสกิลเพิ่ม · ชุดเกราะยืนรับดาเมจแทนและเดินไล่ฟันศัตรูที่ใกล้สุดเอง ด้วยพลังโจมตีของโคสเช · ใช้หลอดเลือดเดียวกัน ดาเมจที่ชุดเกราะกินคือเลือดที่โคสเชเสีย · ห่างกันเกิน {1} หน่วยหรือหมดเวลาแล้วรวมร่างทันที":
+   "Tears his spirit out of the iron shell for {0}s · the spirit is the body you control — untargetable, immune to all damage, unable to auto-attack, but it still casts Q and W and gains move speed and ability haste · the shell stands in as the thing enemies hit and walks down the nearest enemy on its own, using Koschei's attack damage · they share one health pool, so damage the shell takes is health Koschei loses · going further apart than {1} units, or running out of time, snaps them back together",
+ "ดาเมจออร่าต่อระลอก":
+   "Aura damage per pulse",
+ "ความเร็วเดินเมื่อกดตอนโล่ E ยังอยู่":
+   "Move speed when cast while E's shield holds",
+ "ดาเมจคลื่นต่อระลอก":
+   "Pulse damage",
+ "สโลว์จากคลื่น":
+   "Slow from a pulse",
+ "ฉีกเกราะและต้านเวทต่อชั้น":
+   "Armor and magic resist shred per stack",
+ "ความเร็วเดินของร่างวิญญาณ":
+   "Spirit move speed",
+ "ความเร่งสกิลของร่างวิญญาณ":
+   "Spirit ability haste",
+ "เกราะและต้านเวทที่ชุดเกราะได้เพิ่ม":
+   "Bonus armor and magic resist on the shell",
+ "AP ที่เข้าฮีล":
+   "AP → heal",
+ "Bonus HP ต่อระลอกของออร่า":
+   "Bonus HP → aura damage per pulse",
+ "Bonus Armor ต่อระลอกของคลื่น":
+   "Bonus armor → pulse damage",
+ "Bonus MR ต่อระลอกของคลื่น":
+   "Bonus MR → pulse damage",
+ "ออร่าลงทุก":
+   "Aura pulses every",
+ "ความเร็วเดินจากผลร่วมอยู่นาน":
+   "Move speed from the synergy lasts",
+ "คลื่นออกทุก":
+   "A pulse every",
+ "คลื่นออกได้สูงสุด":
+   "Maximum pulses",
+ "รัศมีคลื่น":
+   "Pulse radius",
+ "สโลว์จากคลื่นนาน":
+   "Pulse slow lasts",
+ "ฉีกเกราะสะสมได้สูงสุด":
+   "Shred stacks up to",
+ "ระยะสายโยงที่วิญญาณห่างจากชุดเกราะได้":
+   "How far the spirit may stray from the shell",
+ "ชุดเกราะฟันทุก":
+   "The shell swings every",
+ "ระยะฟันของชุดเกราะ":
+   "The shell's reach",
+ "พาสซีฟ Deathless Phylactery":
+   "Deathless Phylactery passive",
+ "ชุดเกราะของ Soulseverance":
+   "Soulseverance iron shell",
+ "ถอดดวงจิตออกจากชุดเกราะ":
+   "tears his spirit out of the iron shell",
+ "รวมร่างกลับเข้าชุดเกราะ":
+   "merges back into the iron shell",
+ "สายวิญญาณขาด ถูกกระชากกลับเข้าชุดเกราะ":
+   "the spirit thread snapped and yanked him back into the shell",
 };
