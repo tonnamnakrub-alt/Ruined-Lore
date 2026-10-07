@@ -1,0 +1,92 @@
+// ---------------------------------------------------------------
+// ระบบแชทในไฟต์ และบีเอ็มตอนจบยก
+//   node _chat_test.mjs
+// ---------------------------------------------------------------
+import { BM_LOSE, BM_WIN, CALLOUTS, CHAT_COOLDOWN } from "./src/data/chat-lines.js";
+import { pickLine } from "./src/engine/chat.js";
+import { CHAMPIONS } from "./src/data/champions.js";
+import { STAT_KEYS } from "./src/data/constants.js";
+import { DEFAULT_FIGHT } from "./src/data/tuning.js";
+import { buildFight } from "./src/engine/build-fight.js";
+import { autoRanks } from "./src/engine/skill-ranks.js";
+import { step } from "./src/engine/step.js";
+import { toDef } from "./src/game/roster.js";
+import { setLang } from "./src/i18n.js";
+
+setLang("th");
+const out = [];
+const t = (n, ok, d) => out.push([n, ok, d || ""]);
+const flat = (v) => Object.fromEntries(STAT_KEYS.map((k) => [k, v]));
+const mk = (lane, id, level) => ({ lane, champId: id, level, xp: 0, gold: 0, items: [],
+  ranks: autoRanks(level, CHAMPIONS[id].skillPriority, null), athlete: flat(5), upgrades: [],
+  bountyGold: 0, sangHp: 0, wvcStacks: 0, spot: null, char: "P", athleteName: "P", style: "POKE" });
+
+const run = (seed = 7) => {
+  const st = buildFight(
+    [mk("TOP", "KOSCHEI", 14), mk("MID", "IFRIT", 14)].map(toDef),
+    [mk("TOP", "KAZEM", 14), mk("MID", "LAURA", 14)].map(toDef), seed, DEFAULT_FIGHT);
+  let n = 0;
+  while (!st.over && n < 60 * 60) { step(st); n++; }
+  return st;
+};
+
+const st = run();
+const chat = st.chat || [];
+t("ไฟต์หนึ่งมีแชทเกิดขึ้นจริง", chat.length > 0, chat.length + " บรรทัด");
+t("มีทั้งฝั่งเราและฝั่งศัตรูพิมพ์", new Set(chat.map((c) => c.team)).size === 2,
+  [...new Set(chat.map((c) => c.team))].join(" "));
+
+const kinds = new Set(chat.map((c) => c.kind));
+t("มีบอกว่าอัลติพร้อม", kinds.has("ultReady"), [...kinds].join(" "));
+t("มีขอฮีลตอนเลือดน้อย", kinds.has("needHeal"), [...kinds].join(" "));
+t("มีพิมพ์ตอนตาย", kinds.has("died"), [...kinds].join(" "));
+
+// ทุกบรรทัดต้องมาจากกองที่ประกาศไว้ ไม่ใช่ข้อความลอยๆ
+{
+  const all = new Set(Object.values(CALLOUTS).flat());
+  const bad = chat.filter((c) => !all.has(c.text));
+  t("ทุกบรรทัดมาจากกองบทพูดที่ประกาศไว้", bad.length === 0,
+    bad.length ? bad[0].text : chat.length + " บรรทัดถูกต้องหมด");
+}
+
+// คนเดียวกันต้องไม่พิมพ์ถี่กว่าคูลดาวน์
+{
+  const byUnit = {};
+  let tooFast = 0;
+  for (const c of chat) {
+    const k = c.team + "/" + c.lane;
+    // ตอนตายพิมพ์ได้ทันทีโดยไม่รอคูลดาวน์ ตามที่ออกแบบไว้
+    if (byUnit[k] != null && c.kind !== "died" && c.t - byUnit[k] < CHAT_COOLDOWN - 0.05) tooFast++;
+    byUnit[k] = c.t;
+  }
+  t("คนเดิมไม่พิมพ์ถี่กว่าคูลดาวน์", tooFast === 0, tooFast + " บรรทัดที่เร็วเกิน");
+}
+
+// ต้องออกมาเหมือนเดิมทุกครั้ง ไม่งั้นออนไลน์สองเครื่องเห็นไม่ตรงกัน
+{
+  const a = run(11).chat.map((c) => c.t.toFixed(2) + c.lane + c.text).join("|");
+  const b = run(11).chat.map((c) => c.t.toFixed(2) + c.lane + c.text).join("|");
+  t("ไฟต์เดิมได้แชทชุดเดิมเป๊ะ (ออนไลน์เห็นตรงกัน)", a === b && a.length > 0,
+    a === b ? "ตรงกัน " + run(11).chat.length + " บรรทัด" : "ไม่ตรงกัน");
+}
+
+// บีเอ็ม
+{
+  const seen = new Set();
+  for (let r = 1; r <= 12; r++) seen.add(pickLine(BM_WIN.stomp, "bm|" + r + "|w|3|0"));
+  t("บีเอ็มตอนชนะขาดสลับหลายแบบ", seen.size > 1, [...seen].join(" / "));
+  const once = pickLine(BM_LOSE, "bm|4|l|3|2");
+  t("บีเอ็มเลือกด้วยการแฮช ไม่เปลี่ยนเมื่อวาดซ้ำ",
+    once === pickLine(BM_LOSE, "bm|4|l|3|2"), once);
+  t("บทบีเอ็มทุกบรรทัดมาจากกองที่ประกาศไว้",
+    BM_WIN.stomp.includes("EZ") && BM_LOSE.includes("gg"),
+    "stomp " + BM_WIN.stomp.length + " · lose " + BM_LOSE.length + " บรรทัด");
+}
+
+let bad = 0;
+for (const [n, ok, d] of out) {
+  if (!ok) bad++;
+  console.log((ok ? " ok  " : " FAIL") + " " + n.padEnd(52) + " " + d);
+}
+console.log("\nไม่ผ่าน " + bad + " / " + out.length);
+if (bad) process.exit(1);

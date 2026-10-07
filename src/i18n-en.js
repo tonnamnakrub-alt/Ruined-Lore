@@ -4069,4 +4069,38 @@ export const DICT = {
    "Every lane always earns a floor of {0}g {1}xp, whether a fight broke out, someone died, or anything else",
  "มิดได้เพิ่ม {0}g {1}xp ทุก {2} ยก":
    "Mid earns an extra {0}g {1}xp every {2} rounds",
+ // ---- แชทในไฟต์ ----
+ "แชททีม":
+   "Team chat",
+ // ---- แชท บุกป่า และรอบเศรษฐกิจ ในแพตช์โน้ต ----
+ "แชทในเกม และบีเอ็มตอนจบยก":
+   "In-game chat, and BM when a round ends",
+ "ระหว่างไฟต์ เพื่อนร่วมทีมพิมพ์บอกสถานะกันเอง — อัลติพร้อม ขอฮีล ให้ถอย เก็บได้ ตาย และตอนเปิดไฟต์ · เห็นเฉพาะแชทของทีมเรา ฝั่งศัตรูพิมพ์อะไรไม่รู้ เหมือนเกมจริง":
+   "During a fight teammates call their own status out to each other — ultimate up, need heal, back off, got a kill, died, and the opening call · you only see your own team's chat, not theirs, the way it works in a real game",
+ "จบยกแล้วฝ่ายชนะพิมพ์บีเอ็ม ชนะขาดแบบไม่เสียเลนเลยก็กวนหน่อย (EZ · Bot · sit) ชนะหวุดหวิดก็ให้เกียรติกัน (gg · close one) ฝ่ายแพ้ตอบกลับได้เหมือนกัน":
+   "When a round ends the winning side types BM — a clean sweep with no lane lost gets the cheeky ones (EZ · Bot · sit), a narrow win gets the respectful ones (gg · close one) · the losing side answers back too",
+ "บทพูดเลือกด้วยการแฮช ไม่ได้ดึงจากสายสุ่มของไฟต์ — ถ้าดึงจากสายเดียวกัน ทุกบรรทัดที่พิมพ์จะเลื่อนผลไฟต์ทั้งหมด และออนไลน์สองเครื่องต้องเห็นแชทชุดเดียวกันเป๊ะด้วย":
+   "Lines are picked by hashing, not drawn from the fight's random stream — drawing from the same stream would shift every fight outcome with each line typed, and both machines in an online match have to see exactly the same chat",
+ "ป่าบุกป่า (Invade) — ตัวเลือกที่สามของป่า":
+   "Jungle invade — the jungler's third option",
+ "นอกจากฟาร์มกับแกงค์ ป่าบุกเข้าป่าฝั่งตรงข้ามได้แล้ว ผลขึ้นกับว่าป่าอีกฝั่งกำลังทำอะไรอยู่":
+   "On top of farming and ganking, the jungler can now invade the enemy jungle; what happens depends on what their jungler is doing",
+ "ศัตรูฟาร์มอยู่บ้าน — เจอกันในป่าเขา · ถ้ามิดเราสั่งเซฟไว้ มิดว่างพอจะตามไปด้วย กลายเป็นรุมสองต่อหนึ่ง":
+   "Their jungler is home farming — you meet in their jungle · if your mid is set to safe it is free to tag along, making it two on one",
+ "ศัตรูบุกสวนมา — ถือว่าแลกกัน เสียแคมป์ทั้งคู่ ยกหน้าใครเลือกฟาร์มก็ไม่ได้อะไร":
+   "They invaded back — call it an even trade, both sides lose their camps, and next round whichever side farms gets nothing",
+ "ศัตรูออกไปแกงค์ — ป่าเขาไม่อยู่บ้าน กวาดแคมป์เขาฟรี ยกหน้าเขาฟาร์มก็ไม่ได้อะไร":
+   "They went out to gank — their jungler is away, so you clear their camps for free and their farm next round gives them nothing",
+ "ตัวที่ออกไปบุกก็ทิ้งแคมป์ตัวเองเหมือนไปแกงค์ เหลือแค่พื้นของทุกเลน":
+   "Invading abandons your own camps just as ganking does, leaving you only every lane's floor",
+ "รอบปรับเศรษฐกิจ":
+   "Economy pass",
+ "ทุกเลนได้พื้น 2 ทอง 1 XP เสมอ ไม่ว่าจะแตกไฟต์ ตาย หรืออะไรก็ตาม · ของเดิมเลนที่แตกไฟต์ได้ศูนย์ทั้งเงินและ XP ยกที่แพ้จึงไม่ได้อะไรเลย คนที่ตามอยู่โดนลงโทษซ้ำทุกยกจนตามไม่ทันทั้งเกม":
+   "Every lane always earns a floor of 2 gold and 1 XP, whether a fight broke out, someone died, or anything else · lanes that broke into a fight used to earn zero of both, so a round you lost paid nothing at all and whoever was behind got punished again every round until they could never catch up",
+ "มิดได้เพิ่ม 1 ทอง 1 XP ทุกสามยก":
+   "Mid earns an extra 1 gold and 1 XP every third round",
+ "ป่าฟาร์มจาก 5 ทอง 3 XP เป็น 6 ทอง 4 XP · ยกหลังไปแกงค์ กลับมาฟาร์มได้ 10 ทอง 6 XP (เดิมคิดเป็นตัวคูณ 1.5 ตอนนี้เป็นค่าคงที่)":
+   "Jungle farming goes from 5 gold 3 XP to 6 gold 4 XP · the round after a gank, coming back to farm pays 10 gold 6 XP (it used to be a 1.5 multiplier, now it is a flat number)",
+ "ซัพพอร์ตเคยไม่มีรายได้เลนเลย ตอนนี้ได้พื้นเหมือนทุกเลน และเลนที่แตกไฟต์ยังมีพื้นให้ซัพแบ่งครึ่งจากเอดีซี":
+   "Support used to have no lane income at all; now it gets the floor like every other lane, and a lane that broke into a fight still leaves a floor for support to take half of from the ADC",
 };

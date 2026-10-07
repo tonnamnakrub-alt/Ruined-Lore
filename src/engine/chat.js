@@ -47,6 +47,9 @@ function say(state, u, kind, pool) {
 // เรียงตามความสำคัญ: เรื่องที่ต้องรีบบอกมาก่อน
 // ---------------------------------------------------------------
 export function chatTick(state, u) {
+  // buildFight คืนอ็อบเจกต์ตรงๆ ไม่มีตัวแปรให้เรียกตอนสร้างเสร็จ
+  // จึงเปิดบทแรกเองในทิกแรกที่ถูกเรียก ครั้งเดียวต่อไฟต์
+  if (!state.chatOpened) { state.chatOpened = true; chatOpen(state); }
   if (!u.alive) return;
   const hpFrac = u.maxHp ? u.hp / u.maxHp : 1;
 

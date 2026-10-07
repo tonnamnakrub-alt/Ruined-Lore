@@ -1,4 +1,6 @@
 import { tr } from "../i18n.js";
+import { BM_LOSE, BM_WIN } from "../data/chat-lines.js";
+import { pickLine } from "../engine/chat.js";
 import { LANE_TH, STANCES } from "../data/behaviour.js";
 import React from "react";
 import { Shell, btn, card } from "../ui/chrome.jsx";
@@ -25,6 +27,22 @@ export function ResultScreen(ctx) {
   // ยกที่ไม่มีใครปะทะ หรือแบ่งเลนกันคนละครึ่ง = เสมอ ไม่นับแต้มให้ใคร
   const drawn = !over && !!(result && result.drawn);
   const tone = drawn ? C.gold : won ? C.green : C.red;
+
+  // ---- บีเอ็มตอนจบยก ----
+  // ชนะแบบไม่เสียเลนเลย = ชนะขาด · ชนะแบบมีแพ้บ้าง = ชนะปกติ
+  // ยกฟาร์มกับยกเสมอไม่มีใครพิมพ์อะไร
+  const bm = (() => {
+    if (over || farm || drawn || !result || !result.byLane) return null;
+    const fought = result.byLane.filter((r) => r.fought);
+    if (!fought.length) return null;
+    const lost = fought.filter((r) => (won ? !r.iWon : r.iWon)).length;
+    const pool = won
+      ? (lost === 0 ? BM_WIN.stomp : fought.length - lost > lost ? BM_WIN.clean : BM_WIN.close)
+      : BM_LOSE;
+    const seed = "bm|" + round + "|" + (won ? "w" : "l") + "|" + fought.length + "|" + lost;
+    return { text: pickLine(pool, seed), won };
+  })();
+
   return (
     <Shell round={round} score={score} mode={mode} streak={streak}>
       <div style={{ ...card(), borderColor: farm && !over ? C.gold : tone, marginBottom: 12 }}>
@@ -34,6 +52,18 @@ export function ResultScreen(ctx) {
             : farm ? tr("ยกฟาร์ม — ไม่มีการปะทะ")
               : drawn ? tr("ยกนี้เสมอ") : won ? tr("ชนะยกนี้") : tr("แพ้ยกนี้")}
         </div>
+        {bm && bm.text ? (
+          <div style={{
+            marginTop: 9, display: "flex", alignItems: "center", gap: 7,
+            fontFamily: MONO, fontSize: 12,
+          }}>
+            <span style={{
+              background: bm.won ? C.green : C.red, color: "#0B1220",
+              borderRadius: 4, padding: "1px 6px", fontSize: 10, fontWeight: 800,
+            }}>{bm.won ? tr("ทีมคุณ") : tr("คู่แข่ง")}</span>
+            <span style={{ color: C.ink }}>{bm.text}</span>
+          </div>
+        ) : null}
         {result && result.byLane ? (
           <div style={{ fontFamily: MONO, fontSize: 11, color: C.dim, marginTop: 7, lineHeight: 1.7 }}>
             {result.byLane.map((r) => (

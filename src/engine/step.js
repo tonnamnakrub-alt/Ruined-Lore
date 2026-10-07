@@ -7,6 +7,7 @@ import { onKazemCast, tickLastStand } from "./kazem.js";
 import { gainStar, hoodBleed, starPierce, tickLoreUnit } from "./lore.js";
 import { steinCastCut, steinPull, tickP4Unit, weaselMirror } from "./lore-p4.js";
 import { berserkTick, dropCarcass, frenzyAsBonus, howlLand, koscheiTick, popBrand, pounceAuto, reapAuto, scentTick, spiderWalkTick, tickP6 } from "./lore-p6.js";
+import { chatTick } from "./chat.js";
 import { onUltCastItems, tickLoreItems } from "./lore-items.js";
 import { applyDamage, healUnit, skillPower } from "./damage.js";
 import { fireSkill } from "./fire-skill.js";
@@ -249,6 +250,8 @@ export function step(state) {
     berserkTick(state, u);
     // 0.6 KOSCHEI — ออร่า W · คลื่นของโล่ E · และสายโยงของ R
     koscheiTick(state, u);
+    // แชทของเพื่อนร่วมทีม — บอกสถานะตัวเองให้คนอื่นรู้
+    chatTick(state, u);
     if (u.berserk) {
       // ร่ายสกิลและใช้ไอเทมไม่ได้ เหลือแค่ออโต้ใส่พวกตัวเอง
       u.silenced = true;

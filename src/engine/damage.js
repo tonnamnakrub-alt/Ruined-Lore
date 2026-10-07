@@ -13,6 +13,7 @@ import { loreItemAmp, loreItemsOnDamage, loreItemsOnTakedown } from "./lore-item
 import { canopyShare, stickDagger } from "./lore-p4.js";
 import { brandTarget, dropCarcass, frenzyAmp, frenzyDrain, igniteTarget, IGNITE_TAG, phylacteryHeal, shellAbsorb, spiderWalkHurt } from "./lore-p6.js";
 import { onAliceDamage } from "./alice.js";
+import { chatDied } from "./chat.js";
 import {
   denyDeath, incomingShieldMul, markShieldCut, onAssassinHit, onAssassinKill, shieldBreakMul,
 } from "./assassin.js";
@@ -347,6 +348,8 @@ export function applyDamage(state, source, target, amount, magic, trueDmg, isAut
     target.alive = false;
     // 0.6 WOLF R พาสซีฟ — แชมเปี้ยนที่ตายใกล้ Wolf ทิ้งซากไว้ให้กิน
     dropCarcass(state, target);
+    // คนที่เพิ่งล้มพิมพ์บอกเพื่อน
+    chatDied(state, target);
     // 0.6 KOSCHEI พาสซีฟ — มีแชมเปี้ยนตายในระยะ 1,000 แล้วฟื้นเลือด ไม่เลือกข้าง
     phylacteryHeal(state, target);
     if (source && source.centaurBleed) cbcCleanse(state, source);

@@ -153,6 +153,26 @@ export function FightScreen(ctx) {
           );
         })()}
 
+        {/* แชทของทีมเรา — ฝั่งศัตรูพิมพ์อะไรเราไม่เห็น เหมือนเกมจริง */}
+        {(() => {
+          const mine = st && st.chat
+            ? st.chat.filter((c) => c.team === mySide).slice(-6).reverse()
+            : [];
+          if (!mine.length) return null;
+          return (
+            <div style={{ ...card(), marginTop: 10, maxHeight: 118, overflowY: "auto" }}>
+              <Label style={{ marginBottom: 6 }}>{tr("แชททีม")}</Label>
+              {mine.map((c, i) => (
+                <div key={i} style={{ fontSize: 11, marginBottom: 3, fontFamily: SANS, color: i === 0 ? C.ink : C.dim }}>
+                  <span style={{ fontFamily: MONO, color: C.dim, marginRight: 6 }}>{c.t.toFixed(1)}s</span>
+                  <span style={{ fontFamily: MONO, color: C.blue, marginRight: 6 }}>[{c.lane}]</span>
+                  {c.text}
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+
         <div style={{ ...card(), marginTop: 10, maxHeight: 120, overflowY: "auto" }}>
           <Label style={{ marginBottom: 6 }}>{tr("สมองของ AI")}</Label>
           {st && st.log.slice(-7).reverse().map((l, i) => (
