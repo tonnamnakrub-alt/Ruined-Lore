@@ -1042,6 +1042,17 @@ function tickShell(state, sh, dt) {
       const sp = (u.champ.ms || 335) * dt;
       sh.x = clamp(sh.x + ((tgt.x - sh.x) / d) * sp, 60, ARENA_W - 60);
       sh.y = clamp(sh.y + ((tgt.y - sh.y) / d) * sp, 60, ARENA_H - 60);
+      // สายวิญญาณรั้งชุดเกราะไว้ เดินไล่ได้ไม่เกินความยาวสาย
+      // ถ้าไม่รั้ง ชุดเกราะจะเดินไล่จนสายขาดเอง แล้วสั่งรวมร่างทันที
+      // R ที่ควรอยู่ 9-13 วิจะจบใน ~3 วิ และชุดเกราะไม่ได้ตีใครเลย
+      // เอกสารให้ "วิญญาณที่เดินหนี" เป็นตัวตัดสาย ไม่ใช่ชุดเกราะ
+      const leash = (u.soulSplit && u.soulSplit.leash) || 900;
+      const away = Math.hypot(sh.x - u.x, sh.y - u.y);
+      const lim = leash - 40;          // เหลือขอบกันไว้ ไม่ให้ค้างอยู่พอดีเส้นแล้วกะพริบ
+      if (away > lim) {
+        sh.x = u.x + ((sh.x - u.x) / away) * lim;
+        sh.y = u.y + ((sh.y - u.y) / away) * lim;
+      }
     } else if (state.t >= sh.next) {
       sh.next = state.t + sh.swing / Math.max(0.2, 1 + (u.asEff || 0.6) - 0.6);
       const prev = state.dmgSrc;
@@ -1235,7 +1246,14 @@ function tickCinderTrail(state, z) {
   if (state.t > z.until) return false;
   const u = state.units.find((x) => x.id === z.ownerId);
   if (!u) return false;
-  vfx(state, { kind: "ring", x: z.cx, y: z.cy, r: z.halfW, color: "255,120,40", dur: 0.1 });
+  // วาดเป็นแถบยาวตามแนวจริง — ของเดิมวาดวงรัศมี z.halfW ที่กลางแนวจุดเดียว
+  // ทำให้ดูเหมือนไฟอยู่แค่กลางเส้น ทั้งที่พื้นที่ที่เผาจริงคือทั้งแนว 850 หน่วย
+  vfx(state, {
+    kind: "beam",
+    x: z.cx - z.nx * z.halfLen, y: z.cy - z.ny * z.halfLen,
+    x2: z.cx + z.nx * z.halfLen, y2: z.cy + z.ny * z.halfLen,
+    w: z.halfW * 2, color: "255,120,40", dur: 0.12,
+  });
   if (state.t < z.next) return true;
   z.next = state.t + z.every;
   const prev = state.dmgSrc;

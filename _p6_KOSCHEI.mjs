@@ -247,6 +247,49 @@ import { cast, fight, fight2, fightAlly, isMain, report, t } from "./_p6lib.mjs"
     before.toFixed(0) + " -> " + o.u.hp.toFixed(0));
 }
 
+// ---- R: ชุดเกราะต้องอยู่ครบเวลา และเดินไปตีจนทำดาเมจได้จริง
+{
+  // บัคเดิม: ชุดเกราะเดินไล่ศัตรูจนห่างร่างวิญญาณเกินสายโยง 900 หน่วย
+  // เงื่อนไขสายโยงก็สั่งรวมร่างทันที ชุดเกราะจึงตัดสายของตัวเอง
+  // R ที่ควรอยู่ 13 วิจบใน ~3 วิ และแทบไม่ได้ตีใครเลย
+  const o = fight("KOSCHEI", "KAZEM", 18, 400);
+  o.st.timeLimit = 60;
+  cast(o.st, o.u, "R", o.foe);
+  o.u.skills.find((x) => x.key === "R").cdLeft = 99;
+  const until = o.u.soulSplit.until;
+  let lastSeen = 0;
+  for (let i = 0; i < 60 * 16 && !o.st.over; i++) {
+    step(o.st);
+    if (((o.st.lore || {}).shells || []).length) lastSeen = o.st.t;
+  }
+  t("ชุดเกราะอยู่ครบเวลาของ R ไม่ถูกสายโยงของตัวเองตัดทิ้ง",
+    lastSeen >= until - 0.2,
+    "R ถึง t=" + until.toFixed(1) + " · ชุดเกราะอยู่ถึง t=" + lastSeen.toFixed(1));
+  const shellDmg = Object.entries(o.u.dealtBy || {})
+    .filter(([k]) => /ชุดเกราะ|iron shell/.test(k))
+    .reduce((a, [, v]) => a + v, 0);
+  t("ชุดเกราะเดินไปตีจนทำดาเมจได้จริง", shellDmg > 0,
+    "ทำดาเมจไป " + shellDmg.toFixed(0));
+}
+{
+  // สายโยงยังต้องรั้งชุดเกราะไว้จริง ไม่ใช่ปล่อยให้เดินหลุดไปไกลเท่าไรก็ได้
+  const o = fight("KOSCHEI", "KAZEM", 18, 400);
+  o.st.timeLimit = 60;
+  cast(o.st, o.u, "R", o.foe);
+  o.u.skills.find((x) => x.key === "R").cdLeft = 99;
+  const leash = o.u.soulSplit.leash;
+  let maxAway = 0;
+  for (let i = 0; i < 60 * 8 && !o.st.over; i++) {
+    // ดันศัตรูให้หนีไปไกลๆ ให้ชุดเกราะอยากเดินไล่
+    o.foe.x = o.u.x + 2500; o.foe.y = o.u.y;
+    step(o.st);
+    const sh = ((o.st.lore || {}).shells || [])[0];
+    if (sh) maxAway = Math.max(maxAway, Math.hypot(sh.x - o.u.x, sh.y - o.u.y));
+  }
+  t("สายโยงรั้งชุดเกราะไว้ไม่ให้เกินความยาวสาย", maxAway <= leash + 1,
+    "ห่างสุด " + maxAway.toFixed(0) + " จากสายยาว " + leash);
+}
+
 // ---- ทุกท่าของ KOSCHEI ร่ายได้ ไม่พัง
 {
   const broken = [];

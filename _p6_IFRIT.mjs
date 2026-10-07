@@ -159,6 +159,46 @@ import { cast, fight, fight2, fightAlly, isMain, report, t } from "./_p6lib.mjs"
     mid.toFixed(0) + " -> " + tot(o.foe).toFixed(0));
 }
 
+// ---- E: พื้นไฟต้องเผา "ตลอดแนว" และวาดให้เห็นทั้งแนว
+{
+  // วางเป้าเทียบกับพิกัดของโซนเอง ไม่เทียบกับตัวอิฟริตที่ขยับได้
+  const spots = [20, 150, 425, 700, 840];
+  const burned = [];
+  for (const at of spots) {
+    const o = fight("IFRIT", "KAZEM", 18, 900);
+    o.st.timeLimit = 60;
+    cast(o.st, o.u, "E", { x: o.u.x + 900, y: o.u.y, id: "__pt", radius: 1 });
+    const z = ((o.st.lore || {}).trails || [])[0];
+    if (!z) { burned.push(-1); continue; }
+    const sx = z.cx - z.nx * z.halfLen, sy = z.cy - z.ny * z.halfLen;
+    o.foe.shield = 0;
+    const before = o.foe.hp;
+    for (let i = 0; i < 60 * 2; i++) {
+      o.foe.x = sx + z.nx * at; o.foe.y = sy + z.ny * at;
+      o.u.atkCd = 99;
+      for (const x of o.u.skills) x.cdLeft = 999;
+      step(o.st);
+    }
+    burned.push(before - o.foe.hp);
+  }
+  t("พื้นไฟเผาตลอดแนว ไม่ใช่แค่กลางแนว", burned.every((v) => v > 1),
+    spots.map((p, i) => p + ":" + burned[i].toFixed(0)).join(" · "));
+}
+{
+  // วาดเป็นแถบตามแนวจริง — ของเดิมวาดวงเล็กที่กลางแนว เลยดูเหมือนไฟมีแค่จุดกลาง
+  const o = fight("IFRIT", "KAZEM", 18, 900);
+  cast(o.st, o.u, "E", { x: o.u.x + 900, y: o.u.y, id: "__pt", radius: 1 });
+  const z = ((o.st.lore || {}).trails || [])[0];
+  step(o.st);
+  const beams = (o.st.fx || []).filter((f) => f.kind === "beam" && f.x2 != null);
+  const spanOk = beams.some((f) => Math.hypot(f.x2 - f.x, f.y2 - f.y) > z.halfLen * 1.8);
+  t("พื้นไฟถูกวาดเป็นแถบยาวทั้งแนว", spanOk,
+    beams.length
+      ? "แถบยาวสุด " + Math.max(...beams.map((f) => Math.hypot(f.x2 - f.x, f.y2 - f.y))).toFixed(0)
+        + " จากแนวยาว " + (z.halfLen * 2)
+      : "ไม่มีแถบเลย");
+}
+
 // ---- R: พายุไฟที่คืบคลานเข้าหาเป้าเอง
 {
   const sk = CHAMPIONS.IFRIT.skills.find((x) => x.key === "R");
