@@ -243,15 +243,21 @@ export function App() {
   // ฝ่ายตรงข้ามเป็นบอท มันจึงลงมือทันทีหลังเรากด — ผู้เล่นเห็นผลแบบเรียลไทม์
   function botSteps(d0) {
     let d = d0;
-    const dv = diffOf(diffId).variety;
+    const diff = diffOf(diffId);
+    const dv = diff.variety;
+    // บอทอาจได้เลือกก่อนหรือหลังก็ได้ ขึ้นกับว่าสุ่มได้ฝั่งไหน
+    const botSide = foeSide();
+    const playerSide = mySide();
     let guard = 0;
     while (guard++ < 30) {
       const turn = draftTurn(d);
-      if (!turn || turn.side !== "B") break;
+      if (!turn || turn.side !== botSide) break;
       const taken = draftTaken(d);
       const id = turn.kind === "ban"
         ? botBan(rand, taken)
-        : botPickOne(rand, taken, draftPicksOf(d, "B"), dv);
+        // ส่งทีมของผู้เล่นไปด้วย บอทจะได้เลือกแก้ทางเป็น ไม่ใช่เลือกแต่ทีมตัวเอง
+        : botPickOne(rand, taken, draftPicksOf(d, botSide), dv,
+          draftPicksOf(d, playerSide), diff.stanceSkill);
       if (!id) break;
       d = draftApply(d, id, turn.kind === "ban"
         ? tr("🔴 ฝ่ายตรงข้ามแบน {0}", id)
@@ -297,6 +303,9 @@ export function App() {
     setDraftStyle(style);
     setFoeDraft(null);
     const online = draftOnline();
+    // เล่นกับบอท — สุ่มว่าใครได้เลือกก่อน ของเดิมผู้เล่นได้ A (เลือกก่อน) ทุกแมตช์
+    // ออนไลน์เจ้าบ้านเป็นคนสุ่มแล้วบอกอีกฝั่ง จึงไม่ต้องสุ่มซ้ำที่นี่
+    if (!online) netRef.current.mySide = rand() < 0.5 ? "A" : "B";
     const d0 = style === "BLIND" ? null : (online ? newDraft(style) : botSteps(newDraft(style)));
     pushDraft(d0);
     setTeam((t) => t.map((c) => ({ ...c, champId: null, ranks: emptyRanks() })));
@@ -624,7 +633,8 @@ export function App() {
           // วิธีเลือกตัวของแมตช์นี้เจ้าบ้านเป็นคนกำหนด สองเครื่องต้องใช้ชุดเดียวกัน
           if (m.draftStyle) setDraftStyle(m.draftStyle);
           netRef.current.online = true;
-          netRef.current.mySide = m.side === "red" ? "B" : "A";
+          // เจ้าบ้านสุ่มว่าใครเลือกก่อนแล้วส่งมาให้ · รุ่นเก่าไม่ส่งมา ก็ถอยไปใช้สีทีมเหมือนเดิม
+          netRef.current.mySide = m.draftSide || (m.side === "red" ? "B" : "A");
           setNet((n) => ({ ...n, side: m.side || "red" }));
           setPhase("SETUP");
         }
@@ -811,8 +821,16 @@ export function App() {
       setPhase("WATCH");   // เจ้าบ้านไม่ได้ลงเล่น รอดูอย่างเดียว
       return;
     }
-    netRef.current.mySide = "A";
-    if (ps[0]) ps[0].send({ k: MSG.HELLO, modeId, side: "red", draftStyle });
+    // สุ่มว่าใครได้เลือกก่อนในดราฟต์ ไม่ใช่เจ้าบ้านได้เปรียบตลอด
+    // ส่ง draftSide ไปให้ผู้เข้าร่วมตรงๆ จะได้ไม่ต้องเดาจากสีทีม
+    const hostFirst = Math.random() < 0.5;
+    netRef.current.mySide = hostFirst ? "A" : "B";
+    if (ps[0]) {
+      ps[0].send({
+        k: MSG.HELLO, modeId, side: "red", draftStyle,
+        draftSide: hostFirst ? "B" : "A",
+      });
+    }
     setPhase("SETUP");
   }
 

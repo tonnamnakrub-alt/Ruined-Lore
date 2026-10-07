@@ -4043,8 +4043,6 @@ export const DICT = {
  // ---- ป่าบุกป่า และรอบปรับเศรษฐกิจ ----
  "บุกป่า":
    "Invade",
- "ป่า":
-   "Jungle",
  "ป่าสองฝั่งบุกสวนกัน — ถือว่าแลกกัน ยกหน้าใครเลือกฟาร์มก็ไม่ได้อะไร":
    "Both junglers invaded and ran into each other — call it an even trade; next round whichever side farms gets nothing",
  "ป่าศัตรูออกไปแกงค์ เรากวาดแคมป์เขาฟรี — ยกหน้าเขาฟาร์มก็ไม่ได้อะไร":

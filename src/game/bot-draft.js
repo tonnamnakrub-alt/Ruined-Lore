@@ -13,6 +13,36 @@ const FRONT = /Vanguard|Juggernaut|Bruiser|Diver|Skirmisher/;
 const SUSTAIN = (c) => !!(c.kindness || c.isolde || c.vamp || c.omnivamp || /Enchanter/.test(c.role));
 const RANGED = (c) => !c.melee;
 
+// ---------------------------------------------------------------
+// สัญญาณที่ใช้แก้ทาง — อ่านจากข้อมูลตัวละครล้วนๆ ไม่มีตารางคู่แข่งที่ต้องมาไล่ดูแลเอง
+// ตารางแบบนั้นจะเก่าทันทีที่เพิ่มตัวละครใหม่ แล้วไม่มีใครรู้ว่ามันเก่าไปแล้ว
+// ---------------------------------------------------------------
+const skillsOf = (c) => c.skills || [];
+// สายเวทหรือสายกาย — ดูจากจำนวนท่าที่ประกาศว่าเป็นดาเมจเวท
+export const isMagic = (c) => skillsOf(c).filter((s) => s.magic).length >= 2;
+// มีท่าตัดฮีล — ใช้แก้ทีมที่ฟื้นเลือดเก่ง
+const hasAntiheal = (c) => skillsOf(c).some((s) => s.antiheal);
+// มีท่าตรึงพื้นหรือตรึงเท้า — ใช้แก้ทีมที่พุ่งเข้ามาเยอะ
+const hasLockdown = (c) => skillsOf(c).some((s) => s.grounded || s.rootByRank || s.root);
+// มีท่าเคลื่อนที่ — ใช้นับว่าทีมอีกฝั่งพุ่งเข้าหาเก่งแค่ไหน
+const hasDash = (c) => skillsOf(c).some((s) => s.dashRange || s.blinkRange || s.lungeRange);
+// ความถึกต่อดาเมจแต่ละชนิด ใช้เทียบกันเองในกองที่เหลือ
+const armorAt18 = (c) => c.armor + c.armorG * 17;
+const mrAt18 = (c) => c.mr + c.mrG * 17;
+
+// อ่านทีมของคู่ต่อสู้ออกมาเป็นตัวเลขที่ใช้ตัดสินใจได้
+export function readFoeTeam(ids) {
+  const list = (ids || []).map((id) => CHAMPIONS[id]).filter(Boolean);
+  const n = list.length || 1;
+  return {
+    n: list.length,
+    magicShare: list.filter(isMagic).length / n,     // สัดส่วนสายเวท
+    meleeShare: list.filter((c) => c.melee).length / n,
+    sustain: list.filter(SUSTAIN).length,
+    dashes: list.filter(hasDash).length,
+  };
+}
+
 
 function poolFor(lane) {
   return Object.values(CHAMPIONS).filter((c) => playsLane(c, lane));
@@ -124,7 +154,8 @@ export function botBan(rand, taken) {
   if (!pool.length) return null;
   let best = pool[0], bestS = -1;
   for (const c of pool) {
-    const s = c.value * 10 + (c.alsoLanes || []).length * 3 + rand() * 6;
+    // แบนตัวที่แรงที่สุดและยืดหยุ่นที่สุดก่อน — ตัวที่ลงได้หลายเลนแบนแล้วคุ้มกว่า
+    const s = (c.value - 1) * 70 + (c.alsoLanes || []).length * 6 + rand() * 6;
     if (s > bestS) { bestS = s; best = c; }
   }
   return best.id;
@@ -133,26 +164,63 @@ export function botBan(rand, taken) {
 
 // บอทหยิบหนึ่งตัว — เลือกตัวที่ทำให้ทีมของมันสมบูรณ์ที่สุดเท่าที่เหลืออยู่
 //   mine = รหัสตัวที่บอทหยิบไปแล้ว
-export function botPickOne(rand, taken, mine, variety = 0.25) {
+// theirs = รหัสตัวที่คู่ต่อสู้เลือกไปแล้ว (ใช้แก้ทาง) · skill = ฝีมือบอท 0-1
+export function botPickOne(rand, taken, mine, variety = 0.25, theirs = [], skill = 1) {
   const pool = openPool(taken);
   if (!pool.length) return null;
   const have = mine.map((id) => CHAMPIONS[id]).filter(Boolean);
+  const foe = readFoeTeam(theirs);
+  // บอทฝีมือต่ำแก้ทางไม่เป็น และสุ่มมากกว่า
+  const counterW = Math.max(0, Math.min(1, skill));
+  // ทีมตัวเองเป็นสายเดียวล้วนไหม — ทีมสายเดียวโดนออกของแก้ทางง่าย
+  const myMagic = have.filter(isMagic).length;
+  const myPhys = have.length - myMagic;
   const needFront = !have.some((c) => FRONT.test(c.role));
   const needSustain = !have.some(SUSTAIN);
   const needRanged = !have.some(RANGED);
   // เลนที่ทีมยังไม่มีคนลงได้เลย
   const covered = new Set();
   for (const c of have) for (const l of [c.lane, ...(c.alsoLanes || [])]) covered.add(l);
+  // ค่ากลางของกองที่เหลือ ใช้เทียบว่าตัวนี้ถึกกว่าหรือบางกว่าเพื่อนในกอง
+  const avg = (f) => pool.reduce((a, c) => a + f(c), 0) / pool.length;
+  const avgArmor = avg(armorAt18);
+  const avgMr = avg(mrAt18);
+
   let best = pool[0], bestS = -Infinity;
   for (const c of pool) {
-    let s = c.value * 6;
+    // ความแรงของตัวละครต้องมีน้ำหนักจริง ไม่ใช่โดนค่าสุ่มกลบเหมือนเดิม
+    let s = (c.value - 1) * 60;
+
+    // ---- ทีมของตัวเองต้องครบหน้าที่ก่อน ----
     if (needFront && FRONT.test(c.role)) s += 28;
     if (needSustain && SUSTAIN(c)) s += 24;
     if (needRanged && RANGED(c)) s += 22;
     for (const l of [c.lane, ...(c.alsoLanes || [])]) if (!covered.has(l)) { s += 18; break; }
-    // ไม่อยากได้บทบาทซ้ำกันทั้งทีม
     if (have.some((h) => h.role === c.role)) s -= 12;
-    s += rand() * 30 * variety;
+
+    // ---- แก้ทางคู่ต่อสู้ ----
+    if (foe.n) {
+      // เขาสายเวทเยอะ เราอยากได้ตัวที่ต้านเวทสูงกว่าค่ากลาง · เขาสายกายเยอะก็เอาเกราะ
+      const magicLean = foe.magicShare - 0.5;
+      s += counterW * magicLean * 2 * ((mrAt18(c) - avgMr) / Math.max(1, avgMr)) * 45;
+      s += counterW * -magicLean * 2 * ((armorAt18(c) - avgArmor) / Math.max(1, avgArmor)) * 45;
+      // เขาประชิดเยอะ ตัวระยะไกลได้เปรียบในเลน
+      if (foe.meleeShare > 0.6 && RANGED(c)) s += counterW * 16;
+      // เขาฟื้นเลือดเก่ง ตัดฮีลคุ้มมาก
+      if (foe.sustain >= 2 && hasAntiheal(c)) s += counterW * 30;
+      // เขาพุ่งเข้าหาเยอะ ตัวที่ตรึงได้ช่วยกันแนวหลัง
+      if (foe.dashes >= 2 && hasLockdown(c)) s += counterW * 18;
+    }
+
+    // ---- ทีมสายเดียวล้วนโดนออกของแก้ทางง่าย ----
+    if (have.length >= 2) {
+      const cm = isMagic(c);
+      if (cm && myMagic >= 3) s -= counterW * 20;
+      if (!cm && myPhys >= 3) s -= counterW * 20;
+    }
+
+    // ค่าสุ่มเหลือไว้ให้ดราฟต์ไม่ซ้ำกันทุกแมตช์ แต่ไม่มากพอจะกลบการตัดสินใจ
+    s += (rand() - 0.5) * 26 * variety;
     if (s > bestS) { bestS = s; best = c; }
   }
   return best.id;
