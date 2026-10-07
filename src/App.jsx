@@ -967,6 +967,8 @@ export function App() {
       stances, foeStances: fs, jungle, foeJungle: fj, round,
       gankedLast: !!(jgMine && jgMine.gankedLast),
       foeGankedLast: !!(jgFoe && jgFoe.gankedLast),
+      raidedLast: !!(jgMine && jgMine.raidedLast),
+      foeRaidedLast: !!(jgFoe && jgFoe.raidedLast),
     });
     p.foeStances = fs;
     p.foeJungleLane = fj.lane;

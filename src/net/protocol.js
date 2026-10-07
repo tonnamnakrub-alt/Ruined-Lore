@@ -22,7 +22,8 @@ export function packTeam(team) {
     sp: c.spot || null,
     dl: c.duelLane || null,   // PUSS — เลนที่สั่งท้าดวล
     db: c.duelBan || null,    // PUSS — เลนที่ยังประทับตราซ้ำไม่ได้ ถ้าหล่นหาย สองเครื่องจะเลือกเป้าคนละตัว
-    gl: c.gankedLast ? 1 : 0, // ป่าเพิ่งไปแกงค์ยกที่แล้วไหม — ยกนี้ฟาร์มได้ 1.5 เท่า
+    gl: c.gankedLast ? 1 : 0, // ป่าเพิ่งไปแกงค์ยกที่แล้วไหม — ยกนี้ฟาร์มได้ 10/6
+    rl: c.raidedLast ? 1 : 0, // ยกที่แล้วแคมป์โดนบุกกวาดไหม — ยกนี้ฟาร์มไม่ได้อะไร
     ks: c.killStreak || 0,    // ฆ่าติดกันกี่ศพ — มีผลกับค่าหัว
     ds: c.deathStreak || 0,   // ตายติดกันกี่ครั้ง
     ch: c.char,
@@ -51,6 +52,7 @@ export function unpackTeam(rows) {
     duelLane: r.dl || null,
     duelBan: r.db || null,
     gankedLast: !!r.gl,
+    raidedLast: !!r.rl,
     killStreak: r.ks || 0,
     deathStreak: r.ds || 0,
     char: r.ch,

@@ -4040,4 +4040,33 @@ export const DICT = {
    "Until now the enemy side had someone buying its items, picking its stances and choosing its jungle route, while the player side had none of it · added buttons to buy for the whole team, buy for yourself, and suggest stances and the jungle route",
  "สมุดบันทึกแมตช์ — จบแมตช์แล้วบันทึกว่าเล่นตัวอะไร เลนไหน ออกของอะไร และชนะด้วยอะไร เก็บไว้ในเครื่อง 2,000 แมตช์ล่าสุด เพื่อใช้ปรับบาลานซ์จากข้อมูลคนเล่นจริง":
    "Match log — finishing a match now records which champion was played, in which lane, what was built and how it was won, keeping the last 2,000 matches on this machine so balance can be tuned from how people actually play",
+ // ---- ป่าบุกป่า และรอบปรับเศรษฐกิจ ----
+ "บุกป่า":
+   "Invade",
+ "ป่า":
+   "Jungle",
+ "ป่าสองฝั่งบุกสวนกัน — ถือว่าแลกกัน ยกหน้าใครเลือกฟาร์มก็ไม่ได้อะไร":
+   "Both junglers invaded and ran into each other — call it an even trade; next round whichever side farms gets nothing",
+ "ป่าศัตรูออกไปแกงค์ เรากวาดแคมป์เขาฟรี — ยกหน้าเขาฟาร์มก็ไม่ได้อะไร":
+   "Their jungler was off ganking, so we cleared their camps for free — next round their farm gives them nothing",
+ "บุกเจอป่าศัตรูที่ฟาร์มอยู่ — มิดเราสั่งเซฟไว้เลยตามไปรุมด้วย สองต่อหนึ่ง":
+   "Invaded and found their jungler farming — our mid was playing safe so it tagged along, two on one",
+ "บุกเจอป่าศัตรูที่ฟาร์มอยู่ — สู้กันตัวต่อตัวในป่าเขา":
+   "Invaded and found their jungler farming — a straight one-on-one in their jungle",
+ "พื้นรายได้ของทุกเลน":
+   "Every lane's income floor",
+ "โบนัสมิดทุกสามยก":
+   "Mid bonus every third round",
+ "ซัพไม่มีรายได้เลนของตัวเอง เหลือแค่พื้น":
+   "Support has no lane income of its own, only the floor",
+ "เก็บแคมป์ที่ค้างไว้จากยกที่แกงค์":
+   "Picked up the camps left standing from the round it ganked",
+ "ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย ได้ {0}g {1}xp":
+   "The round after a gank, coming back to farm also picks up the camps left standing — {0}g {1}xp",
+ "ป่าบุกป่า — ทิ้งแคมป์ตัวเองเหมือนไปแกงค์ · ถ้าศัตรูฟาร์มอยู่ก็เจอกันในป่าเขา (มิดที่สั่งเซฟไว้ตามไปรุมได้) · ถ้าศัตรูไม่อยู่บ้าน แคมป์เขาโดนกวาด ยกหน้าเขาฟาร์มก็ไม่ได้อะไร · บุกสวนกันถือว่าแลก เสียแคมป์ทั้งคู่":
+   "Invading — you abandon your own camps just as if you had ganked · if their jungler is home farming you meet in their jungle (a mid set to safe can tag along) · if they are away, their camps get cleared and their farm next round gives them nothing · two invades crossing is an even trade, both sides lose their camps",
+ "ทุกเลนได้พื้น {0}g {1}xp เสมอ ไม่ว่าจะแตกไฟต์ ตาย หรืออะไรก็ตาม":
+   "Every lane always earns a floor of {0}g {1}xp, whether a fight broke out, someone died, or anything else",
+ "มิดได้เพิ่ม {0}g {1}xp ทุก {2} ยก":
+   "Mid earns an extra {0}g {1}xp every {2} rounds",
 };

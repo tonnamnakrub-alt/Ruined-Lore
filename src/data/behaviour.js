@@ -140,6 +140,48 @@ export const JUNGLE_TABLE = {
   "AGGRO|AGGRO":     { hurt: "both",    join: true,  note: "ล้ำใส่กันทั้งคู่ เสียเลือดทั้งสองเลน ป่าเข้าตามปกติ" },
 };
 
+// ---------------------------------------------------------------
+// ป่าบุกป่า — ค่าของ jungle.lane เมื่อเลือกบุก
+// ใช้ค่าพิเศษแทนชื่อเลน เพราะการบุกไม่ได้ลงไปที่เลนไหน
+// ---------------------------------------------------------------
+export const INVADE = "INVADE";
+export const isInvade = (j) => !!(j && j.lane === INVADE);
+export const isGank = (j) => !!(j && j.lane && j.lane !== INVADE);
+
+// ป่าบุกป่า — ผลขึ้นกับว่าป่าอีกฝั่งกำลังทำอะไร
+//   myStances = นิสัยเลนของฝั่งที่บุก (ใช้ดูว่ามิดว่างพอจะตามไปไหม)
+// คืน:
+//   fight    เกิดไฟต์ในป่าไหม
+//   crew     เลนที่ตามป่าไปด้วย
+//   raidFoe  ศัตรูเสียแคมป์ ยกหน้าฟาร์มแล้วไม่ได้อะไร
+//   raidMe   เราเสียแคมป์เหมือนกัน
+export function invadeOutcome(foeJungle, myStances) {
+  const foeInv = isInvade(foeJungle);
+  const foeGank = isGank(foeJungle);
+  // มิดที่สั่งเซฟไว้ไม่ได้ผูกกับไฟต์ในเลนตัวเอง จึงตามป่าไปช่วยได้
+  const crew = (myStances && myStances.MID === "SAFE") ? ["MID"] : [];
+
+  if (foeInv) {
+    return {
+      fight: false, crew: [], raidFoe: true, raidMe: true,
+      note: "ป่าสองฝั่งบุกสวนกัน — ถือว่าแลกกัน ยกหน้าใครเลือกฟาร์มก็ไม่ได้อะไร",
+    };
+  }
+  if (foeGank) {
+    return {
+      fight: false, crew: [], raidFoe: true, raidMe: false,
+      note: "ป่าศัตรูออกไปแกงค์ เรากวาดแคมป์เขาฟรี — ยกหน้าเขาฟาร์มก็ไม่ได้อะไร",
+    };
+  }
+  // ศัตรูฟาร์มอยู่บ้าน — เจอกันในป่าเขา
+  return {
+    fight: true, crew, raidFoe: false, raidMe: false,
+    note: crew.length
+      ? "บุกเจอป่าศัตรูที่ฟาร์มอยู่ — มิดเราสั่งเซฟไว้เลยตามไปรุมด้วย สองต่อหนึ่ง"
+      : "บุกเจอป่าศัตรูที่ฟาร์มอยู่ — สู้กันตัวต่อตัวในป่าเขา",
+  };
+}
+
 export function gankOutcome(foeStance, myStance) {
   return JUNGLE_TABLE[foeStance + "|" + myStance] || JUNGLE_TABLE["NEUTRAL|NEUTRAL"];
 }
@@ -147,13 +189,37 @@ export function gankOutcome(foeStance, myStance) {
 // ป่าไปแกงค์ = ทิ้งแคมป์ทั้งยก ไม่ได้รายได้ฐานเลย ทั้งเงินและ XP
 // แลกกับยกถัดไป: ถ้ากลับไปฟาร์ม แคมป์ที่ค้างไว้เก็บได้พร้อมกัน รายได้ฟาร์มคูณ 1.5
 // แกงค์ติดกันสองยกจึงไม่ได้อะไรเลย ต้องสลับฟาร์มคั่นถึงจะคุ้ม
-export const JUNGLE_FARM = { gold: 5, xp: 3 };
+export const JUNGLE_FARM = { gold: 6, xp: 4 };
 export const JUNGLE_GANK = { gold: 0, xp: 0 };
-export const JUNGLE_AFTER_GANK = 1.5;
-export const jungleFarmAfterGank = () => ({
-  gold: Math.round(JUNGLE_FARM.gold * JUNGLE_AFTER_GANK),
-  xp: Math.round(JUNGLE_FARM.xp * JUNGLE_AFTER_GANK),
-});
+// ยกที่แล้วไปแกงค์มา ยกนี้กลับไปเก็บแคมป์ที่ค้างไว้ได้ด้วย
+// เดิมคิดเป็นตัวคูณจากฐาน ตอนนี้กำหนดเป็นค่าคงที่ตรงๆ จะได้อ่านง่ายและปรับง่าย
+export const JUNGLE_AFTER_GANK_PAY = { gold: 10, xp: 6 };
+export const jungleFarmAfterGank = () => ({ ...JUNGLE_AFTER_GANK_PAY });
+
+// ---------------------------------------------------------------
+// พื้นรายได้ของทุกเลน — ได้เท่านี้เสมอ ไม่ว่าจะแตกไฟต์ ตายยกนั้น หรืออะไรก็ตาม
+//
+// ของเดิมเลนที่แตกไฟต์เพราะนิสัยได้ 0 ทั้งเงินและ XP ยกที่แพ้จึงไม่ได้อะไรเลย
+// คนที่ตามอยู่ก็ตามไม่ทันตลอดเกมเพราะโดนลงโทษซ้ำทุกยก
+// พื้นนี้ทำให้ยกที่แพ้ยังขยับได้บ้าง แต่ไม่มากพอจะทดแทนการชนะเลน
+// ---------------------------------------------------------------
+export const LANE_FLOOR = { gold: 2, xp: 1 };
+
+// มิดได้เพิ่มทุกสามยก — ชดเชยที่มิดเป็นเลนเดียวที่โดนป่าทั้งสองฝั่งลงบ่อยที่สุด
+export const MID_BONUS = { gold: 1, xp: 1 };
+export const MID_BONUS_EVERY = 3;
+
+// รายได้สุดท้ายของนักแข่งคนหนึ่งในยกนั้น หลังใส่พื้นและโบนัสมิดแล้ว
+// ใช้ที่เดียวทั้งฝั่งเราและฝั่งบอท เพื่อให้สองฝั่งคิดด้วยกติกาชุดเดียวกันเป๊ะ
+export function lanePay(member, base, round) {
+  const gold = Math.max(LANE_FLOOR.gold, (base && base.gold) || 0);
+  const xp = Math.max(LANE_FLOOR.xp, (base && base.xp) || 0);
+  const midOn = member === "MID" && round > 0 && round % MID_BONUS_EVERY === 0;
+  return {
+    gold: gold + (midOn ? MID_BONUS.gold : 0),
+    xp: xp + (midOn ? MID_BONUS.xp : 0),
+  };
+}
 
 // บอทต้องรู้ว่าการทิ้งแคมป์มีราคา ไม่งั้นมันแกงค์เท่าเดิมทุกยกแล้วการนี้ก็ไม่เปลี่ยนอะไร
 // หน่วยเดียวกับคะแนน lanePower ใน game/stance-ai.js

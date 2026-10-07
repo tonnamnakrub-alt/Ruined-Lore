@@ -5,7 +5,7 @@ import { LANES, STAT_KEYS } from "../data/constants.js";
 import { ITEM_BY_ID, buyBlockedReason, effectiveCost } from "../data/items.js";
 import { buildRecipeTree } from "../ui/recipe.jsx";
 import { STYLES } from "../data/tuning.js";
-import { LANE_MEMBERS, LANE_TH, STANCES, STANCE_LANES, STANCE_LIST, crewAllowed } from "../data/behaviour.js";
+import { INVADE, LANE_MEMBERS, LANE_TH, STANCES, STANCE_LANES, STANCE_LIST, crewAllowed } from "../data/behaviour.js";
 import { canRank, pointsSpent } from "../engine/skill-ranks.js";
 import { levelProgress } from "../engine/util.js";
 import { STAT_SHORT, laneMax } from "../game/roster.js";
@@ -520,6 +520,14 @@ export function ShopPhase(ctx) {
                 padding: "5px 2px", cursor: "pointer", fontFamily: SANS, fontSize: 10.5,
                 fontWeight: jungle.lane ? 400 : 800,
               }}>{tr("ฟาร์ม")}</button>
+            <button onClick={() => setJungle({ lane: INVADE, crew: [] })}
+              style={{
+                flex: 1, background: jungle.lane === INVADE ? C.red : C.panel2,
+                color: jungle.lane === INVADE ? "#0B1220" : C.dim,
+                border: `1px solid ${jungle.lane === INVADE ? C.red : C.line}`, borderRadius: 4,
+                padding: "5px 2px", cursor: "pointer", fontFamily: SANS, fontSize: 10.5,
+                fontWeight: jungle.lane === INVADE ? 800 : 400,
+              }}>{tr("บุกป่า")}</button>
             {STANCE_LANES.map((L) => {
               const can = openLanes.includes(L);
               const on = jungle.lane === L;
@@ -536,7 +544,7 @@ export function ShopPhase(ctx) {
             })}
           </div>
           <StanceHelp />
-          {jungle.lane && crewMax > 0 && crewPool.length ? (
+          {jungle.lane && jungle.lane !== INVADE && crewMax > 0 && crewPool.length ? (
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 5 }}>
               <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.dim, width: 66, flexShrink: 0 }}>
                 {tr("พาไป {0}", crewMax)}

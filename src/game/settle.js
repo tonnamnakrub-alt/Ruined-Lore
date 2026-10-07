@@ -10,7 +10,8 @@
 import { tr } from "../i18n.js";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, JUNGLE_AFTER_GANK, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_MEMBERS, jungleFarmAfterGank,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, JUNGLE_FARM, JUNGLE_GANK, KILL, LANE_FLOOR, LANE_MEMBERS,
+  MID_BONUS, MID_BONUS_EVERY, jungleFarmAfterGank, lanePay,
   STANCES, STANCE_LANES, laneOutcome,
 } from "../data/behaviour.js";
 import { autoRanks } from "../engine/skill-ranks.js";
@@ -26,7 +27,22 @@ const JUNGLE_AWAY = { gold: 0, xp: 0 };
 
 // ที่มาของรายได้เลนหนึ่งคน — แตกเป็นชิ้นให้เห็นว่านิสัยไหนเจอนิสัยไหนได้อะไร
 // persp = "me" (ฝั่งเรา) หรือ "foe"
+// เติมสองบรรทัดท้ายใบเสร็จให้ตรงกับที่ lanePay() จ่ายจริง
+//   laneFloor — เติมให้ถึงพื้นของทุกเลน ถ้ายอดที่คิดมายังไม่ถึง
+//   midBonus  — โบนัสมิดทุกสามยก
+function addFloorParts(parts, lane, round) {
+  const sum = parts.reduce((a, p) => ({ gold: a.gold + p.gold, xp: a.xp + p.xp }), { gold: 0, xp: 0 });
+  const fg = Math.max(0, LANE_FLOOR.gold - sum.gold);
+  const fx = Math.max(0, LANE_FLOOR.xp - sum.xp);
+  if (fg || fx) parts.push({ key: "laneFloor", gold: fg, xp: fx });
+  if (lane === "MID" && round > 0 && round % MID_BONUS_EVERY === 0) {
+    parts.push({ key: "midBonus", gold: MID_BONUS.gold, xp: MID_BONUS.xp });
+  }
+  return parts;
+}
+
 function laneParts(plan, lane, persp, forfeited) {
+  const round = plan.round || 0;
   const parts = [];
   if (lane === "JUNGLE") {
     const gank = persp === "me" ? plan.lanes && Object.values(plan.lanes).some((l) => l.myGank) : !!plan.foeJungleLane;
@@ -36,13 +52,14 @@ function laneParts(plan, lane, persp, forfeited) {
     // แคมป์ที่ค้างไว้ตอนไปแกงค์ยกที่แล้ว เก็บได้พร้อมกันยกนี้
     if (after) {
       const boost = jungleFarmAfterGank();
-      parts.push({ key: "jungleAfterGank", gold: boost.gold - JUNGLE_FARM.gold, xp: boost.xp - JUNGLE_FARM.xp, mul: JUNGLE_AFTER_GANK });
+      // เดิมโชว์เป็นตัวคูณ ตอนนี้รายได้หลังแกงค์เป็นค่าคงที่ จึงโชว์เป็นส่วนต่างตรงๆ
+      parts.push({ key: "jungleAfterGank", gold: boost.gold - JUNGLE_FARM.gold, xp: boost.xp - JUNGLE_FARM.xp });
     }
     if (forfeited) {
       const sum = parts.reduce((s, p) => ({ gold: s.gold + p.gold, xp: s.xp + p.xp }), { gold: 0, xp: 0 });
       parts.push({ key: "safeForfeit", gold: -sum.gold, xp: -sum.xp });
     }
-    return parts;
+    return addFloorParts(parts, lane, round);
   }
   const L = lane === "ADC" || lane === "SUPPORT" ? "BOT" : lane;
   const l = plan.lanes[L];
@@ -67,7 +84,7 @@ function laneParts(plan, lane, persp, forfeited) {
     const sum = parts.reduce((s, p) => ({ gold: s.gold + p.gold, xp: s.xp + p.xp }), { gold: 0, xp: 0 });
     parts.push({ key: "safeForfeit", gold: -sum.gold, xp: -sum.xp });
   }
-  return parts;
+  return addFloorParts(parts, lane, round);
 }
 
 // PUSS — สถานะตราท้าดวลที่ต้องพกข้ามยก
@@ -140,9 +157,12 @@ export function settleRound(opts) {
     const bag = atkIsMe ? income : foeInc;
     const lost = atkIsMe ? forfeitMe : forfeitFoe;
     const crew = atkIsMe ? ((jungle && jungle.crew) || []) : (plan.foeJungleCrew || []);
-    bag.JUNGLE = { ...JUNGLE_AWAY };
+    // ตัดรายได้เหลือพื้นของทุกเลน ไม่ใช่เหลือศูนย์เหมือนเดิม
+    // พื้นเป็นของที่ได้เสมอไม่ว่าเกิดอะไรขึ้น การเสียยกฟรีจึงตัดได้แค่ส่วนที่เกินพื้น
+    const floorPay = (m) => lanePay(m, JUNGLE_AWAY, plan.round);
+    bag.JUNGLE = floorPay("JUNGLE");
     lost.add("JUNGLE");
-    for (const c of crew) for (const m of LANE_MEMBERS[c] || []) { bag[m] = { ...JUNGLE_AWAY }; lost.add(m); }
+    for (const c of crew) for (const m of LANE_MEMBERS[c] || []) { bag[m] = floorPay(m); lost.add(m); }
   }
 
   // เลนที่ชนะ/แพ้ยังนับไว้โชว์ในสรุปยก แต่ไม่ใช่ตัวตัดสินแต้ม — ยกนี้ใครได้เงินเยอะกว่าคนนั้นชนะ
@@ -209,8 +229,11 @@ export function settleRound(opts) {
     }
     kg += laneBonus;
     // พาสซีฟซัพพอร์ต — ไม่มีรายได้เลนของตัวเอง ไปรับส่วนแบ่งจากเอดีซีแทน (คิดทีหลัง)
-    const laneGold = c.lane === "SUPPORT" ? 0 : Math.max(0, src.gold);
-    if (c.lane === "SUPPORT" && src.gold !== 0) parts.push({ key: "supportNoLane", gold: -src.gold, xp: 0 });
+    // ซัพไม่มีรายได้เลนของตัวเอง แต่พื้นของทุกเลนยังได้เหมือนคนอื่น
+    const laneGold = c.lane === "SUPPORT" ? LANE_FLOOR.gold : Math.max(0, src.gold);
+    if (c.lane === "SUPPORT" && src.gold !== LANE_FLOOR.gold) {
+      parts.push({ key: "supportNoLane", gold: LANE_FLOOR.gold - src.gold, xp: 0 });
+    }
     // เลนที่ติดลบ (ล้ำเก้อ ฯลฯ) ตัดที่ศูนย์ ไม่หักจากเงินศพ
     if (c.lane !== "SUPPORT" && src.gold < 0) parts.push({ key: "floorZero", gold: -src.gold, xp: 0 });
     // พาสซีฟท็อป — ได้ XP เพิ่มอีก 1 ทุกยก และดันเลเวลได้ถึง 20
@@ -265,6 +288,10 @@ export function settleRound(opts) {
     const next = {
       ...c, xp: nxp, gold: c.gold + gold, level: lvl,
       gankedLast: c.lane === "JUNGLE" ? ganked : false,
+      // ยกนี้โดนป่าอีกฝั่งบุกกวาดแคมป์ไหม — ยกหน้าถ้ากลับมาฟาร์มจะไม่เหลืออะไรเก็บ
+      raidedLast: c.lane === "JUNGLE"
+        ? !!(persp === "me" ? plan.raidedMe : plan.raidedFoe)
+        : false,
       ranks: c.autoLevel ? autoRanks(lvl, pri, null) : c.ranks,
       bountyGold: bg, sangHp: sang, bmTier,
       ...duelAfterRound(c, u, round),
@@ -329,7 +356,9 @@ export function partLabel(p) {
     case "safeForfeit": return tr("แกงค์เลนที่ยืนเซฟแล้วเก็บไม่ลง — เสียยกฟรี");
     case "jungleFarm": return tr("ป่าฟาร์ม");
     case "jungleGank": return tr("ป่าไปแกงค์ — ทิ้งแคมป์ ไม่มีรายได้ฐาน");
-    case "jungleAfterGank": return tr("เก็บแคมป์ที่ค้างไว้จากยกที่แกงค์ ×{0}", p.mul);
+    case "jungleAfterGank": return tr("เก็บแคมป์ที่ค้างไว้จากยกที่แกงค์");
+    case "laneFloor": return tr("พื้นรายได้ของทุกเลน");
+    case "midBonus": return tr("โบนัสมิดทุกสามยก");
     case "kills":
       // ถ้ามีหัวไหนแพงกว่าปกติ ต้องเห็นว่าแพงเพราะตัวไหน
       return (p.heads || []).some((h) => h !== BOUNTY.base)
@@ -338,7 +367,7 @@ export function partLabel(p) {
     case "soloAssists": return tr("ช่วยสังหารคนเดียว ×{0}", p.n);
     case "groupAssists": return tr("ช่วยสังหารหลายคน ×{0}", p.n);
     case "adcPassive": return tr("พาสซีฟ ADC +1 ต่อทุกก้อน");
-    case "supportNoLane": return tr("ซัพไม่มีรายได้เลนของตัวเอง");
+    case "supportNoLane": return tr("ซัพไม่มีรายได้เลนของตัวเอง เหลือแค่พื้น");
     case "supportShare": return tr("ครึ่งหนึ่งของรายได้เลนของ ADC");
     case "supportEven": return tr("ยกคู่ ซัพได้เพิ่ม");
     case "floorZero": return tr("รายได้เลนติดลบ ปัดเป็นศูนย์");

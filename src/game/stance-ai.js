@@ -6,7 +6,7 @@
 // skill ต่ำจะออกมาสุ่มมั่วๆ ตามอารมณ์
 // ---------------------------------------------------------------
 
-import { GANK_COST_AFTER, GANK_COST_BIAS, LANE_MEMBERS, STANCE_LANES, crewAllowed } from "../data/behaviour.js";
+import { GANK_COST_AFTER, GANK_COST_BIAS, INVADE, LANE_MEMBERS, STANCE_LANES, crewAllowed } from "../data/behaviour.js";
 
 // กำลังรบคร่าวๆ ของเลนหนึ่ง — เลเวลกับมูลค่าของที่ถืออยู่
 function lanePower(roster, lane) {
@@ -49,6 +49,26 @@ export function botJungle(rand, me, foe, stances, lastStances, skill, round) {
   // สเปคใหม่เหมือนฝั่งผู้เล่น — ดูนิสัยของ "ยกนี้" ไม่ใช่ยกที่แล้ว
   void lastStances;
   const open = STANCE_LANES.filter((L) => stances[L] === "AGGRO" || stances[L] === "NEUTRAL");
+
+  // ---- บุกป่าฝั่งตรงข้าม ----
+  // คุ้มที่สุดตอนยกที่แล้วเพิ่งโดนกวาดแคมป์ เพราะยกนี้ฟาร์มก็ไม่ได้อะไรอยู่แล้ว
+  // รองลงมาคือป่าเราแข็งกว่าเขาชัดเจน หรือมิดสั่งเซฟไว้จนตามไปรุมได้
+  {
+    const jg = me.find((c) => c.lane === "JUNGLE");
+    const fjg = foe.find((c) => c.lane === "JUNGLE");
+    if (jg && fjg && rand() < skill) {
+      const power = (c) => c.level * 40 + c.items.reduce((a, i) => a + i.cost, 0);
+      const edge = (power(jg) - power(fjg)) / Math.max(1, power(fjg));
+      const midFree = stances.MID === "SAFE";
+      let want = 0;
+      if (jg.raidedLast) want += 0.75;        // ฟาร์มยกนี้ก็ว่างเปล่า ไปเอาคืนดีกว่า
+      if (edge > 0.20) want += 0.35;
+      if (midFree) want += 0.25;
+      if (jg.gankedLast) want -= 0.45;        // เพิ่งแกงค์มา ยกนี้ฟาร์มได้ 10/6 อย่าทิ้ง
+      if (rand() < want) return { lane: INVADE, crew: [] };
+    }
+  }
+
   if (!open.length) return { lane: null, crew: [] };
   // ฝีมือต่ำ = ไม่ค่อยคิด ฟาร์มไปเรื่อยหรือลงมั่ว
   if (rand() > skill * 0.9 + 0.05) return rand() < 0.5 ? { lane: null, crew: [] } : { lane: pick(rand, open), crew: [] };

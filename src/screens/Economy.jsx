@@ -2,7 +2,7 @@ import { tr } from "../i18n.js";
 import React from "react";
 import { CHAMPIONS } from "../data/champions.js";
 import {
-  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, GANK_HURT, JUNGLE_AFTER_GANK, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE, jungleFarmAfterGank,
+  ASSIST_GROUP, ASSIST_SOLO, BOUNTY, GANK_HURT, JUNGLE_CREW, JUNGLE_FARM, JUNGLE_GANK, JUNGLE_TABLE, LANE_FLOOR, MID_BONUS, MID_BONUS_EVERY, jungleFarmAfterGank,
   KILL, SAFE_STAND_SECONDS, STANCES, STANCE_LIST,
 } from "../data/behaviour.js";
 import { LANE_INFO } from "../data/lanes.js";
@@ -75,7 +75,10 @@ export function EconomyScreen(ctx) {
 
       <Section title={tr("ป่า")}>
         <Line>{tr("ฟาร์ม {0}g {1}xp · ไปแกงค์ {2}g {3}xp — ไปแกงค์คือทิ้งแคมป์ทั้งยก ไม่มีรายได้ฐานเลย เงินมาจากศพอย่างเดียว", JUNGLE_FARM.gold, JUNGLE_FARM.xp, JUNGLE_GANK.gold, JUNGLE_GANK.xp)}</Line>
-        <Line>{tr("ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย รายได้ฟาร์มคูณ {0} = {1}g {2}xp", JUNGLE_AFTER_GANK, jungleFarmAfterGank().gold, jungleFarmAfterGank().xp)}</Line>
+        <Line>{tr("ยกถัดจากยกที่ไปแกงค์ ถ้ากลับมาฟาร์ม เก็บแคมป์ที่ค้างไว้ได้ด้วย ได้ {0}g {1}xp", jungleFarmAfterGank().gold, jungleFarmAfterGank().xp)}</Line>
+        <Line>{tr("ป่าบุกป่า — ทิ้งแคมป์ตัวเองเหมือนไปแกงค์ · ถ้าศัตรูฟาร์มอยู่ก็เจอกันในป่าเขา (มิดที่สั่งเซฟไว้ตามไปรุมได้) · ถ้าศัตรูไม่อยู่บ้าน แคมป์เขาโดนกวาด ยกหน้าเขาฟาร์มก็ไม่ได้อะไร · บุกสวนกันถือว่าแลก เสียแคมป์ทั้งคู่")}</Line>
+        <Line>{tr("ทุกเลนได้พื้น {0}g {1}xp เสมอ ไม่ว่าจะแตกไฟต์ ตาย หรืออะไรก็ตาม", LANE_FLOOR.gold, LANE_FLOOR.xp)}</Line>
+        <Line>{tr("มิดได้เพิ่ม {0}g {1}xp ทุก {2} ยก", MID_BONUS.gold, MID_BONUS.xp, MID_BONUS_EVERY)}</Line>
         <Line dim>{tr("แกงค์ติดกันสองยกจึงไม่ได้รายได้ฐานเลยทั้งสองยก ต้องสลับฟาร์มคั่นถึงจะคุ้ม")}</Line>
         <Line dim>{tr("แกงค์ได้เฉพาะเลนที่ยกนี้สั่งปกติหรือรุกล้ำ · โดนดักหรือโดนสวนก่อนเข้า เสียเลือด {0}% ก่อนเริ่มไฟต์", Math.round(GANK_HURT * 100))}</Line>
         <Line dim>

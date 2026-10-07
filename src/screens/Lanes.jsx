@@ -33,12 +33,12 @@ export function LanesScreen(ctx) {
   const pending = plan.fights.filter((f) => !laneDone[f.lane]);
   const allDone = pending.length === 0;
 
-  const stanceChip = (s, who) => (
+  const stanceChip = (s, who) => (!s ? null : (
     <span style={{
       fontFamily: MONO, fontSize: 10.5, fontWeight: 800, color: TONE[s],
       border: `1px solid ${TONE[s]}`, borderRadius: 4, padding: "2px 6px",
     }}>{who}: {tr(STANCES[s].th)}</span>
-  );
+  ));
 
   const laneCard = (L) => {
     const l = plan.lanes[L];
@@ -48,10 +48,10 @@ export function LanesScreen(ctx) {
       <div key={L} style={{ ...card(), padding: 12, marginBottom: 8, borderColor: tone }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7, flexWrap: "wrap" }}>
           <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: C.gold, letterSpacing: 1 }}>
-            {tr(LANE_TH[L])}
+            {tr(LANE_TH[L] || "ป่า")}
           </span>
           {stanceChip(l.mine, tr("เรา"))}
-          {done ? stanceChip(l.theirs, tr("เขา")) : (
+          {!l.mine ? null : done ? stanceChip(l.theirs, tr("เขา")) : (
             <span style={{
               fontFamily: MONO, fontSize: 10.5, fontWeight: 800, color: C.line,
               border: `1px solid ${C.line}`, borderRadius: 4, padding: "2px 6px",
@@ -177,6 +177,8 @@ export function LanesScreen(ctx) {
       ) : null}
 
       {STANCE_LANES.map(laneCard)}
+      {/* ป่าบุกป่า — ไฟต์นี้ไม่ได้อยู่ในเลนไหน เลยต้องมีการ์ดของตัวเอง */}
+      {plan.lanes.JUNGLE ? laneCard("JUNGLE") : null}
 
       <button disabled={!allDone} onClick={() => closeRound()}
         style={{

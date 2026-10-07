@@ -2,7 +2,7 @@
 //
 // จุดสำคัญ: ซัพพอร์ตได้ "ครึ่งหนึ่งของรายได้เลนของ ADC" เท่านั้น
 // ไม่ใช่ครึ่งหนึ่งของเงินทั้งหมดที่ ADC ได้ (เงินศพกับพาสซีฟของ ADC ไม่เข้าการหาร)
-import { ASSIST_SOLO, KILL, STANCES } from "./src/data/behaviour.js";
+import { ASSIST_SOLO, KILL, LANE_FLOOR, STANCES } from "./src/data/behaviour.js";
 import { buildRoundPlan } from "./src/game/round-plan.js";
 import { settleRound } from "./src/game/settle.js";
 
@@ -60,7 +60,9 @@ function play({ round = 5, botFight = false, adcKills = 0, adcAssists = 0 } = {}
   const laneParts = sup.parts.filter((p) => p.key === "stanceBase" || p.key === "stanceMatchup");
   const laneSum = laneParts.reduce((x, p) => x + p.gold, 0);
   const cancel = sup.parts.find((p) => p.key === "supportNoLane");
-  t("ซัพมีรายได้เลนในตาราง แต่โดนตัดทิ้งหมด", laneSum > 0 && !!cancel && laneSum + cancel.gold === 0,
+  // กติกาใหม่: ตัดรายได้เลนของซัพออก แต่เหลือ "พื้นของทุกเลน" ไว้เหมือนคนอื่น
+  t("ซัพมีรายได้เลนในตาราง แต่โดนตัดเหลือแค่พื้น",
+    laneSum > 0 && !!cancel && laneSum + cancel.gold === LANE_FLOOR.gold,
     "รายได้เลน " + laneSum + " · ตัดออก " + (cancel ? cancel.gold : "-"));
 }
 
@@ -103,7 +105,11 @@ function play({ round = 5, botFight = false, adcKills = 0, adcAssists = 0 } = {}
   const { row } = play({ botFight: true });
   const sup = row("SUPPORT");
   const share = sup.parts.find((p) => p.key === "supportShare");
-  t("บอทแตกไฟต์ ซัพไม่ได้ส่วนแบ่งเลน", !share, sup.gold + "g");
+  // กติกาใหม่: แตกไฟต์แล้วเอดีซียังได้พื้น 2g ซัพจึงแบ่งครึ่งได้ 1g
+  // ของเดิมเลนแตกไฟต์ได้ศูนย์ ซัพเลยไม่ได้อะไรเลย
+  t("บอทแตกไฟต์ ซัพได้ส่วนแบ่งครึ่งหนึ่งของพื้นเอดีซี",
+    !!share && share.gold === Math.floor(LANE_FLOOR.gold / 2),
+    (share ? share.gold : 0) + "g จากพื้นเอดีซี " + LANE_FLOOR.gold + "g");
 }
 
 // ---- ใบเสร็จยังรวมได้ยอดจริง ----

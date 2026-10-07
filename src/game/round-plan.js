@@ -7,12 +7,16 @@
 
 import {
   GANK_HURT, JUNGLE_FARM, JUNGLE_GANK,
-  LANE_MEMBERS, STANCE_LANES, gankOutcome, jungleFarmAfterGank, laneOutcome,
+  LANE_MEMBERS, STANCE_LANES, gankOutcome, invadeOutcome, isGank, isInvade,
+  jungleFarmAfterGank, lanePay, laneOutcome,
 } from "../data/behaviour.js";
 
 // รายได้ป่าของยกนี้ — ไปแกงค์ได้ศูนย์ · ฟาร์มได้ฐาน · ฟาร์มหลังยกที่เพิ่งแกงค์ได้ 1.5 เท่า
-export function jungleIncome(gank, afterGank) {
-  if (gank) return { ...JUNGLE_GANK };
+export function jungleIncome(away, afterGank, raided) {
+  // ออกจากบ้าน (ไปแกงค์หรือไปบุก) = ทิ้งแคมป์ทั้งยก
+  if (away) return { ...JUNGLE_GANK };
+  // ยกที่แล้วโดนบุกกวาดแคมป์ไป ยกนี้กลับมาฟาร์มก็ไม่เหลืออะไรให้เก็บ
+  if (raided) return { ...JUNGLE_GANK };
   return afterGank ? jungleFarmAfterGank() : { ...JUNGLE_FARM };
 }
 
@@ -23,7 +27,11 @@ const ABANDON_BONUS = 2;
 
 export function buildRoundPlan(opts) {
   // gankedLast / foeGankedLast = ยกที่แล้วป่าฝั่งนั้นไปแกงค์มา ยกนี้ถ้าฟาร์มจะได้ 1.5 เท่า
-  const { stances, foeStances, jungle, foeJungle, round, gankedLast, foeGankedLast } = opts;
+  // raidedLast / foeRaidedLast = ยกที่แล้วแคมป์ฝั่งนั้นถูกบุกกวาดไป ยกนี้ฟาร์มไม่ได้อะไร
+  const {
+    stances, foeStances, jungle, foeJungle, round,
+    gankedLast, foeGankedLast, raidedLast, foeRaidedLast,
+  } = opts;
   const lanes = {};
   const fights = [];
   const income = {};
@@ -32,6 +40,12 @@ export function buildRoundPlan(opts) {
   // เลนที่แต่ละฝั่งดึงคนออกไปช่วยแกงค์ (ไม่นับเลนที่ป่าบุกเอง)
   const myAway = new Set(((jungle && jungle.crew) || []).filter((L) => L !== (jungle && jungle.lane)));
   const foeAway = new Set(((foeJungle && foeJungle.crew) || []).filter((L) => L !== (foeJungle && foeJungle.lane)));
+
+  // ป่าบุกป่า — คิดผลก่อน เพราะมิดที่ตามไปด้วยต้องหายจากเลนตัวเองเหมือนทีมแกงค์
+  const myInv = isInvade(jungle) ? invadeOutcome(foeJungle, stances) : null;
+  const foeInv = isInvade(foeJungle) ? invadeOutcome(jungle, foeStances) : null;
+  if (myInv) for (const L of myInv.crew) myAway.add(L);
+  if (foeInv) for (const L of foeInv.crew) foeAway.add(L);
 
   for (const L of STANCE_LANES) {
     const mine = stances[L];
@@ -43,8 +57,8 @@ export function buildRoundPlan(opts) {
     if (myAway.has(L)) { out.foe.gold += ABANDON_BONUS; out.abandonedByMe = true; }
     if (foeAway.has(L)) { out.me.gold += ABANDON_BONUS; out.abandonedByFoe = true; }
 
-    const myGank = jungle && jungle.lane === L;
-    const foeGank = foeJungle && foeJungle.lane === L;
+    const myGank = isGank(jungle) && jungle.lane === L;
+    const foeGank = isGank(foeJungle) && foeJungle.lane === L;
     const bothGank = myGank && foeGank;
 
     // ไฟต์ที่เกิดจากนิสัย (ปกติ-ปกติ หรือ รุกล้ำ-รุกล้ำ) ทำให้เลนนั้นไม่ได้รายได้ฐาน
@@ -124,18 +138,45 @@ export function buildRoundPlan(opts) {
     Object.assign(hurtAll, hurt);
 
     // แตกไฟต์เพราะนิสัย = ไม่มีรายได้ฐาน เหลือแค่ที่เก็บได้จากศพ
-    for (const m of LANE_MEMBERS[L]) income[m] = stanceFight ? { gold: 0, xp: 0 } : { ...out.me };
+    // แตกไฟต์เพราะนิสัยยังได้พื้นของทุกเลน ไม่ใช่ศูนย์เหมือนเดิม
+    for (const m of LANE_MEMBERS[L]) {
+      income[m] = lanePay(m, stanceFight ? { gold: 0, xp: 0 } : out.me, round);
+    }
     if (fight) fights.push({ lane: L, blue, red, hurt, stanceFight, aggroDuel: out.aggroDuel });
   }
 
-  // ป่า — ไปแกงค์ไม่ได้รายได้ฐานเลย ฟาร์มได้ฐาน ฟาร์มหลังยกที่เพิ่งแกงค์ได้ 1.5 เท่า
-  const myGanking = !!(jungle && jungle.lane);
-  const myAfterGank = !myGanking && !!gankedLast;
-  income.JUNGLE = jungleIncome(myGanking, myAfterGank);
+  // ---- ป่าบุกป่า: ถ้าเจอกันก็เปิดไฟต์ในป่า ใช้ชื่อเลนพิเศษ "JUNGLE"
+  // ไฟต์นี้ไม่มีนิสัยเลนกำกับ จึงไม่มีรายได้ฐานของเลนไหนเข้ามาเกี่ยว
+  const invFight = (myInv && myInv.fight) || (foeInv && foeInv.fight);
+  if (invFight) {
+    const side = myInv && myInv.fight ? myInv : foeInv;
+    const blue = ["JUNGLE", ...((myInv && myInv.crew) || [])];
+    const red = ["JUNGLE", ...((foeInv && foeInv.crew) || [])];
+    lanes.JUNGLE = {
+      lane: "JUNGLE", mine: null, theirs: null,
+      out: { me: { gold: 0, xp: 0 }, foe: { gold: 0, xp: 0 }, fight: true, note: side.note },
+      fight: true, stanceFight: false, myGank: false, foeGank: false, bothGank: false,
+      blue, red, hurt: {}, notes: [side.note], aggroDuel: false, safeStand: null,
+      invade: true, invadedByMe: !!(myInv && myInv.fight), invadedByFoe: !!(foeInv && foeInv.fight),
+    };
+    fights.push({ lane: "JUNGLE", blue, red, hurt: {}, stanceFight: false, aggroDuel: false });
+  }
+
+  // ป่า — ออกจากบ้าน (แกงค์หรือบุก) ไม่ได้รายได้ฐาน · ฟาร์มหลังยกที่เพิ่งแกงค์ได้ 10/6
+  // · ถ้ายกที่แล้วโดนบุกกวาดแคมป์ ยกนี้ฟาร์มก็ไม่เหลืออะไร
+  const myGanking = isGank(jungle);
+  const myAway2 = myGanking || isInvade(jungle);
+  const myAfterGank = !myAway2 && !!gankedLast;
+  income.JUNGLE = lanePay("JUNGLE", jungleIncome(myAway2, myAfterGank, !myAway2 && !!raidedLast), round);
 
   return {
     round, lanes, fights, income, hurt: hurtAll,
     myAfterGank, foeGankedLast: !!foeGankedLast,
+    // ผลการบุกของยกนี้ — ฝั่งไหนเสียแคมป์บ้าง ใช้ส่งต่อไปยกหน้า
+    myInvade: myInv, foeInvade: foeInv,
+    raidedFoe: !!((myInv && myInv.raidFoe) || (foeInv && foeInv.raidMe)),
+    raidedMe: !!((myInv && myInv.raidMe) || (foeInv && foeInv.raidFoe)),
+    foeRaidedLast: !!foeRaidedLast,
   };
 }
 
@@ -144,9 +185,17 @@ export function foeIncome(plan) {
   const out = {};
   for (const L of STANCE_LANES) {
     const l = plan.lanes[L];
-    for (const m of LANE_MEMBERS[L]) out[m] = l.stanceFight ? { gold: 0, xp: 0 } : { ...l.out.foe };
+    for (const m of LANE_MEMBERS[L]) {
+      out[m] = lanePay(m, l.stanceFight ? { gold: 0, xp: 0 } : l.out.foe, plan.round);
+    }
   }
   const fj = plan.foeJungleLane;
-  out.JUNGLE = jungleIncome(!!fj, !fj && !!plan.foeGankedLast);
+  const foeAway = !!fj;                       // fj เป็น "INVADE" หรือชื่อเลน ทั้งสองคือออกจากบ้าน
+  const foeGanked = fj && fj !== "INVADE";
+  out.JUNGLE = lanePay("JUNGLE", jungleIncome(
+    foeAway,
+    !foeAway && !!plan.foeGankedLast && !!foeGanked,
+    !foeAway && !!plan.foeRaidedLast,
+  ), plan.round);
   return out;
 }
