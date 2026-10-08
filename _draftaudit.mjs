@@ -34,8 +34,13 @@ for (let g = 0; g < GAMES; g++) {
   const bans = [];
   const nonce = 5000 + g;   // เลขประจำดราฟต์ ต่างกันทุกเกม
   if (STYLE === "TOURNEY") {
+    const picked = { A: [], B: [] };
     for (let i = 0; i < BAN_ORDER.length; i++) {
-      const id = botBan(rand, taken, undefined, nonce);
+      const sd = BAN_ORDER[i];
+      const id = botBan(rand, taken, undefined, nonce, {
+        securesNext: sd === PICK_ORDER[0],
+        mine: picked[sd], theirs: picked[sd === "A" ? "B" : "A"],
+      });
       if (!id) break;
       taken.push(id); bans.push(id);
       banCount[id] = (banCount[id] || 0) + 1;

@@ -21,7 +21,7 @@ import { LANE_INFO } from "./data/lanes.js";
 import { shopFor } from "./game/shop-ai.js";
 import { nextStreak, streakMods } from "./game/streak.js";
 import { assignLanes, botBan, botPickOne, botSpread, draftFoe } from "./game/bot-draft.js";
-import { draftApply, draftMove, draftPicksOf, draftTaken, draftTurn, makeDraftQueue, newDraft } from "./game/draft.js";
+import { PICK_ORDER, draftApply, draftMove, draftPicksOf, draftTaken, draftTurn, makeDraftQueue, newDraft } from "./game/draft.js";
 import { STANCE_LANES, crewAllowed, stanceLaneOf } from "./data/behaviour.js";
 import { DIFFS, diffOf } from "./data/difficulty.js";
 import { buildRoundPlan } from "./game/round-plan.js";
@@ -256,7 +256,13 @@ export function App() {
       // nonce ประจำดราฟต์ — ทำให้บอทมีรสนิยมต่างกันในแต่ละเกม แต่คงที่ภายในเกมเดียว
       const nonce = d.nonce || 0;
       const id = turn.kind === "ban"
-        ? botBan(rand, taken, undefined, nonce)
+        // ฝั่งที่ได้หยิบก่อนไม่ต้องแบนตัวที่ตัวเองจะหยิบ — หยิบเองได้อยู่แล้ว
+        // ตาแบนควรเอาไปตัดตัวที่อีกฝั่งจะได้ ไม่ใช่ตัดตัวที่เราจะเอา
+        ? botBan(rand, taken, undefined, nonce, {
+          securesNext: botSide === PICK_ORDER[0],
+          mine: draftPicksOf(d, botSide),
+          theirs: draftPicksOf(d, playerSide),
+        })
         // ส่งทีมของผู้เล่นไปด้วย บอทจะได้เลือกแก้ทางเป็น ไม่ใช่เลือกแต่ทีมตัวเอง
         : botPickOne(rand, taken, draftPicksOf(d, botSide), dv,
           draftPicksOf(d, playerSide), diff.stanceSkill, nonce);

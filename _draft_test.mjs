@@ -94,6 +94,34 @@ const avgOver = (theirs, f, skill = 1, variety = 0.25) => {
     "แบนเฉลี่ย " + (sum / n).toFixed(3) + " · ทั้งกอง " + poolAvgValue.toFixed(3));
 }
 
+// ---- แบนให้ถูกหลัก: ไม่แบนตัวที่ตัวเองจะหยิบอยู่แล้ว
+{
+  // ฝั่งที่ได้หยิบก่อนจะได้ตัวที่มันอยากได้แน่นอน การเอาตาแบนไปแบนตัวนั้นคือแบนทิ้งเปล่า
+  let wasted = 0, kept = 0;
+  for (let seed = 1; seed <= 200; seed++) {
+    const wouldPick = botPickOne(mul(seed), [], [], 0, [], 1, seed);
+    const naive = botBan(mul(seed), [], undefined, seed, { securesNext: false });
+    const smart = botBan(mul(seed), [], undefined, seed, { securesNext: true, mine: [], theirs: [] });
+    if (naive === wouldPick) wasted++;
+    if (smart === wouldPick) kept++;
+  }
+  t("ฝั่งที่หยิบก่อน ไม่แบนตัวที่ตัวเองจะหยิบ", kept === 0,
+    "แบบเดิมแบนทิ้งเปล่า " + wasted + "/200 · แบบใหม่ " + kept + "/200");
+  t("กติกาเดิมเสียตาแบนไปจริงในสัดส่วนที่เห็นได้", wasted > 20,
+    wasted + " จาก 200 ดราฟต์");
+}
+{
+  // ฝั่งที่หยิบทีหลังไม่มีทางได้ตัวที่แรงที่สุด ควรแบนทิ้งตั้งแต่แรก
+  let banTop = 0;
+  for (let seed = 1; seed <= 200; seed++) {
+    const wouldPick = botPickOne(mul(seed), [], [], 0, [], 1, seed);
+    const ban = botBan(mul(seed), [], undefined, seed, { securesNext: false });
+    if (ban === wouldPick) banTop++;
+  }
+  t("ฝั่งที่หยิบทีหลัง ยังแบนตัวที่แรงที่สุดได้", banTop > 0,
+    "แบนตัวท็อป " + banTop + "/200 ดราฟต์");
+}
+
 // ---- ลำดับ Snake ยังเหมือนเดิม และฝั่งไหนก็เดินได้
 {
   t("ลำดับหยิบยังเป็น Snake 1-2-2-2-2-1", PICK_ORDER.join("") === "ABBAABBAAB",

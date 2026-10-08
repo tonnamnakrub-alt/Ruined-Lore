@@ -202,11 +202,26 @@ function banStarvesLane(c, taken, minPool) {
   return false;
 }
 
-export function botBan(rand, taken, minPool = MIN_LANE_POOL, nonce = 0) {
+// opts.securesNext = ฝั่งที่กำลังแบนจะได้หยิบก่ออีกฝั่งไหม
+//   true  = ได้หยิบก่อน จึงไม่ต้องแบนตัวที่ตัวเองจะหยิบ (หยิบเองได้อยู่แล้ว)
+//   false = อีกฝั่งหยิบก่อน ตัวที่แรงที่สุดไม่มีทางเป็นของเรา ควรแบนทิ้ง
+export function botBan(rand, taken, minPool = MIN_LANE_POOL, nonce = 0, opts = {}) {
   const pool = openPool(taken);
   if (!pool.length) return null;
   // ตัวที่แบนแล้วไม่ทำให้เลนไหนขาดคน · ถ้ากันหมดจนไม่เหลือตัวเลือก ก็ถอยไปใช้ทั้งกอง
-  const safe = pool.filter((c) => !banStarvesLane(c, taken, minPool));
+  let safe = pool.filter((c) => !banStarvesLane(c, taken, minPool));
+
+  // ---- ไม่แบนตัวที่ตัวเองจะหยิบอยู่แล้ว ----
+  // ถามตัวเองตรงๆ ว่า "ถ้าได้หยิบตอนนี้จะหยิบใคร" แล้วเว้นตัวนั้นไว้
+  // ไม่ได้เดาจากอันดับความแรงอย่างเดียว เพราะการหยิบคิดเรื่ององค์ประกอบทีมด้วย
+  if (opts.securesNext && safe.length > 1) {
+    const mineNext = botPickOne(rand, taken, opts.mine || [], 0, opts.theirs || [], 1, nonce);
+    if (mineNext) {
+      const kept = safe.filter((c) => c.id !== mineNext);
+      if (kept.length) safe = kept;
+    }
+  }
+
   const from = safe.length ? safe : pool;
   let best = from[0], bestS = -Infinity;
   for (const c of from) {
