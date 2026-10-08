@@ -108,7 +108,22 @@ export function chatOpen(state) {
 //   round   เลขยก ใช้เป็นเมล็ดให้บทไม่เปลี่ยนตอนหน้าจอวาดซ้ำ
 // คืน null เมื่อยกนั้นไม่มีใครปะทะกันเลย
 // ---------------------------------------------------------------
-export function roundBm(won, byLane, round) {
+// เลนที่สั่งนิสัยได้มีสามเลน แต่ "บอท" คือสองคน
+const LANE_SEATS = { TOP: ["TOP"], MID: ["MID"], BOT: ["ADC", "SUPPORT"], JUNGLE: ["JUNGLE"] };
+
+// เลือกว่าใครในทีมเป็นคนพิมพ์ — เอาคนที่อยู่ในเลนที่กำหนดก่อน ไม่มีก็เอาใครก็ได้
+function speakerFor(roster, lanes, seedStr) {
+  const list = (roster || []).filter((c) => c && c.champId);
+  if (!list.length) return null;
+  const seats = new Set();
+  for (const L of lanes || []) for (const m of LANE_SEATS[L] || [L]) seats.add(m);
+  const pool = list.filter((c) => seats.has(c.lane));
+  const from = pool.length ? pool : list;
+  return from[hash(seedStr) % from.length].champId;
+}
+
+// mine / foe = รายชื่อตัวละครของแต่ละฝั่ง ใช้หาว่าใครเป็นคนพิมพ์
+export function roundBm(won, byLane, round, mine, foe) {
   const fought = (byLane || []).filter((r) => r && r.fought);
   if (!fought.length) return null;
   // ฝ่ายที่ชนะยกนี้เสียเลนไปกี่เลน = ชนะขาดแค่ไหน
@@ -117,9 +132,22 @@ export function roundBm(won, byLane, round) {
     : fought.length - winnerLost > winnerLost ? BM_WIN.clean
       : BM_WIN.close;
   const seed = "bm|" + round + "|" + fought.length + "|" + winnerLost;
+
+  // ฝ่ายชนะให้คนที่ชนะเลนพูด · ฝ่ายแพ้ให้คนที่แพ้เลนพูด
+  const wonLanes = fought.filter((r) => (won ? r.iWon : !r.iWon)).map((r) => r.lane);
+  const lostLanes = fought.filter((r) => (won ? !r.iWon : r.iWon)).map((r) => r.lane);
+  const winRoster = won ? mine : foe;
+  const loseRoster = won ? foe : mine;
+
   return {
     // ฝ่ายชนะด่าก่อน ฝ่ายแพ้ตอบ — ฝ่ายไหนจะเป็นผู้เล่นหรือบอทก็ได้
-    winner: { mine: !!won, text: pickLine(pool, seed) },
-    loser: { mine: !won, text: pickLine(BM_LOSE, seed + "|l") },
+    winner: {
+      mine: !!won, text: pickLine(pool, seed),
+      champId: speakerFor(winRoster, wonLanes, seed + "|w"),
+    },
+    loser: {
+      mine: !won, text: pickLine(BM_LOSE, seed + "|l"),
+      champId: speakerFor(loseRoster, lostLanes, seed + "|lw"),
+    },
   };
 }

@@ -12,6 +12,54 @@ import { Bar, Label } from "../ui/widgets.jsx";
 // ranks ของยูนิตในไฟต์ -> รูปแบบเดียวกับ c.ranks
 const rankMap = (u) => Object.fromEntries((u.skills || []).map((s) => [s.key, s.rank]));
 
+// ---------------------------------------------------------------
+// แชทที่วิ่งระหว่างไฟต์
+//
+// ฝั่งเราชิดซ้าย ฝั่งศัตรูชิดขวา เหมือนแชทในแอปคุย — มองปราดเดียวรู้ว่าใครพูด
+// แต่ละฟองกำกับชื่อตัวละคร ไม่ใช่บอกแค่เลนหรือเหมารวมเป็นทีม
+// เรียงเก่าบนใหม่ล่าง แล้วเลื่อนตามบรรทัดล่าสุดให้เอง
+// ---------------------------------------------------------------
+function ChatFeed({ st, mySide }) {
+  const boxRef = React.useRef(null);
+  const lines = st && st.chat ? st.chat.slice(-30) : [];
+  const n = lines.length;
+  React.useEffect(() => {
+    const el = boxRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [n]);
+  if (!n) return null;
+  return (
+    <div style={{ ...card(), marginTop: 10, padding: "8px 10px" }}>
+      <Label style={{ marginBottom: 6 }}>{tr("แชทในไฟต์")}</Label>
+      <div ref={boxRef} style={{ maxHeight: 140, overflowY: "auto", paddingRight: 2 }}>
+        {lines.map((c, i) => {
+          const mine = c.team === mySide;
+          const tone = mine ? C.blue : C.red;
+          return (
+            <div key={i} style={{
+              display: "flex", justifyContent: mine ? "flex-start" : "flex-end", marginBottom: 4,
+            }}>
+              <div style={{
+                maxWidth: "76%", textAlign: mine ? "left" : "right",
+                background: C.panel2, border: `1px solid ${tone}44`,
+                borderRadius: 8, padding: "4px 8px",
+              }}>
+                <div style={{ fontFamily: MONO, fontSize: 9.5, color: tone, letterSpacing: 0.4 }}>
+                  {c.champId || c.lane} <span style={{ color: C.line }}>· {c.t.toFixed(1)}s</span>
+                </div>
+                <div style={{ fontSize: 11.5, color: C.ink, fontFamily: SANS, lineHeight: 1.45 }}>
+                  {c.text}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+
 export function FightScreen(ctx) {
   const { arenaDrawRef, activeLane, fightRef, foe, history, openSkill, scoutOpen, setScoutOpen, statsOpen, setStatsOpen, teamStyle, focusId, ready, round, score, setFocusId, setShowRanges, setSpeed, showRanges, speed, team, tick, mode , streak , openStats, wide, mySide, foeIntel, speedLocked } = ctx;
 
@@ -153,25 +201,8 @@ export function FightScreen(ctx) {
           );
         })()}
 
-        {/* แชทของทีมเรา — ฝั่งศัตรูพิมพ์อะไรเราไม่เห็น เหมือนเกมจริง */}
-        {(() => {
-          const mine = st && st.chat
-            ? st.chat.filter((c) => c.team === mySide).slice(-6).reverse()
-            : [];
-          if (!mine.length) return null;
-          return (
-            <div style={{ ...card(), marginTop: 10, maxHeight: 118, overflowY: "auto" }}>
-              <Label style={{ marginBottom: 6 }}>{tr("แชททีม")}</Label>
-              {mine.map((c, i) => (
-                <div key={i} style={{ fontSize: 11, marginBottom: 3, fontFamily: SANS, color: i === 0 ? C.ink : C.dim }}>
-                  <span style={{ fontFamily: MONO, color: C.dim, marginRight: 6 }}>{c.t.toFixed(1)}s</span>
-                  <span style={{ fontFamily: MONO, color: C.blue, marginRight: 6 }}>[{c.lane}]</span>
-                  {c.text}
-                </div>
-              ))}
-            </div>
-          );
-        })()}
+        {/* แชทในไฟต์ — ฝั่งเราชิดซ้าย ฝั่งศัตรูชิดขวา แต่ละฟองบอกว่าใครพูด */}
+        <ChatFeed st={st} mySide={mySide} />
 
         <div style={{ ...card(), marginTop: 10, maxHeight: 120, overflowY: "auto" }}>
           <Label style={{ marginBottom: 6 }}>{tr("สมองของ AI")}</Label>

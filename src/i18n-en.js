@@ -4068,8 +4068,8 @@ export const DICT = {
  "มิดได้เพิ่ม {0}g {1}xp ทุก {2} ยก":
    "Mid earns an extra {0}g {1}xp every {2} rounds",
  // ---- แชทในไฟต์ ----
- "แชททีม":
-   "Team chat",
+ "แชทในไฟต์":
+   "Fight chat",
  // ---- แชท บุกป่า และรอบเศรษฐกิจ ในแพตช์โน้ต ----
  "แชทในเกม และบีเอ็มตอนจบยก":
    "In-game chat, and BM when a round ends",

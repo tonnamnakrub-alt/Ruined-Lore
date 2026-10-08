@@ -85,12 +85,16 @@ t("มีพิมพ์ตอนตาย", kinds.has("died"), [...kinds].join(
 
 // ---- บีเอ็ม: ฝ่ายที่ชนะยกเป็นคนด่า ไม่ว่าจะเป็นผู้เล่นหรือบอท
 {
-  const won3 = [{ fought: true, iWon: true }, { fought: true, iWon: true }, { fought: true, iWon: true }];
-  const lost3 = [{ fought: true, iWon: false }, { fought: true, iWon: false }, { fought: true, iWon: false }];
+  const ROSTER_ME = [{ lane: "TOP", champId: "KOSCHEI" }, { lane: "MID", champId: "IFRIT" },
+    { lane: "ADC", champId: "PETER" }, { lane: "SUPPORT", champId: "PINO" }];
+  const ROSTER_FOE = [{ lane: "TOP", champId: "KAZEM" }, { lane: "MID", champId: "LAURA" },
+    { lane: "ADC", champId: "HOOD" }, { lane: "SUPPORT", champId: "ALICE" }];
+  const won3 = [{ lane: "TOP", fought: true, iWon: true }, { lane: "MID", fought: true, iWon: true }, { lane: "BOT", fought: true, iWon: true }];
+  const lost3 = [{ lane: "TOP", fought: true, iWon: false }, { lane: "MID", fought: true, iWon: false }, { lane: "BOT", fought: true, iWon: false }];
   const winPool = new Set([...BM_WIN.stomp, ...BM_WIN.clean, ...BM_WIN.close]);
 
   // ผู้เล่นชนะขาด — ทีมเราด่า คู่แข่งตอบ
-  const a = roundBm(true, won3, 3);
+  const a = roundBm(true, won3, 3, ROSTER_ME, ROSTER_FOE);
   t("ผู้เล่นชนะ ทีมเราเป็นคนด่า",
     !!a && a.winner.mine === true && winPool.has(a.winner.text),
     a ? "ทีมคุณ: " + a.winner.text : "ไม่มี");
@@ -99,7 +103,7 @@ t("มีพิมพ์ตอนตาย", kinds.has("died"), [...kinds].join(
     a ? "คู่แข่ง: " + a.loser.text : "ไม่มี");
 
   // ผู้เล่นแพ้ขาด — บอทต้องเป็นคนด่า (บั๊กเดิม: บอทได้บทของฝ่ายแพ้)
-  const b = roundBm(false, lost3, 3);
+  const b = roundBm(false, lost3, 3, ROSTER_ME, ROSTER_FOE);
   t("ผู้เล่นแพ้ บอทเป็นคนด่า ไม่ใช่พิมพ์บทฝ่ายแพ้",
     !!b && b.winner.mine === false && winPool.has(b.winner.text),
     b ? "คู่แข่ง: " + b.winner.text : "ไม่มี");
@@ -108,15 +112,32 @@ t("มีพิมพ์ตอนตาย", kinds.has("died"), [...kinds].join(
     b ? "ทีมคุณ: " + b.loser.text : "ไม่มี");
 
   // ชนะขาดต้องได้บทกวนกว่าชนะหวิว
-  const stomp = roundBm(true, won3, 5);
-  const close = roundBm(true, [{ fought: true, iWon: true }, { fought: true, iWon: false }], 5);
+  const stomp = roundBm(true, won3, 5, ROSTER_ME, ROSTER_FOE);
+  const close = roundBm(true, [{ lane: "TOP", fought: true, iWon: true }, { lane: "MID", fought: true, iWon: false }], 5, ROSTER_ME, ROSTER_FOE);
   t("ชนะขาดได้บทกวน ชนะหวิวได้บทให้เกียรติ",
     BM_WIN.stomp.includes(stomp.winner.text) && BM_WIN.close.includes(close.winner.text),
     "ชนะขาด: " + stomp.winner.text + " · ชนะหวิว: " + close.winner.text);
 
+  // ต้องรู้ว่า "ใคร" พิมพ์ ไม่ใช่เหมารวมเป็นทีม
+  {
+    const w = roundBm(true, won3, 7, ROSTER_ME, ROSTER_FOE);
+    const l = roundBm(false, lost3, 7, ROSTER_ME, ROSTER_FOE);
+    const mineIds = ROSTER_ME.map((c2) => c2.champId);
+    const foeIds = ROSTER_FOE.map((c2) => c2.champId);
+    t("บีเอ็มระบุตัวละครที่พิมพ์ ไม่ใช่ชื่อทีม",
+      !!w.winner.champId && !!w.loser.champId,
+      w.winner.champId + " / " + w.loser.champId);
+    t("ผู้เล่นชนะ คนด่ามาจากทีมเรา คนตอบมาจากทีมศัตรู",
+      mineIds.includes(w.winner.champId) && foeIds.includes(w.loser.champId),
+      w.winner.champId + " ด่า · " + w.loser.champId + " ตอบ");
+    t("ผู้เล่นแพ้ คนด่ามาจากทีมศัตรู คนตอบมาจากทีมเรา",
+      foeIds.includes(l.winner.champId) && mineIds.includes(l.loser.champId),
+      l.winner.champId + " ด่า · " + l.loser.champId + " ตอบ");
+  }
+
   // ยกที่ไม่มีใครปะทะ ไม่มีใครพิมพ์
   t("ยกที่ไม่มีไฟต์ ไม่มีใครพิมพ์บีเอ็ม",
-    roundBm(true, [{ fought: false, iWon: false }], 3) === null, "ไม่มีบีเอ็ม");
+    roundBm(true, [{ lane: "TOP", fought: false, iWon: false }], 3, ROSTER_ME, ROSTER_FOE) === null, "ไม่มีบีเอ็ม");
 }
 
 let bad = 0;

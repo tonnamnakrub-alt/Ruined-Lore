@@ -10,7 +10,7 @@ import { streakNote } from "../game/streak.js";
 import { RoundReceipt } from "../ui/Receipt.jsx";
 
 export function ResultScreen(ctx) {
-  const { foe, history, nextRound, phase, restartMatch, result, round, score, streak, statsOpen, setStatsOpen, mode, wide, openEconomy } = ctx;
+  const { foe, team, history, nextRound, phase, restartMatch, result, round, score, streak, statsOpen, setStatsOpen, mode, wide, openEconomy } = ctx;
   // เงินที่แต่ละเลนทำได้ยกนี้ รวมทั้งกลุ่มเลน (บอท = ADC + ซัพ) — ใช้บอกว่าเงินหายไปตรงไหน
   const laneGold = (rows, L) => (rows || [])
     .filter((r) => (r.lane === "ADC" || r.lane === "SUPPORT" ? "BOT" : r.lane) === L)
@@ -31,7 +31,8 @@ export function ResultScreen(ctx) {
   // ชนะแบบไม่เสียเลนเลย = ชนะขาด · ชนะแบบมีแพ้บ้าง = ชนะปกติ
   // ยกฟาร์มกับยกเสมอไม่มีใครพิมพ์อะไร
   // ยกฟาร์ม ยกเสมอ และตอนจบแมตช์ ไม่มีใครพิมพ์อะไร
-  const bm = (over || farm || drawn || !result) ? null : roundBm(won, result.byLane, round);
+  const bm = (over || farm || drawn || !result)
+    ? null : roundBm(won, result.byLane, round, team, foe);
 
   return (
     <Shell round={round} score={score} mode={mode} streak={streak}>
@@ -52,7 +53,7 @@ export function ResultScreen(ctx) {
                 <span style={{
                   background: x.mine ? C.blue : C.red, color: "#0B1220",
                   borderRadius: 4, padding: "1px 6px", fontSize: 10, fontWeight: 800,
-                }}>{x.mine ? tr("ทีมคุณ") : tr("คู่แข่ง")}</span>
+                }}>{x.champId || (x.mine ? tr("ทีมคุณ") : tr("คู่แข่ง"))}</span>
                 <span style={{ color: i === 0 ? C.ink : C.dim }}>{x.text}</span>
               </div>
             ))}
