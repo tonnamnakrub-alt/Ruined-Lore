@@ -253,11 +253,13 @@ export function App() {
       const turn = draftTurn(d);
       if (!turn || turn.side !== botSide) break;
       const taken = draftTaken(d);
+      // nonce ประจำดราฟต์ — ทำให้บอทมีรสนิยมต่างกันในแต่ละเกม แต่คงที่ภายในเกมเดียว
+      const nonce = d.nonce || 0;
       const id = turn.kind === "ban"
-        ? botBan(rand, taken)
+        ? botBan(rand, taken, undefined, nonce)
         // ส่งทีมของผู้เล่นไปด้วย บอทจะได้เลือกแก้ทางเป็น ไม่ใช่เลือกแต่ทีมตัวเอง
         : botPickOne(rand, taken, draftPicksOf(d, botSide), dv,
-          draftPicksOf(d, playerSide), diff.stanceSkill);
+          draftPicksOf(d, playerSide), diff.stanceSkill, nonce);
       if (!id) break;
       d = draftApply(d, id, turn.kind === "ban"
         ? tr("🔴 ฝ่ายตรงข้ามแบน {0}", id)

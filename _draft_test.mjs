@@ -22,7 +22,8 @@ function draft5(seed, theirs, skill = 1, variety = 0.25) {
   const r = mul(seed);
   const taken = [...theirs], mine = [];
   for (let i = 0; i < 5; i++) {
-    const id = botPickOne(r, taken, mine, variety, theirs, skill);
+    // nonce ต่างกันทุกเกมเหมือนตอนเล่นจริง ไม่งั้นรสนิยมเหมือนกันหมดจนวัดความต่างไม่ได้
+    const id = botPickOne(r, taken, mine, variety, theirs, skill, seed * 7919);
     if (!id) break;
     taken.push(id); mine.push(id);
   }

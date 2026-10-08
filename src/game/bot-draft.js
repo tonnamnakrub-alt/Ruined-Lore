@@ -30,6 +30,19 @@ const hasDash = (c) => skillsOf(c).some((s) => s.dashRange || s.blinkRange || s.
 const armorAt18 = (c) => c.armor + c.armorG * 17;
 const mrAt18 = (c) => c.mr + c.mrG * 17;
 
+
+// ---------------------------------------------------------------
+// รสนิยมประจำดราฟต์ — แฮชจากรหัสตัวละครกับเลขประจำดราฟต์
+// เกมเดียวกันได้ค่าเดิมเสมอ เกมคนละเกมได้คนละค่า
+// ไม่ได้ดึงจาก rand() เพราะต้องคงที่ตลอดดราฟต์ ไม่ใช่เปลี่ยนทุกครั้งที่เรียก
+// ---------------------------------------------------------------
+function taste(id, nonce) {
+  let h = 2166136261 ^ (nonce >>> 0);
+  const str = String(id);
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ((h >>> 0) / 4294967296) - 0.5;      // -0.5 ถึง 0.5
+}
+
 // อ่านทีมของคู่ต่อสู้ออกมาเป็นตัวเลขที่ใช้ตัดสินใจได้
 export function readFoeTeam(ids) {
   const list = (ids || []).map((id) => CHAMPIONS[id]).filter(Boolean);
@@ -46,6 +59,32 @@ export function readFoeTeam(ids) {
 
 function poolFor(lane) {
   return Object.values(CHAMPIONS).filter((c) => playsLane(c, lane));
+}
+
+
+// ตัวที่มีเลนนั้นเป็น "เลนหลัก" — ใช้ดูว่าเลนหนึ่งยังเหลือคนเล่นจริงกี่ตัว
+const mainPoolFor = (lane) => Object.values(CHAMPIONS).filter((c) => c.lane === lane);
+
+
+// ---------------------------------------------------------------
+// ความเหมาะของตัวหนึ่งกับเลนหนึ่ง — ยิ่งติดลบยิ่งไม่ควรลง
+//
+// ของเดิมหักการลงผิดเลนเป็นค่าคงที่ -34 เท่ากันหมดทุกกรณี
+// พอทุกชุดที่เป็นไปได้มีคนผิดเลนเหมือนกัน (เช่นตอน ADC โดนแบนเกลี้ยง)
+// การหักเท่ากันก็ไม่ได้ช่วยเลือก ตัวตัดสินเลยไปตกที่เรื่องอื่น
+// แล้วป่าประชิดอย่าง Wolf ได้ไปยืน ADC ซึ่งเล่นไม่ได้จริง
+// ---------------------------------------------------------------
+export function laneFit(c, lane) {
+  if (!c) return -80;
+  if (c.lane === lane) return 0;
+  if ((c.alsoLanes || []).includes(lane)) return -8;
+  let p = -40;
+  // ADC คือตัวที่ยืนยิงออโต้ต่อเนื่อง ตัวประชิดลงไม่ได้จริงๆ ไม่ใช่แค่ "ไม่ถนัด"
+  if (lane === "ADC" && c.melee) p -= 38;
+  if (lane === "ADC" && !/Marksman/.test(c.role)) p -= 8;
+  // ซัพที่ไม่ใช่สายช่วยเพื่อน ก็ยืนได้แต่ไม่ได้เรื่อง
+  if (lane === "SUPPORT" && !/Enchanter|Warden|Vanguard/.test(c.role)) p -= 6;
+  return p;
 }
 
 
@@ -77,7 +116,7 @@ function compScore(picks) {
   // เดิมการสุ่มเปิดช่องให้ลงผิดเลนได้ แต่ตอนคัดเลือกไม่ได้หักคะแนนเลย
   // ผลคือ 36% ของดราฟต์มีอย่างน้อยหนึ่งตัวยืนผิดเลน ซึ่งผู้เล่นมองว่าบอทโง่
   // หักตรงนี้แล้วชุดที่ลงเลนตรงจะชนะการคัดเลือกเกือบทุกครั้ง แต่ยังเหลือโอกาสแย่งเลนอยู่บ้าง
-  for (const p of picks) if (!playsLane(CHAMPIONS[p.champId], p.lane)) s -= 34;
+  for (const p of picks) s += laneFit(CHAMPIONS[p.champId], p.lane);
   if (chs.some((c) => FRONT.test(c.role))) s += 30;
   if (chs.some(SUSTAIN)) s += 25;
   if (chs.some(RANGED)) s += 25;
@@ -149,13 +188,31 @@ export function openPool(taken) {
 
 
 // บอทแบน — เล็งตัวที่ "แรงและยืดหยุ่น" ก่อน (ค่า AI value สูง ลงได้หลายเลน)
-export function botBan(rand, taken) {
+// เลนหนึ่งต้องเหลือตัวหลักอย่างน้อยเท่านี้เสมอ ไม่งั้นแบนจนไม่มีใครลงเลนนั้นได้
+// ADC มีตัวหลักแค่ 4 ตัว และทั้งสี่มี value สูงสุดในเกม ถ้าไม่กันไว้จะโดนกวาดครบ
+export const MIN_LANE_POOL = 2;
+
+// แบนตัวนี้แล้วจะทำให้เลนไหนเหลือตัวหลักน้อยกว่าที่กำหนดไหม
+function banStarvesLane(c, taken, minPool) {
+  const gone = new Set(taken);
+  for (const lane of [c.lane]) {
+    const left = mainPoolFor(lane).filter((x) => x.id !== c.id && !gone.has(x.id)).length;
+    if (left < minPool) return true;
+  }
+  return false;
+}
+
+export function botBan(rand, taken, minPool = MIN_LANE_POOL, nonce = 0) {
   const pool = openPool(taken);
   if (!pool.length) return null;
-  let best = pool[0], bestS = -1;
-  for (const c of pool) {
+  // ตัวที่แบนแล้วไม่ทำให้เลนไหนขาดคน · ถ้ากันหมดจนไม่เหลือตัวเลือก ก็ถอยไปใช้ทั้งกอง
+  const safe = pool.filter((c) => !banStarvesLane(c, taken, minPool));
+  const from = safe.length ? safe : pool;
+  let best = from[0], bestS = -Infinity;
+  for (const c of from) {
     // แบนตัวที่แรงที่สุดและยืดหยุ่นที่สุดก่อน — ตัวที่ลงได้หลายเลนแบนแล้วคุ้มกว่า
-    const s = (c.value - 1) * 70 + (c.alsoLanes || []).length * 6 + rand() * 6;
+    const s = (c.value - 1) * 70 + (c.alsoLanes || []).length * 6
+      + taste(c.id, nonce) * 30 + rand() * 6;
     if (s > bestS) { bestS = s; best = c; }
   }
   return best.id;
@@ -165,7 +222,7 @@ export function botBan(rand, taken) {
 // บอทหยิบหนึ่งตัว — เลือกตัวที่ทำให้ทีมของมันสมบูรณ์ที่สุดเท่าที่เหลืออยู่
 //   mine = รหัสตัวที่บอทหยิบไปแล้ว
 // theirs = รหัสตัวที่คู่ต่อสู้เลือกไปแล้ว (ใช้แก้ทาง) · skill = ฝีมือบอท 0-1
-export function botPickOne(rand, taken, mine, variety = 0.25, theirs = [], skill = 1) {
+export function botPickOne(rand, taken, mine, variety = 0.25, theirs = [], skill = 1, nonce = 0) {
   const pool = openPool(taken);
   if (!pool.length) return null;
   const have = mine.map((id) => CHAMPIONS[id]).filter(Boolean);
@@ -192,11 +249,17 @@ export function botPickOne(rand, taken, mine, variety = 0.25, theirs = [], skill
     let s = (c.value - 1) * 60;
 
     // ---- ทีมของตัวเองต้องครบหน้าที่ก่อน ----
-    if (needFront && FRONT.test(c.role)) s += 28;
-    if (needSustain && SUSTAIN(c)) s += 24;
-    if (needRanged && RANGED(c)) s += 22;
-    for (const l of [c.lane, ...(c.alsoLanes || [])]) if (!covered.has(l)) { s += 18; break; }
+    // ก้อนพวกนี้เคยหนักจนชี้ขาดทั้งดราฟต์ ตัวที่เข้าเงื่อนไขจึงถูกเลือกทุกเกม
+    // ลดลงพอให้ยังจัดทีมเป็น แต่ไม่ล็อกตัวเลือกไว้ชุดเดียว
+    if (needFront && FRONT.test(c.role)) s += 20;
+    if (needSustain && SUSTAIN(c)) s += 16;
+    if (needRanged && RANGED(c)) s += 15;
+    for (const l of [c.lane, ...(c.alsoLanes || [])]) if (!covered.has(l)) { s += 14; break; }
     if (have.some((h) => h.role === c.role)) s -= 12;
+    // รสนิยมประจำเกม — เกมนี้บอทชอบใครเป็นพิเศษ เกมหน้าชอบคนอื่น
+    // บอทระดับง่ายมีรสนิยมแรงกว่า (เลือกตามใจ) ระดับยากเอนไปทางความแรงมากกว่า
+    // แต่ยังมีรสนิยมอยู่บ้าง ไม่งั้นบอทเก่งจะกลับไปเลือกชุดเดิมทุกเกมเหมือนเดิม
+    s += taste(c.id, nonce) * (26 + 24 * variety);
 
     // ---- แก้ทางคู่ต่อสู้ ----
     if (foe.n) {

@@ -18,8 +18,15 @@ export const DRAFT_STYLES = {
 };
 
 
-export function newDraft(style) {
-  return { style, bans: [], picks: [], log: [] };
+// nonce = เลขประจำดราฟต์ ใช้ให้บอทมีรสนิยมต่างกันในแต่ละเกม
+// ต้องอยู่ในก้อนดราฟต์ เพราะบอทถูกเรียกหลายครั้งระหว่างดราฟต์เดียวกัน
+// ถ้าสุ่มใหม่ทุกครั้งที่เรียก บอทจะเปลี่ยนใจกลางคันจนดูไม่มีแผน
+export function newDraft(style, nonce) {
+  return {
+    style,
+    nonce: nonce != null ? nonce : Math.floor(Math.random() * 1e9),
+    bans: [], picks: [], log: [],
+  };
 }
 
 
