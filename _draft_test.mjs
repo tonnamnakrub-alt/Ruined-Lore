@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 import { CHAMPIONS } from "./src/data/champions.js";
 import { botBan, botPickOne, isMagic, readFoeTeam } from "./src/game/bot-draft.js";
+import { powerOf } from "./src/data/champion-power.js";
 import { PICK_ORDER, draftTurn, newDraft, draftApply } from "./src/game/draft.js";
 import { setLang } from "./src/i18n.js";
 
@@ -13,7 +14,9 @@ const t = (n, ok, d) => out.push([n, ok, d || ""]);
 const mul = (s) => { let x = s >>> 0; return () => ((x = (x * 1664525 + 1013904223) >>> 0) / 4294967296); };
 
 const all = Object.values(CHAMPIONS);
-const poolAvgValue = all.reduce((a, c) => a + c.value, 0) / all.length;
+// บอทตัดสินด้วย power (ความแรงที่วัดได้จริง) ไม่ใช่ value (ความสำคัญของเป้าสำหรับ AI โฟกัส)
+// เทสต์จึงต้องวัดด้วย power ให้ตรงกับสิ่งที่บอทใช้จริง
+const poolAvgValue = all.reduce((a, c) => a + powerOf(c), 0) / all.length;
 const mr18 = (c) => c.mr + c.mrG * 17;
 const ar18 = (c) => c.armor + c.armorG * 17;
 
@@ -37,15 +40,15 @@ const avgOver = (theirs, f, skill = 1, variety = 0.25) => {
 
 // ---- เลือกตัวแรงจริง
 {
-  const got = avgOver([], (c) => c.value);
+  const got = avgOver([], (c) => powerOf(c));
   t("บอทเลือกตัวที่แรงกว่าค่าเฉลี่ยของกอง", got > poolAvgValue + 0.04,
     "บอทได้เฉลี่ย " + got.toFixed(3) + " · ทั้งกอง " + poolAvgValue.toFixed(3));
 }
 {
   // ความสุ่มมาจาก variety ซึ่งต่างกันตามระดับบอท (ง่าย 0.75 · ยาก 0.10)
   // บอทง่ายต้องเข้าใกล้ค่าเฉลี่ยของกองมากกว่าบอทยาก
-  const hard = avgOver([], (c) => c.value, 1, 0.10);
-  const easy = avgOver([], (c) => c.value, 1, 0.75);
+  const hard = avgOver([], (c) => powerOf(c), 1, 0.10);
+  const easy = avgOver([], (c) => powerOf(c), 1, 0.75);
   t("บอทระดับยากเลือกตัวแรงกว่าบอทระดับง่าย",
     hard > easy && Math.abs(hard - poolAvgValue) > Math.abs(easy - poolAvgValue),
     "ยาก " + hard.toFixed(3) + " · ง่าย " + easy.toFixed(3) + " · ทั้งกอง " + poolAvgValue.toFixed(3));
@@ -88,7 +91,7 @@ const avgOver = (theirs, f, skill = 1, variety = 0.25) => {
   let sum = 0, n = 0;
   for (let s = 1; s <= 60; s++) {
     const id = botBan(mul(s), []);
-    sum += CHAMPIONS[id].value; n++;
+    sum += powerOf(CHAMPIONS[id]); n++;
   }
   t("บอทแบนตัวที่แรงกว่าค่าเฉลี่ยของกอง", sum / n > poolAvgValue + 0.05,
     "แบนเฉลี่ย " + (sum / n).toFixed(3) + " · ทั้งกอง " + poolAvgValue.toFixed(3));

@@ -1,4 +1,5 @@
 import { CHAMPIONS, playsLane } from "../data/champions.js";
+import { powerOf } from "../data/champion-power.js";
 import { LANES, STAT_KEYS } from "../data/constants.js";
 import { POINTS, STAT_CAP, emptyStats } from "./roster.js";
 
@@ -226,7 +227,8 @@ export function botBan(rand, taken, minPool = MIN_LANE_POOL, nonce = 0, opts = {
   let best = from[0], bestS = -Infinity;
   for (const c of from) {
     // แบนตัวที่แรงที่สุดและยืดหยุ่นที่สุดก่อน — ตัวที่ลงได้หลายเลนแบนแล้วคุ้มกว่า
-    const s = (c.value - 1) * 70 + (c.alsoLanes || []).length * 6
+    // แบนตัวที่แรงจริงที่สุด ไม่ใช่ตัวที่ AI อยากโฟกัสที่สุด
+    const s = (powerOf(c) - 1) * 70 + (c.alsoLanes || []).length * 6
       + taste(c.id, nonce) * 30 + rand() * 6;
     if (s > bestS) { bestS = s; best = c; }
   }
@@ -261,7 +263,8 @@ export function botPickOne(rand, taken, mine, variety = 0.25, theirs = [], skill
   let best = pool[0], bestS = -Infinity;
   for (const c of pool) {
     // ความแรงของตัวละครต้องมีน้ำหนักจริง ไม่ใช่โดนค่าสุ่มกลบเหมือนเดิม
-    let s = (c.value - 1) * 60;
+    // ความแรงที่วัดได้จริง ไม่ใช่ value ซึ่งเป็นความสำคัญของเป้าสำหรับ AI โฟกัส
+    let s = (powerOf(c) - 1) * 60;
 
     // ---- ทีมของตัวเองต้องครบหน้าที่ก่อน ----
     // ก้อนพวกนี้เคยหนักจนชี้ขาดทั้งดราฟต์ ตัวที่เข้าเงื่อนไขจึงถูกเลือกทุกเกม
