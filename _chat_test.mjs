@@ -3,7 +3,7 @@
 //   node _chat_test.mjs
 // ---------------------------------------------------------------
 import { BM_LOSE, BM_WIN, CALLOUTS, CHAT_COOLDOWN } from "./src/data/chat-lines.js";
-import { pickLine } from "./src/engine/chat.js";
+import { pickLine, roundBm } from "./src/engine/chat.js";
 import { CHAMPIONS } from "./src/data/champions.js";
 import { STAT_KEYS } from "./src/data/constants.js";
 import { DEFAULT_FIGHT } from "./src/data/tuning.js";
@@ -81,6 +81,42 @@ t("มีพิมพ์ตอนตาย", kinds.has("died"), [...kinds].join(
   t("บทบีเอ็มทุกบรรทัดมาจากกองที่ประกาศไว้",
     BM_WIN.stomp.includes("EZ") && BM_LOSE.includes("gg"),
     "stomp " + BM_WIN.stomp.length + " · lose " + BM_LOSE.length + " บรรทัด");
+}
+
+// ---- บีเอ็ม: ฝ่ายที่ชนะยกเป็นคนด่า ไม่ว่าจะเป็นผู้เล่นหรือบอท
+{
+  const won3 = [{ fought: true, iWon: true }, { fought: true, iWon: true }, { fought: true, iWon: true }];
+  const lost3 = [{ fought: true, iWon: false }, { fought: true, iWon: false }, { fought: true, iWon: false }];
+  const winPool = new Set([...BM_WIN.stomp, ...BM_WIN.clean, ...BM_WIN.close]);
+
+  // ผู้เล่นชนะขาด — ทีมเราด่า คู่แข่งตอบ
+  const a = roundBm(true, won3, 3);
+  t("ผู้เล่นชนะ ทีมเราเป็นคนด่า",
+    !!a && a.winner.mine === true && winPool.has(a.winner.text),
+    a ? "ทีมคุณ: " + a.winner.text : "ไม่มี");
+  t("ผู้เล่นชนะ คู่แข่งได้บทของฝ่ายแพ้",
+    !!a && a.loser.mine === false && BM_LOSE.includes(a.loser.text),
+    a ? "คู่แข่ง: " + a.loser.text : "ไม่มี");
+
+  // ผู้เล่นแพ้ขาด — บอทต้องเป็นคนด่า (บั๊กเดิม: บอทได้บทของฝ่ายแพ้)
+  const b = roundBm(false, lost3, 3);
+  t("ผู้เล่นแพ้ บอทเป็นคนด่า ไม่ใช่พิมพ์บทฝ่ายแพ้",
+    !!b && b.winner.mine === false && winPool.has(b.winner.text),
+    b ? "คู่แข่ง: " + b.winner.text : "ไม่มี");
+  t("ผู้เล่นแพ้ ทีมเราได้บทของฝ่ายแพ้",
+    !!b && b.loser.mine === true && BM_LOSE.includes(b.loser.text),
+    b ? "ทีมคุณ: " + b.loser.text : "ไม่มี");
+
+  // ชนะขาดต้องได้บทกวนกว่าชนะหวิว
+  const stomp = roundBm(true, won3, 5);
+  const close = roundBm(true, [{ fought: true, iWon: true }, { fought: true, iWon: false }], 5);
+  t("ชนะขาดได้บทกวน ชนะหวิวได้บทให้เกียรติ",
+    BM_WIN.stomp.includes(stomp.winner.text) && BM_WIN.close.includes(close.winner.text),
+    "ชนะขาด: " + stomp.winner.text + " · ชนะหวิว: " + close.winner.text);
+
+  // ยกที่ไม่มีใครปะทะ ไม่มีใครพิมพ์
+  t("ยกที่ไม่มีไฟต์ ไม่มีใครพิมพ์บีเอ็ม",
+    roundBm(true, [{ fought: false, iWon: false }], 3) === null, "ไม่มีบีเอ็ม");
 }
 
 let bad = 0;

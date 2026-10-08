@@ -8,7 +8,7 @@
 //   2) ออนไลน์สองเครื่องต้องเห็นตรงกัน การแฮชจากค่าที่ทั้งสองเครื่องมีเท่ากัน
 //      ให้ผลเหมือนกันเสมอ โดยไม่ต้องส่งอะไรข้ามเครื่องเพิ่ม
 // ---------------------------------------------------------------
-import { CALLOUTS, CHAT_COOLDOWN, CHAT_KEEP, CHAT_TEAM_GAP } from "../data/chat-lines.js";
+import { BM_LOSE, BM_WIN, CALLOUTS, CHAT_COOLDOWN, CHAT_KEEP, CHAT_TEAM_GAP } from "../data/chat-lines.js";
 
 // แฮชสตริงเป็นเลขบวก — ใช้เลือกบรรทัดจากกองให้คงที่
 function hash(str) {
@@ -93,4 +93,33 @@ export function chatOpen(state) {
     say(state, u, foes > mates ? "enemyComing" : "goIn",
       foes > mates ? CALLOUTS.enemyComing : CALLOUTS.goIn);
   }
+}
+
+
+// ---------------------------------------------------------------
+// บีเอ็มตอนจบยก — ใครพิมพ์อะไร
+//
+// คิดจากมุมของ "ฝ่ายที่ชนะยกนี้" ไม่ใช่มุมของผู้เล่น
+// ของเดิมคิดจากมุมผู้เล่น ตอนผู้เล่นแพ้จึงให้ฝ่ายที่ชนะ (บอท) พิมพ์บทของฝ่ายแพ้
+// บอทเลยไม่เคยด่าอีกฝั่งเลยสักครั้ง
+//
+//   won     ผู้เล่นชนะยกนี้ไหม
+//   byLane  ผลรายเลนของยกนี้ ({ fought, iWon })
+//   round   เลขยก ใช้เป็นเมล็ดให้บทไม่เปลี่ยนตอนหน้าจอวาดซ้ำ
+// คืน null เมื่อยกนั้นไม่มีใครปะทะกันเลย
+// ---------------------------------------------------------------
+export function roundBm(won, byLane, round) {
+  const fought = (byLane || []).filter((r) => r && r.fought);
+  if (!fought.length) return null;
+  // ฝ่ายที่ชนะยกนี้เสียเลนไปกี่เลน = ชนะขาดแค่ไหน
+  const winnerLost = fought.filter((r) => (won ? !r.iWon : r.iWon)).length;
+  const pool = winnerLost === 0 ? BM_WIN.stomp
+    : fought.length - winnerLost > winnerLost ? BM_WIN.clean
+      : BM_WIN.close;
+  const seed = "bm|" + round + "|" + fought.length + "|" + winnerLost;
+  return {
+    // ฝ่ายชนะด่าก่อน ฝ่ายแพ้ตอบ — ฝ่ายไหนจะเป็นผู้เล่นหรือบอทก็ได้
+    winner: { mine: !!won, text: pickLine(pool, seed) },
+    loser: { mine: !won, text: pickLine(BM_LOSE, seed + "|l") },
+  };
 }

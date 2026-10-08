@@ -29,16 +29,16 @@ export const CALLOUTS = {
 // ---- จบยก: ฝ่ายชนะพิมพ์บีเอ็ม ----
 // แบ่งตามว่าชนะขาดแค่ไหน — ชนะขาดก็กวนมากหน่อย ชนะหวุดหวิดก็ให้เกียรติกัน
 export const BM_WIN = {
-  // ชนะแบบไม่เสียใครเลย
-  stomp: ["EZ", "ez game", "Bot", "unlucky", "?", "sit"],
+  // ชนะแบบไม่เสียเลนเลย — กวนได้เต็มที่
+  stomp: ["EZ", "ez game", "Bot", "unlucky", "?", "sit", "diff", "stop", "uninstall", "ez clap", "free lp", "too easy"],
   // ชนะแบบปกติ
-  clean: ["EZ", "gg", "ez", "well played", "gl hf"],
-  // ชนะแบบเฉียดฉิว
-  close: ["gg", "good fight", "close one", "wp"],
+  clean: ["EZ", "gg", "ez", "well played", "gl hf", "gg ez", "nice try", "ok", "next"],
+  // ชนะแบบเฉียดฉิว — ให้เกียรติกัน
+  close: ["gg", "good fight", "close one", "wp", "gg wp", "that was close", "nice game"],
 };
 
 // ---- จบยก: ฝ่ายแพ้ตอบ ----
-export const BM_LOSE = ["gg", "wp", "report jungle", "mid diff", "nt", "?"];
+export const BM_LOSE = ["gg", "wp", "report jungle", "mid diff", "nt", "?", "jg diff", "no ss", "team diff", "sure", "ff 15", "lag"];
 
 // กี่วินาทีถึงจะให้คนเดิมพูดซ้ำได้ — กันไม่ให้สแปมทั้งไฟต์
 export const CHAT_COOLDOWN = 6.0;
